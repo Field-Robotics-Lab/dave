@@ -1,0 +1,25 @@
+<!--
+UUV launch for the DARPA Angler Virtual Environment
+-->
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+
+    <include file="$(find uuv_gazebo_worlds)/launch/ocean_waves.launch">
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="gui" value="$(arg gui)"/>
+    </include>
+
+    <include file="$(find uuv_descriptions)/launch/upload_rexrov_oberon7.launch">
+        <arg name="namespace" value="rexrov"/>
+    </include>
+
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
+        <arg name="model_name" value="rexrov"/>
+    </include>
+
+    <include file="$(find oberon7_control)/launch/joint_control.launch">
+        <arg name="uuv_name" value="rexrov"/>
+    </include>
+
+</launch>
