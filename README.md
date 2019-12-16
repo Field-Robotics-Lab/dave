@@ -1,2 +1,3 @@
 # DAVE
-DARPA Angler Virtual Environment
+
+Project DAVE
