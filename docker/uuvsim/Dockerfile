@@ -67,6 +67,18 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
     ros-${DIST}-velodyne-simulator \
     ros-${DIST}-rqt \
     ros-${DIST}-rqt-common-plugins \
+		ros-${DIST}-effort-controllers \
+		ros-${DIST}-control-toolbox \
+ 		ros-${DIST}-controller-manager \
+		ros-${DIST}-ros-control \
+		python-scipy \
+		ros-${DIST}-joint-state-publisher \
+		ros-${DIST}-urdfdom-py \
+		python-lxml \
+		ros-${DIST}-ros-controllers \
+		ros-${DIST}-kdl-parser-py \
+		ros-${DIST}-gazebo-ros-control \
+		ros-${DIST}-gazebo-ros-pkgs \
  && rosdep init \
  && apt clean
 
@@ -102,15 +114,15 @@ RUN mkdir -p uuv_ws/src/uuv_simulator
 
 # Copy the VRX repository from the local file system
 # We can't use the USER:GROUP variables until Docker adds support to --chown
-COPY --chown=developer:developer . uuv_ws/src/uuv_simulator
+#COPY --chown=developer:developer . uuv_ws/src/uuv_simulator
 
 # Compile the VRX project.
-RUN /bin/bash -c ". /opt/ros/${DIST}/setup.bash && cd uuv_ws && catkin_make"
+#RUN /bin/bash -c ". /opt/ros/${DIST}/setup.bash && cd uuv_ws && catkin_make"
 
 # Source all the needed environment files.
 RUN /bin/sh -c 'echo ". /opt/ros/${DIST}/setup.bash" >> ~/.bashrc' \
- && /bin/sh -c 'echo ". /usr/share/gazebo/setup.sh" >> ~/.bashrc' \
- && /bin/sh -c 'echo ". ~/uuv_ws/devel/setup.sh" >> ~/.bashrc'
+ && /bin/sh -c 'echo ". /usr/share/gazebo/setup.sh" >> ~/.bashrc'
+# && /bin/sh -c 'echo ". ~/uuv_ws/devel/setup.sh" >> ~/.bashrc'
 
 ENTRYPOINT ["fixuid"]
 
