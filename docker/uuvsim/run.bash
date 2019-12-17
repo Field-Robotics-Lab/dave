@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 #
-# Copyright (C) 2018 Open Source Robotics Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -74,11 +73,13 @@ then
     chmod a+r $XAUTH
 fi
 
-VRX_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
+
 
 DOCKER_OPTS=
 # Example: Bind mount a local repository on the host machine:
-#DOCKER_OPTS="--mount type=bind,source=${VRX_PATH},target=/home/developer/vrx_ws/src/vrx"
+#VRX_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
+VRX_PATH=${HOME}/uuv_ws/src
+DOCKER_OPTS="--mount type=bind,source=${VRX_PATH},target=/home/developer/uuv_ws/src"
 
 
 # Share your vim settings.

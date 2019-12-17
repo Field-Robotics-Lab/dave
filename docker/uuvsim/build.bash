@@ -60,7 +60,7 @@ then
     exit 1
 fi
 
-if [ ! -f $1/docker/Dockerfile ]
+if [ ! -f $1/Dockerfile ]
 then
     echo "Err: Directory does not contain a Dockerfile to build."
     exit 1
@@ -69,7 +69,7 @@ fi
 
 image_plus_tag=$image_name:$(export LC_ALL=C; date +%Y_%m_%d_%H%M)
 echo ".*" > "${1}"/.dockerignore
-docker build --rm -t $image_plus_tag -f "${1}"/docker/Dockerfile "${1}" $BUILD_BASE $BUILD_ROS_GAZ && \
+docker build --rm -t $image_plus_tag -f "${1}"/Dockerfile "${1}" $BUILD_BASE $BUILD_ROS_GAZ && \
 docker tag $image_plus_tag $image_name:latest && \
 echo "Built $image_plus_tag and tagged as $image_name:latest"
 rm "${1}"/.dockerignore
