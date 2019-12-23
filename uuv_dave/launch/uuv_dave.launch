@@ -1,5 +1,5 @@
 <!--
-UUV launch for the DARPA Angler Virtual Environment
+UUV launch for project DAVE
 -->
 <launch>
     <arg name="gui" default="true"/>
@@ -21,5 +21,10 @@ UUV launch for the DARPA Angler Virtual Environment
     <include file="$(find oberon7_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov"/>
     </include>
+
+<!--
+    <node name="spawn_coke_can" pkg="gazebo_ros" type="spawn_model" args="-database coke_can -gazebo -model coke_can -y 1">
+    </node>
+-->
 
 </launch>
