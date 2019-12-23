@@ -5,7 +5,7 @@ UUV launch for the DARPA Angler Virtual Environment
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
 
-    <include file="$(find uuv_gazebo_worlds)/launch/ocean_waves.launch">
+    <include file="$(find uuv_dave)/launch/ocean_waves_item.launch">
         <arg name="paused" value="$(arg paused)"/>
         <arg name="gui" value="$(arg gui)"/>
     </include>

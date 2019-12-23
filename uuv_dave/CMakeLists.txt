@@ -8,3 +8,7 @@ catkin_package()
 install(DIRECTORY launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
         PATTERN "*~" EXCLUDE)
+
+install(DIRECTORY models 
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/models)
+
