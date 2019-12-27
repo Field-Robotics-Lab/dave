@@ -12,6 +12,10 @@ UUV launch for project DAVE
 
     <include file="$(find uuv_descriptions)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
+        <arg name="x" value="4"/>
+        <arg name="y" value="4"/>
+        <arg name="z" value="-94"/>
+        <arg name="yaw" value="-1.8"/>
     </include>
 
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
