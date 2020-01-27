@@ -4,8 +4,9 @@ UUV launch for project DAVE
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
+    <arg name="world_name" default="$find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
 
-    <include file="$(find uuv_gazebo_worlds)/launch/ocean_waves.launch">
+    <include file="$(find uuv_dave)/launch/uuv_dave_ocean_waves.launch">
         <arg name="paused" value="$(arg paused)"/>
         <arg name="gui" value="$(arg gui)"/>
     </include>
