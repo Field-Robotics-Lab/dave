@@ -25,17 +25,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.33939394"
-     inkscape:cx="253.0329"
+     inkscape:zoom="2"
+     inkscape:cx="480.17181"
      inkscape:cy="548.57143"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="759"
-     inkscape:window-height="461"
-     inkscape:window-x="2041"
-     inkscape:window-y="438"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="962"
+     inkscape:window-height="562"
+     inkscape:window-x="2853"
+     inkscape:window-y="363"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -484,90 +484,99 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="117.99535"
-       y="133.42349"
+       x="116.40783"
+       y="134.48181"
        id="text949"><tspan
          sodipodi:role="line"
          id="tspan947"
-         x="117.99535"
-         y="133.42349"
+         x="116.40783"
+         y="134.48181"
          style="stroke-width:0.26458332">Gripper</tspan><tspan
          sodipodi:role="line"
-         x="117.99535"
-         y="139.59711"
+         x="116.40783"
+         y="140.65543"
          id="tspan951"
-         style="stroke-width:0.26458332">Open</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="160.4559"
-       y="133.2227"
-       id="text943"><tspan
-         sodipodi:role="line"
-         id="tspan941"
-         x="160.4559"
-         y="133.2227"
-         style="stroke-width:0.26458332">Gripper</tspan><tspan
-         sodipodi:role="line"
-         x="160.4559"
-         y="139.39632"
-         id="tspan945"
          style="stroke-width:0.26458332">Close</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="127.39062"
-       y="161.19713"
-       id="text977"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="159.39758"
+       y="134.28102"
+       id="text943"><tspan
          sodipodi:role="line"
-         x="127.39062"
-         y="161.19713"
-         style="stroke-width:0.26458332"
-         id="tspan979">Base</tspan></text>
+         id="tspan941"
+         x="159.39758"
+         y="134.28102"
+         style="stroke-width:0.26458332">Gripper</tspan><tspan
+         sodipodi:role="line"
+         x="159.39758"
+         y="140.45464"
+         id="tspan945"
+         style="stroke-width:0.26458332">Open</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="115.11938"
-       y="162.00824"
+       x="116.1777"
+       y="159.36244"
        id="text995"><tspan
          sodipodi:role="line"
-         x="115.11938"
-         y="162.00824"
+         x="116.1777"
+         y="159.36244"
          style="stroke-width:0.26458332"
-         id="tspan997">Left</tspan></text>
+         id="tspan997">Base</tspan><tspan
+         sodipodi:role="line"
+         x="116.1777"
+         y="165.53606"
+         style="stroke-width:0.26458332"
+         id="tspan3816">Left</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="141.20018"
-       y="162.42996"
+       x="140.14186"
+       y="159.255"
        id="text1005"><tspan
          sodipodi:role="line"
          id="tspan1003"
-         x="141.20018"
-         y="162.42996"
-         style="stroke-width:0.26458332">Right</tspan></text>
+         x="140.14186"
+         y="159.255"
+         style="stroke-width:0.26458332">Base</tspan><tspan
+         sodipodi:role="line"
+         x="140.14186"
+         y="165.42862"
+         style="stroke-width:0.26458332"
+         id="tspan3812">Right</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="127.06223"
-       y="153.35022"
+       x="127.19453"
+       y="149.91063"
        id="text1009"><tspan
          sodipodi:role="line"
          id="tspan1007"
-         x="127.06223"
-         y="153.35022"
-         style="stroke-width:0.26458332">Up</tspan></text>
+         x="127.19453"
+         y="149.91063"
+         style="stroke-width:0.26458332">Base</tspan><tspan
+         sodipodi:role="line"
+         x="127.19453"
+         y="156.08424"
+         style="stroke-width:0.26458332"
+         id="tspan3810">Up</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="127.18074"
-       y="169.83736"
+       x="127.70991"
+       y="168.24988"
        id="text1013"><tspan
          sodipodi:role="line"
          id="tspan1011"
-         x="127.18074"
-         y="169.83736"
-         style="stroke-width:0.26458332">Down</tspan></text>
+         x="127.70991"
+         y="168.24988"
+         style="stroke-width:0.26458332">Base</tspan><tspan
+         sodipodi:role="line"
+         x="127.70991"
+         y="174.42349"
+         style="stroke-width:0.26458332"
+         id="tspan3814">Down</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
