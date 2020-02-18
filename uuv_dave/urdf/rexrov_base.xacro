@@ -27,7 +27,7 @@
   -->
   <!-- includes -->
   <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro"/>
-  <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/sensor_snippets.xacro"/>
+  <xacro:include filename="$(find uuv_dave)/urdf/sensor_snippets.xacro"/>
   <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/>  
 
   <!-- Parameters -->
