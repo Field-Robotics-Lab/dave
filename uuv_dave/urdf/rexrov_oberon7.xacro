@@ -59,6 +59,12 @@
     </xacro:fl_multibeam_generic>
 -->
 
+<!-- creates beam lines in Gazebo view
+  <xacro:forward_multibeam_sonar_m450_130 namespace="$(arg namespace)" parent_link="$(arg namespace)/base_link">
+    <origin xyz="1.4 0 0.65" rpy="0 0 0"/>
+  </xacro:forward_multibeam_sonar_m450_130>
+-->
+
   <!-- Create the ROV -->
   <xacro:rexrov_base
     namespace="$(arg namespace)"

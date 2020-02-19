@@ -67,7 +67,7 @@ UUV launch for project DAVE
         <arg name="namespace" value="rexrov"/>
         <arg name="x" value="4"/>
         <arg name="y" value="4"/>
-        <arg name="z" value="-94"/>
+        <arg name="z" value="-93"/>
         <arg name="yaw" value="-1.8"/>
     </include>
 
