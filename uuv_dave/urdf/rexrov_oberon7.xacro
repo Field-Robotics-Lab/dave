@@ -25,7 +25,7 @@
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
   <xacro:include filename="$(find oberon7_description)/robots/oberon7_default.xacro" />
 
-  <xacro:forward_looking_sonar
+  <xacro:uuv_forward_looking_sonar
       namespace="${namespace}"
       suffix="down"
       parent_link="${namespace}/base_link"
@@ -41,28 +41,28 @@
       <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
       <visual>
       </visual>
-    </xacro:forward_looking_sonar>
+    </xacro:uuv_forward_looking_sonar>
 
 <!--
-  <xacro:forward_multibeam_p900
+  <xacro:uuv_forward_multibeam_p900
       namespace="${namespace}"
       parent_link="${namespace}/base_link">
       <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
-    </xacro:forward_multibeam_p900>
+    </xacro:uuv_forward_multibeam_p900>
 -->
 
 <!--
-  <xacro:fl_multibeam_generic
+  <xacro:uuv_fl_multibeam_generic
       namespace="${namespace}"
       parent_link="${namespace}/base_link">
       <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
-    </xacro:fl_multibeam_generic>
+    </xacro:uuv_fl_multibeam_generic>
 -->
 
 <!-- creates beam lines in Gazebo view
-  <xacro:forward_multibeam_sonar_m450_130 namespace="$(arg namespace)" parent_link="$(arg namespace)/base_link">
+  <xacro:uuv_forward_multibeam_sonar_m450_130 namespace="$(arg namespace)" parent_link="$(arg namespace)/base_link">
     <origin xyz="1.4 0 0.65" rpy="0 0 0"/>
-  </xacro:forward_multibeam_sonar_m450_130>
+  </xacro:uuv_forward_multibeam_sonar_m450_130>
 -->
 
   <!-- Create the ROV -->

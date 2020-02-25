@@ -28,7 +28,7 @@
 
 
   <!-- Side scan sonar -->
-  <xacro:macro name="sidescan_sonar" params="namespace parent_link suffix *origin">
+  <xacro:macro name="uuv_sidescan_sonar" params="namespace parent_link suffix *origin">
     <xacro:multibeam_sonar
       namespace="${namespace}"
       suffix="${suffix}"
@@ -54,7 +54,7 @@
   </xacro:macro>
 
   <!-- Inspired by m450-130: http://www.blueview.com/products/2d-imaging-sonar/m900-series/ -->
-  <xacro:macro name="forward_multibeam_sonar_m450_130" params="namespace parent_link *origin">
+  <xacro:macro name="uuv_forward_multibeam_sonar_m450_130" params="namespace parent_link *origin">
     <xacro:multibeam_sonar
       namespace="${namespace}"
       suffix=""
@@ -78,7 +78,7 @@
     </xacro:multibeam_sonar>
   </xacro:macro>
 
-  <xacro:macro name="forward_multibeam_p900" params="namespace parent_link *origin">
+  <xacro:macro name="uuv_forward_multibeam_p900" params="namespace parent_link *origin">
     <xacro:multibeam_sonar
       namespace="${namespace}"
       suffix=""
@@ -103,7 +103,7 @@
   </xacro:macro>
 
 <!-- forward_looking_multibeam_sonar is not defined.
-  <xacro:macro name="fl_multibeam_generic" params="namespace parent_link *origin">
+  <xacro:macro name="uuv_fl_multibeam_generic" params="namespace parent_link *origin">
     <xacro:forward_looking_multibeam_sonar
       namespace="${namespace}"
       suffix=""
@@ -128,7 +128,7 @@
   </xacro:macro>
 -->
 
-  <xacro:macro name="multibeam_sonar"
+  <xacro:macro name="uuv_multibeam_sonar"
     params="namespace suffix parent_link topic mass update_rate
       samples fov range_min range_max range_stddev mesh
       *inertia *origin *visual">
@@ -190,7 +190,7 @@
   </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="forward_looking_sonar"
+  <xacro:macro name="uuv_forward_looking_sonar"
     params="namespace suffix parent_link topic mass update_rate
       samples fov width height *inertia *origin *visual">
     <!-- Sensor link -->
