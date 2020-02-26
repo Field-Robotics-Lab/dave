@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>sonar_dave_plugins</name>
+  <name>sonar_dave_uuv</name>
   <version>0.0.1</version>
   <description>The sonar_dave package, derived from uuv_simulator</description>
 
