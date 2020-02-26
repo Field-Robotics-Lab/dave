@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(sonar_dave_plugins)
+project(sonar_dave_uuv)
 
 add_definitions(-std=c++11)
 

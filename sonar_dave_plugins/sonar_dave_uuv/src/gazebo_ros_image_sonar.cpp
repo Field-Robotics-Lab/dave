@@ -37,7 +37,7 @@
 #include <boost/bind.hpp>
 
 //#include <smarc_gazebo_ros_plugins/gazebo_ros_image_sonar.h>
-#include <sonar_dave_plugins/gazebo_ros_image_sonar.hh>
+#include <sonar_dave_uuv/gazebo_ros_image_sonar.hh>
 #include <gazebo/sensors/Sensor.hh>
 #include <sdf/sdf.hh>
 #include <gazebo/sensors/SensorTypes.hh>

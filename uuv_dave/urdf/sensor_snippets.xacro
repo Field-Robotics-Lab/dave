@@ -25,7 +25,7 @@
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/camera_snippets.xacro" />
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/dvl_snippets.xacro" />
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/rpt_snippets.xacro" />
-  <xacro:include filename="$(find sonar_dave_plugins)/urdf/sonar_snippets.xacro" />
+  <xacro:include filename="$(find sonar_dave_uuv)/urdf/sonar_snippets.xacro" />
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/stereo_snippets.xacro" />
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/gps_sensor_snippets.xacro" />
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/pose_3d_snippets.xacro" />
