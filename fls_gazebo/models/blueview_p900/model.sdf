@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
   <model name="blueview_p900">
-    <link name="link">
+    <link name="forward_sonar_link">
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>1</mass>
@@ -32,6 +32,34 @@
 	  </mesh>
         </geometry>
       </visual>
+
+      <sensor name="image_sonar" type="depth">
+	<visualize>true</visualize>
+	<always_on>true</always_on>
+	<update_rate>40</update_rate>
+	<camera>
+	  <horizontal_fov>1.54719755</horizontal_fov>
+          <image>
+	    <width>768</width>
+	    <height>492</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>17</far>
+          </clip>
+	  <depth_camera>
+            <output>depths</output>
+          </depth_camera>
+          <save enabled="true">
+            <path>/tmp/camera</path>
+          </save>
+	</camera>
+	<plugin filename="libimage_sonar_ros_plugin.so" name="forward_sonar">
+	  <topicName>forward_sonar</topicName>
+          <frameName>forward_sonar_optical_link</frameName>
+	</plugin>
+      </sensor>     
     </link>
   </model>
 </sdf>

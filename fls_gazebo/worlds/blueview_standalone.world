@@ -19,7 +19,7 @@
     <!-- Include geometric targets -->
     <model name='cylinder_target'>
       <pose frame=''>3 1 0.75 0 -0 0</pose>
-      <static>false</static>
+      <static>1</static>
       <link name='link'>
         <inertial>
           <mass>1</mass>
