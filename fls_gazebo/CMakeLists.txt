@@ -2,20 +2,15 @@ cmake_minimum_required(VERSION 2.8.3)
 project(fls_gazebo)
 
 find_package(catkin REQUIRED COMPONENTS
-  message_generation
   gazebo_dev
-  geographic_msgs
-  std_msgs
-  rospy
-  roscpp
   uuv_sensor_ros_plugins
   )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}") 
 
 # Install all the model files
-install(DIRECTORY models/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/models)
+#install(DIRECTORY models/
+#  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/models)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html

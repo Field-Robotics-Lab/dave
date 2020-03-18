@@ -16,11 +16,11 @@
         </inertia>
       </inertial>
       <collision name="collision">
-        <pose>0 0 0 0 0 0</pose>
+        <pose>-0.08 0 0 0 1.571 0</pose>
         <geometry>
           <cylinder>
-            <radius>0.13</radius>
-            <length>1.25</length>
+            <radius>0.07</radius>
+            <length>0.28</length>
           </cylinder>
         </geometry>
       </collision>
