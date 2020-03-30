@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="rqt_images" pkg="rqt_gui" type="rqt_gui" output="screen" args = "--perspective-file $(find fls_gazebo)/config/sonar_images.perspective" />
+
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find fls_gazebo)/config/fls.rviz" />
+
+</launch>
