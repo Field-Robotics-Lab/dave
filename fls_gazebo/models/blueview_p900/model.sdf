@@ -56,7 +56,15 @@
           </save>
 	</camera>
 	<plugin filename="libimage_sonar_ros_plugin.so" name="forward_sonar">
-	  <topicName>forward_sonar</topicName>
+	  <!-- This name is prepended to ROS topics -->
+	  <cameraName>blueview_p900</cameraName>
+	  <!-- ROS publication topics --> 
+	  <imageTopicName>image_raw</imageTopicName>
+	  <cameraInfoTopicName>image_raw/camera_info</cameraInfoTopicName>
+	  <pointCloudTopicName>point_cloud</pointCloudTopicName>
+	  <depthImageTopicName>image_depth</depthImageTopicName>
+	  <depthImageCameraInfoTopicName>image_depth/camera_info</depthImageCameraInfoTopicName>
+
           <frameName>forward_sonar_optical_link</frameName>
 	</plugin>
       </sensor>     
