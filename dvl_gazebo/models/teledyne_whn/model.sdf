@@ -1,0 +1,369 @@
+<?xml version="1.0" ?>
+<!-- NOTE: The SDF version of this model is untested due to the ROS
+     robot_state_publisher's inability to work with SDF models.  It may work
+     when mounted to a robot with plugins that broadcast their transforms. -->
+<sdf version="1.6">
+  <model name="teledyne_whn">
+    <link name="dvl_base_link">
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000000017</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000000017</iyy>
+          <iyz>0</iyz>
+          <izz>0.000000017</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://teledyne_whn/meshes/teledyne_whn.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.000001</radius>
+            <length>0.000001</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Single sonar link 0 -->
+    <link name="dvl_sonar0_link">
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>>
+        <inertia>
+          <ixx>0.000000017</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000000017</iyy>
+          <iyz>0</iyz>
+          <izz>0.000000017</izz>
+        </inertia>
+      </inertial>
+      <collision name="sonar0_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.000001</radius>
+            <length>0.000001</length> 
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <sensor type="ray" name="dvl_sonar0">
+        <pose>0 0 0 0 -0.52 0</pose>
+        <update_rate>10</update_rate>
+        <visualize>true</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.55</min>
+            <max>81</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+
+        <plugin filename="libgazebo_ros_range.so" name="dvl_sonar0_plugin">
+          <gaussianNoise>0.005</gaussianNoise>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+          <topicName>dvl_ray_sonar0</topicName>
+          <frameName>/dvl_sonar0_link</frameName>
+          <fov>0.06</fov>
+          <radiation>ultrasound</radiation>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="dvl_sonar0_joint" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>dvl_base_link</parent>
+      <child>dvl_sonar0_link</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- Single sonar link 1 -->
+    <link name="dvl_sonar1_link">
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>>
+        <inertia>
+          <ixx>0.000000017</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000000017</iyy>
+          <iyz>0</iyz>
+          <izz>0.000000017</izz>
+        </inertia>
+      </inertial>
+      <collision name="sonar1_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.000001</radius>
+            <length>0.000001</length> 
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <sensor type="ray" name="dvl_sonar1">
+        <pose>0 0 0 0 0 0.52</pose>
+        <update_rate>10</update_rate>
+        <visualize>true</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.55</min>
+            <max>81</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+
+        <plugin filename="libgazebo_ros_range.so" name="dvl_sonar1_plugin">
+          <gaussianNoise>0.005</gaussianNoise>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+          <topicName>dvl_ray_sonar1</topicName>
+          <frameName>/dvl_sonar1_link</frameName>
+          <fov>0.06</fov>
+          <radiation>ultrasound</radiation>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="dvl_sonar1_joint" type="fixed">
+      <pose>0 0 0 0 0 </pose>
+      <parent>dvl_base_link</parent>
+      <child>dvl_sonar1_link</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- Single sonar link 2 -->
+    <link name="dvl_sonar2_link">
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>>
+        <inertia>
+          <ixx>0.000000017</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000000017</iyy>
+          <iyz>0</iyz>
+          <izz>0.000000017</izz>
+        </inertia>
+      </inertial>
+      <collision name="sonar2_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.000001</radius>
+            <length>0.000001</length> 
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <sensor type="ray" name="dvl_sonar2">
+        <pose>0 0 0 0 0.52 0</pose>
+        <update_rate>10</update_rate>
+        <visualize>true</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.55</min>
+            <max>81</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+
+        <plugin filename="libgazebo_ros_range.so" name="dvl_sonar2_plugin">
+          <gaussianNoise>0.005</gaussianNoise>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+          <topicName>dvl_ray_sonar2</topicName>
+          <frameName>/dvl_sonar2_link</frameName>
+          <fov>0.06</fov>
+          <radiation>ultrasound</radiation>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="dvl_sonar2_joint" type="fixed">
+      <pose>0 0 0 0 0 </pose>
+      <parent>dvl_base_link</parent>
+      <child>dvl_sonar2_link</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- Single sonar link 3 -->
+    <link name="dvl_sonar3_link">
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>>
+        <inertia>
+          <ixx>0.000000017</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000000017</iyy>
+          <iyz>0</iyz>
+          <izz>0.000000017</izz>
+        </inertia>
+      </inertial>
+      <collision name="sonar3_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.000001</radius>
+            <length>0.000001</length> 
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <sensor type="ray" name="dvl_sonar3">
+        <pose>0 0 0 0 0 -0.52</pose>
+        <update_rate>10</update_rate>
+        <visualize>true</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.55</min>
+            <max>81</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+
+        <plugin filename="libgazebo_ros_range.so" name="dvl_sonar3_plugin">
+          <gaussianNoise>0.005</gaussianNoise>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+          <topicName>dvl_ray_sonar3</topicName>
+          <frameName>/dvl_sonar3_link</frameName>
+          <fov>0.06</fov>
+          <radiation>ultrasound</radiation>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="dvl_sonar3_joint" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>dvl_base_link</parent>
+      <child>dvl_sonar3_link</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+      </axis>
+    </joint>
+
+    <plugin filename="libuuv_gazebo_ros_dvl_plugin.so" name="libuuv_gazebo_dvl_plugin"> -->
+      <robot_namespace>dvl</robot_namespace> <!-- (string, rqd): ros namespace in which the messages are published -->
+      <link_name>dvl_base_link</link_name>       <!-- (string, rqd): name of the body which holds the IMU sensor -->
+      <sensor_topic>dvl</sensor_topic>       <!-- (string): name of the sensor output topic and prefix of service names -->
+      <update_rate>10</update_rate>          <!-- Update period [s] -->
+      <noise_sigma>0.1</noise_sigma>         <!-- std dev of position estimates in x, y, z [m/s] -->
+      <noise_amplitude>0.1</noise_amplitude>
+      <enable_gazebo_messages>false</enable_gazebo_messages>
+      <enable_local_ned_frame>false</enable_local_ned_frame>
+      <static_reference_frame>world</static_reference_frame> -->
+      <!-- Declaring the beams -->
+      <beam_link_name_0>dvl_sonar0_link</beam_link_name_0>
+      <beam_link_name_1>dvl_sonar1_link</beam_link_name_1>
+      <beam_link_name_2>dvl_sonar2_link</beam_link_name_2>
+      <beam_link_name_3>dvl_sonar3_link</beam_link_name_3>
+      <!-- Declaring the beam output topics -->
+      <beam_topic_0>dvl_sonar0_ray</beam_topic_0>
+      <beam_topic_1>dvl_sonar1_ray</beam_topic_1>
+      <beam_topic_2>dvl_sonar2_ray</beam_topic_2>
+      <beam_topic_3>dvl_sonar3_ray</beam_topic_3>
+    </plugin>
+  </model>
+</sdf>
