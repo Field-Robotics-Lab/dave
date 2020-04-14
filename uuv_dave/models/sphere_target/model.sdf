@@ -33,8 +33,8 @@
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>
-      <collision name='collision'>
-        <laser_retro>0</laser_retro>
+      <collision name='sphere'>
+        <laser_retro>255</laser_retro>
         <max_contacts>10</max_contacts>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
