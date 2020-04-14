@@ -14,7 +14,8 @@
         </inertia>
         <pose frame=''>0 0 0 0 -0 0</pose>
       </inertial>
-      <collision name='collision'>
+      <collision name='cylinder'>
+        <laser_retro>255</laser_retro>
         <geometry>
           <cylinder>
             <radius>0.25</radius>
