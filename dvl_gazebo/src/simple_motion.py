@@ -12,21 +12,21 @@ import rospy
 import gazebo_msgs.msg as gm
 import time
 
-#SERVICE_NAME = 'gazebo/set_model_state'
 TOPIC_NAME = 'gazebo/set_model_state'
-MODEL_NAME = 'teledyne_whn'
-LINK_NAME = 'dvl_link'
+#MODEL_NAME = 'teledyne_whn'
+#LINK_NAME = 'dvl_link'
 
 if __name__ == '__main__':
     rospy.init_node('apply_velocity')
     rate = rospy.Rate(50)
     publisher = rospy.Publisher(TOPIC_NAME, gm.ModelState, queue_size=1)
     command = gm.ModelState()
-    command.model_name = MODEL_NAME
-    command.reference_frame = LINK_NAME
-    command.twist.linear.y = 1.0
-    command.twist.linear.x = 0.5
-    command.twist.angular.x = 0.25
+    command.model_name = rospy.get_param('model_name')
+    command.reference_frame = rospy.get_param('base_link_name')
+    print("****** Frame: %s"%command.reference_frame)
+    command.twist.linear.x = 1.0
+    command.twist.linear.z = -0.5
+    command.twist.angular.z = 0.25
     time.sleep(10)  # Give things time to start up
     while not rospy.is_shutdown():
         publisher.publish(command)
