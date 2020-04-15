@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot name="teledyne_whn">
 
+  <link name="dvl_base_link"/>
+
   <link name="dvl_link">
     <inertial>
-      <mass value="0.001"/>
+      <mass value="8.8"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="0.000000017" ixy="0" ixz="0" iyy="0.000000017" iyz="0" izz="0.000000017"/>
+      <inertia ixx="0.071732122" ixy="0" ixz="0" iyy="0.071732122" iyz="0" izz="0.055786544"/>
     </inertial>
     <visual>
       <geometry>
@@ -15,20 +17,17 @@
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.4" radius="0.12"/>
+        <cylinder length="0.2445" radius="0.1126"/>
       </geometry>
-      <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
   </link>
 
-  <!-- Uncomment this to connect this model to a UUV model
-  <joint name="dvl_joint" type="revolute">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <parent link="${parent}"/>
+  <joint name="dvl_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
+    <parent link="dvl_base_link"/>
     <child link="dvl_link"/>
-    <limit upper="0" lower="0" effort="0" velocity="0"/>
-    <axis xyz="1 0 0"/>
-  </joint> -->
+  </joint>
 
   <link name="dvl_sonar0_link">
     <inertial>
@@ -36,12 +35,6 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <inertia ixx="0.000000017" ixy="0" ixz="0" iyy="0.000000017" iyz="0" izz="0.000000017"/>
     </inertial>
-    <collision>
-      <geometry>
-        <cylinder length="0.000001" radius="0.000001"/>
-      </geometry>
-      <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
-    </collision>
   </link>
 
   <joint name="dvl_sonar0_joint" type="revolute">
@@ -73,14 +66,14 @@
           </vertical>
         </scan>
         <range>
-          <min>0.55</min>
-          <max>81</max>
+          <min>0.7</min>
+          <max>90</max>
           <resolution>0.01</resolution>
         </range>
       </ray>
 
       <plugin filename="libgazebo_ros_range.so" name="dvl_sonar0">
-        <gaussianNoise>0.005</gaussianNoise>
+        <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
         <topicName>dvl_ray_sonar0</topicName>
@@ -134,14 +127,14 @@
           </vertical>
         </scan>
         <range>
-          <min>0.55</min>
-          <max>81</max>
+          <min>0.7</min>
+          <max>90</max>
           <resolution>0.01</resolution>
         </range>
       </ray>
 
       <plugin filename="libgazebo_ros_range.so" name="dvl_sonar1">
-        <gaussianNoise>0.005</gaussianNoise>
+        <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
         <topicName>dvl_ray_sonar1</topicName>
@@ -195,14 +188,14 @@
           </vertical>
         </scan>
         <range>
-          <min>0.55</min>
-          <max>81</max>
+          <min>0.7</min>
+          <max>90</max>
           <resolution>0.01</resolution>
         </range>
       </ray>
 
       <plugin filename="libgazebo_ros_range.so" name="dvl_sonar2">
-        <gaussianNoise>0.005</gaussianNoise>
+        <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
         <topicName>dvl_ray_sonar2</topicName>
@@ -256,14 +249,14 @@
           </vertical>
         </scan>
         <range>
-          <min>0.55</min>
-          <max>81</max>
+          <min>0.7</min>
+          <max>90</max>
           <resolution>0.01</resolution>
         </range>
       </ray>
 
       <plugin filename="libgazebo_ros_range.so" name="dvl_sonar3">
-        <gaussianNoise>0.005</gaussianNoise>
+        <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
         <topicName>dvl_ray_sonar3</topicName>
@@ -277,11 +270,11 @@
   <gazebo>
     <plugin filename="libuuv_gazebo_ros_dvl_plugin.so" name="libuuv_gazebo_dvl_plugin">
       <robot_namespace>dvl</robot_namespace>
-      <link_name>dvl_link</link_name>
+      <link_name>dvl_base_link</link_name>
       <sensor_topic>dvl</sensor_topic>
       <update_rate>7</update_rate>
-      <noise_sigma>0.1</noise_sigma>
-      <noise_amplitude>0.1</noise_amplitude>
+      <noise_sigma>0.5</noise_sigma>
+      <noise_amplitude>0.5</noise_amplitude>
       <enable_gazebo_messages>false</enable_gazebo_messages>
       <enable_local_ned_frame>false</enable_local_ned_frame>
       <static_reference_frame>world</static_reference_frame>
@@ -296,6 +289,25 @@
       <beam_topic_2>dvl_sonar2_ray</beam_topic_2>
       <beam_topic_3>dvl_sonar3_ray</beam_topic_3>
     </plugin>
+  </gazebo>
+
+  <!-- Turn gravity (off) for now so that the (unpowered) 
+       robot doesn't sink like a rock.  Can remove this 
+       once the neutral buoyancy issue (#4) is resolved -->
+  <gazebo reference="dvl_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
 </robot>

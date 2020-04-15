@@ -3,8 +3,8 @@
   <name>dvl_gazebo</name>
   <version>0.0.1</version>
   <description>The fls_gazebo package</description>
-  <maintainer email="dtdavis89@gmail.com">bsb</maintainer>
-  <author email="dtdavis89@gmail.com">Brian Bingham</author>
+  <maintainer email="dtdavis89@gmail.com">dtd</maintainer>
+  <author email="dtdavis89@gmail.com">Duane Davis</author>
   <license>Apache 2.0</license>
   <buildtool_depend>catkin</buildtool_depend>
   <depend version_gte="2.5.17">gazebo_ros</depend>
