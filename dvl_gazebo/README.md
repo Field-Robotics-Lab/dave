@@ -14,7 +14,7 @@ The package contains two launch files that can be run independently (both covere
 roslaunch dvl_gazebo teledyne_whn_standalone.launch
 ```
 ```
-roslaunch dvl_gazebo teledyne_whn_standalone.launch
+roslaunch dvl_gazebo test_teledyne_whn.launch
 ```
 
 In addition, the package contains URDF and SDF models and Xacro macros for use in implementing DVLs in other Gazebo simulations.
