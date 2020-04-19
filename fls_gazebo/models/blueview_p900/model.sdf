@@ -38,10 +38,13 @@
 	<always_on>true</always_on>
 	<update_rate>40</update_rate>
 	<camera>
+	  <!-- 90 degrees for the M900-90 -->
 	  <horizontal_fov>1.54719755</horizontal_fov>
           <image>
-	    <width>768</width>
-	    <height>492</height>
+	    <width>760</width>
+	    <!-- Set vertical FOV by setting image height -->
+	    <!-- For 20 deg. -->
+	    <height>169</height>
             <format>R8G8B8</format>
           </image>
           <clip>
