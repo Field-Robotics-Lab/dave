@@ -66,7 +66,7 @@
   </xacro:macro>
 
   <!-- Generates a single ranging sonar for the DVL -->
-  <xacro:macro name="dvl_single_sonar" params="namespace suffix index pitch yaw update_rate">
+  <xacro:macro name="dvl_single_sonar" params="namespace topic suffix index pitch yaw update_rate">
     <link name="${namespace}/dvl${suffix}_sonar${index}_link">
       <inertial>
         <mass value="0.001"/>
@@ -115,7 +115,7 @@
           <gaussianNoise>0.005</gaussianNoise>
           <alwaysOn>true</alwaysOn>
           <updateRate>${update_rate}</updateRate>
-          <topicName>${topic}_sonar${index}</topicName>
+          <topicName>${namespace}/${topic}${suffix}_sonar${index}</topicName>
           <frameName>${namespace}/dvl${suffix}_sonar${index}_link</frameName>
           <fov>0.06</fov>
           <radiation>ultrasound</radiation>
@@ -162,22 +162,22 @@
     </joint>
 
     <xacro:dvl_single_sonar
-      namespace="${namespace}" suffix=""
+      namespace="${namespace}" topic="${topic}" suffix=""
       index="0" pitch="-0.52" yaw="0.0" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <xacro:dvl_single_sonar
-      namespace="${namespace}" suffix=""
+      namespace="${namespace}" topic="${topic}" suffix=""
       index="1" pitch="0" yaw="0.52" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <xacro:dvl_single_sonar
-      namespace="${namespace}" suffix=""
+      namespace="${namespace}" topic="${topic}" suffix=""
       index="2" pitch="0.52" yaw="0.0" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <xacro:dvl_single_sonar
-      namespace="${namespace}" suffix=""
+      namespace="${namespace}" topic="${topic}" suffix=""
       index="3" pitch="0.0" yaw="-0.52" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
@@ -185,7 +185,7 @@
       <plugin filename="libuuv_gazebo_ros_dvl_plugin.so" name="libuuv_gazebo_dvl${suffix}_plugin">
         <robot_namespace>${namespace}</robot_namespace> <!-- (string, required): ros namespace in which the messages are published -->
         <link_name>${parent_link}</link_name> <!-- (string, required): name of the body which holds the IMU sensor -->
-        <sensor_topic>${topic}</sensor_topic> <!-- (string): name of the sensor output topic and prefix of service names -->
+        <sensor_topic>${topic}${suffix}</sensor_topic> <!-- (string): name of the sensor output topic and prefix of service names -->
         <update_rate>${update_rate}</update_rate> <!-- Update period [s] -->
         <noise_sigma>${noise_sigma}</noise_sigma> <!-- std dev of position estimates in x, y, z [m/s] -->
         <noise_amplitude>${noise_amplitude}</noise_amplitude>
@@ -198,10 +198,10 @@
         <beam_link_name_2>${namespace}/dvl_sonar2_link</beam_link_name_2>
         <beam_link_name_3>${namespace}/dvl_sonar3_link</beam_link_name_3>
         <!-- Declaring the beam output topics -->
-        <beam_topic_0>${topic}_sonar0</beam_topic_0>
-        <beam_topic_1>${topic}_sonar1</beam_topic_1>
-        <beam_topic_2>${topic}_sonar2</beam_topic_2>
-        <beam_topic_3>${topic}_sonar3</beam_topic_3>
+        <beam_topic_0>${topic}${suffix}_sonar0</beam_topic_0>
+        <beam_topic_1>${topic}${suffix}_sonar1</beam_topic_1>
+        <beam_topic_2>${topic}${suffix}_sonar2</beam_topic_2>
+        <beam_topic_3>${topic}${suffix}_sonar3</beam_topic_3>
       </plugin>
     </gazebo>
 
