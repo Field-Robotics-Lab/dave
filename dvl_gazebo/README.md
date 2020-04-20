@@ -45,7 +45,7 @@ The following launch arguments can be used to modify the execution:
 The following ROS topics are relevant:
 
 - **/dvl/dvl/state** (`std_msgs/Bool`): should be true as long as the DVL is active (can be activated and deactivated with the `/dvl/dvl/change_state` service).
-- **/dvl/dvl** (`uuv_sensor_ros_plugins_msgs/DVL`): provides the current DVL-derived linear velocities (relative to the `dvl_base_link`, which is oriented forward-right-down) and covariance, perceived altitude above the bottom (computed as the average of the 4 individual sonar ranges), and the ranges and other information for the 4 individual DVL sonar beams.
+- **/dvl/dvl** (`uuv_sensor_ros_plugins_msgs/DVL`): provides the current DVL-derived linear velocities (relative to the `dvl_base_link`, which is oriented forward-left-up) and covariance, perceived altitude above the bottom (computed as the average of the 4 individual sonar ranges), and the ranges and other information for the 4 individual DVL sonar beams.
 - **/dvl/dvl\_twist** (`geometry_msgs/TwistWithCovarianceStamped`): provides the current DVL-derived linear velocities
 - **/dvl/dvl\_sonar0**, **/dvl/dvl\_sonar0**, **/dvl/dvl\_sonar0**, and **/dvl/dvl\_sonar0** (`sensor_msgs/Range`): Range and other information for each individual DVL sonar.
 
@@ -97,5 +97,17 @@ The `teledyne_whn` Xacro file provides a set of macros for the addition of a Tel
 - **dvl\_sensor\_enu**: provides for the generation of a DVL model in an east-north-up inertial reference frame (i.e., the default Gazebo frame) with a user-specified namespace, parent link, and origin relative to the inertial reference frame.  The `test_teledyne_whn.launch` example utilizes this macro.
 - **dvl\_sensor\_ned**: provides for the generation of a DVL model in a north-east-down inertial reference frame with a user-specified namespace, parent link, and origin relative to the inertial reference frame.  The NED frame must be explicitly defined or included in the world model (see `worlds/uuv_dave_ocean_waves_watch_dvl.world`).
 - **dvl\_plugin\_macro**: provides for the generation of a DVL model with user-specified namespace, suffix (sensor ID), parent link, individual sonar ROS topic names, visual scale, update rate, sensor noise parameters, inertial reference frame, and origin relative to the inertial reference frame.  This macro provides the most flexibility and can be used to model most real-world DVLs.  The `dvl_macro` macro is essentially a wrapper for this macro and can be used as an example for its use.
+
+### Additional Macro Files
+
+The following Xacro files are provided for the generation of URDF models for different commercially available DVLs.  Each provide the same top-level macros as `teledyne_whn.xacro` and implement sensor characteristics as specified in the vendor-provided datasheets.  They can be utilized in the same manner as the macros in `teledyne_whn.xacro`.
+
+- **Nortek DVL500-300m** (`urdf/nortek_dvl500_300.xacro`)
+- **Nortek DVL500-4000m** (`urdf/nortek_dvl500_4000.xacro`)
+- **Nortek DVL1000-300m** (`urdf/nortek_dvl1000_300.xacro`)
+- **Nortek DVL500-4000m** (`urdf/nortek_dvl1000_4000.xacro`)
+- **Sonardyne Syrinx 600** (`urdf/sonardyne_syrinx_600.xacro`)
+- **Teledyne Explorer 1000 (Phased Array)** (`urdf/teledyne_explorer_1000.xacro`)
+- **Teledyne Explorer 4000 (Piston)** (`urdf/teledyne_explorer_4000.xacro`)
 
 **NOTE for all models and macros**: Gravity has been disabled for all of these models for the time being so that they can be incorporated without additional plugins and controllers.
