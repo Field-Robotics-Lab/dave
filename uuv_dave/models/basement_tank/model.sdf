@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <sdf version='1.6'>
-  <model name='basement_tank'>
-    <link name='link'>
+  <model name='basement_tank_model'>
+    <link name='basement_tank'>
       <inertial>
         <mass>1</mass>
       </inertial>
