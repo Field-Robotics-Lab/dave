@@ -5,6 +5,7 @@
     <link name ='link'>
       <pose>0 0 -80 0 0 0</pose>
       <collision name ='collision'>
+        <laser_retro>255</laser_retro>
         <geometry>
           <box><size>0.1 0.1 0.5</size></box>
         </geometry>
