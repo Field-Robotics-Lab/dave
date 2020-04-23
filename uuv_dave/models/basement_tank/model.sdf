@@ -1,0 +1,131 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='basement_tank_model'>
+    <link name='basement_tank'>
+      <inertial>
+        <mass>1</mass>
+      </inertial>
+
+      <collision name='bottom'>
+        <laser_retro>50</laser_retro>
+        <pose frame=''>2.135 3.27 0.005 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.27 6.54 0.01</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual1'>
+        <pose frame=''>2.135 3.27 0.005 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.27 6.54 0.01</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+
+      <collision name='left_side'>
+        <laser_retro>50</laser_retro>
+        <pose frame=''>-0.005 3.27 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.01 6.54 2.24</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual2'>
+        <pose frame=''>-0.005 3.27 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.01 6.54 2.24</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+
+      <collision name='right_side'>
+        <laser_retro>50</laser_retro>
+        <pose frame=''>4.275 3.27 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.01 6.54 2.24</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual3'>
+        <pose frame=''>4.275 3.27 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.01 6.54 2.24</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+
+      <collision name='front_side'>
+        <laser_retro>50</laser_retro>
+        <pose frame=''>2.135 -0.005 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.27 0.01 2.24</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual4'>
+        <pose frame=''>2.135 -0.005 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.27 0.01 2.24</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+
+      <collision name='back_side'>
+        <laser_retro>50</laser_retro>
+        <pose frame=''>2.135 6.545 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.27 0.01 2.24</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual5'>
+        <pose frame=''>2.135 6.545 1.12 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4.27 0.01 2.24</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+
+    </link>
+  </model>
+</sdf>
