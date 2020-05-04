@@ -144,7 +144,7 @@
       <visual>
         <geometry>
         <!-- Replace with Explorer mesh when available -->
-        <mesh filename="package://dvl_gazebo/models/teledyne_whn/meshes/teledyne_whn.dae"/>
+        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
         </geometry>
       </visual>
       <collision>

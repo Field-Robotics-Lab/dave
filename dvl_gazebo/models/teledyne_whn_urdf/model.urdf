@@ -11,7 +11,7 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://dvl_gazebo/models/teledyne_whn/meshes/teledyne_whn.dae"/>
+        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </visual>
@@ -19,7 +19,7 @@
       <geometry>
         <cylinder length="0.2445" radius="0.1126"/>
       </geometry>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
     </collision>
   </link>
 
