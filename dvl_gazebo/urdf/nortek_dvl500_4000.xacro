@@ -143,7 +143,7 @@
       <visual>
         <geometry>
         <!-- Replace with Nortek DVL500 mesh when available -->
-        <mesh filename="package://dvl_gazebo/models/teledyne_whn/meshes/teledyne_whn.dae"/>
+        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
         </geometry>
       </visual>
       <collision>

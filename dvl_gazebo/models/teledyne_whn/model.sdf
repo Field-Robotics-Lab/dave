@@ -24,11 +24,11 @@
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
       <visual name="dvl_base_link_visual">
-        <pose>0 0 0 0 1.57079 0</pose>
+        <pose>0 0 0 0 1.5707963267948966 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://teledyne_whn/meshes/teledyne_whn.dae</uri>
+            <uri>package://dvl_gazebo/meshes/teledyne_whn.dae</uri>
           </mesh>
         </geometry>
       </visual>

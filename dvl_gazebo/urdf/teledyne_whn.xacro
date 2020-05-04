@@ -142,7 +142,7 @@
       </inertial>
       <visual>
         <geometry>
-        <mesh filename="package://dvl_gazebo/models/teledyne_whn/meshes/teledyne_whn.dae"/>
+        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
         </geometry>
       </visual>
       <collision>
