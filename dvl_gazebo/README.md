@@ -27,11 +27,11 @@ In addition, the package contains URDF and SDF models and Xacro macros for use i
 ### Launch and Operation
 The `teledyne_whn_standalone.launch` file instantiates a Gazebo world (by default, the uuv\_gazebo\_worlds ocean\_waves.world provided by the UUV simulator containing a single Teledyne DVL attached to a dimensionless link (the DVL is not within the world's camera field of view, but the it is located just below the water's surface near the model's center as depicted below).
 
-![Standalone WHN600 DVL at simulation startup](figs/standalone_whn_startup.png  "Standalone WHN600 DVL at simulation startup")
+![Standalone WHN600 DVL at simulation startup](https://raw.githubusercontent.com/wiki/Field-Robotics-Lab/dave/tutorials/images/standalone_whn_startup.png  "Standalone WHN600 DVL at simulation startup")
 
 After approximately 10 seconds, the DVL will begin moving in a descending left-hand turn.  It will continue with this pattern until impacting the bottom.  During its descent, the DVL sonar beam visualization will indicate its perceived height above the bottom.
 
-![Standalone WHN600 DVL during simulation run](figs/standalone_whn_running.png  "Standalone WHN600 DVL during simulation run")
+![Standalone WHN600 DVL during simulation run](https://raw.githubusercontent.com/wiki/Field-Robotics-Lab/dave/tutorials/images/standalone_whn_running.png  "Standalone WHN600 DVL during simulation run")
 
 The following launch arguments can be used to modify the execution:
 
@@ -69,11 +69,11 @@ See launch file for additional information regarding parameters and arguments.
 ### Launch and Operation
 The `test_teledyne_whn.launch` file uses macros from a Xacro file to generate a WHN600 DVL model mounted on a simple medium-sized "UUV".  The cylindrical UUV is 4 meters in length, 1 meter in diameter, and has a mass or 200 kilograms.  As with the standalone DVL example, the model is not within the world's camera field of view, but the it is located just below the water's surface near the model's center as depicted below.
 
-![Xacro-generated WHN600 DVL mounted to a simple UUV at startup](figs/mounted_whn_startup.png  "Xacro-generated WHN600 DVL mounted to a simple UUV at startup")
+![Xacro-generated WHN600 DVL mounted to a simple UUV at startup](https://raw.githubusercontent.com/wiki/Field-Robotics-Lab/dave/tutorials/images/mounted_whn_startup.png  "Xacro-generated WHN600 DVL mounted to a simple UUV at startup")
 
 After approximately 10 seconds, the UUVwill begin moving in a descending left-hand turn.  It will continue with this pattern until impacting the bottom.  During its descent, the DVL sonar beam visualization will indicate its perceived height above the bottom.
 
-![Xacro-generated WHN600 DVL mounted to a simple UUV during simulation run](figs/mounted_whn_running.png  "Xacro-generated WHN600 DVL mounted to a simple UUV during simulation run")
+![Xacro-generated WHN600 DVL mounted to a simple UUV during simulation run](https://raw.githubusercontent.com/wiki/Field-Robotics-Lab/dave/tutorials/images/mounted_whn_running.png  "Xacro-generated WHN600 DVL mounted to a simple UUV during simulation run")
 
 Launch arguments, ROS nodes, and relevant ROS topics are the same as with the standalone WHN600 example.
 
