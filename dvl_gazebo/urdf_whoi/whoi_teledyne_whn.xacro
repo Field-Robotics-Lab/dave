@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="teledyne_whn">
+
+  <xacro:include filename="$(find dvl_gazebo)/urdf_whoi/teledyne_whn.xacro"/>
+
+  <!-- Simple example "UUV" (really it's just a cylinder) -->
+  <link name="cylinderbot_base_link"/>
+
+  <link name="cylinderbot_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="200"/>
+      <inertia
+        ixx="279.17" ixy="0.0" ixz="0.0"
+        iyy="279.17" iyz="0.0"
+        izz="25.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="4.0" radius="0.5"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="4.0" radius="0.5"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+    </collision>
+  </link>
+  <gazebo reference="cylinderbot_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <joint name="cylinderbot_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="cylinderbot_base_link"/>
+    <child link="cylinderbot_link"/>
+  </joint>
+
+  <!-- Call the macro to attach a DVL on the UUV's forward bottom -->
+  <xacro:teledyne_whn_macro
+    name="dvl" namespace="dvl" xyz="0 0 0"
+    dvl_topic="dvl" ranges_topic="ranges"
+    robot_link="cylinderbot_link" joint_xyz="1.5 0 -0.5"/>
+
+  <!-- Turn gravity (off) for now so that the (unpowered) robot doesn't sink like
+       a rock.  Can remove this once the neutral buoyancy issue (#4) is resolved -->
+  <gazebo reference="cylinderbot_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <gazebo reference="dvl_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+</robot>
