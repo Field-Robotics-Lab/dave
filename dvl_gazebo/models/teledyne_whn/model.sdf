@@ -28,7 +28,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://dvl_gazebo/meshes/teledyne_whn.dae</uri>
+            <uri>file://meshes/teledyne_whn.dae</uri>
           </mesh>
         </geometry>
       </visual>
