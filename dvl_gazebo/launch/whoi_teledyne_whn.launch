@@ -29,4 +29,5 @@
     <remap from="robot_description" to="teledyne_whn" />
   </node>
   <node name="apply_velocity" pkg="dvl_gazebo" type="simple_motion.py" respawn="false" output="screen"/>
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find dvl_gazebo)/rviz/whoi_teledyne_dvl.rviz" />
 </launch>
