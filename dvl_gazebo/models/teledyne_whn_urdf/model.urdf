@@ -11,7 +11,7 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://dvl_gazebo/models/teledyne_whn/meshes/teledyne_whn.dae"/>
+        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </visual>
@@ -19,7 +19,7 @@
       <geometry>
         <cylinder length="0.2445" radius="0.1126"/>
       </geometry>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
     </collision>
   </link>
 
@@ -76,7 +76,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_ray_sonar0</topicName>
+        <topicName>dvl_sonar0</topicName>
         <frameName>dvl_sonar0_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -137,7 +137,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_ray_sonar1</topicName>
+        <topicName>dvl_sonar1</topicName>
         <frameName>dvl_sonar1_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -198,7 +198,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_ray_sonar2</topicName>
+        <topicName>dvl_sonar2</topicName>
         <frameName>dvl_sonar2_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -259,7 +259,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_ray_sonar3</topicName>
+        <topicName>dvl_sonar3</topicName>
         <frameName>dvl_sonar3_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -284,10 +284,10 @@
       <beam_link_name_2>dvl_sonar2_link</beam_link_name_2>
       <beam_link_name_3>dvl_sonar3_link</beam_link_name_3>
       <!-- Declaring the beam output topics -->
-      <beam_topic_0>dvl_sonar0_ray</beam_topic_0>
-      <beam_topic_1>dvl_sonar1_ray</beam_topic_1>
-      <beam_topic_2>dvl_sonar2_ray</beam_topic_2>
-      <beam_topic_3>dvl_sonar3_ray</beam_topic_3>
+      <beam_topic_0>dvl_sonar0</beam_topic_0>
+      <beam_topic_1>dvl_sonar1</beam_topic_1>
+      <beam_topic_2>dvl_sonar2</beam_topic_2>
+      <beam_topic_3>dvl_sonar3</beam_topic_3>
     </plugin>
   </gazebo>
 
@@ -300,13 +300,13 @@
   <gazebo reference="dvl_sonar0_link">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
-  <gazebo reference="dvl_sonar0_link">
+  <gazebo reference="dvl_sonar1_link">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
-  <gazebo reference="dvl_sonar0_link">
+  <gazebo reference="dvl_sonar2_link">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
-  <gazebo reference="dvl_sonar0_link">
+  <gazebo reference="dvl_sonar3_link">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 

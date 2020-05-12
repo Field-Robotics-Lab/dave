@@ -1,4 +1,0 @@
-<launch>
-  <param name="teledyne_whn" command="$(find xacro)/xacro $(find dvl_gazebo)/urdf/test_teledyne_whn.xacro" />
-</launch>
-

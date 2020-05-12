@@ -11,7 +11,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!-- Xacro macros for generating Teledyne Workhorse Navigator (WHN) class URDF models
+<!-- Xacro macros for generating Nortek DVL500-300 URDF models
      utilizing the uuv_simulator DVL plugin (libuuv_gazebo_ros_dvl_plugin.so)
      Adapted from uuv_simulator version (uuv_sensor_ros_plugins/urdf/dvl_snippets.xacro)
      to correct naming and URDF version-based errors & configure default parameters -->
@@ -28,15 +28,15 @@
     </collision>
   </xacro:macro>
 
-  <!-- Generates a Teledyne WHN URDF model and attaches it to a parent link 
-       Sensor parameters align with those in the WHN 600 datasheet -->
+  <!-- Generates a Nortek DVL500-300m URDF model and attaches it to a parent link 
+       Sensor parameters align with those in the DVL500-300m datasheet -->
   <xacro:macro name="dvl_macro" params="namespace parent_link *origin inertial_reference_frame">
     <xacro:dvl_plugin_macro
       namespace="${namespace}"
       suffix=""
       parent_link="${parent_link}"
       reference_frame="${inertial_reference_frame}"
-      update_rate="7"
+      update_rate="8"
       topic="dvl"
       noise_sigma="0.005"
       noise_amplitude="0.005"
@@ -45,7 +45,7 @@
     </xacro:dvl_plugin_macro>
   </xacro:macro>
 
-  <!-- Generates an ENU Teledyne WHN URDF model and attaches it to a parent link -->
+  <!-- Generates an ENU Nortek DVL500-300 URDF model and attaches it to a parent link -->
   <xacro:macro name="dvl_sensor_enu" params="namespace parent_link *origin">
     <xacro:dvl_macro
       namespace="${namespace}"
@@ -55,7 +55,7 @@
     </xacro:dvl_macro>
   </xacro:macro>
 
-  <!-- Generates an NED Teledyne WHN URDF model and attaches it to a parent link -->
+  <!-- Generates an NED Nortek DVL500-300 URDF model and attaches it to a parent link -->
   <xacro:macro name="dvl_sensor_ned" params="namespace parent_link *origin">
     <xacro:dvl_macro
       namespace="${namespace}"
@@ -94,19 +94,19 @@
             <horizontal>
               <samples>3</samples>
               <resolution>1</resolution>
-              <min_angle>-0.03</min_angle>
-              <max_angle>0.03</max_angle>
+              <min_angle>-0.025</min_angle>
+              <max_angle>0.025</max_angle>
             </horizontal>
             <vertical>
               <samples>3</samples>
               <resolution>1</resolution>
-              <min_angle>-0.03</min_angle>
-              <max_angle>0.03</max_angle>
+              <min_angle>-0.025</min_angle>
+              <max_angle>0.025</max_angle>
             </vertical>
           </scan>
           <range>
-            <min>0.7</min>
-            <max>90</max>
+            <min>0.3</min>
+            <max>200</max>
             <resolution>0.01</resolution>
           </range>
         </ray>
@@ -117,7 +117,7 @@
           <updateRate>${update_rate}</updateRate>
           <topicName>${namespace}/${topic}${suffix}_sonar${index}</topicName>
           <frameName>${namespace}/dvl${suffix}_sonar${index}_link</frameName>
-          <fov>0.06</fov>
+          <fov>0.05</fov>
           <radiation>ultrasound</radiation>
         </plugin>
       </sensor>
@@ -136,18 +136,19 @@
     reference_frame noise_sigma noise_amplitude">
     <link name="${namespace}/dvl${suffix}_link">
       <inertial>
-        <mass value="8.8"/>
+        <mass value="0.5"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.071732122" ixy="0" ixz="0" iyy="0.071732122" iyz="0" izz="0.055786544"/>
+        <inertia ixx="0.002798166666667" ixy="0" ixz="0" iyy="0.002798166666667" iyz="0" izz="0.00216225"/>
       </inertial>
       <visual>
         <geometry>
+        <!-- Replace with Nortek DVL500 mesh when available -->
         <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
         </geometry>
       </visual>
       <collision>
         <geometry>
-          <cylinder length="0.2445" radius="0.1126"/>
+          <cylinder length="0.203" radius="0.093"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
       </collision>
@@ -163,31 +164,31 @@
 
     <xacro:dvl_single_sonar
       namespace="${namespace}" topic="${topic}" suffix=""
-      index="0" pitch="-0.52" yaw="0.0" update_rate="${update_rate}">
+      index="0" pitch="-0.4363" yaw="0.0" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <xacro:dvl_single_sonar
       namespace="${namespace}" topic="${topic}" suffix=""
-      index="1" pitch="0" yaw="0.52" update_rate="${update_rate}">
+      index="1" pitch="0" yaw="0.4363" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <xacro:dvl_single_sonar
       namespace="${namespace}" topic="${topic}" suffix=""
-      index="2" pitch="0.52" yaw="0.0" update_rate="${update_rate}">
+      index="2" pitch="0.4363" yaw="0.0" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <xacro:dvl_single_sonar
       namespace="${namespace}" topic="${topic}" suffix=""
-      index="3" pitch="0.0" yaw="-0.52" update_rate="${update_rate}">
+      index="3" pitch="0.0" yaw="-0.4363" update_rate="${update_rate}">
     </xacro:dvl_single_sonar>
 
     <gazebo>
       <plugin filename="libuuv_gazebo_ros_dvl_plugin.so" name="libuuv_gazebo_dvl${suffix}_plugin">
-        <robot_namespace>${namespace}</robot_namespace> <!-- (string, required): ros namespace in which the messages are published -->
-        <link_name>${parent_link}</link_name> <!-- (string, required): name of the body which holds the IMU sensor -->
-        <sensor_topic>${topic}${suffix}</sensor_topic> <!-- (string): name of the sensor output topic and prefix of service names -->
-        <update_rate>${update_rate}</update_rate> <!-- Update period [s] -->
-        <noise_sigma>${noise_sigma}</noise_sigma> <!-- std dev of position estimates in x, y, z [m/s] -->
+        <robot_namespace>${namespace}</robot_namespace>
+        <link_name>${parent_link}</link_name>
+        <sensor_topic>${topic}${suffix}</sensor_topic>
+        <update_rate>${update_rate}</update_rate>
+        <noise_sigma>${noise_sigma}</noise_sigma>
         <noise_amplitude>${noise_amplitude}</noise_amplitude>
         <enable_gazebo_messages>false</enable_gazebo_messages>
         <enable_local_ned_frame>false</enable_local_ned_frame>
