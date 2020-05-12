@@ -24,11 +24,11 @@
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
       <visual name="dvl_base_link_visual">
-        <pose>0 0 0 0 1.57079 0</pose>
+        <pose>0 0 0 0 1.5707963267948966 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://teledyne_whn/meshes/teledyne_whn.dae</uri>
+            <uri>file://meshes/teledyne_whn.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -99,7 +99,7 @@
           <gaussianNoise>0.05</gaussianNoise>
           <alwaysOn>1</alwaysOn>
           <updateRate>7</updateRate>
-          <topicName>dvl_ray_sonar0</topicName>
+          <topicName>dvl_sonar0</topicName>
           <frameName>dvl_sonar0_link</frameName>
           <fov>0.06</fov>
           <radiation>ultrasound</radiation>
@@ -179,7 +179,7 @@
           <gaussianNoise>0.05</gaussianNoise>
           <alwaysOn>1</alwaysOn>
           <updateRate>7</updateRate>
-          <topicName>dvl_ray_sonar1</topicName>
+          <topicName>dvl_sonar1</topicName>
           <frameName>dvl_sonar1_link</frameName>
           <fov>0.06</fov>
           <radiation>ultrasound</radiation>
@@ -260,7 +260,7 @@
           <gaussianNoise>0.05</gaussianNoise>
           <alwaysOn>1</alwaysOn>
           <updateRate>7</updateRate>
-          <topicName>dvl_ray_sonar2</topicName>
+          <topicName>dvl_sonar2</topicName>
           <frameName>dvl_sonar2_link</frameName>
           <fov>0.06</fov>
           <radiation>ultrasound</radiation>
@@ -341,7 +341,7 @@
           <gaussianNoise>0.05</gaussianNoise>
           <alwaysOn>1</alwaysOn>
           <updateRate>7</updateRate>
-          <topicName>dvl_ray_sonar3</topicName>
+          <topicName>dvl_sonar3</topicName>
           <frameName>dvl_sonar3_link</frameName>
           <fov>0.06</fov>
           <radiation>ultrasound</radiation>
@@ -383,10 +383,10 @@
       <beam_link_name_1>dvl_sonar1_link</beam_link_name_1>
       <beam_link_name_2>dvl_sonar2_link</beam_link_name_2>
       <beam_link_name_3>dvl_sonar3_link</beam_link_name_3>
-      <beam_topic_0>dvl_sonar0_ray</beam_topic_0>
-      <beam_topic_1>dvl_sonar1_ray</beam_topic_1>
-      <beam_topic_2>dvl_sonar2_ray</beam_topic_2>
-      <beam_topic_3>dvl_sonar3_ray</beam_topic_3>
+      <beam_topic_0>dvl_sonar0</beam_topic_0>
+      <beam_topic_1>dvl_sonar1</beam_topic_1>
+      <beam_topic_2>dvl_sonar2</beam_topic_2>
+      <beam_topic_3>dvl_sonar3</beam_topic_3>
       <robotNamespace>/</robotNamespace>
     </plugin>
   </model>
