@@ -64,6 +64,11 @@ UUV launch for project DAVE
         </include>
     </group>
 
+    <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find uuv_gazebo_worlds)/models/bop_panel/model.sdf -sdf -model bop_panel -x 15 -y -10 -z -94.9 ">
+    </node>
+
+
 
     <!-- rqt_image_view for image_raw_sonar -->
     <node name="rqt_image_view_sonar" pkg="rqt_image_view"
