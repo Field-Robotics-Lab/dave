@@ -23,7 +23,7 @@
   <!-- Include the ROV macro file -->
   <xacro:include filename="$(find uuv_dave)/urdf/rexrov_base.xacro"/>
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
-  <xacro:include filename="$(find oberon7_description)/robots/oberon7_default.xacro" />
+  <xacro:include filename="$(find uuv_dave)/urdf/oberon7_default.xacro" />
 
   <xacro:uuv_forward_looking_sonar
       namespace="${namespace}"
