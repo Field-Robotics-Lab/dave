@@ -67,9 +67,11 @@
 
 
 
-    <!-- rqt_image_view for image_raw_sonar -->
-    <node name="rqt_image_view_sonar" pkg="rqt_image_view"
+    <!-- rqt_image_view for image_raw_camera_image -->
+    <node name="rqt_image_view_camera_image" pkg="rqt_image_view"
           type="rqt_image_view" args="/rexrov/rexrov/camera/camera_image">
     </node>
+    <!-- RViz -->
+    <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find uuv_gazebo)/rviz/rexrov_default.rviz"/>
 
 </launch>
