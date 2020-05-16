@@ -17,7 +17,7 @@
         <arg name="verbose" value="true"/>
     </include>
 
-    <include file="$(find uuv_gazebo)/launch/rexrov_demos/rexrov_oberon_arms_demo.launch">
+    <include file="$(find uuv_dave)/launch/rexrov_oberon_arms_demo.launch">
         <arg name="x" value="20.5"/>
         <arg name="y" value="-10"/>
         <arg name="z" value="-87"/>
