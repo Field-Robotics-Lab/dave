@@ -76,7 +76,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_sonar0</topicName>
+        <topicName>dvl/dvl_sonar0</topicName>
         <frameName>dvl_sonar0_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -137,7 +137,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_sonar1</topicName>
+        <topicName>dvl/dvl_sonar1</topicName>
         <frameName>dvl_sonar1_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -198,7 +198,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_sonar2</topicName>
+        <topicName>dvl/dvl_sonar2</topicName>
         <frameName>dvl_sonar2_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
@@ -259,7 +259,7 @@
         <gaussianNoise>0.05</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>7</updateRate>
-        <topicName>dvl_sonar3</topicName>
+        <topicName>dvl/dvl_sonar3</topicName>
         <frameName>dvl_sonar3_link</frameName>
         <fov>0.06</fov>
         <radiation>ultrasound</radiation>
