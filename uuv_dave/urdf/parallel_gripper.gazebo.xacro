@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="parallel_gripper_gazebo_macro" params="namespace">
+        <gazebo reference="${namespace}/wrist">
+            <sensor name="arm_wrist" type="force_torque">
+                <force_torque>
+                <frame>child</frame>
+                <measure_direction>child_to_parent</measure_direction>
+                <always_on>true</always_on>
+                <update_rate>30</update_rate>
+                </force_torque>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="${namespace}/finger_left_joint">
+            <sensor name="arm_finger_left_joint" type="force_torque">
+                <force_torque>
+                <frame>child</frame>
+                <measure_direction>child_to_parent</measure_direction>
+                <always_on>true</always_on>
+                <update_rate>30</update_rate>
+                </force_torque>
+            </sensor>
+        </gazebo>
+
+
+        <gazebo reference="${namespace}/finger_tip_left_joint">
+            <sensor name="arm_finger_tip_left_joint" type="force_torque">
+                <force_torque>
+                <frame>child</frame>
+                <measure_direction>child_to_parent</measure_direction>
+                <always_on>true</always_on>
+                <update_rate>30</update_rate>
+                </force_torque>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="${namespace}/finger_right_joint">
+            <sensor name="arm_finger_right_joint" type="force_torque">
+                <force_torque>
+                <frame>child</frame>
+                <measure_direction>child_to_parent</measure_direction>
+                <always_on>true</always_on>
+                <update_rate>30</update_rate>
+                </force_torque>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="${namespace}/finger_tip_right_joint">
+            <sensor name="arm_finger_tip_right_joint" type="force_torque">
+                <force_torque>
+                <frame>child</frame>
+                <measure_direction>child_to_parent</measure_direction>
+                <always_on>true</always_on>
+                <update_rate>30</update_rate>
+                </force_torque>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+
+</robot>
