@@ -1,0 +1,7 @@
+<!-- rqt_plot for force feedback wrist sensor -->
+<launch>
+    <node name="ft_sensors_plot" pkg="rqt_plot" type="rqt_plot" args="/rexrov/ft_sensor_wrist/wrench/force/x 
+                /rexrov/ft_sensor_wrist/wrench/force/y
+                /rexrov/ft_sensor_wrist/wrench/force/z">
+    </node>
+</launch>
