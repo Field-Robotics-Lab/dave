@@ -1,12 +1,9 @@
-<!--
-UUV launch for project DAVE
--->
+<?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves_spring.world"/>
-    <arg name="set_timeout" default="false"/>
-    <arg name="timeout" default="0.0"/>
+
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -22,53 +19,14 @@ UUV launch for project DAVE
     <!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
 
-    <!-- world models -->
-    <node name="publish_world_models"
-        pkg="uuv_assistants"
-        type="publish_world_models.py"
-        output="screen">
-        <rosparam subst_value="true">
-            meshes:
-                heightmap:
-                    mesh: package://uuv_gazebo_worlds/models/sand_heightmap/meshes/heightmap.dae
-                    model: sand_heightmap
-                seafloor:
-                    plane: [2000, 2000, 0.1]
-                    pose:
-                        position: [0, 0, -100]
-                north:
-                    plane: [0.1, 2000, 100]
-                    pose:
-                        position: [1000, 0, -50]
-                south:
-                    plane: [0.1, 2000, 100]
-                    pose:
-                        position: [-1000, 0, -50]
-                west:
-                    plane: [2000, 0.1, 100]
-                    pose:
-                        position: [0, -1000, -50]
-                east:
-                    plane: [2000, 0.1, 100]
-                    pose:
-                        position: [0, 1000, -50]
-        </rosparam>
-    </node>
-
-    <!-- timeout -->
-    <group if="$(arg set_timeout)">
-        <include file="$(find uuv_assistants)/launch/set_simulation_timer.launch">
-            <arg name="timeout" value="$(arg timeout)"/>
-        </include>
-    </group>
 
     <!-- rexrov robot with oberon7 arm -->
     <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="4"/>
-        <arg name="y" value="4"/>
-        <arg name="z" value="-97"/>
-        <arg name="yaw" value="-1.8"/>
+        <arg name="x" value="2.5"/>
+        <arg name="y" value="0"/>
+        <arg name="z" value="-88.6"/>
+        <arg name="yaw" value="-3.14159"/>
     </include>
 
     <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
@@ -82,17 +40,5 @@ UUV launch for project DAVE
         <arg name="uuv_name" value="rexrov"/>
     </include>
     
-    <!-- rqt_plot for force feedback wrist sensor -->
-    <!-- <node name="ft_sensors_plot"
-        pkg="rqt_plot" 
-        type="rqt_plot" 
-        args="/rexrov/ft_sensor_wrist/wrench/force/x 
-              /rexrov/ft_sensor_wrist/wrench/force/y
-              /rexrov/ft_sensor_wrist/wrench/force/z">
-    </node> -->
-    
-<!-- <node name="ft_sensors_plot" pkg="rqt_plot" type="rqt_plot" args="/rexrov/ft_sensor_wrist/wrench/force[0]" /> -->
-
-
 
 </launch>
