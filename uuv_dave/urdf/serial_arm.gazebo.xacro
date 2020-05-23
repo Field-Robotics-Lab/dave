@@ -91,60 +91,22 @@
       <implicitSpringDamper>1</implicitSpringDamper>    
     </gazebo>
 
-    <gazebo reference="${namespace}/azimuth">
-      <sensor name="arm_azimuth" type="force_torque">
-        <force_torque>
-          <frame>child</frame>
-          <measure_direction>child_to_parent</measure_direction>
-          <always_on>true</always_on>
-          <update_rate>30</update_rate>
-        </force_torque>
-      </sensor>
-    </gazebo>
 
-    <gazebo reference="${namespace}/shoulder">
-      <sensor name="arm_shoulder" type="force_torque">
-        <force_torque>
-          <frame>child</frame>
-          <measure_direction>child_to_parent</measure_direction>
-          <always_on>true</always_on>
-          <update_rate>30</update_rate>
-        </force_torque>
-      </sensor>
-    </gazebo>
+    <!-- Gripper FT sensors -->
+    <xacro:joint_ft_sensor joint_name="wrist" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_left_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_tip_left_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_right_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_tip_right_joint" namespace="${namespace}"/>
 
-    <gazebo reference="${namespace}/elbow">
-      <sensor name="arm_elbow" type="force_torque">
-        <force_torque>
-          <frame>child</frame>
-          <measure_direction>child_to_parent</measure_direction>
-          <always_on>true</always_on>
-          <update_rate>30</update_rate>
-        </force_torque>
-      </sensor>
-    </gazebo>
+    <!-- Arm FT sensors -->
+    <xacro:joint_ft_sensor joint_name="azimuth" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="shoulder" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="elbow" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="roll" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="pitch" namespace="${namespace}"/>
 
-    <gazebo reference="${namespace}/roll">
-      <sensor name="arm_roll" type="force_torque">
-        <force_torque>
-          <frame>child</frame>
-          <measure_direction>child_to_parent</measure_direction>
-          <always_on>true</always_on>
-          <update_rate>30</update_rate>
-        </force_torque>
-      </sensor>
-    </gazebo>
 
-    <gazebo reference="${namespace}/pitch">
-      <sensor name="arm_pitch" type="force_torque">
-        <force_torque>
-          <frame>child</frame>
-          <measure_direction>child_to_parent</measure_direction>
-          <always_on>true</always_on>
-          <update_rate>30</update_rate>
-        </force_torque>
-      </sensor>
-    </gazebo>
   </xacro:macro>
 
   <!--

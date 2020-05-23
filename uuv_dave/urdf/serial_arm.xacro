@@ -47,6 +47,22 @@
       </transmission>
     </xacro:macro>
 
+    <!-- Force Feedback Macro -->
+    <xacro:macro name="joint_ft_sensor" params="joint_name namespace">
+      <!-- Enable the Joint Feedback -->
+      <gazebo reference="${namespace}/${joint_name}">
+        <provideFeedback>true</provideFeedback>
+      </gazebo>
+      <!-- The ft_sensor plugin -->
+      <gazebo>
+        <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>30.0</updateRate>
+          <topicName>ft_sensor_${joint_name}</topicName>
+          <jointName>${namespace}/${joint_name}</jointName>
+        </plugin>
+      </gazebo>
+    </xacro:macro>
+
     <xacro:macro name="oberon7_serial_arm" params="namespace">
 
         <!-- Ground base -->
@@ -265,11 +281,7 @@
 
         <!-- Adding parallel gripper  -->
         <xacro:include filename="$(find oberon7_description)/urdf/parallel_gripper.xacro" />
-
-        <xacro:oberon7_gazebo_macro namespace="${namespace}"/>
         
-        <!-- Torque Force Sensor  -->
-        <xacro:include filename="$(find uuv_dave)/urdf/parallel_gripper.gazebo.xacro" />
-        <xacro:parallel_gripper_gazebo_macro namespace="${namespace}"/>
+        <xacro:oberon7_gazebo_macro namespace="${namespace}"/>
     </xacro:macro>
 </robot>
