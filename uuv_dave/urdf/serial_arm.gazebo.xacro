@@ -94,6 +94,10 @@
 
     <!-- Gripper FT sensors -->
     <xacro:joint_ft_sensor joint_name="wrist" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_left_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_tip_left_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_right_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="finger_tip_right_joint" namespace="${namespace}"/>
 
     <!-- Arm FT sensors -->
     <xacro:joint_ft_sensor joint_name="azimuth" namespace="${namespace}"/>
