@@ -51,17 +51,16 @@ POSSIBILITY OF SUCH DAMAGE.
       </inertial>
       <visual>
         <geometry>
-          <!-- Replace mesh with correct one once it's available -->
-          <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
+          <mesh filename="package://dvl_gazebo/meshes/TeledyneMarineExplorer.dae"/>
         </geometry>
-        <origin xyz="${xyz}" rpy="0 0 0"/>
+        <origin xyz="${xyz}" rpy="-1.5707963267948966 0 -1.5707963267948966"/>
       </visual>
       <collision>
         <geometry>
           <!-- Replace cylinder with collision mesh once it's available -->
           <cylinder length="0.344" radius="0.0715"/>
         </geometry>
-        <origin xyz="${xyz}" rpy="0 0 0"/>
+        <origin xyz="${xyz}" rpy="0 1.5707963267948966 0"/>
       </collision>
     </link>
   </xacro:macro>
