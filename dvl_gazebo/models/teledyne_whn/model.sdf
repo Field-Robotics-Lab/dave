@@ -28,7 +28,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>file://meshes/teledyne_whn.dae</uri>
+            <uri>file://meshes/WorkhorseNavigator.dae</uri>
           </mesh>
         </geometry>
       </visual>

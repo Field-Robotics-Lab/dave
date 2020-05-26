@@ -21,11 +21,11 @@
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
       <visual name="dvl_base_link_visual">
-        <pose>0 0 0 0 1.5707963267948966 0</pose>
+        <pose>0 0 0 0 3.141592653589793 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>file://meshes/teledyne_whn.dae</uri>
+            <uri>file://meshes/WorkhorseNavigator.dae</uri>
           </mesh>
         </geometry>
       </visual>

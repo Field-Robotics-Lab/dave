@@ -51,16 +51,16 @@ POSSIBILITY OF SUCH DAMAGE.
       <visual>
         <geometry>
           <!-- Replace mesh with correct one once it's available -->
-          <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
+          <mesh filename="package://dvl_gazebo/meshes/WorkhorseNavigator.dae"/>
         </geometry>
-        <origin xyz="${xyz}" rpy="0 ${-0.5*pi} 0"/>
+        <origin xyz="${xyz}" rpy="0 0 0"/>
       </visual>
       <collision>
         <geometry>
           <!-- Replace cylinder with collision mesh once it's available -->
           <cylinder length="0.189" radius="0.1125"/>
         </geometry>
-        <origin xyz="${xyz}" rpy="0 ${-0.5*pi} 0"/>
+        <origin xyz="${xyz}" rpy="0 0 0"/>
       </collision>
     </link>
   </xacro:macro>
