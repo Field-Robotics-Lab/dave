@@ -11,9 +11,9 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
+        <mesh filename="package://dvl_gazebo/meshes/WorkhorseNavigator.dae"/>
       </geometry>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
     </visual>
     <collision>
       <geometry>

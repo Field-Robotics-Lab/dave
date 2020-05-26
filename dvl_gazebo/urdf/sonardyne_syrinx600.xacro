@@ -142,9 +142,10 @@
       </inertial>
       <visual>
         <geometry>
-        <!-- Replace with Sonardyne Syrinx 600 mesh when available -->
-        <mesh filename="package://dvl_gazebo/meshes/teledyne_whn.dae"/>
+          <!-- Replace with Sonardyne Syrinx 600 mesh when available -->
+          <mesh filename="package://dvl_gazebo/meshes/WorkhorseNavigator.dae"/>
         </geometry>
+        <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
       </visual>
       <collision>
         <geometry>
