@@ -59,6 +59,7 @@
           <updateRate>30.0</updateRate>
           <topicName>ft_sensor_${joint_name}</topicName>
           <jointName>${namespace}/${joint_name}</jointName>
+          <gaussianNoise>0.0</gaussianNoise>
         </plugin>
       </gazebo>
     </xacro:macro>
