@@ -2,7 +2,7 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves_spring.world"/>
+    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves_simple.world"/>
 
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
@@ -19,6 +19,10 @@
     <!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
 
+    <!-- springy plate -->
+    <node name="spawn_springy_plate" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find uuv_dave)/models/springy_plate/model.sdf -sdf -model springy_plate">
+    </node>
 
     <!-- rexrov robot with oberon7 arm -->
     <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
