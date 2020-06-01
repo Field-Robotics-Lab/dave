@@ -69,36 +69,6 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-    <plugin name="underwater_current_plugin" filename="libuuv_underwater_current_ros_plugin.so">
-      <namespace>hydrodynamics</namespace>
-      <constant_current>
-        <topic>current_velocity</topic>
-        <velocity>
-          <mean>0</mean>
-          <min>0</min>
-          <max>5</max>
-          <mu>0.0</mu>
-          <noiseAmp>0.0</noiseAmp>
-        </velocity>
-
-        <horizontal_angle>
-          <mean>0</mean>
-          <min>-3.141592653589793238</min>
-          <max>3.141592653589793238</max>
-          <mu>0.0</mu>
-          <noiseAmp>0.0</noiseAmp>
-        </horizontal_angle>
-
-        <vertical_angle>
-          <mean>0</mean>
-          <min>-3.141592653589793238</min>
-          <max>3.141592653589793238</max>
-          <mu>0.0</mu>
-          <noiseAmp>0.0</noiseAmp>
-        </vertical_angle>
-      </constant_current>
-    </plugin>
-
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
     <model name="springy plate">
