@@ -16,6 +16,7 @@
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <xacro:include filename="$(find uuv_dave)/urdf/serial_arm_ft_sensor.xacro" />
   <xacro:macro name="oberon7_gazebo_macro" params="namespace">
     <gazebo reference="${namespace}/base">
       <selfCollide>false</selfCollide>
