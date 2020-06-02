@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- rqt_plot for force feedback wrist sensor -->
+<launch>
+    <node name="ft_sensors_plot" 
+          pkg="rqt_plot" 
+          type="rqt_plot" 
+          args="/rexrov/ft_sensor_wrist/wrench/torque/x 
+                /rexrov/ft_sensor_wrist/wrench/torque/y
+                /rexrov/ft_sensor_wrist/wrench/torque/z">
+
+    </node>
+</launch>
