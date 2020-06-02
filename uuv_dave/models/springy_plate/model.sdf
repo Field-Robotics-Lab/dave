@@ -1,0 +1,99 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+    <model name="springy plate">
+      <pose>0.0 0.0 -90 0 0.0 0.0</pose>
+      <link name="link_1">
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <inertial>
+          <pose>0.0 0.0 0 0.0 0.0 0.0</pose>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+          <mass>1.0</mass>
+        </inertial>
+        <visual name="visual_plate">
+          <pose>0.0 0.0 0.5 0.0 0.0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1 1 </size>
+            </box>
+          </geometry>
+          <material>
+            <script>Gazebo/Red</script>
+          </material>
+          <laser_retro>100.0</laser_retro>
+        </visual>
+        <collision name="collision_plate">
+          <pose>0.0 0.0 0.5 0.0 0.0 0.0</pose>
+          <max_contacts>250</max_contacts>
+          <geometry>
+            <box>
+              <size>0.1 1 1 </size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.2</mu2>
+                <fdir1>1.0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1000000.0</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <kp>1e15</kp>
+                <kd>1e13</kd>
+                <max_vel>100.0</max_vel>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+          <laser_retro>100.0</laser_retro>
+        </collision>
+        <gravity>true</gravity>
+        <self_collide>true</self_collide>
+        <kinematic>false</kinematic>
+      </link>
+      <joint name="joint_0" type="prismatic">
+        <parent>world</parent>
+        <child>link_1</child>
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <axis>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>1000</effort>
+            <velocity>1000</velocity>
+          </limit>
+          <xyz>1.0 0.0 0</xyz>
+        </axis>
+        <physics>
+          <ode>
+            <cfm>0.0</cfm>
+            <bounce>0.0</bounce>
+            <max_force>1000000.0</max_force>
+            <velocity>0.0</velocity>
+            <fudge_factor>0.0</fudge_factor>
+            <limit>
+              <cfm>0.2</cfm>
+              <erp>1.0</erp>
+            </limit>
+            <!--<suspension cfm="0.0" erp="0.2"/>-->
+          </ode>
+        </physics>
+      </joint>
+      <static>false</static>
+    </model>
+</sdf>
