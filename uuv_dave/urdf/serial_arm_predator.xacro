@@ -16,8 +16,7 @@
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- Import arm parameters -->
-    <xacro:include filename="$(find oberon7_description)/urdf/parameters/serial_arm.xacro" />
-
+    <xacro:include filename="$(find uuv_dave)/urdf/parameters/serial_arm_predator.xacro" />
     <!-- Transmission Macro -->
     <!-- <xacro:macro name="simple_transmission" params="joint">
         <transmission name="${joint}_trans">
@@ -200,14 +199,14 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${forearm_com}" rpy="0 0 0"/>
+                <origin xyz="${forearm_com}" rpy="${0.5*PI} 0 0"/>
                 <geometry>
                     <cylinder radius="${0.5 * forearm_width}" length="${forearm_height}"/>
                 </geometry>
             </visual>
 
             <collision>
-                <origin xyz="${forearm_com}" rpy="0 0 0"/>
+                <origin xyz="${forearm_com}" rpy="${0.5*PI} 0 0"/>
                 <geometry>
                     <cylinder radius="${0.5 * forearm_width}" length="${forearm_height}"/>
                 </geometry>
@@ -217,8 +216,8 @@
         <joint name="${namespace}/roll" type="revolute">
             <parent link="${namespace}/elbow_link"/>
             <child link="${namespace}/forearm"/>
-            <origin xyz="0.1349014 -0.1936267 0" rpy="${0.5*PI} 0 0"/>
-            <axis xyz="0 1 0"/>
+            <origin xyz="${elbow_link_x_disp} -0.1936267 0" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
             <dynamics damping="150" friction="500"/>
             <!-- <dynamics damping="300" friction="1000"/> -->
             <!-- <limit lower="${-135 * d2r}" upper="${135 * d2r}" velocity=".15" effort="200"/> -->
@@ -255,8 +254,9 @@
         <joint name="${namespace}/pitch" type="revolute">
             <parent link="${namespace}/forearm"/>
             <child link="${namespace}/wrist_link"/>
-            <origin xyz="0 0 0.31595760629823427" rpy="${-0.5*PI} ${-0.5*PI} 0"/>
-            <axis xyz="0 1 0"/>
+            <!-- <origin xyz="0 0 0.31595760629823427" rpy="${-0.5*PI} ${-0.5*PI} 0"/> -->
+            <origin xyz="0 ${-forearm_height} 0" rpy="0 ${0.5*PI} 0"/>
+            <axis xyz="0 0 1"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="10" friction="10"/>
             <!-- <limit lower="${-90 * d2r}" upper="${90 * d2r}" velocity=".26" effort="200"/> -->
