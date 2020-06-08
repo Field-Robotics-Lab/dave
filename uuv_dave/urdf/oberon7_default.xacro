@@ -17,7 +17,7 @@
 <robot name="oberon7" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Import serial arm -->
-  <xacro:include filename="$(find uuv_dave)/urdf/serial_arm.xacro" />
+  <xacro:include filename="$(find uuv_dave)/urdf/serial_arm_predator.xacro" />
   <!-- Import Gazebo specific macros -->
   <xacro:include filename="$(find uuv_dave)/urdf/serial_arm.gazebo.xacro" />
 
