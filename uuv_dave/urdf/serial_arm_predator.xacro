@@ -61,9 +61,9 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0 0 ${-base_height/2.5}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find oberon7_description)/meshes/serial_arm/collision/Base.stl"/>
+                    <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" />
                 </geometry>
             </visual>
 
@@ -81,21 +81,21 @@
             <xacro:link_box_inertial mass="${total_mass * shoulder_link_volume / total_volume_bbox}"
                         width="${shoulder_link_width}"
                         length="${shoulder_link_length}"
-                        height="${shoulder_link_height}">
+                        height="${predator_shoulder_height}">
                 <origin xyz="${shoulder_link_com}" rpy="0 0 0"/>
             </xacro:link_box_inertial>
 
             <visual>
                 <origin xyz="${shoulder_link_com}" rpy="0 0 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * shoulder_link_width}" length="${shoulder_link_height}" />
+                    <cylinder radius="${predator_shoulder_radius}" length="${predator_shoulder_height}" />
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="${shoulder_link_com}" rpy="0 0 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * shoulder_link_width}" length="${shoulder_link_height}" />
+                    <cylinder radius="${predator_shoulder_radius}" length="${predator_shoulder_height}" />
                 </geometry>
             </collision>
         </link>
@@ -123,16 +123,16 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${upper_arm_com}" rpy="0 ${0.5*pi} 0"/>
+                <origin xyz="${predator_upper_arm_length/2} 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * upper_arm_width}" length="${upper_arm_length}"/>
+                    <cylinder radius="${0.5 * upper_arm_width}" length="${predator_upper_arm_length}"/>
                 </geometry>
             </visual>
 
             <collision>
-                <origin xyz="${upper_arm_com}" rpy="0 ${0.5*pi} 0"/>
+                <origin xyz="${predator_upper_arm_length/2} 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * upper_arm_width}" length="${upper_arm_length}"/>
+                    <cylinder radius="${0.5 * upper_arm_width}" length="${predator_upper_arm_length}"/>
                 </geometry>
             </collision>
         </link>
@@ -140,7 +140,8 @@
         <joint name="${namespace}/shoulder" type="revolute">
             <parent link="${namespace}/shoulder_link"/>
             <child link="${namespace}/upper_arm"/>
-            <origin xyz="0.06955 0.00015 0.01536" rpy="${0.5*pi} 0 0"/>
+            <!-- <origin xyz="0.06955 0.00015 0.01536" rpy="${0.5*pi} 0 0"/> -->
+            <origin xyz="${predator_joint_1_2_x} 0 ${predator_joint_1_2_z}" rpy="${0.5*pi} 0 0"/>
             <axis xyz="0 0 1"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="50" friction="150"/>
@@ -156,21 +157,21 @@
             <xacro:link_box_inertial mass="${total_mass * elbow_link_volume / total_volume_bbox}"
                         width="${elbow_link_width}"
                         length="${elbow_link_length}"
-                        height="${elbow_link_height}">
+                        height="${predator_elbow_length}">
                 <origin xyz="${elbow_link_com}" rpy="0 0 0"/>
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${elbow_link_com}" rpy="0 ${0.5*pi} ${0.5*pi}"/>
+                <origin xyz="${elbow_link_x_disp} ${-predator_elbow_length/2} 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
-                    <cylinder radius="${0.5 * elbow_link_height}" length="${elbow_link_length}"/>
+                    <cylinder radius="${0.5 * elbow_link_height}" length="${predator_elbow_length}"/>
                 </geometry>
             </visual>
 
             <collision>
-                <origin xyz="${elbow_link_com}" rpy="0 ${0.5*pi} ${0.5*pi}"/>
+                <origin xyz="${elbow_link_x_disp} ${-predator_elbow_length/2} 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
-                    <cylinder radius="${0.5 * elbow_link_height}" length="${elbow_link_length}"/>
+                    <cylinder radius="${0.5 * elbow_link_height}" length="${predator_elbow_length}"/>
                 </geometry>
             </collision>
         </link>
@@ -178,7 +179,8 @@
         <joint name="${namespace}/elbow" type="revolute">
             <parent link="${namespace}/upper_arm"/>
             <child link="${namespace}/elbow_link"/>
-            <origin xyz="0.55616 -0.01229 0" rpy="0 0 0"/>
+            <!-- <origin xyz="0.55616 -0.01229 0" rpy="0 0 0"/> -->
+            <origin xyz="${predator_upper_arm_length} -0.01229 0" rpy="0 0 0"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="50" friction="150"/>
             <axis xyz="0 0 1"/>
@@ -216,7 +218,7 @@
         <joint name="${namespace}/roll" type="revolute">
             <parent link="${namespace}/elbow_link"/>
             <child link="${namespace}/forearm"/>
-            <origin xyz="${elbow_link_x_disp} -0.1936267 0" rpy="0 0 0"/>
+            <origin xyz="${elbow_link_x_disp} ${-predator_joint_3_4_y} 0" rpy="0 0 0"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="150" friction="500"/>
             <!-- <dynamics damping="300" friction="1000"/> -->
@@ -231,22 +233,22 @@
         <link name="${namespace}/wrist_link">
             <xacro:link_box_inertial mass="${total_mass * wrist_volume / total_volume_bbox}"
                         width="${wrist_width}"
-                        length="${wrist_length}"
+                        length="${predator_wrist_height}"
                         height="${wrist_height}">
                 <origin xyz="${wrist_com}" rpy="0 0 0"/>
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${wrist_com}" rpy="0 ${0.5*pi} 0"/>
+                <origin xyz="${predator_wrist_height/2} 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * wrist_height}" length="${wrist_length}"/>
+                    <cylinder radius="${0.5 * wrist_height}" length="${predator_wrist_height}"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="${wrist_com}" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * wrist_height}" length="${wrist_length}"/>
+                    <cylinder radius="${0.5 * wrist_height}" length="${predator_wrist_height}"/>
                 </geometry>
             </collision>
         </link>
@@ -255,7 +257,9 @@
             <parent link="${namespace}/forearm"/>
             <child link="${namespace}/wrist_link"/>
             <!-- <origin xyz="0 0 0.31595760629823427" rpy="${-0.5*PI} ${-0.5*PI} 0"/> -->
-            <origin xyz="0 ${-forearm_height} 0" rpy="0 ${0.5*PI} 0"/>
+            <origin xyz="0 ${-forearm_height} 0" rpy="${1.5*PI} ${PI} ${0.5*PI}"/>
+            <!-- <origin xyz="0 ${-forearm_height} 0" rpy="${1.5*PI} ${PI} ${0.5*PI}"/> -->
+            <!-- <origin xyz="0 ${-forearm_height} 0" rpy="${-0.5*PI} ${-0.5*PI} 0"/> -->
             <axis xyz="0 0 1"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="10" friction="10"/>
@@ -266,7 +270,7 @@
         <xacro:simple_transmission joint="${namespace}/pitch" />
 
         <!-- Adding parallel gripper  -->
-        <xacro:include filename="$(find oberon7_description)/urdf/parallel_gripper.xacro" />
+        <xacro:include filename="$(find uuv_dave)/urdf/parallel_gripper_predator.xacro" />
         
         <xacro:oberon7_gazebo_macro namespace="${namespace}"/>
     </xacro:macro>
