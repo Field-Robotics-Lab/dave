@@ -4,6 +4,7 @@ project(sonar_dave_uuv)
 add_definitions(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
+  cv_bridge
   gazebo_dev
   sensor_msgs
   image_transport
@@ -51,6 +52,7 @@ catkin_package(
   LIBRARIES
     image_sonar_dave_plugin
   CATKIN_DEPENDS
+    cv_bridge
     gazebo_dev
     sensor_msgs
     geometry_msgs
@@ -84,7 +86,7 @@ include_directories(
 )
 
 add_library(image_sonar_dave_plugin src/gazebo_ros_image_sonar.cpp)
-target_link_libraries(image_sonar_dave_plugin ${OGRE_LIBRARIES} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+target_link_libraries(image_sonar_dave_plugin ${OGRE_LIBRARIES} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(image_sonar_dave_plugin ${catkin_EXPORTED_TARGETS})
 list(APPEND SONAR_DAVE_PLUGINS_LIST image_sonar_dave_plugin)
 

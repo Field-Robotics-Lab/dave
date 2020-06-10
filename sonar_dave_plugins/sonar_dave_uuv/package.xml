@@ -11,6 +11,7 @@
   <license>Apache-2.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>cv_bridge</depend>
   <depend>gazebo_dev</depend>
   <depend>gazebo_plugins</depend>
   <depend>sensor_msgs</depend>
