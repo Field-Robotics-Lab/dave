@@ -1,0 +1,38 @@
+- git:
+    uri: https://github.com/Field-Robotics-Lab/dave.git
+    local-name: dave/dave
+    version: master
+- git:
+    uri: https://github.com/Field-Robotics-Lab/gtri_based_sonar.git
+    local-name: dave/gtri_based_sonar
+    version: master
+- git:
+    uri: https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo.git
+    local-name: dave/nps_uw_sensors_gazebo
+    version: master
+
+- git:
+    uri: https://github.com/uuvsimulator/eca_a9.git
+    local-name: uuv_sim/eca_a9
+    version: master
+- git:
+    uri: https://github.com/uuvsimulator/rexrov2.git
+    local-name: uuv_sim/rexrov2
+    version: master
+- git:
+    uri: https://github.com/uuvsimulator/uuv_manipulators.git
+    local-name: uuv_sim/uuv_manipulators
+    version: master
+- git:
+    uri: https://github.com/uuvsimulator/uuv_simulator.git
+    local-name: uuv_sim/uuv_simulator
+    version: master
+
+- git:
+    uri: https://bitbucket.org/whoidsl/ds_msgs.git
+    local-name: whoidsl/ds_msgs
+    version: master
+- git:
+    uri: https://bitbucket.org/whoidsl/ds_sim.git
+    local-name: whoidsl/ds_sim
+    version: master
