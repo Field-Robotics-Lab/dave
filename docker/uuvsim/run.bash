@@ -100,9 +100,11 @@ docker run -it \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v "/dev/input:/dev/input" \
   --privileged \
+  --gpus=all \
   --rm \
-  --runtime=$RUNTIME \
   --security-opt seccomp=unconfined \
   -u $USERID:$GROUPID \
   $DOCKER_OPTS \
   $IMG
+
+  # --runtime=$RUNTIME \

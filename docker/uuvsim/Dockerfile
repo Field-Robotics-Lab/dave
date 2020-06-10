@@ -40,13 +40,23 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && dpkg-reconfigure --frontend noninteractive tzdata \
  && apt clean
 
-# Get ROS melodic and Gazebo 9.
+# Add ROS melodic and Gazebo 9 to apt
 RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' \
  && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
  && /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" > /etc/apt/sources.list.d/gazebo-stable.list' \
  && wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add - \
  && apt update \
- && apt install -y \
+ && apt clean
+
+# install bootstrap tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    python-rosdep \
+    python-rosinstall \
+    python-vcstools \
+    python-catkin-tools
+
+# install ROS and Gazebo dependencies
+RUN apt install -y \
     qtbase5-dev \
     libgles2-mesa-dev \
     ${GAZ} \
@@ -78,11 +88,10 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
 		ros-${DIST}-ros-controllers \
 		ros-${DIST}-kdl-parser-py \
 		ros-${DIST}-gazebo-ros-control \
-		ros-${DIST}-gazebo-ros-pkgs \
- && rosdep init \
- && apt clean
+		ros-${DIST}-gazebo-ros-pkgs
 
-RUN rosdep update
+RUN rosdep init \
+    && rosdep update
 
 # Set USER and GROUP
 ARG USER=developer
