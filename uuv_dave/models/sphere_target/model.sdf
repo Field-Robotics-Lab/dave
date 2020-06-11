@@ -17,6 +17,7 @@
         </inertia>
       </inertial>
       <visual name='visual'>
+        <laser_retro>255</laser_retro>
         <geometry>
           <sphere>
             <radius>0.25</radius>
