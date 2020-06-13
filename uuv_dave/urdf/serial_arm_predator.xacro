@@ -48,7 +48,7 @@
 
 
 
-    <xacro:macro name="oberon7_serial_arm" params="namespace">
+    <xacro:macro name="predator_serial_arm" params="namespace">
 
         <!-- Ground base -->
 
@@ -70,7 +70,8 @@
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find oberon7_description)/meshes/serial_arm/collision/Base.stl"/>
+                    <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" />
+                    <!-- <mesh filename="file://$(find oberon7_description)/meshes/serial_arm/collision/Base.stl"/> -->
                 </geometry>
             </collision>
         </link>
@@ -256,10 +257,7 @@
         <joint name="${namespace}/pitch" type="revolute">
             <parent link="${namespace}/forearm"/>
             <child link="${namespace}/wrist_link"/>
-            <!-- <origin xyz="0 0 0.31595760629823427" rpy="${-0.5*PI} ${-0.5*PI} 0"/> -->
             <origin xyz="0 ${-forearm_height} 0" rpy="${1.5*PI} ${PI} ${0.5*PI}"/>
-            <!-- <origin xyz="0 ${-forearm_height} 0" rpy="${1.5*PI} ${PI} ${0.5*PI}"/> -->
-            <!-- <origin xyz="0 ${-forearm_height} 0" rpy="${-0.5*PI} ${-0.5*PI} 0"/> -->
             <axis xyz="0 0 1"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="10" friction="10"/>
