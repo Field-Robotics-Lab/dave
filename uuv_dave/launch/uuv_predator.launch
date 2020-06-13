@@ -33,7 +33,7 @@
     </include>
 
     <!-- joint control for manipulator -->
-    <include file="$(find uuv_dave)/launch/joint_control.launch">
+    <include file="$(find predator_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov"/>
     </include>
 
