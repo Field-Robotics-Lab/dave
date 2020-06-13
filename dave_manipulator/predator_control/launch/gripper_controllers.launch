@@ -39,7 +39,7 @@
             pkg="uuv_manipulators_control"
             type="gripper_controller.py"
             output="screen">
-            <rosparam command="load" file="$(find oberon7_description)/params/parallel_gripper_config.yaml"/>
+            <rosparam command="load" file="$(find predator_description)/params/parallel_gripper_config.yaml"/>
             <remap from="joy" to="/$(arg uuv_name)/joy"/>
             <rosparam subst_value="true">
               exclusion_buttons: $(arg exclusion_button)

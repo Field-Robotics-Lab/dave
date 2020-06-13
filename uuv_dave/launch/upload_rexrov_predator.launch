@@ -49,7 +49,7 @@
 
   <!-- <group ns="$(arg namespace)/arms/oberon7"> -->
   <group ns="$(arg namespace)/arms/predator">
-    <rosparam file="$(find uuv_dave)/params/robot_config.yaml" command="load"/>
+    <rosparam file="$(find predator_description)/params/robot_config.yaml" command="load"/>
   </group>
 
   <include file="$(find uuv_assistants)/launch/message_to_tf.launch">
