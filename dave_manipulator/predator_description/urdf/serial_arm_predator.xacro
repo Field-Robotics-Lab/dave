@@ -16,7 +16,7 @@
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- Import arm parameters -->
-    <xacro:include filename="$(find uuv_dave)/urdf/parameters/serial_arm_predator.xacro" />
+    <xacro:include filename="$(find predator_description)/urdf/parameters/serial_arm_predator.xacro" />
     <!-- Transmission Macro -->
     <!-- <xacro:macro name="simple_transmission" params="joint">
         <transmission name="${joint}_trans">
@@ -268,7 +268,7 @@
         <xacro:simple_transmission joint="${namespace}/pitch" />
 
         <!-- Adding parallel gripper  -->
-        <xacro:include filename="$(find uuv_dave)/urdf/parallel_gripper_predator.xacro" />
+        <xacro:include filename="$(find predator_description)/urdf/parallel_gripper_predator.xacro" />
         
         <xacro:oberon7_gazebo_macro namespace="${namespace}"/>
     </xacro:macro>
