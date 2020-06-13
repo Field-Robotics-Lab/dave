@@ -1,6 +1,4 @@
-<!--
-UUV launch for project DAVE
--->
+<?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
@@ -20,9 +18,8 @@ UUV launch for project DAVE
     <!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
 
-
-    <!-- rexrov robot with oberon7 arm -->
-    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+    <!-- rexrov robot with predator arm -->
+    <include file="$(find uuv_dave)/launch/upload_rexrov_predator.launch">
         <arg name="namespace" value="rexrov"/>
         <arg name="x" value="4"/>
         <arg name="y" value="4"/>
@@ -30,13 +27,13 @@ UUV launch for project DAVE
         <arg name="yaw" value="-1.8"/>
     </include>
 
-    <!-- joystick control for rexrov and oberon7 -->
+    <!-- Acceleration control -->
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
         <arg name="model_name" value="rexrov"/>
     </include>
 
-    <!-- joint control for oberon7 -->
-    <include file="$(find oberon7_control)/launch/joint_control.launch">
+    <!-- joint control for manipulator -->
+    <include file="$(find uuv_dave)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov"/>
     </include>
 
