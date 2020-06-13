@@ -19,7 +19,7 @@
   <!-- Import serial arm -->
   <xacro:include filename="$(find predator_description)/urdf/serial_arm_predator.xacro" />
   <!-- Import Gazebo specific macros -->
-  <xacro:include filename="$(find uuv_dave)/urdf/serial_arm.gazebo.xacro" />
+  <xacro:include filename="$(find predator_description)/urdf/serial_arm.gazebo.xacro" />
 
   <xacro:macro name="predator" params="namespace parent *origin">
     <xacro:predator_serial_arm namespace="${namespace}"/>
