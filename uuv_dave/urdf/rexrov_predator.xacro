@@ -84,7 +84,7 @@
   </xacro:rexrov_base>
 
   <xacro:predator namespace="predator" parent="$(arg namespace)/base_link">
-    <origin xyz="1.3 -0.5 -0.615" rpy="0 0 0"/>
+    <origin xyz="1.15 -0.5 -0.615" rpy="0 0 0"/>
   </xacro:predator>
 
   <gazebo>
