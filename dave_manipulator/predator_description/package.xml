@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>predator_description</name>
+  <version>0.0.1</version>
+  <description>Robot and parameter description for the mock-up model of the Kraft Robotics Predator Arm</description>
+  
+  <maintainer email="khakyya@gmail.com">Youssef Khaky</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+  </export>
+</package>
