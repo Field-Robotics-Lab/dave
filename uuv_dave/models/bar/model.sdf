@@ -16,5 +16,6 @@
         </geometry>
       </visual>
     </link>
+    <plugin name="model_push" filename="libmodel_push.so"/>
   </model>
 </sdf>
