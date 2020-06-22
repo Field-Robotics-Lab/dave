@@ -17,6 +17,7 @@ endif()
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   gazebo_ros
+  gazebo_plugins
 )
 
 # Depend on system install of Gazebo
@@ -31,8 +32,5 @@ catkin_package(
     gazebo_ros
 )
 
-add_library(${PROJECT_NAME} src/simple_world_plugin.cpp)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
-add_library(model_push SHARED src/model_push.cc)
-target_link_libraries(model_push ${GAZEBO_LIBRARIES})
+add_library(LeadMating SHARED src/LeadMating.cc)
+target_link_libraries(LeadMating ${GAZEBO_LIBRARIES})
