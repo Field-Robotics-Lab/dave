@@ -10,6 +10,6 @@
     </include>
 
     <!-- reference to your plugin -->
-    <plugin name="gazebo_tutorials" filename="libgazebo_tutorials.so"/>
+    <plugin name="hello_uuv_plutin" filename="libuuv_world_plugin.so"/>
   </world>
 </sdf>

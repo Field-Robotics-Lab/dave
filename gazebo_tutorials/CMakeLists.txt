@@ -24,7 +24,12 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(gazebo REQUIRED)
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
+include_directories(
+  include
+  ${Boost_INCLUDE_DIR}
+  ${catkin_INCLUDE_DIRS}
+  ${GAZEBO_INCLUDE_DIRS}
+  )
 
 catkin_package(
   DEPENDS
@@ -33,4 +38,11 @@ catkin_package(
 )
 
 add_library(LeadMating SHARED src/LeadMating.cc)
-target_link_libraries(LeadMating ${GAZEBO_LIBRARIES})
+target_link_libraries(LeadMating
+  ${GAZEBO_LIBRARIES}
+  ${IGNITION-MSGS_LIBRARIES}
+  ${catkin_LIBRARIES}
+  )
+
+add_library(uuv_world_plugin SHARED src/hello_uuv_world.cc)
+target_link_libraries(uuv_world_plugin ${GAZEBO_LIBRARIES})

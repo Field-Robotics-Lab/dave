@@ -1,9 +1,9 @@
 #include <gazebo/physics/physics.hh>
-#include "../include/LeadMating.hh"
+#include "LeadMating.hh"
 
 using namespace gazebo;
 
-void LeadMating::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
+void LeadMating::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
     this->world = _parent;
     gzlog << "VRCScoringPlugin: world name is \"" << this->world << "\"" << std::endl;
