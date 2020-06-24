@@ -37,6 +37,7 @@
         </surface>
       </collision>
       <visual name='visual'>
+        <laser_retro>255</laser_retro>
         <geometry>
           <cylinder>
             <radius>0.25</radius>
