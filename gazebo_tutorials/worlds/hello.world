@@ -8,7 +8,15 @@
     <include>
       <uri>model://sun</uri>
     </include>
-
+    
+    <include>
+      <uri>model://electrical_plug</uri>
+      <pose>2 0 2 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://electrical_socket</uri>
+      <pose>-2 0 2 0 0 0</pose>
+    </include>
     <!-- reference to your plugin -->
     <plugin name="hello_uuv_plutin" filename="libuuv_world_plugin.so"/>
   </world>
