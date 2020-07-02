@@ -7,12 +7,12 @@
       <collision name ='collision'>
         <laser_retro>255</laser_retro>
         <geometry>
-          <box><size>0.1 0.1 0.5</size></box>
+          <box><size>0.5 0.5 0.5</size></box>
         </geometry>
       </collision>
       <visual name ='visual'>
         <geometry>
-          <box><size>0.1 0.1 0.5</size></box>
+          <box><size>0.5 0.5 0.5</size></box>
         </geometry>
       </visual>
     </link>
