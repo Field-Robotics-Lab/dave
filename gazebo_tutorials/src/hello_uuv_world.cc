@@ -99,8 +99,8 @@ namespace gazebo
 
       // }
 
-        this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
-            std::bind(&WorldUuvPlugin::Update, this));
+      this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+          std::bind(&WorldUuvPlugin::Update, this));
     }
 
   private: bool checkRollAlignment(){
@@ -121,8 +121,7 @@ namespace gazebo
       return abs(plugRotation[2] - socketRotation[2]) < 0.1;
     }
 
-  private:
-    bool checkRotationalAlignment()
+  private: bool checkRotationalAlignment()
     {
       if (this->checkYawAlignment() && this->checkPitchAlignment() && this->checkRollAlignment())
       {
@@ -136,8 +135,7 @@ namespace gazebo
       }
     }
 
-  private:
-    bool checkVerticalAlignment()
+  private: bool checkVerticalAlignment()
     {
       socket_pose = socket->RelativePose();
       ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
@@ -158,21 +156,19 @@ namespace gazebo
 
   public: void Update()
     {
-      // connect the socket and the plug after the 5th second
+      // connect the socket and the plug after 5 seconds
       if (this->world->SimTime() > 5.0 && joined == false)
       {
         this->joined = true;
-
         physics::JointPtr joint;
         joint = world->Physics()->CreateJoint("prismatic", this->socket);
         joint->Attach(this->elecs, this->elecp);
         joint->Load(this->elecs, this->elecp, 
-          ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 1), 
+          ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>()));
-        joint->SetAxis(0, ignition::math::Vector3<double>(0, 0, 1));
+        joint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
         joint->SetUpperLimit(0, 20);
         joint->SetLowerLimit(0, -20);
-
         joint->SetName(this->elecs->GetName() + std::string("_") +
                       this->elecp->GetName() + std::string("_joint"));
         joint->Init();
