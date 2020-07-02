@@ -27,56 +27,54 @@ namespace gazebo
   private: bool joined = false;
 
   private: gazebo::event::ConnectionPtr updateConnection;
-    // private: ignition::math::Vector3<float> bla;
-  private: physics::JointPtr AddJoint(physics::WorldPtr _world,
-                               physics::ModelPtr _model,
-                               physics::LinkPtr _link1,
-                               physics::LinkPtr _link2,
-                               std::string _type,
-                               ignition::math::Vector3<double> _anchor,
-                               ignition::math::Vector3<double> _axis,
-                               double _upper, double _lower,
-                               bool _disableCollision)
-    {
-      physics::JointPtr joint;
-      joint = _world->Physics()->CreateJoint(_type, _model);
-      joint->Attach(_link1, _link2);
-      // load adds the joint to a vector of shared pointers kept
-      // in parent and child links, preventing joint from being destroyed.
-      joint->Load(_link1, _link2, ignition::math::Pose3<double>(_anchor, ignition::math::Quaternion<double>()));
-      joint->SetAxis(0, _axis);
-      joint->SetUpperLimit(0, _upper);
-      joint->SetLowerLimit(0, _lower);
+  // private: physics::JointPtr AddJoint(physics::WorldPtr _world,
+  //                              physics::ModelPtr _model,
+  //                              physics::LinkPtr _link1,
+  //                              physics::LinkPtr _link2,
+  //                              std::string _type,
+  //                              ignition::math::Vector3<double> _anchor,
+  //                              ignition::math::Vector3<double> _axis,
+  //                              double _upper, double _lower,
+  //                              bool _disableCollision)
+  //   {
+  //     physics::JointPtr joint;
+  //     joint = _world->Physics()->CreateJoint(_type, _model);
+  //     joint->Attach(_link1, _link2);
+  //     // load adds the joint to a vector of shared pointers kept
+  //     // in parent and child links, preventing joint from being destroyed.
+  //     joint->Load(_link1, _link2, ignition::math::Pose3<double>(_anchor, ignition::math::Quaternion<double>()));
+  //     joint->SetAxis(0, _axis);
+  //     joint->SetUpperLimit(0, _upper);
+  //     joint->SetLowerLimit(0, _lower);
 
-      if (_link1)
-        joint->SetName(_link1->GetName() + std::string("_") +
-                       _link2->GetName() + std::string("_joint"));
-      else
-        joint->SetName(std::string("world_") +
-                       _link2->GetName() + std::string("_joint"));
-      joint->Init();
+  //     if (_link1)
+  //       joint->SetName(_link1->GetName() + std::string("_") +
+  //                      _link2->GetName() + std::string("_joint"));
+  //     else
+  //       joint->SetName(std::string("world_") +
+  //                      _link2->GetName() + std::string("_joint"));
+  //     joint->Init();
 
-      // disable collision between the link pair
-      if (_disableCollision)
-      {
-        if (_link1)
-          _link1->SetCollideMode("fixed");
-        if (_link2)
-          _link2->SetCollideMode("fixed");
-      }
+  //     // disable collision between the link pair
+  //     if (_disableCollision)
+  //     {
+  //       if (_link1)
+  //         _link1->SetCollideMode("fixed");
+  //       if (_link2)
+  //         _link2->SetCollideMode("fixed");
+  //     }
 
-      return joint;
-    }
+  //     return joint;
+  //   }
 
 
-  public: WorldUuvPlugin() : WorldPlugin(){
-      printf("Hello World!\n");
-    }
+  public: WorldUuvPlugin() : WorldPlugin(){}
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
       this->world = _world;
       this->socket = this->world->ModelByName("electrical_socket");
       this->plug = this->world->ModelByName("electrical_plug");
+      // DEBUG
       // if (!(this->socket==NULL)){
       //   printf("got socket  \n");
  
@@ -86,19 +84,20 @@ namespace gazebo
       // }
       this->elecs = this->socket->GetLink("elecs");
       this->elecp = this->plug->GetLink("elecp");
-      // this->elecp = this->socket->GetLinks();
 
+      // DEBUG
       // physics::Link_V links = this->socket->GetLinks();
       // for(physics::Link_V::iterator li = links.begin(); li != links.end(); ++li)
       //   printf("%s  \n",(*li)->GetName().c_str());
 
-      if (!(this->elecp==NULL)){
-        printf("succed  \n");
+      //DEBUG
+      // if (!(this->elecp==NULL)){
+      //   printf("succed  \n");
  
-      } else {
-        printf("failed  \n");
+      // } else {
+      //   printf("failed  \n");
 
-      }
+      // }
 
         this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
             std::bind(&WorldUuvPlugin::Update, this));
@@ -157,46 +156,26 @@ namespace gazebo
       return false;
     }
 
-  public:
-    void Update()
+  public: void Update()
     {
+      // connect the socket and the plug after the 5th second
       if (this->world->SimTime() > 5.0 && joined == false)
       {
-        // this->prismaticJoint = this->AddJoint(this->world, this->socket,
-        //                                       this->elecs,
-        //                                       this->elecp,
-        //                                       "prismatic",
-        //                                       ignition::math::Vector3<double>(0, 0, 0),
-        //                                       ignition::math::Vector3<double>(0, -1, 0),
-        //                                       20, -0.5, false);
+        this->joined = true;
 
-      this->joined = true;
+        physics::JointPtr joint;
+        joint = world->Physics()->CreateJoint("prismatic", this->socket);
+        joint->Attach(this->elecs, this->elecp);
+        joint->Load(this->elecs, this->elecp, 
+          ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 1), 
+          ignition::math::Quaternion<double>()));
+        joint->SetAxis(0, ignition::math::Vector3<double>(0, 0, 1));
+        joint->SetUpperLimit(0, 20);
+        joint->SetLowerLimit(0, -20);
 
-      physics::JointPtr joint;
-      joint = world->Physics()->CreateJoint("prismatic", this->socket);
-      joint->Attach(this->elecs, this->elecp);
-      // joint->Attach(this->elecs, this->elecp);
-      joint->Load(this->elecs, this->elecp, ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0), ignition::math::Quaternion<double>()));
-      joint->SetAxis(0, ignition::math::Vector3<double>(0, -1, 0));
-      joint->SetUpperLimit(0, 20);
-      joint->SetLowerLimit(0, -0.5);
-
-      if (this->elecs)
         joint->SetName(this->elecs->GetName() + std::string("_") +
-                       this->elecp->GetName() + std::string("_joint"));
-      else
-        joint->SetName(std::string("world_") +
-                       this->elecp->GetName() + std::string("_joint"));
-      joint->Init();
-
-      // if (_disableCollision)
-      // {
-      //   if (this->elecs)
-      //     this->elecs->SetCollideMode("fixed");
-      //   if (this->elecp)
-      //     this->elecp->SetCollideMode("fixed");
-      // }
-
+                      this->elecp->GetName() + std::string("_joint"));
+        joint->Init();
       }
 
       this->checkVerticalAlignment();
