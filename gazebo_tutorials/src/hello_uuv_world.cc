@@ -157,25 +157,49 @@ namespace gazebo
   public: void Update()
     {
       // connect the socket and the plug after 5 seconds
-      if (this->world->SimTime() > 5.0 && joined == false)
+      if (this->world->SimTime() > 2.0 && joined == false)
       {
         this->joined = true;
-        physics::JointPtr joint;
-        joint = world->Physics()->CreateJoint("prismatic", this->socket);
-        joint->Attach(this->elecs, this->elecp);
-        joint->Load(this->elecs, this->elecp, 
+        prismaticJoint = world->Physics()->CreateJoint("prismatic");
+        // prismaticJoint->SetName(this->elecs->GetName() + std::string("_") +
+        //               this->elecp->GetName() + std::string("_joint"));
+        // prismaticJoint = world->Physics()->CreateJoint("prismatic", this->socket);
+        // prismaticJoint->Attach(this->elecs, this->elecp);
+        prismaticJoint->Load(this->elecs, this->elecp, 
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>()));
-        joint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
-        joint->SetUpperLimit(0, 20);
-        joint->SetLowerLimit(0, -20);
-        joint->SetName(this->elecs->GetName() + std::string("_") +
-                      this->elecp->GetName() + std::string("_joint"));
-        joint->Init();
+        prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
+        prismaticJoint->SetUpperLimit(0, 0.2);
+        prismaticJoint->SetLowerLimit(0, -0.1);
+        prismaticJoint->Init();
+
+        // physics::ModelPtr model = _link->GetModel();
+        // physics::WorldPtr world = physics::get_world("default");
+        // physics::PhysicsEnginePtr engine = world->GetPhysicsEngine();
+        // this->joint = engine->CreateJoint("prismatic");
+        // this->joint->SetName(model->GetName() + "__perfect_lin_joint__");
+        // physics::LinkPtr worldLink = boost::dynamic_pointer_cast<physics::Link>(
+        //     world->GetByName("world"));
+        // math::Pose jointOrigin;
+        // this->joint->Load(worldLink, _link, jointOrigin);
+        // this->joint->Init();
+        // double magnitude = _vel.GetLength();
+        // this->joint->SetAxis(0, _vel.Normalize());
+        // this->joint->SetParam("fmax", 0, _maxForce);
+        // this->joint->SetParam("vel", 0, magnitude);
+
+
+        // prismaticJoint->SetParam("thread_pitch", 0, 1);
+        // prismaticJoint->SetVelocity();
       }
 
-      this->checkVerticalAlignment();
-      this->checkRotationalAlignment();
+      if (joined){
+        // prismaticJoint->SetVelocity(0, 0.1);
+
+      }
+
+      // this->checkVerticalAlignment();
+      // this->checkRotationalAlignment();
     }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
