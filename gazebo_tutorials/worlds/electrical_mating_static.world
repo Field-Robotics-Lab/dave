@@ -22,7 +22,7 @@
 
     <!-- reference to your plugin -->
     <joint name="mating_joint" type="prismatic">
-      <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+      <!-- <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose> -->
       <parent>electrical_socket::elecs</parent>
       <child>electrical_plug::elecp</child>
       <axis>
