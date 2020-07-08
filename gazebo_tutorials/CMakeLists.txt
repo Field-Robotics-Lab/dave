@@ -37,5 +37,5 @@ catkin_package(
     gazebo_ros
 )
 
-add_library(uuv_world_plugin SHARED src/hello_uuv_world.cc)
-target_link_libraries(uuv_world_plugin ${GAZEBO_LIBRARIES})
+add_library(uuv_mating_plugin SHARED src/uuv_mating.cc)
+target_link_libraries(uuv_mating_plugin ${GAZEBO_LIBRARIES})

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    
+    <include>
+      <uri>model://electrical_plug</uri>
+      <pose>2 0 2 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://electrical_socket</uri>
+      <pose>-2 0 2 0 0 0</pose>
+    </include>
+
+    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
+  
+  </world>
+</sdf>
