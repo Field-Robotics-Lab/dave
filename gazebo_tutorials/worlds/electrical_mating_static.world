@@ -9,7 +9,7 @@
       <uri>model://sun</uri>
     </include>
     
-  <model name="mating_system">>
+  <model name="mating_system">
     <include>
       <uri>model://electrical_plug</uri>
       <pose>2 0 2 0 0 0</pose>
@@ -18,7 +18,6 @@
       <uri>model://electrical_socket</uri>
       <pose>-2 0 2 0 0 0</pose>
     </include>
-
 
     <!-- reference to your plugin -->
     <joint name="mating_joint" type="prismatic">
