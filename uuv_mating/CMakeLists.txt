@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(gazebo_tutorials)
+project(uuv_mating)
 
 # Check for c++11 / c++0x support
 include(CheckCXXCompilerFlag)

@@ -10,21 +10,9 @@ namespace gazebo
   {
   private: physics::WorldPtr world;
 
-  // private: physics::ModelPtr socket;
-
   private: physics::ModelPtr plugModel;
 
-  // private: physics::LinkPtr elecs;
-
   private: physics::LinkPtr plugLink;
-
-  // private: ignition::math::Pose3d socket_pose;
-
-  // private: ignition::math::Pose3d plug_pose;
-
-  // private: physics::JointPtr prismaticJoint;
-
-  // private: bool joined = false;
 
   private: gazebo::event::ConnectionPtr updateConnection;
 
