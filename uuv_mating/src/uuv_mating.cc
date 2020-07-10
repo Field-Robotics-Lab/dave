@@ -10,13 +10,13 @@ namespace gazebo
   {
   private: physics::WorldPtr world;
 
-  private: physics::ModelPtr socket;
+  private: physics::ModelPtr socketModel;
 
-  private: physics::ModelPtr plug;
+  private: physics::ModelPtr plugModel;
 
-  private: physics::LinkPtr elecs;
+  private: physics::LinkPtr socketLink;
 
-  private: physics::LinkPtr elecp;
+  private: physics::LinkPtr plugLink;
 
   private: ignition::math::Pose3d socket_pose;
 
@@ -33,30 +33,30 @@ namespace gazebo
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
       this->world = _world;
-      this->socket = this->world->ModelByName("electrical_socket");
-      this->plug = this->world->ModelByName("electrical_plug");
-      this->elecs = this->socket->GetLink("elecs");
-      this->elecp = this->plug->GetLink("elecp");
+      this->socketModel = this->world->ModelByName("electrical_socket");
+      this->plugModel = this->world->ModelByName("electrical_plug");
+      this->socketLink = this->socketModel->GetLink("socket");
+      this->plugLink = this->plugModel->GetLink("plug");
 
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
           std::bind(&WorldUuvPlugin::Update, this));
     }
 
   private: bool checkRollAlignment(){
-      ignition::math::Vector3<double> socketRotation = socket->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plug->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> socketRotation = socketLink->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugLink->RelativePose().Rot().Euler();
       return abs(plugRotation[0] - socketRotation[0]) < 0.1;
     }
 
   private: bool checkPitchAlignment(){
-      ignition::math::Vector3<double> socketRotation = socket->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plug->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> socketRotation = socketLink->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugLink->RelativePose().Rot().Euler();
       return abs(plugRotation[1] - socketRotation[1]) < 0.1;
     }
 
   private:bool checkYawAlignment(){
-      ignition::math::Vector3<double> socketRotation = socket->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plug->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> socketRotation = socketLink->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugLink->RelativePose().Rot().Euler();
       return abs(plugRotation[2] - socketRotation[2]) < 0.1;
     }
 
@@ -76,11 +76,11 @@ namespace gazebo
 
   private: bool checkVerticalAlignment()
     {
-      socket_pose = socket->RelativePose();
+      socket_pose = socketLink->RelativePose();
       ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
       // printf("%s  \n", typeid(socketPositon).name());
 
-      plug_pose = plug->RelativePose();
+      plug_pose = plugLink->RelativePose();
       ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
 
       bool onSameVerticalLevel = abs(plugPosition[2] - socketPositon[2]) < 0.1;
@@ -104,12 +104,12 @@ namespace gazebo
         //               this->elecp->GetName() + std::string("_joint"));
         // prismaticJoint = world->Physics()->CreateJoint("prismatic", this->socket);
         // prismaticJoint->Attach(this->elecs, this->elecp);
-        prismaticJoint->Load(this->elecs, this->elecp, 
+        prismaticJoint->Load(this->socketLink, this->plugLink, 
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
           // ignition::math::Quaternion<double>(0, 0.3428978, 0, 0.9393727)));
         // prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
-        prismaticJoint->SetUpperLimit(0, 2);
+        prismaticJoint->SetUpperLimit(0, 0.3);
         prismaticJoint->SetLowerLimit(0, -0.1);
         prismaticJoint->Init();
       }

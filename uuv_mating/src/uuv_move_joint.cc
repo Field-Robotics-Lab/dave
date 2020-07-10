@@ -32,7 +32,7 @@ namespace gazebo
 
   public: void Update()
     {
-       this->plugModel->GetJoint("elec_joint")->SetVelocity(0, 0.1);
+       this->plugModel->GetJoint("electrical_joint")->SetVelocity(0, 0.1);
     }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvMoveJointPlugin)

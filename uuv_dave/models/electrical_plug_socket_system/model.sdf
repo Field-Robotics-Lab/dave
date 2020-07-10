@@ -41,7 +41,7 @@
       </link>
     </model>
 
-    <joint name="elec_joint" type="prismatic">
+    <joint name="electrical_joint" type="prismatic">
       <parent>plug</parent>
       <child>socket::socket</child>
       <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>

@@ -2,7 +2,7 @@
 <sdf version ='1.6'>
   <model name ='electrical_socket'>
     <pose>0 0 0 0 0 0</pose>
-    <link name ='elecs'>
+    <link name ='socket'>
       <pose>0 0 0 0 0 0</pose>
       <collision name ='collision'>
         <laser_retro>255</laser_retro>
