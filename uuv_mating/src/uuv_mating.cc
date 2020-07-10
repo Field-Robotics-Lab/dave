@@ -108,7 +108,7 @@ namespace gazebo
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
           // ignition::math::Quaternion<double>(0, 0.3428978, 0, 0.9393727)));
-        // prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
+        prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
         prismaticJoint->SetUpperLimit(0, 0.3);
         prismaticJoint->SetLowerLimit(0, -0.1);
         prismaticJoint->Init();
