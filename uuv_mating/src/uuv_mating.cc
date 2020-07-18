@@ -8,9 +8,18 @@ namespace gazebo
 {
   class WorldUuvPlugin : public WorldPlugin
   {
+
+  enum states{
+    unconnectable_unlocked, connectable_unlocked, connectable_locked
+  };
+
+  // private: states state = unconnectable_unlcoked;
+
   private: physics::WorldPtr world;
 
   private: physics::ModelPtr socketModel;
+
+  private: physics::ModelPtr buffer;
 
   private: physics::ModelPtr plugModel;
 
@@ -23,6 +32,14 @@ namespace gazebo
   private: ignition::math::Pose3d plug_pose;
 
   private: physics::JointPtr prismaticJoint;
+
+  public: ignition::math::Vector3d grabAxis;
+
+  public: ignition::math::Vector3d grabbedForce;
+
+  // private: Common::Time connectedTime;
+
+
 
   private: bool joined = false;
 
@@ -43,20 +60,20 @@ namespace gazebo
     }
 
   private: bool checkRollAlignment(){
-      ignition::math::Vector3<double> socketRotation = socketLink->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plugLink->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       return abs(plugRotation[0] - socketRotation[0]) < 0.1;
     }
 
   private: bool checkPitchAlignment(){
-      ignition::math::Vector3<double> socketRotation = socketLink->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plugLink->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       return abs(plugRotation[1] - socketRotation[1]) < 0.1;
     }
 
   private:bool checkYawAlignment(){
-      ignition::math::Vector3<double> socketRotation = socketLink->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plugLink->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       return abs(plugRotation[2] - socketRotation[2]) < 0.1;
     }
 
@@ -76,11 +93,11 @@ namespace gazebo
 
   private: bool checkVerticalAlignment()
     {
-      socket_pose = socketLink->RelativePose();
+      socket_pose = socketModel->RelativePose();
       ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
       // printf("%s  \n", typeid(socketPositon).name());
 
-      plug_pose = plugLink->RelativePose();
+      plug_pose = plugModel->RelativePose();
       ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
 
       bool onSameVerticalLevel = abs(plugPosition[2] - socketPositon[2]) < 0.1;
@@ -93,33 +110,126 @@ namespace gazebo
       return false;
     }
 
+  private: bool isAlligned()
+    {
+      if(checkVerticalAlignment() && checkRotationalAlignment()){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  private: bool checkProximity()
+    {
+      socket_pose = socketModel->WorldPose();
+      // socket_pose = socketLink->RelativePose();
+      ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
+      // printf("%s  \n", typeid(socketPositon).name());
+
+      plug_pose = plugModel->RelativePose();
+      ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
+      // printf("%f %f %f Within Proximity  \n", plugPosition[0], plugPosition[1], plugPosition[2]);
+      float xdiff_squared = pow(abs(plugPosition[0] - socketPositon[0]),2);
+      float ydiff_squared = pow(abs(plugPosition[1] - socketPositon[1]),2);
+      float zdiff_squared = pow(abs(plugPosition[2] - socketPositon[2]),2);
+
+      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 1;
+      if (withinProximity)
+      {
+        // printf("%f Within Proximity  \n", plugPosition[0]);
+        return true;
+      }else {
+
+        // printf("not within Proximity  \n");
+      }
+      return false;
+    }
+
+  private: bool isReadyForInsertion()
+    {
+      if (this->checkProximity() && this->isAlligned()){
+        return true;
+        // printf("Insert \n");
+
+      } else{
+
+        // printf("Cant insert \n");
+        return false;
+      }
+    }
+
+
+
   public: void Update()
     {
       // connect the socket and the plug after 5 seconds
       if (this->world->SimTime() > 2.0 && joined == false)
       {
         this->joined = true;
+        std::string nom= "random_joint_name";
+        std::string nam= "prismatic";
         prismaticJoint = world->Physics()->CreateJoint("prismatic");
-        // prismaticJoint->SetName(this->elecs->GetName() + std::string("_") +
-        //               this->elecp->GetName() + std::string("_joint"));
+        // TODO!!
+        // ok! there are two ways to make joints
+        // first way: _world->GetPhysicsEngine()->CreateJoint
+        // http://osrf-distributions.s3.amazonaws.com/gazebo/api/9.0.0/classgazebo_1_1physics_1_1PhysicsEngine.html#aa4bdca668480d14312458f78fab7687d
+
+        // second way: 
+        // https://osrf-distributions.s3.amazonaws.com/gazebo/api/dev/classgazebo_1_1physics_1_1Model.html#ad7e10b77c7c7f9dc09b3fdc41d00846e
+
+        // plugModel->CreateJoint->CreateJoint(
+
+        // prismaticJoint = world->Physics()->CreateJoint(
+        //   nom,
+        //   nam,
+        //   socketLink,
+        //   plugLink
+        //   );
+        prismaticJoint->SetName(this->socketLink->GetName() + std::string("_") +
+                      this->plugLink->GetName() + std::string("_joint"));
+        gzmsg << this->prismaticJoint->GetScopedName(true) << "\n";
+        gzmsg << this->prismaticJoint->GetScopedName(false) << "\n";
+        prismaticJoint->SetModel(this->plugModel);
+        gzmsg << this->prismaticJoint->GetScopedName(true) << "\n";
+        gzmsg << this->prismaticJoint->GetScopedName(false) << "\n";
         // prismaticJoint = world->Physics()->CreateJoint("prismatic", this->socket);
-        // prismaticJoint->Attach(this->elecs, this->elecp);
+        prismaticJoint->Attach(this->socketLink, this->plugLink);
         prismaticJoint->Load(this->socketLink, this->plugLink, 
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
           // ignition::math::Quaternion<double>(0, 0.3428978, 0, 0.9393727)));
-        prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
         prismaticJoint->SetUpperLimit(0, 0.3);
-        prismaticJoint->SetLowerLimit(0, -0.1);
+        // prismaticJoint->SetLowerLimit(0, -0.1);
         prismaticJoint->Init();
+        prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
       }
 
       if (joined){
-        prismaticJoint->SetVelocity(0, 0.1);
+        // prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
+        prismaticJoint->SetVelocity(0, -0.5);
+        grabAxis = prismaticJoint->LocalAxis(0);
+        socketLink->SetCollideMode("all");
+        plugLink->SetCollideMode("all");
+
+        // grabbedForce = socketLink->RelativeForce();
+        // printf("%.2f %.2f %.2f   || ", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
+        // grabbedForce = plugLink->RelativeForce();
+        // printf("%.2f %.2f %.2f   \n", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
+        // printf("%.2f %.2f %.2f   \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
+        // grabbedForce = 
+        // printf("%f %f %f   \n", grabAxis[0], grabAxis[1], grabAxis[2]);
+        
       }
 
       // this->checkVerticalAlignment();
       // this->checkRotationalAlignment();
+      // this->checkProximity();
+      // printf("%s  \n",FormattedString);
+      // if (this->isReadyForInsertion()){
+
+      // } else{
+      //   connectedTime = 0;
+      // }
     }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
