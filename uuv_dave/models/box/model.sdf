@@ -1,18 +1,18 @@
 <?xml version='1.0'?>
 <sdf version ='1.6'>
-  <model name ='electrical_plug'>
+  <model name ='box'>
     <pose>0 0 0 0 0 0</pose>
-    <link name ='plug'>
+    <link name ='box'>
       <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>100</mass>
+      </inertial>
       <collision name ='collision'>
         <laser_retro>255</laser_retro>
         <geometry>
           <box><size>0.5 0.5 0.5</size></box>
         </geometry>
       </collision>
-      <inertial name ='inertial'>
-        <mass>2</mass>
-      </inertial>
       <visual name ='visual'>
         <geometry>
           <box><size>0.5 0.5 0.5</size></box>
