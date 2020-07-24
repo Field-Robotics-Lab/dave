@@ -49,6 +49,8 @@ namespace gazebo
 
 
   private: bool joined = false;
+  
+  private: bool unlocked = true;
 
   private: gazebo::event::ConnectionPtr updateConnection;
 
@@ -169,9 +171,9 @@ namespace gazebo
     }
 
   public: void freezeJoint(physics::JointPtr prismaticJoint){
-    gazebo::math::Angle currentPosition = prismaticJoint->GetAngle(0);
-    joint->SetHighStop(0, currentPosition);
-    joint->SetLowStop(0, currentPosition);
+    double currentPosition = prismaticJoint->Position(0);
+    prismaticJoint->SetUpperLimit(0, currentPosition);
+    prismaticJoint->SetLowerLimit(0, currentPosition);
   }
   
   public: void Update()
@@ -197,8 +199,6 @@ namespace gazebo
           plugLink);
         
         if (this->prismaticJoint){
-        printf("7amra \n");
-
         }
         
         printf("%d \n", plugModel->GetChildCount());
@@ -234,7 +234,7 @@ namespace gazebo
         prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
       }
 
-      if (joined){
+      if (joined && unlocked){
         plugModel->SetSelfCollide(true);
         collisionPtr = socketLink->GetCollision("Link");
         if (collisionPtr){
@@ -271,10 +271,21 @@ namespace gazebo
         // GetName
         // CollisionPtr 
         // GetCollision
-        grabbedForce = boxLink->RelativeForce();
-        if (abs(grabbedForce[0])>10){
-        // if (abs(grabbedForce[2])>1){
-          printf("%.2f %.2f %.2f   \n", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
+        if (true){
+          grabbedForce = boxLink->RelativeForce();
+          if (abs(grabbedForce[0])>=0){
+            // this->unlocked = false;
+            // this->freezeJoint(this->prismaticJoint);
+          // if (abs(grabbedForce[2])>1){
+            printf("%.2f %.2f %.2f   \n", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
+
+
+          }
+        }
+        if (false){
+          double somepos = prismaticJoint->Position(0);
+            printf("%.2f   \n", somepos);
+
 
         }
       //   // printf("%.2f %.2f %.2f   \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
