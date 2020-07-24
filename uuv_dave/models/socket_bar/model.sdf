@@ -1,0 +1,77 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='socket_bar'>
+    <link name ='tube'>
+      <visual name ='visual1'>
+        <pose>0.12 0 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.1 0.34 0.3</size></box>
+        </geometry>
+      </visual>
+      <visual name ='visual2'>
+        <pose>-0.12 0 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.1 0.34 0.3</size></box>
+        </geometry>
+      </visual>
+      <visual name ='visual3'>
+        <pose>0 0.12 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.34 0.1 0.3</size></box>
+        </geometry>
+      </visual>
+      <visual name ='visual4'>
+        <pose>0 -0.12 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.34 0.1 0.3</size></box>
+        </geometry>
+      </visual>
+      <collision name ='collision1'>
+        <pose>0.12 0 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.1 0.34 0.3</size></box>
+        </geometry>
+      </collision>
+      <collision name ='collision2'>
+        <pose>-0.12 0 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.1 0.34 0.3</size></box>
+        </geometry>
+      </collision>
+      <collision name ='collision3'>
+        <pose>0 0.12 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.34 0.1 0.3</size></box>
+        </geometry>
+      </collision>
+      <collision name ='collision4'>
+        <pose>0 -0.12 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.34 0.1 0.3</size></box>
+        </geometry>
+      </collision>
+    </link>
+
+
+    <link name ='sensor_plate'>
+      <visual name ='sensor_plate_visual'>
+        <pose>0 0 -0.175 0 0 0</pose>
+        <geometry>
+          <box><size>0.34 0.34 0.05</size></box>
+        </geometry>
+      </visual>
+      <collision name ='sensor_plate_visual_collision'>
+        <pose>0 0 -0.1 0 0 0</pose>
+        <geometry>
+          <box><size>0.34 0.34 0.05</size></box>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="sensor_plate_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <child>tube</child>
+        <parent>sensor_plate</parent>
+    </joint>
+  </model>
+</sdf>

@@ -10,21 +10,29 @@
     </include>
     
     <include>
-      <uri>model://electrical_plug</uri>
-      <pose>2 0 2 0 0 0</pose>
+      <uri>model://socket_bar</uri>
+      <pose>2 0 0.17 0 1.57 0</pose>
     </include>
+    
+  <model name ='grab_bar'>
+    <pose>2.1 0 0.17 0 1.57 0</pose>
+    <link name ='link'>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 0.4</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <geometry>
+          <box><size>0.1 0.1 0.4</size></box>
+        </geometry>
+      </visual>
+    </link>
+  </model>
 
-    <include>
-      <uri>model://box</uri>
-      <pose>0 0 2 0 0 0</pose>
-    </include>
 
-    <include>
-      <uri>model://electrical_socket</uri>
-      <pose>-2 0 2 0 0 0</pose>
-    </include>
-
-    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
+    <!-- <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/> -->
   
   </world>
 </sdf>
