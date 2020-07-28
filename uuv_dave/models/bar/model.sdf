@@ -10,6 +10,9 @@
           <box><size>0.1 0.1 0.5</size></box>
         </geometry>
       </collision>
+      <inertial name ='inertial'>
+        <mass>1</mass>
+      </inertial>
       <visual name ='visual'>
         <geometry>
           <box><size>0.1 0.1 0.5</size></box>

@@ -23,9 +23,15 @@ namespace gazebo
 
   private: physics::LinkPtr plugLink;
 
+  private: physics::ModelPtr boxModel;
+
+  // private: physics::LinkPtr boxLink;
+
   private: physics::ModelPtr socketModel;
 
   private: physics::LinkPtr socketLink;
+
+  private: physics::LinkPtr sensorPlate;
 
   private: ignition::math::Pose3d socket_pose;
 
@@ -50,8 +56,10 @@ namespace gazebo
       this->world = _world;
       this->socketModel = this->world->ModelByName("socket_bar");
       this->plugModel = this->world->ModelByName("grab_bar");
-      this->socketLink = this->socketModel->GetLink("tube");
-      this->plugLink = this->plugModel->GetLink("bar");
+      
+      this->sensorPlate = this->socketModel->GetLink("sensor_plate");
+      this->plugLink = this->plugModel->GetLink("grab_bar_link");
+
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
           std::bind(&WorldUuvPlugin::Update, this));
     }
@@ -164,33 +172,56 @@ namespace gazebo
   public: void Update()
     {
       // connect the socket and the plug after 5 seconds
-      if (this->world->SimTime() > 10.0 && joined == false)
+      if (this->world->SimTime() > 1.0 && joined == false)
       {
         this->joined = true;
+        // prismaticJoint = world->Physics()->CreateJoint("prismatic");
+        // TODO!!
+        // ok! there are two ways to make joints
+        // first way: _world->GetPhysicsEngine()->CreateJoint
+        // http://osrf-distributions.s3.amazonaws.com/gazebo/api/9.0.0/classgazebo_1_1physics_1_1PhysicsEngine.html#aa4bdca668480d14312458f78fab7687d
+
+        // second way: 
+        // https://osrf-distributions.s3.amazonaws.com/gazebo/api/dev/classgazebo_1_1physics_1_1Model.html#ad7e10b77c7c7f9dc09b3fdc41d00846e
+
         this->prismaticJoint = plugModel->CreateJoint(
-          "socket_plug_prismatic_joint",
+          "plug_socket_joint",
           "prismatic",
           socketLink,
           plugLink);
         prismaticJoint->Load(this->socketLink, this->plugLink, 
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
+        prismaticJoint->SetUpperLimit(0, 0.3);
         prismaticJoint->Init();
         prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
-        socketLink->SetCollideMode("all");
-        plugLink->SetCollideMode("all");
+        // prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
       }
-      if (joined && unlocked){
-        plugModel->SetSelfCollide(true);
-        grabAxis = prismaticJoint->LocalAxis(0);
-        if (true){
-          grabbedForce = socketLink->RelativeForce();
-          if (abs(grabbedForce[0])>=0){
-            double joint_force = prismaticJoint->GetForce(0);
-            printf("%.2f %.2f %.2f ", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
-            printf("%.2f \n", joint_force);
-          }
-        }
+
+      // if (joined && unlocked){
+      if (joined){
+        // plugModel->SetSelfCollide(true);
+        // collisionPtr = socketLink->GetCollision("Link");
+        // if (collisionPtr){
+        //   printf("well seems to exist! \n");
+        //   // printf("%s  \n", typeid(collisionPtr).name());
+        //   gzmsg << collisionPtr->GetName() << "\n";
+        //   world->SetPaused(true);
+          
+
+        // }
+        // if (true){
+          // plugLink->AddForce(ignition::math::Vector3<double>(-40, 0, 0));
+          grabbedForce = sensorPlate->RelativeForce();
+          printf("%.2f %.2f %.2f   \n", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
+          // if (abs(grabbedForce[0])>=0){
+          // }
+        // }
+        // grabAxis = prismaticJoint->LocalAxis(0);
+        // if (false){
+        //   double somepos = prismaticJoint->Position(0);
+        //     printf("%.2f   \n", somepos);
+        // }
       }
     }
   };
