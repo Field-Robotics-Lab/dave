@@ -16,7 +16,7 @@
     
   <model name ='grab_bar'>
     <pose>2.1 0 0.17 0 1.57 0</pose>
-    <link name ='link'>
+    <link name ='bar'>
       <collision name ='collision'>
         <laser_retro>255</laser_retro>
         <geometry>
@@ -32,7 +32,7 @@
   </model>
 
 
-    <!-- <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/> -->
+    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
   
   </world>
 </sdf>
