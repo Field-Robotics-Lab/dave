@@ -3,6 +3,7 @@
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves_simple.world"/>
+    <arg name="joy_id" default="0"/>
 
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
@@ -37,6 +38,7 @@
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
         <arg name="uuv_name" value="rexrov" />
         <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
 
     <!-- joint control for oberon7 -->

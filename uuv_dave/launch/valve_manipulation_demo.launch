@@ -4,6 +4,7 @@
     <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
     <arg name="namespace" default="rexrov"/>
+    <arg name="joy_id" default="0"/>
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -33,6 +34,7 @@
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
         <arg name="uuv_name" value="$(arg namespace)" />
         <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
 
     

@@ -7,6 +7,7 @@
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
+    <arg name="joy_id" default="0"/>
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -81,6 +82,7 @@
     <!-- joystick control for rexrov and oberon7, no velocity control-->
     <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
         <arg name="model_name" value="rexrov"/>
+        <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
     
 
