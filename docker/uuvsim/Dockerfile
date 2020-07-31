@@ -47,42 +47,12 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
  && wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add - \
  && apt update \
  && apt install -y \
-    qtbase5-dev \
-    libgles2-mesa-dev \
-    ${GAZ} \
-    lib${GAZ}-dev \
-    ros-${DIST}-ros-base \
-    ros-${DIST}-xacro \
-    ros-${DIST}-gazebo-ros \
-    ros-${DIST}-gazebo-plugins \
-    ros-${DIST}-hector-gazebo-plugins \
-    ros-${DIST}-joy \
-    ros-${DIST}-joy-teleop \
-    ros-${DIST}-key-teleop \
-    ros-${DIST}-robot-localization \
-    ros-${DIST}-robot-state-publisher \
-    ros-${DIST}-rviz \
-    ros-${DIST}-teleop-tools \
-    ros-${DIST}-teleop-twist-keyboard \
-    ros-${DIST}-velodyne-simulator \
-    ros-${DIST}-rqt \
-    ros-${DIST}-rqt-common-plugins \
-		ros-${DIST}-effort-controllers \
-		ros-${DIST}-control-toolbox \
- 		ros-${DIST}-controller-manager \
-		ros-${DIST}-ros-control \
-		python-scipy \
-		ros-${DIST}-joint-state-publisher \
-		ros-${DIST}-urdfdom-py \
-		python-lxml \
-		ros-${DIST}-ros-controllers \
-		ros-${DIST}-kdl-parser-py \
-		ros-${DIST}-gazebo-ros-control \
-		ros-${DIST}-gazebo-ros-pkgs \
+    ros-${DIST}-desktop-full \
+    ros-${DIST}-velodyne-gazebo-plugins \
+    python-rosdep \
  && rosdep init \
  && apt clean
 
-RUN rosdep update
 
 # Set USER and GROUP
 ARG USER=developer
@@ -108,6 +78,9 @@ USER $USER:$GROUP
 
 # When running a container start in the developer's home folder.
 WORKDIR /home/$USER
+
+# run rosdep update as non-root
+RUN rosdep update
 
 # Create workspace
 RUN mkdir -p uuv_ws/src/uuv_simulator
