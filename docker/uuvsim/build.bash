@@ -20,7 +20,7 @@
 # Builds a Docker image.
 BUILD_BASE=""
 BUILD_ROS_GAZ=""
-image_name="uuvsim"
+image_name="dave"
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -30,18 +30,18 @@ key="$1"
 case $key in
     -n|--nvidia)
     BUILD_BASE="--build-arg BASEIMG=nvidia/opengl:1.0-glvnd-devel-ubuntu18.04"
-    image_name="uuvsim_nvidia"
+    image_name="dave_nvidia"
     shift
     ;;
     -k|--kinetic)
     BUILD_BASE="--build-arg BASEIMG=ubuntu:xenial"
-    image_name="vrx_gaz7"
+    image_name="dave_gaz7"
     BUILD_ROS_GAZ="--build-arg DIST=kinetic --build-arg GAZ=gazebo7"
     shift
     ;;
     -K|--kinetic-nvidia)
     BUILD_BASE="--build-arg BASEIMG=nvidia/opengl:1.1-glvnd-devel-ubuntu16.04"
-    image_name="vrx_nvidia_gaz7"
+    image_name="dave_nvidia_gaz7"
     BUILD_ROS_GAZ="--build-arg DIST=kinetic --build-arg GAZ=gazebo7"
     shift
     ;;
