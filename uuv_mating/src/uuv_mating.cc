@@ -23,10 +23,6 @@ namespace gazebo
 
   private: physics::LinkPtr plugLink;
 
-  private: physics::ModelPtr boxModel;
-
-  // private: physics::LinkPtr boxLink;
-
   private: physics::ModelPtr socketModel;
 
   private: physics::LinkPtr socketLink;
@@ -172,7 +168,7 @@ namespace gazebo
   public: void Update()
     {
       // connect the socket and the plug after 5 seconds
-      if (this->world->SimTime() > 1.0 && joined == false)
+      if (this->world->SimTime() > 2.0 && joined == false)
       {
         this->joined = true;
         // prismaticJoint = world->Physics()->CreateJoint("prismatic");
@@ -192,7 +188,7 @@ namespace gazebo
         prismaticJoint->Load(this->socketLink, this->plugLink, 
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
-        prismaticJoint->SetUpperLimit(0, 0.3);
+        // prismaticJoint->SetUpperLimit(0, 0.3);
         prismaticJoint->Init();
         prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
         // prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
@@ -200,6 +196,21 @@ namespace gazebo
 
       // if (joined && unlocked){
       if (joined){
+        
+          // if (this->world->SimTime()>20 && this->world->SimTime()<30){
+            double currentTime = this->world->SimTime().Double();
+            if (currentTime >8){
+
+            } else {
+              double force = currentTime*-5-50;
+              plugLink->AddForce(ignition::math::Vector3<double>(force, 0, 0));
+              // plugLink->AddForce(ignition::math::Vector3<double>(force, 0, 0));
+              // plugLink->AddForce(ignition::math::Vector3<double>((((int) (((this->world->SimTime().Double())/10)))%10)*-50, 0, 0));
+              printf("%f \n", force);
+
+            }
+
+          // } 
         // plugModel->SetSelfCollide(true);
         // collisionPtr = socketLink->GetCollision("Link");
         // if (collisionPtr){
@@ -211,9 +222,18 @@ namespace gazebo
 
         // }
         // if (true){
-          // plugLink->AddForce(ignition::math::Vector3<double>(-40, 0, 0));
-          grabbedForce = sensorPlate->RelativeForce();
-          printf("%.2f %.2f %.2f   \n", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
+          // (int) (this->world->SimTime().Double())
+          // if (this->world->SimTime()>20 && this->world->SimTime()<30){
+          //   plugLink->AddForce(ignition::math::Vector3<double>(-90, 0, 0));
+          // } else if (this->world->SimTime()>30 && this->world->SimTime()<40){
+          //   // this->freezeJoint(this->prismaticJoint);
+          //   plugLink->AddForce(ignition::math::Vector3<double>(-100, 0, 0));
+          // }else if (this->world->SimTime()>40 && this->world->SimTime()<50){
+          //   this->freezeJoint(this->prismaticJoint);
+          //   plugLink->AddForce(ignition::math::Vector3<double>(60, 0, 0));
+          // }
+
+          // printf("%.2f %.2f %.2f   \n", abs(grabbedForce[0]), abs(grabbedForce[1]), abs(grabbedForce[2]));
           // if (abs(grabbedForce[0])>=0){
           // }
         // }
@@ -223,6 +243,10 @@ namespace gazebo
         //     printf("%.2f   \n", somepos);
         // }
       }
+      grabbedForce = sensorPlate->RelativeForce();
+      // printf("%.1f \n", grabbedForce[1]);
+      // printf("%d \n", (((int) (((this->world->SimTime().Double())/10)))%10)   );
+      // printf("%i \n", (int) (this->world->SimTime().Double()));
     }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)

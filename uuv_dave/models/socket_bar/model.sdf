@@ -55,13 +55,16 @@
 
     <link name ='sensor_plate'>
       <visual name ='sensor_plate_visual'>
-        <pose>0 0 -0.175 0 0 0</pose>
+        <!-- <pose>0 0 -0.175 0 0 0</pose> -->
+        <pose>0 0 -0.23 0 0 0</pose>
         <geometry>
           <box><size>0.34 0.34 0.05</size></box>
         </geometry>
       </visual>
+        <!-- <pose>0 0 -0.175 0 0 0</pose> -->
+        <!-- <pose>0 0 -0.1 0 0 0</pose> -->
       <collision name ='sensor_plate_visual_collision'>
-        <pose>0 0 -0.1 0 0 0</pose>
+        <pose>0 0 -0.23 0 0 0</pose>
         <geometry>
           <box><size>0.34 0.34 0.05</size></box>
         </geometry>
@@ -72,6 +75,10 @@
         <pose>0 0 0 0 0 0</pose>
         <child>tube</child>
         <parent>sensor_plate</parent>
+        <sensor name="force_torque" type="force_torque">
+          <update_rate>30</update_rate>
+        </sensor>
     </joint>
+
   </model>
 </sdf>
