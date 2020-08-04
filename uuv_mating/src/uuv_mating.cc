@@ -161,7 +161,7 @@ namespace gazebo
 
   public: void freezeJoint(physics::JointPtr prismaticJoint){
     double currentPosition = prismaticJoint->Position(0);
-    prismaticJoint->SetUpperLimit(0, currentPosition);
+    prismaticJoint->SetUpperLimit(0, currentPosition+1);
     prismaticJoint->SetLowerLimit(0, currentPosition);
   }
   
@@ -196,19 +196,35 @@ namespace gazebo
 
       // if (joined && unlocked){
       if (joined){
-        
-          // if (this->world->SimTime()>20 && this->world->SimTime()<30){
-            double currentTime = this->world->SimTime().Double();
-            if (currentTime >8){
 
+          if (this->world->SimTime() < 21){
+            int second_digit = ((int) (((this->world->SimTime().Double())/10)))%10;
+            int parity = second_digit%2;
+            // printf("%d \n", parity);
+            if (parity){
+              plugLink->AddForce(ignition::math::Vector3<double>(-20, 0, 0));
+              // printf("-5 \n");
             } else {
-              double force = currentTime*-5-50;
-              plugLink->AddForce(ignition::math::Vector3<double>(force, 0, 0));
-              // plugLink->AddForce(ignition::math::Vector3<double>(force, 0, 0));
-              // plugLink->AddForce(ignition::math::Vector3<double>((((int) (((this->world->SimTime().Double())/10)))%10)*-50, 0, 0));
-              printf("%f \n", force);
-
+              plugLink->AddForce(ignition::math::Vector3<double>(0, 0, 0));
+              // printf("0 \n");
             }
+          } else {
+              plugLink->AddForce(ignition::math::Vector3<double>(100000, 0, 0));
+              printf("oppostie \n");
+
+          }
+          // if (this->world->SimTime()>20 && this->world->SimTime()<30){
+            // double currentTime = this->world->SimTime().Double();
+            // if (currentTime >8){
+
+            // } else {
+            //   double force = currentTime*-5-50;
+            //   plugLink->AddForce(ignition::math::Vector3<double>(force, 0, 0));
+            //   // plugLink->AddForce(ignition::math::Vector3<double>(force, 0, 0));
+            //   // plugLink->AddForce(ignition::math::Vector3<double>((((int) (((this->world->SimTime().Double())/10)))%10)*-50, 0, 0));
+            //   printf("%f \n", force);
+
+            // }
 
           // } 
         // plugModel->SetSelfCollide(true);
@@ -229,7 +245,6 @@ namespace gazebo
           //   // this->freezeJoint(this->prismaticJoint);
           //   plugLink->AddForce(ignition::math::Vector3<double>(-100, 0, 0));
           // }else if (this->world->SimTime()>40 && this->world->SimTime()<50){
-          //   this->freezeJoint(this->prismaticJoint);
           //   plugLink->AddForce(ignition::math::Vector3<double>(60, 0, 0));
           // }
 
@@ -243,8 +258,14 @@ namespace gazebo
         //     printf("%.2f   \n", somepos);
         // }
       }
-      grabbedForce = sensorPlate->RelativeForce();
-      // printf("%.1f \n", grabbedForce[1]);
+        grabbedForce = sensorPlate->RelativeForce();
+      if (abs(grabbedForce[1] >= 2)){
+        printf("%.1f \n", grabbedForce[1]);
+        if (abs(grabbedForce[1] >= 2.1)){
+          this->freezeJoint(this->prismaticJoint);
+          printf("forzen the joint \n");
+        }
+      }
       // printf("%d \n", (((int) (((this->world->SimTime().Double())/10)))%10)   );
       // printf("%i \n", (int) (this->world->SimTime().Double()));
     }

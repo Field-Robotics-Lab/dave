@@ -2,6 +2,17 @@
 <sdf version ='1.6'>
   <model name ='socket_bar'>
     <link name ='tube'>
+      <inertial>
+        <mass>100</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
       <visual name ='visual1'>
         <pose>0.12 0 0 0 0 0</pose>
         <geometry>
@@ -26,12 +37,31 @@
           <box><size>0.34 0.1 0.3</size></box>
         </geometry>
       </visual>
+      <!-- bottom -->
       <collision name ='collision1'>
         <pose>0.12 0 0 0 0 0</pose>
         <geometry>
           <box><size>0.1 0.34 0.3</size></box>
         </geometry>
       </collision>
+
+      <collision name ='sliding_surface'>
+        <pose>0.04 0 0 0 0 0</pose>
+        <geometry>
+          <box><size>0.01 0.34 0.3</size></box>
+        </geometry>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+        </surface>
+
+      </collision>
+
       <collision name ='collision2'>
         <pose>-0.12 0 0 0 0 0</pose>
         <geometry>
