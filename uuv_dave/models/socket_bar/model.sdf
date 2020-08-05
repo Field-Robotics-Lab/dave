@@ -3,7 +3,6 @@
   <model name ='socket_bar'>
     <link name ='tube'>
       <inertial>
-        <mass>100</mass>
         <inertia>
           <ixx>1</ixx>
           <ixy>0</ixy>
@@ -12,6 +11,7 @@
           <iyz>0</iyz>
           <izz>1</izz>
         </inertia>
+        <mass>1.100</mass>
       </inertial>
       <visual name ='visual1'>
         <pose>0.12 0 0 0 0 0</pose>
@@ -84,6 +84,7 @@
 
 
     <link name ='sensor_plate'>
+      <self_collide>true</self_collide>
       <visual name ='sensor_plate_visual'>
         <!-- <pose>0 0 -0.175 0 0 0</pose> -->
         <pose>0 0 -0.23 0 0 0</pose>
@@ -105,9 +106,38 @@
         <pose>0 0 0 0 0 0</pose>
         <child>tube</child>
         <parent>sensor_plate</parent>
-        <sensor name="force_torque" type="force_torque">
+        <!-- <sensor name="force_torque" type="force_torque">
           <update_rate>30</update_rate>
-        </sensor>
+        </sensor> -->
+    </joint>
+
+    <!-- <pose>2 0 -99.17 0 1.57 0</pose> -->
+    <link name ='grab_bar_link'>
+      <pose> 0 0 0.1 0 0</pose>
+      <self_collide>true</self_collide>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.05 0.05 0.5</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <geometry>
+          <box><size>0.05 0.05 0.5</size></box>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="prismatic_joint" type="prismatic">
+        <parent>tube</parent>
+        <child>grab_bar_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+              <lower>-0.4</lower>
+              <upper>0.4</upper>
+          </limit>
+        </axis>
     </joint>
 
   </model>
