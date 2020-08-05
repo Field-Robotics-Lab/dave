@@ -18,7 +18,6 @@ RUN apt update \
         lsb-release \
         gdb \
         git \
-        mercurial \
         python3-dbg \
         python3-pip \
         python3-venv \
@@ -47,9 +46,26 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
  && wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add - \
  && apt update \
  && apt install -y \
+    libgles2-mesa-dev \
     ros-${DIST}-desktop-full \
     ros-${DIST}-velodyne-gazebo-plugins \
+    ros-${DIST}-effort-controllers \
+    ros-${DIST}-rqt \
+    ros-${DIST}-rqt-robot-plugins \
+    ros-${DIST}-rqt-common-plugins \
+    ros-${DIST}-joy \
+    ros-${DIST}-teleop-twist-joy \
+    ros-${DIST}-teleop-twist-keyboard \
+    ros-${DIST}-teleop-tools \
+    ros-${DIST}-joy-teleop \
+    ros-${DIST}-key-teleop \
+    ros-${DIST}-geographic-info \
+    ros-${DIST}-move-base \
+    ros-${DIST}-robot-localization \
+    ros-${DIST}-robot-state-publisher \
+    ros-${DIST}-xacro \
     python-rosdep \
+    libignition-math2 \
  && rosdep init \
  && apt clean
 
@@ -83,19 +99,11 @@ WORKDIR /home/$USER
 RUN rosdep update
 
 # Create workspace
-RUN mkdir -p uuv_ws/src/uuv_simulator
-
-# Copy the VRX repository from the local file system
-# We can't use the USER:GROUP variables until Docker adds support to --chown
-#COPY --chown=developer:developer . uuv_ws/src/uuv_simulator
-
-# Compile the VRX project.
-#RUN /bin/bash -c ". /opt/ros/${DIST}/setup.bash && cd uuv_ws && catkin_make"
+RUN mkdir -p uuv_ws/src/
 
 # Source all the needed environment files.
 RUN /bin/sh -c 'echo ". /opt/ros/${DIST}/setup.bash" >> ~/.bashrc' \
  && /bin/sh -c 'echo ". /usr/share/gazebo/setup.sh" >> ~/.bashrc'
-# && /bin/sh -c 'echo ". ~/uuv_ws/devel/setup.sh" >> ~/.bashrc'
 
 ENTRYPOINT ["fixuid"]
 
