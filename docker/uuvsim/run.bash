@@ -77,9 +77,9 @@ fi
 
 DOCKER_OPTS=
 # Example: Bind mount a local repository on the host machine:
-#VRX_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
-VRX_PATH=${HOME}/uuv_ws/src
-DOCKER_OPTS="--mount type=bind,source=${VRX_PATH},target=/home/developer/uuv_ws/src"
+#DAVE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
+DAVE_PATH=${HOME}/uuv_ws/src
+DOCKER_OPTS="--mount type=bind,source=${DAVE_PATH},target=/home/developer/uuv_ws/src"
 
 
 # Share your vim settings.
