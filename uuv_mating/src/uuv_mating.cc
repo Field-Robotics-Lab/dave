@@ -23,6 +23,8 @@ namespace gazebo
 
   private: physics::LinkPtr plugLink;
 
+  private: physics::LinkPtr tubeLink;
+
   private: physics::ModelPtr socketModel;
 
   private: physics::LinkPtr socketLink;
@@ -39,6 +41,8 @@ namespace gazebo
 
   public: ignition::math::Vector3d grabbedForce;
 
+  public: ignition::math::Vector3d someforce;
+
   private: bool joined = false;
   
   private: bool unlocked = true;
@@ -52,8 +56,11 @@ namespace gazebo
       this->world = _world;
       this->socketModel = this->world->ModelByName("socket_bar");
       this->plugModel = this->world->ModelByName("grab_bar");
+
+
       
       this->sensorPlate = this->socketModel->GetLink("sensor_plate");
+      this->tubeLink = this->socketModel->GetLink("tube");
       this->plugLink = this->plugModel->GetLink("grab_bar_link");
 
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
@@ -180,9 +187,9 @@ namespace gazebo
           "plug_socket_joint",
           // "fixed",
           "prismatic",
-          sensorPlate,
+          tubeLink,
           plugLink);
-        prismaticJoint->Load(this->sensorPlate, this->plugLink, 
+        prismaticJoint->Load(this->tubeLink, this->plugLink, 
           // ignition::math::Pose3<double>(0,0,0,0,0,0));
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
@@ -206,7 +213,7 @@ namespace gazebo
 
         // }
 
-        prismaticJoint->SetUpperLimit(0, 0.5);
+        prismaticJoint->SetUpperLimit(0, 1.0);
         // prismaticJoint->SetLowerLimit(0, -10);
         // prismaticJoint->stiffnessCoefficient[0] = 50;
         prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
@@ -217,12 +224,37 @@ namespace gazebo
         // this makes gazebo crash on touch
         // prismaticJoint->SetStiffness(0,100);
         // prismaticJoint->SetDamping(0,100);
-      grabbedForce = sensorPlate->RelativeForce();
-      // if (abs(grabbedForce[1] >= 2)){
-      printf("%.1f %.1f %.1f \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
-        // this->freezeJoint(this->prismaticJoint);
-        // printf("forzen the joint \n");
-      // }
+
+      if (true){
+        grabbedForce = sensorPlate->RelativeForce();
+        if (true){
+        // if (abs(grabbedForce[0] >= 0)){
+          // printf("%.1f %.1f %.1f \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
+          if (grabbedForce[2] >5){
+              printf("\t\t%.1f \n",  grabbedForce[2]);
+
+          } else if (grabbedForce[2] < -5) {
+              printf("%.1f \n",  grabbedForce[2]);
+
+          }
+          // this->freezeJoint(this->prismaticJoint);
+          // printf("forzen the joint \n");
+        }
+
+      }
+
+      if (false){
+        printf("%.1f \n",  prismaticJoint->GetForce(0));
+      }
+
+
+      // doesnt work for some reason
+      if (false){
+        prismaticJoint->LinkForce(0);
+        // someforce = prismaticJoint->LinkForce(0);
+        // gzmsg << f[0];
+        // printf("%.1f \n",  f[0]);
+      }
       // }
     }
   };
