@@ -1,22 +1,48 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
   <model name="glider_hybrid_whoi">
-    <static>false</static>
+    <static>true</static>
     <link name="base_link">
       <visual name="visual">
+        <pose>0 0 1 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://glider_hybrid_whoi/mesh/glider_hybrid_whoi.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_hybrid_whoi/mesh/glider_hybrid_whoi_body.dae</uri>
           </mesh>
         </geometry>
       </visual>
       <collision name="collision">
+        <pose>0 0 1 0 0 0</pose>
         <geometry>
           <mesh>
+            <scale>1.2 1.2 1.2</scale>
             <uri>model://glider_hybrid_whoi/mesh/glider_hybrid_whoi_collision.dae</uri>
           </mesh>
         </geometry>
       </collision>
+    </link>
+    <link name="right_propeller_link">
+      <visual name="visual">
+        <pose>0 0 1 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_hybrid_whoi/mesh/glider_hybrid_whoi_right_propeller.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <link name="left_propeller_link">
+      <visual name="visual">
+        <pose>0 0 1 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_hybrid_whoi/mesh/glider_hybrid_whoi_left_propeller.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
     </link>
   </model>
 </sdf>
