@@ -170,7 +170,7 @@ namespace gazebo
   public: void Update()
     {
       // connect the socket and the plug after 5 seconds
-      if (this->world->SimTime() > 2.0 && joined == false)
+      if (this->world->SimTime() > 0.0 && joined == false)
       {
         printf("joint formed\n");
         gzmsg << world->Physics()->GetType();
@@ -178,34 +178,52 @@ namespace gazebo
         this->joined = true;
         this->prismaticJoint = plugModel->CreateJoint(
           "plug_socket_joint",
-          "fixed",
-          // "prismatic",
+          // "fixed",
+          "prismatic",
           sensorPlate,
           plugLink);
-        prismaticJoint->Load(this->socketLink, this->plugLink, 
-          ignition::math::Pose3<double>(ignition::math::Vector3<double>(1, 0, 0), 
+        prismaticJoint->Load(this->sensorPlate, this->plugLink, 
+          // ignition::math::Pose3<double>(0,0,0,0,0,0));
+          ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
         // prismaticJoint->SetUpperLimit(0, 0.3);
         prismaticJoint->Init();
-        // prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
-        // prismaticJoint->SetUpperLimit(0, 0.5);
-        // prismaticJoint->SetLowerLimit(0, 0);
+        prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(0, 0, 1));
+        // if (prismaticJoint->SetParam("hi_stop", 0, 3.0)){
+        //     printf("Succeeded\n");
+            
+        //   }
+        //   else{
+        //     printf("Failed\n");
+
+        // }
+        // if (prismaticJoint->SetParam("lo_stop", 0, -3.0)){
+        //     printf("Succeeded\n");
+            
+        //   }
+        //   else{
+        //     printf("Failed\n");
+
+        // }
+
+        prismaticJoint->SetUpperLimit(0, 0.5);
+        // prismaticJoint->SetLowerLimit(0, -10);
         // prismaticJoint->stiffnessCoefficient[0] = 50;
-        // prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
+        prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
       }
 
-      if (this->world->SimTime() > 4.0 && joined)
-      {
+      // if (this->world->SimTime() > 4.0 && joined)
+      // {
         // this makes gazebo crash on touch
         // prismaticJoint->SetStiffness(0,100);
         // prismaticJoint->SetDamping(0,100);
-        grabbedForce = sensorPlate->RelativeForce();
-        if (abs(grabbedForce[1] >= 2)){
-          printf("%.1f \n", grabbedForce[1]);
-          // this->freezeJoint(this->prismaticJoint);
-          // printf("forzen the joint \n");
-        }
-      }
+      grabbedForce = sensorPlate->RelativeForce();
+      // if (abs(grabbedForce[1] >= 2)){
+      printf("%.1f %.1f %.1f \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
+        // this->freezeJoint(this->prismaticJoint);
+        // printf("forzen the joint \n");
+      // }
+      // }
     }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)

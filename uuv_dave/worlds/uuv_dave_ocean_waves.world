@@ -135,29 +135,29 @@
       <child>socket_bar::tube</child>
     </joint> -->
 
-    <!-- <model name ='grab_bar'>
+    <model name ='grab_bar'>
       <pose>2 0 -99.17 0 1.57 0</pose>
       <link name ='grab_bar_link'>
         <collision name ='collision'>
           <laser_retro>255</laser_retro>
           <geometry>
-            <box><size>0.05 0.05 0.5</size></box>
+            <box><size>0.05 0.05 0.6</size></box>
           </geometry>
         </collision>
         <visual name ='visual'>
           <geometry>
-            <box><size>0.05 0.05 0.5</size></box>
+            <box><size>0.05 0.05 0.6</size></box>
           </geometry>
         </visual>
       </link>
-      <joint name = "fj" type="fixed">
+      <!-- <joint name = "fj" type="fixed">
         <parent>socket_bar::sensor_plate</parent>
         <child>grab_bar_link</child>
-      </joint>
-    </model> -->
+      </joint> -->
+    </model>
 
 
-    <!-- <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/> -->
+    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
