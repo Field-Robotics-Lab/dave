@@ -63,7 +63,11 @@
             <visual>
                 <origin xyz="0 0 ${-base_height/2.5}" rpy="0 0 0"/>
                 <geometry>
-                    <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" />
+                    <!-- <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" /> -->
+                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator.dae"/> -->
+                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-base-bigarm.dae"/> -->
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-root.dae"/>
+                    <!-- <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" /> -->
                 </geometry>
             </visual>
 
@@ -89,7 +93,7 @@
             <visual>
                 <origin xyz="${shoulder_link_com}" rpy="0 0 0"/>
                 <geometry>
-                    <cylinder radius="${predator_shoulder_radius}" length="${predator_shoulder_height}" />
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-base.dae"/>
                 </geometry>
             </visual>
 
@@ -126,7 +130,9 @@
             <visual>
                 <origin xyz="${predator_upper_arm_length/2} 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <cylinder radius="${0.5 * upper_arm_width}" length="${predator_upper_arm_length}"/>
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-upperarm.dae"/>
+                <!-- Predator-upperarm.dae -->
+                    <!-- <cylinder radius="${0.5 * upper_arm_width}" length="${predator_upper_arm_length}"/> -->
                 </geometry>
             </visual>
 
@@ -165,7 +171,10 @@
             <visual>
                 <origin xyz="${elbow_link_x_disp} ${-predator_elbow_length/2} 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
-                    <cylinder radius="${0.5 * elbow_link_height}" length="${predator_elbow_length}"/>
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-forearm.dae"/>
+                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-base-bigarm.dae"/> -->
+                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-claw-left.dae"/> -->
+                    <!-- <cylinder radius="${0.5 * elbow_link_height}" length="${predator_elbow_length}"/> -->
                 </geometry>
             </visual>
 
@@ -202,9 +211,12 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${forearm_com}" rpy="${0.5*PI} 0 0"/>
+                <origin xyz="0 0 0" rpy="${0.5*PI} 0 0"/>
+                <!-- <origin xyz="${forearm_com}" rpy="${0.5*PI} 0 0"/> -->
                 <geometry>
-                    <cylinder radius="${0.5 * forearm_width}" length="${forearm_height}"/>
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-knuckle.dae"/>
+                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-hand.dae"/> -->
+                    <!-- <cylinder radius="${0.5 * forearm_width}" length="${forearm_height}"/> -->
                 </geometry>
             </visual>
 
@@ -239,12 +251,12 @@
                 <origin xyz="${wrist_com}" rpy="0 0 0"/>
             </xacro:link_box_inertial>
 
-            <visual>
+            <!-- <visual>
                 <origin xyz="${predator_wrist_height/2} 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
                     <cylinder radius="${0.5 * wrist_height}" length="${predator_wrist_height}"/>
                 </geometry>
-            </visual>
+            </visual> -->
 
             <collision>
                 <origin xyz="${wrist_com}" rpy="0 ${0.5*pi} 0"/>
