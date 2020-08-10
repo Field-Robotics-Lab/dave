@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(uuv_mating)
 
+
+find_package(roscpp REQUIRED)
+find_package(std_msgs REQUIRED)
+include_directories(${roscpp_INCLUDE_DIRS})
+include_directories(${std_msgs_INCLUDE_DIRS})
+
 # Check for c++11 / c++0x support
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -38,7 +44,7 @@ catkin_package(
 )
 
 add_library(uuv_mating_plugin SHARED src/uuv_mating.cc)
-target_link_libraries(uuv_mating_plugin ${GAZEBO_LIBRARIES})
+target_link_libraries(uuv_mating_plugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
 
 add_library(uuv_move_joint SHARED src/uuv_move_joint.cc)
 target_link_libraries(uuv_move_joint ${GAZEBO_LIBRARIES})

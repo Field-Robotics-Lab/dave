@@ -6,6 +6,11 @@
 #include <gazebo/physics/Collision.hh>
 #include <gazebo/sensors/sensors.hh>
 
+#include "ros/ros.h"
+#include "std_msgs/Float64.h"
+
+#include <sstream>
+
 namespace gazebo
 {
   class WorldUuvPlugin : public WorldPlugin
@@ -49,6 +54,21 @@ namespace gazebo
 
   private: gazebo::event::ConnectionPtr updateConnection;
 
+  public: ros::Publisher chatter_pub;
+
+
+  /// \brief A node use for ROS transport
+  private: std::unique_ptr<ros::NodeHandle> rosNode;
+
+  /// \brief A ROS subscriber
+  // private: ros::Subscriber rosSub;
+
+  /// \brief A ROS callbackqueue that helps process messages
+  // private: ros::CallbackQueue rosQueue;
+
+  /// \brief A thread the keeps running the rosQueue
+  // private: std::thread rosQueueThread;
+
 
   public: WorldUuvPlugin() : WorldPlugin(){}
 
@@ -65,117 +85,53 @@ namespace gazebo
 
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
           std::bind(&WorldUuvPlugin::Update, this));
-    }
 
-  private: bool checkRollAlignment(){
-      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
-      return abs(plugRotation[0] - socketRotation[0]) < 0.1;
-    }
 
-  private: bool checkPitchAlignment(){
-      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
-      return abs(plugRotation[1] - socketRotation[1]) < 0.1;
-    }
-
-  private:bool checkYawAlignment(){
-      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
-      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
-      return abs(plugRotation[2] - socketRotation[2]) < 0.1;
-    }
-
-  private: bool checkRotationalAlignment()
-    {
-      if (this->checkYawAlignment() && this->checkPitchAlignment() && this->checkRollAlignment())
+      // Make sure the ROS node for Gazebo has already been initialized
+      if (!ros::isInitialized())
       {
-        // printf("Aligned, ready for insertion  \n");
-        return true;
+        ROS_INFO("############ \n\n not inited\n#########");
+        int argc = 0;
+        char **argv = NULL;
+        ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
       }
-      else
-      {
-        // printf("Disaligned, not ready for mating  \n");
-        return false;
-      }
+
+      // Create our ROS node. This acts in a similar manner to
+      // the Gazebo node
+      this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
+      chatter_pub = this->rosNode->advertise<std_msgs::Float64>("chatter", 1000);
+
+      
+      // Create a named topic, and subscribe to it.
+      // ros::SubscribeOptions so =
+      //   ros::SubscribeOptions::create<std_msgs::Float32>(
+      //       "/" + this->model->GetName() + "/vel_cmd",
+      //       1,
+      //       boost::bind(&VelodynePlugin::OnRosMsg, this, _1),
+      //       ros::VoidPtr(), &this->rosQueue);
+      // this->rosSub = this->rosNode->subscribe(so);
+
+      // Spin up the queue helper thread.
+      // this->rosQueueThread =
+      // std::thread(std::bind(&VelodynePlugin::QueueThread, this));
+  
     }
 
-  private: bool checkVerticalAlignment()
-    {
-      socket_pose = socketModel->RelativePose();
-      ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
-      // printf("%s  \n", typeid(socketPositon).name());
 
-      plug_pose = plugModel->RelativePose();
-      ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
 
-      bool onSameVerticalLevel = abs(plugPosition[2] - socketPositon[2]) < 0.1;
-      if (onSameVerticalLevel)
-      {
-        // printf("z=%.2f  \n", plugPosition[2]);
-        // printf("Share same vertical level  \n");
-        return true;
-      }
-      return false;
-    }
 
-  private: bool isAlligned()
-    {
-      if(checkVerticalAlignment() && checkRotationalAlignment()){
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-  private: bool checkProximity()
-    {
-      socket_pose = socketModel->WorldPose();
-      // socket_pose = socketLink->RelativePose();
-      ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
-      // printf("%s  \n", typeid(socketPositon).name());
-
-      plug_pose = plugModel->RelativePose();
-      ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
-      // printf("%f %f %f Within Proximity  \n", plugPosition[0], plugPosition[1], plugPosition[2]);
-      float xdiff_squared = pow(abs(plugPosition[0] - socketPositon[0]),2);
-      float ydiff_squared = pow(abs(plugPosition[1] - socketPositon[1]),2);
-      float zdiff_squared = pow(abs(plugPosition[2] - socketPositon[2]),2);
-
-      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 1;
-      if (withinProximity)
-      {
-        // printf("%f Within Proximity  \n", plugPosition[0]);
-        return true;
-      }else {
-
-        // printf("not within Proximity  \n");
-      }
-      return false;
-    }
-
-  private: bool isReadyForInsertion()
-    {
-      if (this->checkProximity() && this->isAlligned()){
-        return true;
-        // printf("Insert \n");
-
-      } else{
-
-        // printf("Cant insert \n");
-        return false;
-      }
-    }
-
-  public: void freezeJoint(physics::JointPtr prismaticJoint){
-    double currentPosition = prismaticJoint->Position(0);
-    // TODO static behaviour test
-    prismaticJoint->SetUpperLimit(0, currentPosition+1);
-    prismaticJoint->SetLowerLimit(0, currentPosition);
-    printf("forzen the joint \n");
-  }
   
   public: void Update()
     {
+
+      /**
+      * The publish() function is how you send messages. The parameter
+      * is the message object. The type of this object must agree with the type
+      * given as a template parameter to the advertise<>() call, as was done
+      * in the constructor above.
+      */
+
+
       // connect the socket and the plug after 5 seconds
       if (this->world->SimTime() > 0.0 && joined == false)
       {
@@ -213,6 +169,8 @@ namespace gazebo
 
         // }
 
+
+
         prismaticJoint->SetUpperLimit(0, 1.0);
         // prismaticJoint->SetLowerLimit(0, -10);
         // prismaticJoint->stiffnessCoefficient[0] = 50;
@@ -226,7 +184,8 @@ namespace gazebo
         // prismaticJoint->SetDamping(0,100);
 
       if (true){
-        grabbedForce = sensorPlate->RelativeForce();
+        // grabbedForce = sensorPlate->RelativeForce();
+        grabbedForce = plugLink->RelativeForce();
         if (true){
         // if (abs(grabbedForce[0] >= 0)){
           // printf("%.1f %.1f %.1f \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
@@ -237,6 +196,11 @@ namespace gazebo
               printf("%.1f \n",  grabbedForce[2]);
 
           }
+          std_msgs::Float64 msg;
+          msg.data = grabbedForce[2];
+          chatter_pub.publish(msg);
+
+          // ROS_INFO("%s", msg.data.c_str());
           // this->freezeJoint(this->prismaticJoint);
           // printf("forzen the joint \n");
         }
