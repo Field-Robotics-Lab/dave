@@ -1,8 +1,0 @@
-#ifndef TRANSPONDERPLUGIN__HPP__
-#define TRANSPONDERPLUGIN__HPP__
-
-
-
-
-
-#endif
