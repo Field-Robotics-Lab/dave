@@ -1,6 +1,6 @@
 <launch>
     <arg name="gui" default="true"/>
-    <arg name="paused" default="true"/>
+    <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>

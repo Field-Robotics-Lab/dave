@@ -61,7 +61,11 @@ namespace gazebo
 
   public: physics::JointWrench FT;
 
-  public: 
+  public: std::string collisionTopic;
+
+  private: gazebo::transport::SubscriberPtr collisionSub;
+
+  private: gazebo::transport::NodePtr gzNode;
 
 
   /// \brief A node use for ROS transport
@@ -77,9 +81,16 @@ namespace gazebo
   // private: std::thread rosQueueThread;
 
 
-  public: WorldUuvPlugin() : WorldPlugin(){}
+  public: WorldUuvPlugin() 
+    : WorldPlugin(), gzNode(new gazebo::transport::Node()){
+  }
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
+
+      gzNode->Init();
+      this->collisionTopic = "/gazebo/oceans_waves/physics/contacts";
+      this->collisionSub = gzNode->Subscribe(collisionTopic, &WorldUuvPlugin::OnCollisionMsg, this);
+
       this->world = _world;
       this->socketModel = this->world->ModelByName("socket_bar");
       this->plugModel = this->world->ModelByName("grab_bar");
@@ -107,12 +118,33 @@ namespace gazebo
       this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
       chatter_pub = this->rosNode->advertise<std_msgs::Float64>("chatter", 1000);
 
-      // std::string collisionTopic = std::string("/gazebo/") + worldName + std::string("/physics/contacts");
-      // collisionSub = gzNode->Subscribe(collisionTopic, &ScoringPlugin::OnCollisionMsg, this);
     }
 
 
+  public: void OnCollisionMsg(ConstContactsPtr &_contacts) {
+    // _contacts->contact_size();
+    // std::string wamvCollisionStr1 = _contacts->contact(1).collision1();
+    // std::string wamvCollisionStr2 = _contacts->contact(2).collision2();
+    for (unsigned int i = 0; i < _contacts->contact_size(); ++i) {
+      std::string wamvCollisionStr1 = _contacts->contact(i).collision1();
+      std::string wamvCollisionStr2 = _contacts->contact(i).collision2();
+      ROS_INFO( "%s || %s", wamvCollisionStr1.c_str() , wamvCollisionStr2.c_str());
+      
+      std::cout << typeid(_contacts->contact(i).count).name() << '\n';
+      // physics::JointWrench[255] forces_touch = _contacts->contact(i).wrench;
+      // ignition::math::Vector3d 	ff1 = forces_touch.body1Force;
+      // ignition::math::Vector3d 	ff2 = forces_touch.body2Force;
+      // printf("%.2f %.2f %.2f || %.2f %.2f %.2f || ",  ff1[0],ff1[1],ff1[2], ff2[0],ff2[1],ff2[2]);
+    }
 
+    // ROS_INFO_THROTTLE(0.5, _contacts->contact_size());
+    // std::string wamvCollisionSubStr1 =
+    //     wamvCollisionStr1.substr(0, wamvCollisionStr1.find("lump"));
+    // std::string wamvCollisionSubStr2 =
+    //     wamvCollisionStr2.substr(0, wamvCollisionStr2.find("lump"));
+
+    // return;
+  }
 
   
   public: void Update()
@@ -184,7 +216,7 @@ namespace gazebo
 
       }
 
-      if (true){
+      if (false){
         // printf("Joint force: %.1f \n",  prismaticJoint->GetForce(0));
         ROS_INFO_STREAM_THROTTLE(0.1,this->prismaticJoint->GetSpringReferencePosition(0));
         // printf("Joint psoiton: %.5f \n",  this->prismaticJoint->GetSpringReferencePosition(0));
