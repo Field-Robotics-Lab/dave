@@ -1,6 +1,7 @@
 <?xml version='1.0'?>
 <sdf version ='1.6'>
   <model name ='socket_bar'>
+    <static>true</static>
     <link name ='tube'>
       <inertial>
         <inertia>

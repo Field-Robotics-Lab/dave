@@ -136,7 +136,7 @@
     </joint> -->
 
     <model name ='grab_bar'>
-      <pose>2 0 -99.17 0 1.57 0</pose>
+      <pose>2.3 0 -99.17 0 1.57 0</pose>
       <link name ='grab_bar_link'>
         <collision name ='collision'>
           <laser_retro>255</laser_retro>
@@ -150,6 +150,17 @@
           </geometry>
         </visual>
       </link>
+      <inertial  name ='inertial'>
+        <inertia>
+          <ixx>1.0</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.0</iyy>
+          <iyz>0</iyz>
+          <izz>1.0</izz>
+        </inertia>
+        <mass>5.0</mass>
+      </inertial>
       <!-- <joint name = "fj" type="fixed">
         <parent>socket_bar::sensor_plate</parent>
         <child>grab_bar_link</child>

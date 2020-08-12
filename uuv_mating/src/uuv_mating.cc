@@ -5,7 +5,6 @@
 #include <string_view>
 #include <gazebo/physics/Collision.hh>
 #include <gazebo/sensors/sensors.hh>
-
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
 
@@ -56,6 +55,14 @@ namespace gazebo
 
   public: ros::Publisher chatter_pub;
 
+  public: double positiveCount = 0;
+
+  public: double negativeCount = 0;
+
+  public: physics::JointWrench FT;
+
+  public: 
+
 
   /// \brief A node use for ROS transport
   private: std::unique_ptr<ros::NodeHandle> rosNode;
@@ -83,6 +90,7 @@ namespace gazebo
       this->tubeLink = this->socketModel->GetLink("tube");
       this->plugLink = this->plugModel->GetLink("grab_bar_link");
 
+      
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
           std::bind(&WorldUuvPlugin::Update, this));
 
@@ -96,25 +104,11 @@ namespace gazebo
         ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
       }
 
-      // Create our ROS node. This acts in a similar manner to
-      // the Gazebo node
       this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
       chatter_pub = this->rosNode->advertise<std_msgs::Float64>("chatter", 1000);
 
-      
-      // Create a named topic, and subscribe to it.
-      // ros::SubscribeOptions so =
-      //   ros::SubscribeOptions::create<std_msgs::Float32>(
-      //       "/" + this->model->GetName() + "/vel_cmd",
-      //       1,
-      //       boost::bind(&VelodynePlugin::OnRosMsg, this, _1),
-      //       ros::VoidPtr(), &this->rosQueue);
-      // this->rosSub = this->rosNode->subscribe(so);
-
-      // Spin up the queue helper thread.
-      // this->rosQueueThread =
-      // std::thread(std::bind(&VelodynePlugin::QueueThread, this));
-  
+      // std::string collisionTopic = std::string("/gazebo/") + worldName + std::string("/physics/contacts");
+      // collisionSub = gzNode->Subscribe(collisionTopic, &ScoringPlugin::OnCollisionMsg, this);
     }
 
 
@@ -124,17 +118,9 @@ namespace gazebo
   public: void Update()
     {
 
-      /**
-      * The publish() function is how you send messages. The parameter
-      * is the message object. The type of this object must agree with the type
-      * given as a template parameter to the advertise<>() call, as was done
-      * in the constructor above.
-      */
-
-
-      // connect the socket and the plug after 5 seconds
       if (this->world->SimTime() > 0.0 && joined == false)
       {
+        this->tubeLink->SetLinkStatic(true);
         printf("joint formed\n");
         gzmsg << world->Physics()->GetType();
 
@@ -146,35 +132,18 @@ namespace gazebo
           tubeLink,
           plugLink);
         prismaticJoint->Load(this->tubeLink, this->plugLink, 
-          // ignition::math::Pose3<double>(0,0,0,0,0,0));
           ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0), 
           ignition::math::Quaternion<double>(0, 0, 0, 0)));
         // prismaticJoint->SetUpperLimit(0, 0.3);
         prismaticJoint->Init();
         prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(0, 0, 1));
-        // if (prismaticJoint->SetParam("hi_stop", 0, 3.0)){
-        //     printf("Succeeded\n");
-            
-        //   }
-        //   else{
-        //     printf("Failed\n");
-
-        // }
-        // if (prismaticJoint->SetParam("lo_stop", 0, -3.0)){
-        //     printf("Succeeded\n");
-            
-        //   }
-        //   else{
-        //     printf("Failed\n");
-
-        // }
-
-
 
         prismaticJoint->SetUpperLimit(0, 1.0);
         // prismaticJoint->SetLowerLimit(0, -10);
         // prismaticJoint->stiffnessCoefficient[0] = 50;
-        prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
+        // prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
+        // prismaticJoint->SetProvideFeedback(true);
+        // prismaticJoint->SetStiffness (0, 50000);
       }
 
       // if (this->world->SimTime() > 4.0 && joined)
@@ -183,18 +152,26 @@ namespace gazebo
         // prismaticJoint->SetStiffness(0,100);
         // prismaticJoint->SetDamping(0,100);
 
-      if (true){
+      if (false){
+        // grabbedForce = sensorPlate->RelativeForce();
+        this->FT = prismaticJoint->GetForceTorque(0);
+        ignition::math::Vector3d f1 = this->FT.body1Force;
+        ignition::math::Vector3d f2 = this->FT.body2Force;
+        printf("%.2f %.2f %.2f || %.2f %.2f %.2f || ",  f1[0],f1[1],f1[2], f2[0],f2[1],f2[2]);
         // grabbedForce = sensorPlate->RelativeForce();
         grabbedForce = plugLink->RelativeForce();
-        if (true){
+        // plugLink->UpdateVisualMsg()
+        if (false){
         // if (abs(grabbedForce[0] >= 0)){
           // printf("%.1f %.1f %.1f \n", grabbedForce[0], grabbedForce[1], grabbedForce[2]);
-          if (grabbedForce[2] >5){
-              printf("\t\t%.1f \n",  grabbedForce[2]);
+          double forceThresh =5;
+          if (grabbedForce[2] >forceThresh){
+              positiveCount+= grabbedForce[2];
+              printf("\t\t%.1f \t\t %.1f\n",  grabbedForce[2],positiveCount);
 
-          } else if (grabbedForce[2] < -5) {
-              printf("%.1f \n",  grabbedForce[2]);
-
+          } else if (grabbedForce[2] < -forceThresh) {
+              negativeCount+= grabbedForce[2];
+              printf("%.1f \t\t %.1f\n",  grabbedForce[2],negativeCount);
           }
           std_msgs::Float64 msg;
           msg.data = grabbedForce[2];
@@ -207,8 +184,11 @@ namespace gazebo
 
       }
 
-      if (false){
-        printf("%.1f \n",  prismaticJoint->GetForce(0));
+      if (true){
+        // printf("Joint force: %.1f \n",  prismaticJoint->GetForce(0));
+        ROS_INFO_STREAM_THROTTLE(0.1,this->prismaticJoint->GetSpringReferencePosition(0));
+        // printf("Joint psoiton: %.5f \n",  this->prismaticJoint->GetSpringReferencePosition(0));
+        // printf("Joint psoiton: %.5f \n",  prismaticJoint->Position(0));
       }
 
 
