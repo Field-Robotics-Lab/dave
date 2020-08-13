@@ -53,6 +53,8 @@ namespace gazebo
 
   public: ros::Publisher chatter_pub;
 
+  private: std::unique_ptr<ros::NodeHandle> rosNode;
+
   public: double positiveCount = 0;
 
   public: double negativeCount = 0;
@@ -86,6 +88,20 @@ namespace gazebo
       
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
           std::bind(&WorldUuvPlugin::Update, this));
+
+      if (!ros::isInitialized())
+      {
+        ROS_INFO("############ \n\n not inited\n#########");
+        int argc = 0;
+        char **argv = NULL;
+        ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
+      }
+
+      // Create our ROS node. This acts in a similar manner to
+      // the Gazebo node
+      this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
+      chatter_pub = this->rosNode->advertise<std_msgs::Float64>("chatter", 1000);
+
     }
 
   public: void freezeJoint(physics::JointPtr prismaticJoint){
@@ -131,13 +147,18 @@ namespace gazebo
            ||
            contact->collision1->GetLink()->GetName() == "grab_bar_link" && contact->collision2->GetLink()->GetName() == "sensor_plate"
         ){
-          ROS_INFO("%s %f %s %f", contact->collision1->GetLink()->GetName().c_str(),
-          contact->wrench[i].body1Force[2],
-          contact->collision2->GetLink()->GetName().c_str(),
-          contact->wrench[i].body2Force[2]);
+          std_msgs::Float64 msg;
+          msg.data = contact->wrench[i].body1Force[2];
+          chatter_pub.publish(msg);
 
           if (abs(contact->wrench[i].body1Force[2]) > 30){
+
+            ROS_INFO("%s %f %s %f", contact->collision1->GetLink()->GetName().c_str(),
+            contact->wrench[i].body1Force[2],
+            contact->collision2->GetLink()->GetName().c_str(),
+            contact->wrench[i].body2Force[2]);
             collisionForceCount++;
+
             if (collisionForceCount > 10){
               ROS_INFO("freeze");
               this->freezeJoint(this->prismaticJoint);
