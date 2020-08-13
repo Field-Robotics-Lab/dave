@@ -14,7 +14,7 @@
           <iyz>0</iyz>
           <izz>1</izz>
         </inertia>
-        <mass>100.0</mass>
+        <mass>1000.0</mass>
       </inertial>
       <visual name ='visual1'>
         <pose>0.12 0 0 0 0 0</pose>
