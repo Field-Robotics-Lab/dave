@@ -67,6 +67,11 @@ namespace gazebo
 
   private: gazebo::transport::NodePtr gzNode;
 
+  private: physics::ContactManager* _contactManagerPtr;
+
+  public:  physics::ContactPtr _contactPtr;
+  
+  // public:  std::vector<Contact*> & contactVector;
 
   /// \brief A node use for ROS transport
   private: std::unique_ptr<ros::NodeHandle> rosNode;
@@ -87,16 +92,17 @@ namespace gazebo
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
 
-      gzNode->Init();
-      this->collisionTopic = "/gazebo/oceans_waves/physics/contacts";
-      this->collisionSub = gzNode->Subscribe(collisionTopic, &WorldUuvPlugin::OnCollisionMsg, this);
+      _contactManagerPtr = _world->Physics()->GetContactManager();
+      // _contactManagerPtr->Init(_world);
+      // gzNode->Init();
+      // this->collisionTopic = "/gazebo/oceans_waves/physics/contacts";
+      // this->collisionSub = gzNode->Subscribe(collisionTopic, &WorldUuvPlugin::OnCollisionMsg, this);
 
       this->world = _world;
       this->socketModel = this->world->ModelByName("socket_bar");
       this->plugModel = this->world->ModelByName("grab_bar");
 
 
-      
       this->sensorPlate = this->socketModel->GetLink("sensor_plate");
       this->tubeLink = this->socketModel->GetLink("tube");
       this->plugLink = this->plugModel->GetLink("grab_bar_link");
@@ -121,30 +127,30 @@ namespace gazebo
     }
 
 
-  public: void OnCollisionMsg(ConstContactsPtr &_contacts) {
-    // _contacts->contact_size();
-    // std::string wamvCollisionStr1 = _contacts->contact(1).collision1();
-    // std::string wamvCollisionStr2 = _contacts->contact(2).collision2();
-    for (unsigned int i = 0; i < _contacts->contact_size(); ++i) {
-      std::string wamvCollisionStr1 = _contacts->contact(i).collision1();
-      std::string wamvCollisionStr2 = _contacts->contact(i).collision2();
-      ROS_INFO( "%s || %s", wamvCollisionStr1.c_str() , wamvCollisionStr2.c_str());
+  //     std::cout << typeid(_contacts->contact(i).count).name() << '\n';
+  // public: void OnCollisionMsg(ConstContactsPtr &_contacts) {
+  //   // _contacts->contact_size();
+  //   // std::string wamvCollisionStr1 = _contacts->contact(1).collision1();
+  //   // std::string wamvCollisionStr2 = _contacts->contact(2).collision2();
+  //   for (unsigned int i = 0; i < _contacts->contact_size(); ++i) {
+  //     std::string wamvCollisionStr1 = _contacts->contact(i).collision1();
+  //     std::string wamvCollisionStr2 = _contacts->contact(i).collision2();
+  //     ROS_INFO( "%s || %s", wamvCollisionStr1.c_str() , wamvCollisionStr2.c_str());
       
-      std::cout << typeid(_contacts->contact(i).count).name() << '\n';
-      // physics::JointWrench[255] forces_touch = _contacts->contact(i).wrench;
-      // ignition::math::Vector3d 	ff1 = forces_touch.body1Force;
-      // ignition::math::Vector3d 	ff2 = forces_touch.body2Force;
-      // printf("%.2f %.2f %.2f || %.2f %.2f %.2f || ",  ff1[0],ff1[1],ff1[2], ff2[0],ff2[1],ff2[2]);
-    }
+  //     // physics::JointWrench[255] forces_touch = _contacts->contact(i).wrench;
+  //     // ignition::math::Vector3d 	ff1 = forces_touch.body1Force;
+  //     // ignition::math::Vector3d 	ff2 = forces_touch.body2Force;
+  //     // printf("%.2f %.2f %.2f || %.2f %.2f %.2f || ",  ff1[0],ff1[1],ff1[2], ff2[0],ff2[1],ff2[2]);
+  //   }
 
-    // ROS_INFO_THROTTLE(0.5, _contacts->contact_size());
-    // std::string wamvCollisionSubStr1 =
-    //     wamvCollisionStr1.substr(0, wamvCollisionStr1.find("lump"));
-    // std::string wamvCollisionSubStr2 =
-    //     wamvCollisionStr2.substr(0, wamvCollisionStr2.find("lump"));
+  //   // ROS_INFO_THROTTLE(0.5, _contacts->contact_size());
+  //   // std::string wamvCollisionSubStr1 =
+  //   //     wamvCollisionStr1.substr(0, wamvCollisionStr1.find("lump"));
+  //   // std::string wamvCollisionSubStr2 =
+  //   //     wamvCollisionStr2.substr(0, wamvCollisionStr2.find("lump"));
 
-    // return;
-  }
+  //   // return;
+  // }
 
   
   public: void Update()
@@ -183,6 +189,15 @@ namespace gazebo
         // this makes gazebo crash on touch
         // prismaticJoint->SetStiffness(0,100);
         // prismaticJoint->SetDamping(0,100);
+        ROS_INFO_STREAM(_contactManagerPtr->GetContactCount());
+
+        // try {
+          
+        //     std::cout << typeid(_contactManagerPtr->GetFilterCount()).name() << '\n';
+        // } catch (const std::runtime_error& e) {
+        //     printf("testing stuff ");
+        // }
+        // contactVector->GetContacts();
 
       if (false){
         // grabbedForce = sensorPlate->RelativeForce();
