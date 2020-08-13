@@ -195,13 +195,22 @@ namespace gazebo
       for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++)
       {
 
-        ROS_INFO("collision %i of %u \n",i+1,this->world->Physics()->GetContactManager()->GetContactCount());
+        // ROS_INFO("collision %i of %u \n",i+1,this->world->Physics()->GetContactManager()->GetContactCount());
         // ROS_INFO("collision %i of %i \n",i,this->world->Physics()->GetContactManager()->GetContacts().size() - 1);
         physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
         // ROS_INFO("%s\n", contact->collision1->GetLink()->GetName());
+        if (contact->collision1->GetLink()->GetName() == "sensor_plate" && contact->collision2->GetLink()->GetName() == "grab_bar_link"
+           ||
+           contact->collision1->GetLink()->GetName() == "grab_bar_link" && contact->collision2->GetLink()->GetName() == "sensor_plate"
+        ){
+          // ROS_INFO("its actually working!!");
+          // std::cout << "contact between "<<contact->collision1->GetLink()->GetName()<<" and "
+          // << contact-> collision2-> GetLink()->GetName() <<std::endl; 
+          ROS_INFO("%f %f",contact->wrench[i].body1Force[2],contact->wrench[i].body2Force[2]);
+          // ROS_INFO("%f",contact->wrench[i].body2Force[2]);
 
-        std::cout << "contact between "<<contact->collision1->GetLink()->GetName()<<" and "
-        << contact-> collision2-> GetLink()->GetName() <<std::endl;          
+        }
+        // printf("%.2f %.2f %.2f || %.2f %.2f %.2f || ",  f1[0],f1[1],f1[2], f2[0],f2[1],f2[2]);
         // ROS_INFO("/////// \n");
       }
       // ROS_INFO("/////// \n");
