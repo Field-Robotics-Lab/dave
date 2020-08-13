@@ -1,12 +1,12 @@
-<!--
-UUV launch for project DAVE
--->
+<?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
+    <arg name="namespace" default="rexrov"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
+    <arg name="velocity_control" default="true"/>
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -18,6 +18,7 @@ UUV launch for project DAVE
         <arg name="debug" value="false"/>
         <arg name="verbose" value="true"/>
     </include>
+
 
     <!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
@@ -71,14 +72,21 @@ UUV launch for project DAVE
         <arg name="yaw" value="-1.8"/>
     </include>
 
-    <!-- joystick control for rexrov and oberon7 -->
-    <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="$(arg namespace)" />
+        <arg name="model_name" value="rexrov" />
+    </include>
+
+    <!-- joystick control for rexrov and oberon7, no velocity control-->
+    <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
         <arg name="model_name" value="rexrov"/>
     </include>
+    
 
     <!-- joint control for oberon7 -->
     <include file="$(find oberon7_control)/launch/joint_control.launch">
-        <arg name="uuv_name" value="rexrov"/>
+        <arg name="uuv_name" value="$(arg namespace)"/>
     </include>
 
     <!-- grabbable bar -->
