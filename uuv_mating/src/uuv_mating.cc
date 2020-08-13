@@ -65,16 +65,16 @@ namespace gazebo
 
   private: gazebo::transport::SubscriberPtr collisionSub;
 
-  private: gazebo::transport::NodePtr gzNode;
+  // private: gazebo::transport::NodePtr gzNode;
 
-  private: physics::ContactManager* _contactManagerPtr;
+  public: physics::ContactManager* _contactManagerPtr;
 
   public:  physics::ContactPtr _contactPtr;
   
   // public:  std::vector<Contact*> & contactVector;
 
   /// \brief A node use for ROS transport
-  private: std::unique_ptr<ros::NodeHandle> rosNode;
+  // private: std::unique_ptr<ros::NodeHandle> rosNode;
 
   /// \brief A ROS subscriber
   // private: ros::Subscriber rosSub;
@@ -87,12 +87,12 @@ namespace gazebo
 
 
   public: WorldUuvPlugin() 
-    : WorldPlugin(), gzNode(new gazebo::transport::Node()){
+    : WorldPlugin(){
+    // : WorldPlugin(), gzNode(new gazebo::transport::Node()){
   }
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
-
-      _contactManagerPtr = _world->Physics()->GetContactManager();
+      // _contactManagerPtr = _world->Physics()->GetContactManager();
       // _contactManagerPtr->Init(_world);
       // gzNode->Init();
       // this->collisionTopic = "/gazebo/oceans_waves/physics/contacts";
@@ -106,23 +106,23 @@ namespace gazebo
       this->sensorPlate = this->socketModel->GetLink("sensor_plate");
       this->tubeLink = this->socketModel->GetLink("tube");
       this->plugLink = this->plugModel->GetLink("grab_bar_link");
-
+      this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
       
       this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
           std::bind(&WorldUuvPlugin::Update, this));
 
 
       // Make sure the ROS node for Gazebo has already been initialized
-      if (!ros::isInitialized())
-      {
-        ROS_INFO("############ \n\n not inited\n#########");
-        int argc = 0;
-        char **argv = NULL;
-        ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
-      }
+      // if (!ros::isInitialized())
+      // {
+      //   ROS_INFO("############ \n\n not inited\n#########");
+      //   int argc = 0;
+      //   char **argv = NULL;
+      //   ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
+      // }
 
-      this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
-      chatter_pub = this->rosNode->advertise<std_msgs::Float64>("chatter", 1000);
+      // this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
+      // chatter_pub = this->rosNode->advertise<std_msgs::Float64>("chatter", 1000);
 
     }
 
@@ -177,6 +177,7 @@ namespace gazebo
         prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(0, 0, 1));
 
         prismaticJoint->SetUpperLimit(0, 1.0);
+        
         // prismaticJoint->SetLowerLimit(0, -10);
         // prismaticJoint->stiffnessCoefficient[0] = 50;
         // prismaticJoint->SetAnchor(0, ignition::math::Vector3<double>(1, 0, 0));
@@ -189,7 +190,26 @@ namespace gazebo
         // this makes gazebo crash on touch
         // prismaticJoint->SetStiffness(0,100);
         // prismaticJoint->SetDamping(0,100);
-        ROS_INFO_STREAM(_contactManagerPtr->GetContactCount());
+// _world->Physics()->GetContactManager()->GetContactCount();
+      // for(int i=0; i<this->world->Physics()->GetContactManager()->GetContacts().size(); i++)
+      for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++)
+      {
+
+        ROS_INFO("collision %i of %u \n",i+1,this->world->Physics()->GetContactManager()->GetContactCount());
+        // ROS_INFO("collision %i of %i \n",i,this->world->Physics()->GetContactManager()->GetContacts().size() - 1);
+        physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
+        // ROS_INFO("%s\n", contact->collision1->GetLink()->GetName());
+
+        std::cout << "contact between "<<contact->collision1->GetLink()->GetName()<<" and "
+        << contact-> collision2-> GetLink()->GetName() <<std::endl;          
+        // ROS_INFO("/////// \n");
+      }
+      // ROS_INFO("/////// \n");
+
+        // if (_contactManagerPtr->GetContactCount()){
+        // 
+        // }
+        // ROS_INFO_STREAM(_contactManagerPtr->GetContactCount()\n);
 
         // try {
           

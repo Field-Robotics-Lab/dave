@@ -65,6 +65,7 @@ namespace gazebo
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
       this->world = _world;
+      this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
       // this->socketModel = this->world->ModelByName("socket_bar");
       this->plugModel = this->world->ModelByName("grab_bar");
 
@@ -100,10 +101,13 @@ namespace gazebo
   public: void Update()
     {
       // grabbedForce = sensorPlate->RelativeForce();
-      grabbedForce = plugLink->RelativeForce();
-      std_msgs::Float64 msg;
-      msg.data = grabbedForce[0];
-      this->chatter_pub.publish(msg);
+      // grabbedForce = plugLink->RelativeForce();
+      // std_msgs::Float64 msg;
+      // msg.data = grabbedForce[0];
+      // this->chatter_pub.publish(msg);
+      int someNum = plugModel->GetWorld()->Physics()->GetContactManager()->GetContacts().size();
+      ROS_INFO("%i \n", someNum);
+
     }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
