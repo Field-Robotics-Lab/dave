@@ -66,6 +66,8 @@ namespace gazebo
   public: physics::ContactManager* _contactManagerPtr;
 
   public:  physics::ContactPtr _contactPtr;
+
+  public: int collisionForceCount = 0;
   
   public: WorldUuvPlugin() 
     : WorldPlugin(){
@@ -86,12 +88,20 @@ namespace gazebo
           std::bind(&WorldUuvPlugin::Update, this));
     }
 
+  public: void freezeJoint(physics::JointPtr prismaticJoint){
+      ROS_INFO("frozen!");
+      double currentPosition = prismaticJoint->Position(0);
+      ROS_INFO("current position is %f ", currentPosition );
+      prismaticJoint->SetUpperLimit(0, currentPosition);
+      prismaticJoint->SetLowerLimit(0, currentPosition);
+  }
+
   public: void Update()
     {
 
       if (this->world->SimTime() > 0.0 && joined == false)
       {
-        this->tubeLink->SetLinkStatic(true);
+        // this->tubeLink->SetLinkStatic(true);
         printf("joint formed\n");
         gzmsg << world->Physics()->GetType();
 
@@ -112,7 +122,6 @@ namespace gazebo
         prismaticJoint->SetUpperLimit(0, 1.0);
         
       }
-
       for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++)
       {
 
@@ -126,6 +135,16 @@ namespace gazebo
           contact->wrench[i].body1Force[2],
           contact->collision2->GetLink()->GetName().c_str(),
           contact->wrench[i].body2Force[2]);
+
+          if (abs(contact->wrench[i].body1Force[2]) > 30){
+            collisionForceCount++;
+            if (collisionForceCount > 10){
+              ROS_INFO("freeze");
+              this->freezeJoint(this->prismaticJoint);
+            }
+          } else {
+            collisionForceCount = 0;
+          }
         }
       }
     }

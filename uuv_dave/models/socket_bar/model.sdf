@@ -1,7 +1,9 @@
 <?xml version='1.0'?>
 <sdf version ='1.6'>
   <model name ='socket_bar'>
-    <static>true</static>
+    <!-- bug or expected behaviour? -->
+    <!-- if set to true the joint prismatic joint created in the plugin doesnt report position -->
+    <!-- <static>true</static> -->
     <link name ='tube'>
       <inertial>
         <inertia>
