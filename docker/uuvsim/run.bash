@@ -18,13 +18,14 @@
 
 # Runs a docker container with the image created by build.bash
 # Requires:
-#   docker
-#   nvidia-docker
+#   docker 19.03 or higher
+#   nvidia-container-toolkit
 #   an X server
 # Recommended:
 #   A joystick mounted to /dev/input/js0 or /dev/input/js1
 
-RUNTIME="runc"
+#RUNTIME="runc"
+GPUS=""
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -33,7 +34,8 @@ key="$1"
 
 case $key in
     -n|--nvidia)
-    RUNTIME="nvidia"
+#   RUNTIME="nvidia"
+    GPUS="--gpus all"
     shift
     ;;
     *)    # unknown option
@@ -51,12 +53,10 @@ then
     exit 1
 fi
 
-
-
 IMG=$1
 
 ARGS=("$@")
-WORKSPACES=("${ARGS[@]:1}")
+WORKSPACE=("${ARGS[@]:1}")
 
 # Make sure processes in the container can connect to the x server
 # Necessary so gazebo can create a context for OpenGL rendering (even headless)
@@ -73,13 +73,15 @@ then
     chmod a+r $XAUTH
 fi
 
-
-
 DOCKER_OPTS=
 # Example: Bind mount a local repository on the host machine:
 #DAVE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
-DAVE_PATH=${HOME}/uuv_ws/src
-DOCKER_OPTS="--mount type=bind,source=${DAVE_PATH},target=/home/developer/uuv_ws/src"
+if [ -z $WORKSPACE ]; then
+  WS_PATH=${HOME}/uuv_ws/src
+else
+  WS_PATH=$WORKSPACE
+fi
+DOCKER_OPTS="$GPUS --mount type=bind,source=${WS_PATH},target=/home/developer/uuv_ws/src"
 
 
 # Share your vim settings.
