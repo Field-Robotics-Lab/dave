@@ -9,33 +9,25 @@
       <uri>model://sun</uri>
     </include>
     
-    <!-- <include>
-      <uri>model://socket_bar</uri>
-      <pose>2 0 0.17 0 1.57 0</pose>
-    </include> -->
-
-
-    <!-- Doesnt work, the socket isnt attached to the world -->
     <link name="world"/>
 
-    <!-- <joint name = "joint_to_world" type="fixed">
-      <parent>world</parent>
-      <child>socket_bar::tube</child>
-    </joint> -->
-    <!--  -->
-
   <model name ='grab_bar'>
-    <pose>2 0 0.17 0 1.57 0</pose>
+    <pose>0 0 0 0 0 0</pose>
     <link name ='grab_bar_link'>
       <collision name ='collision'>
-        <laser_retro>255</laser_retro>
         <geometry>
-          <box><size>0.08 0.08 0.3</size></box>
+            <mesh>
+              <uri>model://Hybrid-Connector-Outer.dae</uri>
+              <scale>0.1 0.1 0.1</scale>
+            </mesh>
         </geometry>
       </collision>
       <visual name ='visual'>
         <geometry>
-          <box><size>0.08 0.08 0.3</size></box>
+            <mesh>
+              <uri>model://Hybrid-Connector-Outer.dae</uri>
+              <scale>0.1 0.1 0.1</scale>
+            </mesh>
         </geometry>
       </visual>
       <inertial  name ='inertial'>
@@ -53,7 +45,7 @@
   </model>
 
 
-  <plugin name="uuv_force_test_plugin" filename="libuuv_force_test_plugin.so"/>
+  <!-- <plugin name="uuv_force_test_plugin" filename="libuuv_force_test_plugin.so"/> -->
   
   </world>
 </sdf>
