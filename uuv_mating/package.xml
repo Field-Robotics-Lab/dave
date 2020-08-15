@@ -25,7 +25,11 @@
   <exec_depend>roscpp</exec_depend>
 
 
-  <export>
+  <!-- <export>
   <gazebo_ros plugin_path="${prefix}/../../lib" gazebo_media_path="${prefix}" />
+  </export> -->
+  <export>
+      <gazebo_ros gazebo_model_path="${prefix}/models"/>
+      <gazebo_ros gazebo_media_path="${prefix}/models"/>
   </export>
 </package>
