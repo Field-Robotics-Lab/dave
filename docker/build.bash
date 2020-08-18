@@ -28,7 +28,7 @@ do
 key="$1"
 
 case $key in
-    -g|--no-nvidia-graphics)
+    -w|--without-nvidia)
     BUILD_BASE="--build-arg BASEIMG=ubuntu:bionic"
     image_name="dave"
     shift

@@ -25,7 +25,7 @@
 #   A joystick mounted to /dev/input/js0 or /dev/input/js1
 
 #RUNTIME="runc"
-GPUS=""
+GPUS="--gpus all"
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -33,9 +33,9 @@ do
 key="$1"
 
 case $key in
-    -n|--nvidia)
+    -w|--without-nvidia)
 #   RUNTIME="nvidia"
-    GPUS="--gpus all"
+    GPUS=""
     shift
     ;;
     *)    # unknown option
