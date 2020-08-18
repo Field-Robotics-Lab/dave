@@ -77,6 +77,7 @@
     <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
         <arg name="uuv_name" value="$(arg namespace)" />
         <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
 
     <!-- joystick control for rexrov and oberon7, no velocity control-->
