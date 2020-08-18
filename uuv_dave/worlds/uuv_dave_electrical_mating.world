@@ -130,10 +130,10 @@
       <pose>0 0 -97.5 0 0 0</pose>
     </include>
 
-    <!-- <include>
+    <include>
       <uri>model://plug</uri>
-      <pose>1 0 -97.5 0 0 0</pose>
-    </include> -->
+      <pose>0.525207 0.978282 -97.2 1.57079632679 0 -1.57079632679</pose>
+    </include>
 
     <!-- <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/> -->
 

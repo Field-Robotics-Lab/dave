@@ -9,9 +9,9 @@
           <box><size>0.5 5 5</size></box>
         </geometry>
         <material>
-          <ambient>0.7 0.4 0.1 1</ambient>
-          <diffuse>0.7 0.4 0.1 1</diffuse>
-          <specular>0 0 0 0</specular>
+          <ambient>0.5 0.8 0.8 1</ambient>
+          <diffuse>0.5 0.8 0.8 1</diffuse>
+          <specular>0.5 0.8 0.8 1</specular>
           <emissive>0 0 0 1</emissive>
           <!-- <ambient>0.1 0.1 0.1 1</ambient>
           <diffuse>0.1 0.1 0.2 1</diffuse>
@@ -69,6 +69,40 @@
         <pose>0 0 0 0 0 0</pose>
         <parent>wall</parent>
         <child>socket</child>
+    </joint>
+
+
+    <link name ='shelf'>
+      <pose>0.45 1 0 0 0 0</pose>
+      <visual name ='visual'>
+        <geometry>
+          <box><size>0.5 0.5 0.1</size></box>
+        </geometry>
+        <material>
+          <ambient>0.5 0.8 0.8 1</ambient>
+          <diffuse>0.5 0.8 0.8 1</diffuse>
+          <specular>0.5 0.8 0.8 1</specular>
+          <emissive>0 0 0 1</emissive>
+          <!-- <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.1 0.1 0.2 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive> -->
+        </material>
+      </visual>
+      <collision name ='collision'>
+        <geometry>
+          <box><size>0.5 0.5 0.1</size></box>
+        </geometry>
+      </collision>
+
+    </link>
+
+
+
+    <joint name="shelf_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>wall</parent>
+        <child>shelf</child>
     </joint>
   </model>
 </sdf>
