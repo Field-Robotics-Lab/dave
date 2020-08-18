@@ -1,0 +1,74 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='socket_box'>
+
+    <link name ='wall'>
+      <pose>0 0 0 0 0 0</pose>
+      <visual name ='visual'>
+        <geometry>
+          <box><size>0.5 5 5</size></box>
+        </geometry>
+        <material>
+          <ambient>0.7 0.4 0.1 1</ambient>
+          <diffuse>0.7 0.4 0.1 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+          <!-- <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.1 0.1 0.2 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive> -->
+        </material>
+      </visual>
+
+      <collision name ='collision'>
+        <geometry>
+          <box><size>0.5 5 5</size></box>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <inertia>
+          <ixx>2104</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>4166</iyy>
+          <iyz>0</iyz>
+          <izz>2104</izz>
+        </inertia>
+        <mass>1000.0</mass>
+      </inertial>
+    </link>
+
+
+
+    <link name ='socket'>
+      <pose>0.3 0 0 0 0 -1.570796</pose>
+      <visual name ='visual'>
+
+        <geometry>
+          <mesh>
+            <uri>model://untitled_out.dae</uri>
+            <scale>0.11 0.11 0.11</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name ='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://untitled_out.dae</uri>
+            <scale>0.1 0.1 0.1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+    </link>
+
+
+
+    <joint name="socket_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>wall</parent>
+        <child>socket</child>
+    </joint>
+  </model>
+</sdf>

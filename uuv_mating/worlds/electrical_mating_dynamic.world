@@ -1,5 +1,5 @@
-<?xml version="1.0" ?>
-<sdf version="1.4">
+<?xml version='1.0'?>
+<sdf version ='1.6'>
   <world name="default">
     <include>
       <uri>model://ground_plane</uri>
@@ -9,43 +9,10 @@
       <uri>model://sun</uri>
     </include>
     
-    <link name="world"/>
-
-  <model name ='grab_bar'>
-    <pose>0 0 0 0 0 0</pose>
-    <link name ='grab_bar_link'>
-      <collision name ='collision'>
-        <geometry>
-            <mesh>
-              <uri>model://Hybrid-Connector-Outer.dae</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-        </geometry>
-      </collision>
-      <visual name ='visual'>
-        <geometry>
-            <mesh>
-              <uri>model://Hybrid-Connector-Outer.dae</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-        </geometry>
-      </visual>
-      <inertial  name ='inertial'>
-        <inertia>
-          <ixx>1.0</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>1.0</iyy>
-          <iyz>0</iyz>
-          <izz>1.0</izz>
-        </inertia>
-        <mass>100.0</mass>
-      </inertial>
-    </link>
-  </model>
-
-
-  <!-- <plugin name="uuv_force_test_plugin" filename="libuuv_force_test_plugin.so"/> -->
+    <include>
+      <uri>model://socket_box</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
   
   </world>
 </sdf>
