@@ -66,9 +66,9 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
     ros-${DIST}-xacro \
     python-rosdep \
     libignition-math2 \
- && rosdep init \
  && apt clean
 
+RUN /bin/bash -c ". /opt/ros/${DIST}/setup.bash"
 
 # Set USER and GROUP
 ARG USER=developer
@@ -95,8 +95,6 @@ USER $USER:$GROUP
 # When running a container start in the developer's home folder.
 WORKDIR /home/$USER
 
-# run rosdep update as non-root
-RUN rosdep update
 
 # Create workspace
 RUN mkdir -p uuv_ws/src/
