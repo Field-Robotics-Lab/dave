@@ -68,8 +68,6 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
     libignition-math2 \
  && apt clean
 
-RUN /bin/bash -c ". /opt/ros/${DIST}/setup.bash"
-
 # Set USER and GROUP
 ARG USER=developer
 ARG GROUP=developer
