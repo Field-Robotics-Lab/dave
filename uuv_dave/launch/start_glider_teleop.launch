@@ -1,0 +1,17 @@
+<launch>
+  <arg name="joy_id" default="0"/>
+  <arg name="uuv_name" default="uuv_name"/>
+
+  <include file="$(find uuv_teleop)/launch/finned_uuv_teleop.launch">
+    <arg name="uuv_name" value="$(arg uuv_name)"/>
+    <arg name="joy_id" value="$(arg joy_id)"/>
+    <arg name="gain_roll" value="1,1,1,1"/>
+    <arg name="gain_pitch" value="1,1,-1,-1"/>
+    <arg name="gain_yaw" value="-1,1,1,-1"/>
+    <arg name="thruster_rotor_gain" value="0.000049"/>
+    <arg name="max_thrust" value="100"/>
+    <arg name="thruster_joy_gain" value="-1.0"/>
+  </include>
+
+  <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find uuv_dave)/rviz/glider_slocum_control.rviz"/>
+</launch>
