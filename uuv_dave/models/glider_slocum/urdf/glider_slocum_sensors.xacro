@@ -29,7 +29,7 @@
       noise_amplitude="0"
       update_rate="7"
       reference_frame="world">
-      <origin xyz="0.4785 0.0 -0.0825" rpy="0 ${0.5*pi} 0" />
+      <origin xyz="0.0 0.4785 -0.0825" rpy="${0.5*pi} 0 0" />
     </xacro:dvl_plugin_macro>
 
     <xacro:switchable_battery_consumer_macro
@@ -107,7 +107,7 @@
         stddev="0.02"
         scale="0.5">
         <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
-        <origin xyz="-0.375 0 -0.16" rpy="0 0.3 0"/>
+        <origin xyz="0 -0.375 -0.16" rpy="0.3 0 0"/>
     </xacro:regular_camera_plugin_macro>
 
     <xacro:switchable_battery_consumer_macro
@@ -128,7 +128,7 @@
       topic=""/>
 
     <!-- Mount the chemical concentration sensor -->
-    <xacro:default_chemical_concentration_sensor namespace="${namespace}" parent_link="${namespace}/base_link">
+    <!-- <xacro:default_chemical_concentration_sensor namespace="${namespace}" parent_link="${namespace}/base_link">
       <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:default_chemical_concentration_sensor>
+    </xacro:default_chemical_concentration_sensor> -->
 </robot>

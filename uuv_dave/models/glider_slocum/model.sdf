@@ -4,7 +4,7 @@
     <static>false</static>
     <link name="base_link">
       <visual name="base_link_visual">
-        <pose>0 0 1 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
@@ -13,7 +13,7 @@
         </geometry>
       </visual>
       <collision name="base_link_collision">
-        <pose>0 0 1 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
@@ -22,7 +22,7 @@
         </geometry>
       </collision>
       <inertial>
-          <pose>0 0 1 0 0 0</pose>
+          <pose>0 0 0 0 0 0</pose>
           <mass>69.25</mass>
           <inertia>
               <ixx>10</ixx>
@@ -59,7 +59,7 @@
     </joint>
     <link name="propeller_link">
       <visual name="propeller_link_visual">
-        <pose>0 0 1 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
@@ -68,7 +68,7 @@
         </geometry>
       </visual>
       <inertial>
-          <pose>0 0 1 0 0 0</pose>
+          <pose>0 0 0 0 0 0</pose>
           <inertia>
               <ixx>0.1</ixx>
               <ixy>0</ixy>
@@ -81,7 +81,7 @@
       </inertial>
     </link>
     <joint name="propeller_joint" type="revolute">
-        <pose>0 0 1 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <parent>base_link</parent>
         <child>propeller_link</child>
         <axis>

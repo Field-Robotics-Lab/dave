@@ -67,9 +67,9 @@
       <inertial>
         <mass value="${mass}" />
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.6" ixy="0" ixz="0"
-                 iyy="30.0" iyz="0"
-                 izz="35.0" />
+        <inertia ixx="30.0" ixy="0" ixz="0"
+                 iyy="0.6" iyz="0"
+                 izz="5.0" />
       </inertial>
     </link>
 
@@ -109,7 +109,7 @@
     </gazebo>
 
     <!-- TODO: Correct fin origins -->
-    <xacro:fin_macro namespace="${namespace}" fin_id="0">
+    <!-- <xacro:fin_macro namespace="${namespace}" fin_id="0">
       <origin xyz="-0.70777 -0.07876 0.078586" rpy="0.7904 -0.0998 -0.1003" />
     </xacro:fin_macro>
     <xacro:fin_macro namespace="${namespace}" fin_id="1">
@@ -117,7 +117,7 @@
     </xacro:fin_macro>
     <xacro:fin_macro namespace="${namespace}" fin_id="2">
       <origin xyz="-0.70777 0.07876 -0.078586" rpy="-2.3512 0.0998 0.1003" />
-    </xacro:fin_macro>
+    </xacro:fin_macro> -->
 
     <!-- TODO: Correct propeller origins and parameters -->
     <xacro:thruster_module_first_order_basic_fcn_macro
@@ -126,7 +126,7 @@
       mesh_filename="${prop_mesh_file}"
       dyn_time_constant="0.1"
       rotor_constant="0.000049">
-      <origin xyz="-0.9676 0 0" rpy="0 0 ${pi}" />
+      <origin xyz="0 -0.4 0" rpy="0 0 ${pi}" />
     </xacro:thruster_module_first_order_basic_fcn_macro>
 
     <!-- TODO: Parametrize the battery unit -->
