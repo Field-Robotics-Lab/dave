@@ -56,12 +56,34 @@
         <geometry>
           <mesh>
             <uri>model://untitled_out.dae</uri>
-            <scale>0.1 0.1 0.1</scale>
+            <scale>0.11 0.11 0.11</scale>
           </mesh>
         </geometry>
       </collision>
 
     </link>
+
+    <link name ='sensor_plate'>
+      <!-- <pose>0.3 0 0 1.570796 0 0</pose> -->
+      <pose>0.31 0 0 0 1.570796 0</pose>
+
+      <collision name ='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+    </link>
+
+    <joint name="sensor_plate_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>socket</parent>
+        <child>sensor_plate</child>
+    </joint>
+
 
 
 

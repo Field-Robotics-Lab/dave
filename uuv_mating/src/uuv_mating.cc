@@ -108,8 +108,8 @@ namespace gazebo
 
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
       this->world = _world;
-      this->socketModel = this->world->ModelByName("socket_bar");
-      this->plugModel = this->world->ModelByName("grab_bar");
+      this->socketModel = this->world->ModelByName("socket_box");
+      this->plugModel = this->world->ModelByName("plug");
 
 
       this->sensorPlate = this->socketModel->GetLink("sensor_plate");
@@ -158,6 +158,106 @@ namespace gazebo
       prismaticJoint->SetUpperLimit(0, 100);
       prismaticJoint->SetLowerLimit(0, -100);
   }
+
+ private: bool checkRollAlignment(){
+      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+      return abs(plugRotation[0] - socketRotation[0]) < 0.1;
+    }
+
+  private: bool checkPitchAlignment(){
+      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+      return abs(plugRotation[1] - socketRotation[1]) < 0.1;
+    }
+
+  private:bool checkYawAlignment(){
+      ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+      ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+      return abs(plugRotation[2] - socketRotation[2]) < 0.1;
+    }
+
+  private: bool checkRotationalAlignment()
+    {
+      if (this->checkYawAlignment() && this->checkPitchAlignment() && this->checkRollAlignment())
+      {
+        // printf("Aligned, ready for insertion  \n");
+        return true;
+      }
+      else
+      {
+        // printf("Disaligned, not ready for mating  \n");
+        return false;
+      }
+    }
+
+  private: bool checkVerticalAlignment()
+    {
+      socket_pose = socketModel->RelativePose();
+      ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
+      // printf("%s  \n", typeid(socketPositon).name());
+
+      plug_pose = plugModel->RelativePose();
+      ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
+
+      bool onSameVerticalLevel = abs(plugPosition[2] - socketPositon[2]) < 0.1;
+      if (onSameVerticalLevel)
+      {
+        // printf("z=%.2f  \n", plugPosition[2]);
+        // printf("Share same vertical level  \n");
+        return true;
+      }
+      return false;
+    }
+
+  private: bool isAlligned()
+    {
+      if(checkVerticalAlignment() && checkRotationalAlignment()){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  private: bool checkProximity()
+    {
+      socket_pose = socketModel->WorldPose();
+      // socket_pose = socketLink->RelativePose();
+      ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
+      // printf("%s  \n", typeid(socketPositon).name());
+
+      plug_pose = plugModel->RelativePose();
+      ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
+      // printf("%f %f %f Within Proximity  \n", plugPosition[0], plugPosition[1], plugPosition[2]);
+      float xdiff_squared = pow(abs(plugPosition[0] - socketPositon[0]),2);
+      float ydiff_squared = pow(abs(plugPosition[1] - socketPositon[1]),2);
+      float zdiff_squared = pow(abs(plugPosition[2] - socketPositon[2]),2);
+
+      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 1;
+      if (withinProximity)
+      {
+        // printf("%f Within Proximity  \n", plugPosition[0]);
+        return true;
+      }else {
+
+        // printf("not within Proximity  \n");
+      }
+      return false;
+    }
+
+  private: bool isReadyForInsertion()
+    {
+      if (this->checkProximity() && this->isAlligned()){
+        return true;
+        // printf("Insert \n");
+
+      } else{
+
+        // printf("Cant insert \n");
+        return false;
+      }
+    }
+    
 
   public: void Update()
     {

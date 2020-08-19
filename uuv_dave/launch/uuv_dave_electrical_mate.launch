@@ -24,7 +24,7 @@
         </include>
     </group>
 
-    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+    <!-- <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
         <arg name="x" value="5.2"/>
         <arg name="y" value="0"/>
@@ -41,6 +41,6 @@
 
     <include file="$(find oberon7_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov"/>
-    </include>
+    </include> -->
 
 </launch>
