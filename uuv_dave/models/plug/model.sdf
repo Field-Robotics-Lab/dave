@@ -17,6 +17,7 @@
 
       <collision name ='collision'>
         <geometry>
+        <!-- <box><size>0.1 0.1 0.1</size></box> -->
           <mesh>
             <uri>model://Hybrid-Connector-Inner-sans-animation.dae</uri>
             <scale>0.1 0.1 0.1</scale>

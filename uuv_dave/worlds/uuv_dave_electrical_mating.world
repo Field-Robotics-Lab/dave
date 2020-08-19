@@ -132,10 +132,11 @@
 
     <include>
       <uri>model://plug</uri>
-      <pose>0.525207 0.978282 -97.2 1.57079632679 0 -1.57079632679</pose>
+      <pose>0.6 0 -97.2 1.57079632679 0 -1.57079632679</pose>
+      <!-- <pose>0.525207 0.978282 -97.2 1.57079632679 0 -1.57079632679</pose> -->
     </include>
 
-    <!-- <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/> -->
+    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
 
     <gui fullscreen='0'>
       <camera name='user_camera'>

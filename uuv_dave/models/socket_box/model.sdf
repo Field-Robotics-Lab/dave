@@ -48,7 +48,7 @@
         <geometry>
           <mesh>
             <uri>model://untitled_out.dae</uri>
-            <scale>0.11 0.11 0.11</scale>
+            <scale>0.12 0.12 0.12</scale>
           </mesh>
         </geometry>
       </visual>
@@ -56,7 +56,7 @@
         <geometry>
           <mesh>
             <uri>model://untitled_out.dae</uri>
-            <scale>0.11 0.11 0.11</scale>
+            <scale>0.12 0.12 0.12</scale>
           </mesh>
         </geometry>
       </collision>
@@ -95,10 +95,11 @@
 
 
     <link name ='shelf'>
-      <pose>0.45 1 0 0 0 0</pose>
+      <!-- <pose>0.45 1 0 0 0 0</pose> -->
+      <pose>0.8 0 -0.11 0 0 0</pose>
       <visual name ='visual'>
         <geometry>
-          <box><size>0.5 0.5 0.1</size></box>
+          <box><size>0.5 5 0.1</size></box>
         </geometry>
         <material>
           <ambient>0.5 0.8 0.8 1</ambient>
@@ -113,7 +114,7 @@
       </visual>
       <collision name ='collision'>
         <geometry>
-          <box><size>0.5 0.5 0.1</size></box>
+          <box><size>0.5 5 0.1</size></box>
         </geometry>
       </collision>
 
