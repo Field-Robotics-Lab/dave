@@ -21,9 +21,9 @@ namespace gazebo
   class WorldUuvPlugin : public WorldPlugin
   {
 
-  enum states{
-    unconnectable_unlocked, connectable_unlocked, connectable_locked
-  };
+  // enum states{
+  //   unconnectable_unlocked, connectable_unlocked, connectable_locked
+  // };
 
   private: physics::WorldPtr world;
 
@@ -81,6 +81,7 @@ namespace gazebo
   
   std::vector<common::Time> timeStamps;
 
+  public: common::Time alignmentTime=0;
   double historyLength = 5.0; //seconds
  
   void trimForceVector(double trimDuration){
@@ -179,7 +180,7 @@ namespace gazebo
       ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
       ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       // ROS_INFO_THROTTLE(1, "socket yaw: %f %f %f plug yaw: %f %f %f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]);
-      return abs(plugRotation[2] - socketRotation[2]) < 0.1;
+      return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < 0.1;
     }
 
   private: bool checkRotationalAlignment()
@@ -219,9 +220,10 @@ namespace gazebo
       return false;
     }
 
-  private: bool isAlligned()
+  private: bool isAlligned(bool verbose = false)
     {
       if(checkVerticalAlignment() && checkRotationalAlignment()){
+        if (verbose){ROS_INFO_THROTTLE(1,"ALLIGNED ROT and VERT");}
         return true;
       } else {
         return false;
@@ -246,7 +248,7 @@ namespace gazebo
         ROS_INFO_THROTTLE(1, "eucleadian distance: %f", pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5));
       }
 
-      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 1;
+      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 0.4;
       if (withinProximity)
       {
         // printf("%f Within Proximity  \n", plugPosition[0]);
@@ -272,11 +274,15 @@ namespace gazebo
     }
     
   private: void construct_joint(){
+      if (this->joined == true){
+        return;
+      }
+      this->joined = true;
       // this->tubeLink->SetLinkStatic(true);
       printf("joint formed\n");
+      printf("j#######################\n");
       // gzmsg << this->world->Physics()->GetType();
 
-      this->joined = true;
       this->prismaticJoint = plugModel->CreateJoint(
         "plug_socket_joint",
         // "fixed",
@@ -288,103 +294,125 @@ namespace gazebo
         ignition::math::Quaternion<double>(0, 0, 0, 0)));
       // prismaticJoint->SetUpperLimit(0, 0.3);
       prismaticJoint->Init();
-      prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(0, 0, 1));
+      prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
 
       // prismaticJoint->SetUpperLimit(0, 1.0);
   }
 
+  public: void collisionChecks(){
+      for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++)
+        {
+        physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
+        if (this->world->Physics()->GetContactManager()->GetContactCount() > 1){
+        }
+
+        // if not locked then check forces on the contact sensor
+        // if (!this->locked){
+          // ROS_INFO("%s\n", contact->collision1->GetLink()->GetName());
+          if (contact->collision1->GetLink()->GetName() == "sensor_plate" && contact->collision2->GetLink()->GetName() == "plug"
+            ||
+            contact->collision1->GetLink()->GetName() == "plug"           && contact->collision2->GetLink()->GetName() == "sensor_plate"
+          ){
+            // if(abs(contact->wrench[i].body1Force[2]) < 100){
+            //   std_msgs::Float64 msg;
+            //   msg.data = contact->wrench[i].body1Force[2];
+            //   chatter_pub.publish(msg);
+            // }
+
+            // if (abs(contact->wrench[i].body1Force[2]) > 15){
+
+              ROS_INFO("%s %f %s %f", contact->collision1->GetLink()->GetName().c_str(),
+              contact->wrench[i].body1Force[2],
+              contact->collision2->GetLink()->GetName().c_str(),
+              contact->wrench[i].body2Force[2]);
+            //   collisionForceCount++;
+
+            //   ROS_INFO("%i", collisionForceCount);
+            //   if (collisionForceCount > 10){
+            //     ROS_INFO("freeze");
+            //     this->freezeJoint(this->prismaticJoint);
+            //   }
+            // } else {
+            //   // collisionForceCount--;
+            // }
+          }
+          // if locked, then time to check for forces on the bar itself
+        // } else if (this->locked){
+        //   double unlockingForce;
+        //   double unlockingForceThresh;
+        //   if (contact->collision2->GetLink()->GetName() == "plug" || contact->collision1->GetLink()->GetName() == "plug" ){
+        //     if(contact->collision2->GetLink()->GetName() == "plug" && contact->collision1->GetLink()->GetName() != "sensor_plate"){
+        //       // ROS_INFO_THROTTLE(1,"%s ", contact->collision1->GetLink()->GetName().c_str());            
+              
+        //       // for(int i=0; i < this->Zforces.size(); i++){std::cout << this->Zforces.at(i) << ' ';} std::cout << "\n \n \n";  
+        //       this->addForce(contact->wrench[i].body2Force[2]);
+        //       this->trimForceVector(0.1);
+        //       ROS_INFO_THROTTLE(0.01,"size is: %d || average force %f", this->Zforces.size() ,this->movingTimedAverage());
+        //       // unlockingForce = contact->wrench[i].body2Force[2];
+        //       if (this->movingTimedAverage() > 80 && this->Zforces.size() > 10){
+        //         ROS_INFO_THROTTLE(1,"unlocking at force: %f and size %i", contact->wrench[i].body2Force[2], this->Zforces.size());
+        //         this->unfreezeJoint(this->prismaticJoint);
+        //       }
+
+        //     } else if(contact->collision1->GetLink()->GetName() == "plug" && contact->collision2->GetLink()->GetName() != "sensor_plate" ){
+        //       // ROS_INFO_THROTTLE(1,"%s ", contact->collision2->GetLink()->GetName().c_str());
+
+        //       // for(int i=0; i < this->Zforces.size(); i++){std::cout << this->Zforces.at(i) << ' ';} std::cout << "\n \n \n"; 
+        //       this->addForce(contact->wrench[i].body1Force[2]);
+        //       this->trimForceVector(0.1);
+
+        //       ROS_INFO_THROTTLE(0.01,"size is: %d || average force %f", this->Zforces.size() ,this->movingTimedAverage());
+
+        //       if (this->movingTimedAverage() > 80 && this->Zforces.size() > 10){
+        //         ROS_INFO_THROTTLE(1,"unlocking at force: %f and size %i ", contact->wrench[i].body2Force[2], this->Zforces.size());
+        //         this->unfreezeJoint(this->prismaticJoint);
+        //       }
+        //       // unlockingForce = contact->wrench[i].body1Force[2];
+        //       // if (unlockingForce > 10 ){
+        //       //   ROS_INFO_THROTTLE(1,"unlocking at force: %f ", contact->wrench[i].body1Force[2]);
+        //       //   this->unfreezeJoint(this->prismaticJoint);
+        //       // }
+        //     }
+
+
+        //   }
+        // }
+      }
+  }
+
+
   public: void Update(){
-    this->checkRollAlignment(true);
-    this->checkPitchAlignment(false);
-    this->checkYawAlignment(false);
-    this->checkProximity(false);
-    this->checkVerticalAlignment(true);
-    // isAlligned
+    // this->checkRollAlignment(false);
+    // this->checkPitchAlignment(false);
+    // this->checkYawAlignment(false);
+    // this->checkProximity(true);
+    // this->checkVerticalAlignment(true);
 
-
+    if (this->joined == true){
+      // ROS_INFO_THROTTLE(5, "collision");
+      this->collisionChecks();
+    } else {
+      if (this->isAlligned(true) && this->checkProximity(true)){
+          if (alignmentTime == 0){
+            alignmentTime = this->world->SimTime();
+          }
+          if (this->world->SimTime() - alignmentTime > 2){
+            ROS_INFO_THROTTLE(1, "MORE THAN 2 ");
+            this->construct_joint();
+          }
+      } else {
+        if (alignmentTime !=0){
+          ROS_INFO_THROTTLE(1, "wops, reset counter ");
+        }
+        alignmentTime = 0;
+      }
+    }
   }
     // {
 
 
 
     //   // if (false){
-
-    //   for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++)
-    //     {
-    //     physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
-
-    //     // if not locked then check forces on the contact sensor
-    //     if (!this->locked){
-    //       // ROS_INFO("%s\n", contact->collision1->GetLink()->GetName());
-    //       if (contact->collision1->GetLink()->GetName() == "sensor_plate" && contact->collision2->GetLink()->GetName() == "grab_bar_link"
-    //         ||
-    //         contact->collision1->GetLink()->GetName() == "grab_bar_link" && contact->collision2->GetLink()->GetName() == "sensor_plate"
-    //       ){
-    //         if(abs(contact->wrench[i].body1Force[2]) < 100){
-    //           std_msgs::Float64 msg;
-    //           msg.data = contact->wrench[i].body1Force[2];
-    //           chatter_pub.publish(msg);
-    //         }
-
-    //         if (abs(contact->wrench[i].body1Force[2]) > 15){
-
-    //           ROS_INFO("%s %f %s %f", contact->collision1->GetLink()->GetName().c_str(),
-    //           contact->wrench[i].body1Force[2],
-    //           contact->collision2->GetLink()->GetName().c_str(),
-    //           contact->wrench[i].body2Force[2]);
-    //           collisionForceCount++;
-
-    //           ROS_INFO("%i", collisionForceCount);
-    //           if (collisionForceCount > 10){
-    //             ROS_INFO("freeze");
-    //             this->freezeJoint(this->prismaticJoint);
-    //           }
-    //         } else {
-    //           // collisionForceCount--;
-    //         }
-    //       }
-    //       // if locked, then time to check for forces on the bar itself
-    //     } else if (this->locked){
-    //       double unlockingForce;
-    //       double unlockingForceThresh;
-    //       if (contact->collision2->GetLink()->GetName() == "grab_bar_link" || contact->collision1->GetLink()->GetName() == "grab_bar_link" ){
-    //         if(contact->collision2->GetLink()->GetName() == "grab_bar_link" && contact->collision1->GetLink()->GetName() != "sensor_plate"){
-    //           // ROS_INFO_THROTTLE(1,"%s ", contact->collision1->GetLink()->GetName().c_str());            
-              
-    //           // for(int i=0; i < this->Zforces.size(); i++){std::cout << this->Zforces.at(i) << ' ';} std::cout << "\n \n \n";  
-    //           this->addForce(contact->wrench[i].body2Force[2]);
-    //           this->trimForceVector(0.1);
-    //           ROS_INFO_THROTTLE(0.01,"size is: %d || average force %f", this->Zforces.size() ,this->movingTimedAverage());
-    //           // unlockingForce = contact->wrench[i].body2Force[2];
-    //           if (this->movingTimedAverage() > 80 && this->Zforces.size() > 10){
-    //             ROS_INFO_THROTTLE(1,"unlocking at force: %f and size %i", contact->wrench[i].body2Force[2], this->Zforces.size());
-    //             this->unfreezeJoint(this->prismaticJoint);
-    //           }
-
-    //         } else if(contact->collision1->GetLink()->GetName() == "grab_bar_link" && contact->collision2->GetLink()->GetName() != "sensor_plate" ){
-    //           // ROS_INFO_THROTTLE(1,"%s ", contact->collision2->GetLink()->GetName().c_str());
-
-    //           // for(int i=0; i < this->Zforces.size(); i++){std::cout << this->Zforces.at(i) << ' ';} std::cout << "\n \n \n"; 
-    //           this->addForce(contact->wrench[i].body1Force[2]);
-    //           this->trimForceVector(0.1);
-
-    //           ROS_INFO_THROTTLE(0.01,"size is: %d || average force %f", this->Zforces.size() ,this->movingTimedAverage());
-
-    //           if (this->movingTimedAverage() > 80 && this->Zforces.size() > 10){
-    //             ROS_INFO_THROTTLE(1,"unlocking at force: %f and size %i ", contact->wrench[i].body2Force[2], this->Zforces.size());
-    //             this->unfreezeJoint(this->prismaticJoint);
-    //           }
-    //           // unlockingForce = contact->wrench[i].body1Force[2];
-    //           // if (unlockingForce > 10 ){
-    //           //   ROS_INFO_THROTTLE(1,"unlocking at force: %f ", contact->wrench[i].body1Force[2]);
-    //           //   this->unfreezeJoint(this->prismaticJoint);
-    //           // }
-    //         }
-
-
-    //       }
-    //     }
-    //   }
     // }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
