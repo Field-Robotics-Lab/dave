@@ -36,3 +36,8 @@
 
 # emacs
 *.*~
+.idea/
+
+uuv_mating/cmake-build-debug/atomic_configure/
+
+uuv_mating/cmake-build-debug/
