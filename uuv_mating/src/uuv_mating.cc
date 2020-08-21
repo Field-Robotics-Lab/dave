@@ -71,13 +71,18 @@ namespace gazebo
   
   public: bool recentlyUnfrozen = false;
 
+  public: int ccount = 0;
+
  
-  void trimForceVector(double trimDuration){
-    std::vector<common::Time>::iterator low;
-    low=std::lower_bound (this->timeStamps.begin(), this->timeStamps.end(), this->timeStamps.back()-trimDuration);
-    this->timeStamps.erase (this->timeStamps.begin(), this->timeStamps.begin() + std::distance( this->timeStamps.begin(), low ));
-    this->Zforces.erase (this->Zforces.begin(), this->Zforces.begin() + std::distance( this->timeStamps.begin(), low ));
-  };
+    void trimForceVector(double trimDuration){
+        std::vector<common::Time>::iterator low;
+        if (this->timeStamps.size() == 0){
+            return;
+        }
+        low=std::lower_bound (this->timeStamps.begin(), this->timeStamps.end(), this->timeStamps.back()-trimDuration);
+        this->timeStamps.erase (this->timeStamps.begin(), this->timeStamps.begin() + std::distance( this->timeStamps.begin(), low ));
+        this->Zforces.erase (this->Zforces.begin(), this->Zforces.begin() + std::distance( this->timeStamps.begin(), low ));
+    };
 
   double movingTimedAverage(){
     return accumulate( this->Zforces.begin(), this->Zforces.end(), 0.0) / this->Zforces.size(); 
@@ -124,15 +129,14 @@ namespace gazebo
 
     }
 
-  public: void freezeJoint(physics::JointPtr prismaticJoint){
+  public: void lockJoint(physics::JointPtr prismaticJoint){
       if (this->locked){
-        // ROS_INFO("already frozen!");
+        ROS_INFO("already locked!");
         return;
       }
       this->locked = true;
-      ROS_INFO("frozen!");
+      ROS_INFO("locked!");
       double currentPosition = prismaticJoint->Position(0);
-      // ROS_INFO("current position is %f ", currentPosition );
       prismaticJoint->SetUpperLimit(0, currentPosition);
       prismaticJoint->SetLowerLimit(0, currentPosition);
   }
@@ -144,6 +148,7 @@ namespace gazebo
       }
       this->recentlyUnfrozen = true;
       this->locked = false;
+      this->unfreezeTimeBuffer =  this->world->SimTime();
       ROS_INFO("UNFREEZE");
       // prismaticJoint->SetUpperLimit(0, 100);
       // prismaticJoint->SetLowerLimit(0, -100);
@@ -264,25 +269,36 @@ namespace gazebo
     }
     
   private: void construct_joint(){
-      if (this->joined || this->recentlyUnfrozen){
+      if (this->joined){
+          ROS_INFO_THROTTLE(1,"already frozen");
         return;
       }
       this->joined = true;
+      this->alignmentTime = 0;
+//          this->world->SetPaused(true);
+        ROS_INFO("Print 11");
+          // "fixed",
+          this->prismaticJoint = plugModel->CreateJoint(
+                  "plug_socket_joint",
 
-      this->prismaticJoint = plugModel->CreateJoint(
-        "plug_socket_joint",
-        // "fixed",
-        "prismatic",
+          "prismatic",
         tubeLink,
         plugLink);
-      prismaticJoint->Load(this->tubeLink, this->plugLink, 
-        ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0), 
-        ignition::math::Quaternion<double>(0, 0, 0, 0)));
-      // prismaticJoint->SetUpperLimit(0, 0.3);
-      prismaticJoint->Init();
+          ROS_INFO("Print 12");
+          if (this->ccount==0){
+              prismaticJoint->Load(this->tubeLink, this->plugLink,
+                                   ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0),
+                                                                 ignition::math::Quaternion<double>(0, 0, 0, 0)));
+              prismaticJoint->Init();
+              ccount++;
+          }
+
+          ROS_INFO("Print 13");
+          // prismaticJoint->SetUpperLimit(0, 0.3);
+          ROS_INFO("Print 14");
       prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
       ROS_INFO("joint formed\n");
-
+//          this->world->SetPaused(false);
       // prismaticJoint->SetUpperLimit(0, 1.0);
   }
     
@@ -292,192 +308,127 @@ namespace gazebo
       this->joined = false;
       this->prismaticJoint->Detach();
       this->prismaticJoint->Reset();
+      this->prismaticJoint->~Joint();
       printf("joint removed\n");
       }
 
   }
 
-//  public: void collisionChecks(){
-//      for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++)
-//        {
-//        physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
-//        if (this->world->Physics()->GetContactManager()->GetContactCount() > 1){
-//        }
-//
-//        // if not locked then check forces on the contact sensor
-//        if (!this->locked){
-//          // ROS_INFO("%s\n", contact->collision1->GetLink()->GetName());
-//          if (contact->collision1->GetLink()->GetName() == "sensor_plate" && contact->collision2->GetLink()->GetName() == "plug"
-//            ||
-//            contact->collision1->GetLink()->GetName() == "plug"           && contact->collision2->GetLink()->GetName() == "sensor_plate"
-//          ){
-//            // if(abs(contact->wrench[i].body1Force[2]) < 100){
-//            //   std_msgs::Float64 msg;
-//            //   msg.data = contact->wrench[i].body1Force[2];
-//            //   chatter_pub.publish(msg);
-//            // }
-//
-//            if (contact->wrench[i].body1Force[2] > 15){
-//              ROS_INFO( "%s %.2f %s %.2f", contact->collision1->GetLink()->GetName().c_str(),
-//              contact->wrench[i].body1Force[2],
-//              contact->collision2->GetLink()->GetName().c_str(),
-//              contact->wrench[i].body2Force[2]);
-//              collisionForceCount++;
-//
-//            //   ROS_INFO("%i", collisionForceCount);
-//              if (collisionForceCount > 10){
-//                collisionForceCount = 0;
-//                ROS_INFO("freeze");
-//                this->freezeJoint(this->prismaticJoint);
-//              }
-//            }
-//          }
-//
-//          // if locked, then time to check for forces on the bar itself
-//        } else if (this->locked && !this->recentlyUnfrozen){
-//
-//
-//
-//          double unlockingForce;
-//          double unlockingForceThresh;
-//          bool ddbug = true;
-//
-//          if (contact->collision2->GetLink()->GetName() == "plug" || contact->collision1->GetLink()->GetName() == "plug" ){
-//            // forces applied to the plug (not from the sensor plate, mostly the UUV fingers)
-//            if(contact->collision2->GetLink()->GetName() == "plug" && (contact->collision1->GetLink()->GetName()).find("finger_tip") != std::string::npos){
-//            // if(contact->collision2->GetLink()->GetName() == "plug" && s1.find(s2) != std::string::npos contact->collision1->GetLink()->GetName() != "sensor_plate"){
-//              ROS_DEBUG_COND(ddbug,"died here 1");
-//              // ROS_INFO_THROTTLE(1,"%s ", contact->collision1->GetLink()->GetName().c_str());
-//
-//              // for(int i=0; i < this->Zforces.size(); i++){std::cout << this->Zforces.at(i) << ' ';} std::cout << "\n \n \n";
-//              this->addForce(contact->wrench[i].body2Force[1]);
-//              ROS_DEBUG_COND(ddbug,"died here 2");
-//              this->trimForceVector(0.1);
-//              ROS_DEBUG_COND(ddbug,"died here 3");
-//              ROS_INFO_THROTTLE(0.01,"size is: %d || average force %f", this->Zforces.size() ,this->movingTimedAverage());
-//              ROS_DEBUG_COND(ddbug,"died here 4");
-//              // unlockingForce = contact->wrench[i].body2Force[2];
-//              if (this->movingTimedAverage() > 80 && this->Zforces.size() > 20){
-//              ROS_DEBUG_COND(ddbug,"died here 5");
-//                ROS_INFO_THROTTLE(1,"unlocking at force: %f and size %i", contact->wrench[i].body2Force[2], this->Zforces.size());
-//                this->unfreezeJoint(this->prismaticJoint);
-//              ROS_DEBUG_COND(ddbug,"died here 6");
-//              }
-//
-//            } else if(contact->collision1->GetLink()->GetName() == "plug" && (contact->collision2->GetLink()->GetName().find("finger_tip") != std::string::npos) ){
-//              ROS_DEBUG_COND(ddbug,"died here 7");
-//              // ROS_INFO_THROTTLE(1,"%s ", contact->collision2->GetLink()->GetName().c_str());
-//
-//              // for(int i=0; i < this->Zforces.size(); i++){std::cout << this->Zforces.at(i) << ' ';} std::cout << "\n \n \n";
-//              this->addForce(contact->wrench[i].body1Force[1]);
-//              ROS_DEBUG_COND(ddbug,"died here 8");
-//              this->trimForceVector(0.1);
-//              ROS_DEBUG_COND(ddbug,"died here 9");
-//
-//              ROS_INFO_THROTTLE(0.01,"size is: %d || average force %f", this->Zforces.size() ,this->movingTimedAverage());
-//              ROS_DEBUG_COND(ddbug,"died here 10");
-//
-//              if (this->movingTimedAverage() > 80 && this->Zforces.size() > 20){
-//                ROS_DEBUG_COND(ddbug,"died here 11");
-//                ROS_INFO_THROTTLE(1,"unlocking at force: %f and size %i ", contact->wrench[i].body2Force[2], this->Zforces.size());
-//                this->unfreezeJoint(this->prismaticJoint);
-//                ROS_DEBUG_COND(ddbug,"died here 12");
-//              }
-//              // unlockingForce = contact->wrench[i].body1Force[2];
-//              // if (unlockingForce > 10 ){
-//              //   ROS_INFO_THROTTLE(1,"unlocking at force: %f ", contact->wrench[i].body1Force[2]);
-//              //   this->unfreezeJoint(this->prismaticJoint);
-//              // }
-//            }
-//
-//
-//          }
-//        }
-//      }
-//  }
-    public: void collisionChecks(){
-            int contactIndex  = this->getCollisionBetween("plug", "sensor_plate");
-            if (contactIndex == -1){ 
-              return;
+
+    /// \brief Calculates the average force exerted by contact2 on contact 1
+    /// \return Average force exerted by contact2 on contact1
+  public: bool averageForceOnLink(std::string contact1, std::string contact2) {
+            int contactIndex = this->getCollisionBetween(contact1, contact2);
+            if (contactIndex == -1) {
+                return false;
             }
             physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(contactIndex);
-            ROS_INFO("AQUI 1");
-            if(contact->collision1->GetLink()->GetName()=="plug"){
-              this->addForce(contact->wrench[contactIndex].body1Force[2]);
-              ROS_INFO("AQUI 2");
+            if (contact->collision1->GetLink()->GetName() == contact1) {
+                this->addForce(contact->wrench[contactIndex].body1Force[1]);
             } else {
-              this->addForce(contact->wrench[contactIndex].body2Force[2]);
-              ROS_INFO("AQUI 3");
+                this->addForce(contact->wrench[contactIndex].body2Force[1]);
             }
-            ROS_INFO("AQUI 5");
             this->trimForceVector(0.1);
-            ROS_INFO("AQUI 6");
-
-            // if (this->movingTimedAverage() > ){
-            //     this->freezeJoint(this->prismaticJoint);
-            ROS_INFO( "%s %.2f %s %.2f", contact->collision1->GetLink()->GetName().c_str(),
-                      contact->wrench[contactIndex].body1Force[2],
-                      contact->collision2->GetLink()->GetName().c_str(),
-                      contact->wrench[contactIndex].body2Force[2]);
-                
-            // }
+            return true;
         }
+        /// \brief Determine of Electrical Plug is pushing against electrical socket
+        /// \return boolean weather the plug is pushing against the socket
+  public: bool isPlugPushingSensorPlate(float averageForceThreshold = 50, int numberOfDatapointsThresh = 10) {
+            if (!this->averageForceOnLink("plug", "sensor_plate")) {
+                return false;
+            } else {
+                double averageForce = this->movingTimedAverage();
+                if ((averageForce > averageForceThreshold) && (this->Zforces.size() > numberOfDatapointsThresh)) {
+                    ROS_INFO("sensor plate average: %f, size %i", averageForce, this->Zforces.size());
+                    this->Zforces.clear();
+                    this->timeStamps.clear();
+                    return true;
+                }
+            }
+        }
+            /// \brief Determine of Electrical Plug is pushing against electrical socket
+            /// \return boolean weather the plug is pushing against the socket
+  public: bool isEndEffectorPushingPlug(float averageForceThreshold = 30, int numberOfDatapointsThresh = 10){
+            if (!this->averageForceOnLink("plug", "finger_tip")){
+                return false;
+            } else{
+                double averageForce = this->movingTimedAverage();
+                if ( (averageForce > averageForceThreshold) && (this->Zforces.size() > numberOfDatapointsThresh)){
+                    ROS_INFO("end effector average: %f, size %i",averageForce, this->Zforces.size());
+                    this->Zforces.clear();
+                    this->timeStamps.clear();
+                    return true;
+                }
+            }
+  }
 
 
 
   public: int getCollisionBetween(std::string contact1, std::string contact2){
           for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++){
               physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
-              bool isPlugContactingSensorPlate = contact->collision1->GetLink()->GetName() == contact1 && contact->collision2->GetLink()->GetName() == contact2
-                                                 ||
-                                                 contact->collision1->GetLink()->GetName() == contact2 && contact->collision2->GetLink()->GetName() == contact1;
+              bool isPlugContactingSensorPlate =
+                      (contact->collision1->GetLink()->GetName().find(contact1) != std::string::npos) &&
+                      (contact->collision2->GetLink()->GetName().find(contact2) != std::string::npos) ||
+                      (contact->collision1->GetLink()->GetName().find(contact2) != std::string::npos) &&
+                      (contact->collision2->GetLink()->GetName().find(contact1) != std::string::npos);
+
+                if ((contact->collision1->GetLink()->GetName().find(contact1) != std::string::npos) &&
+                    (contact->collision2->GetLink()->GetName().find(contact2) != std::string::npos)){
+                    ROS_INFO_THROTTLE(1,
+                                      "%s %s", contact->collision1->GetLink()->GetName().c_str(),
+                                      contact->collision2->GetLink()->GetName().c_str());
+
+                } else if ((contact->collision1->GetLink()->GetName().find(contact2) != std::string::npos) &&
+                           (contact->collision2->GetLink()->GetName().find(contact1) != std::string::npos)){
+                    ROS_INFO_THROTTLE(1,
+                                      "%s %s", contact->collision1->GetLink()->GetName().c_str(),
+                                      contact->collision2->GetLink()->GetName().c_str());
+                }
+
+
+
               if (isPlugContactingSensorPlate){
-                  ROS_INFO(" getCollisionBetween << %d ", i);
                   return i;
               }
           }
           return -1;
-
       }
 
   public: void Update(){
-    if (this->joined){
-      this->collisionChecks();
-    } else {
+
+      //check if recently removed the joint (to avoid it locking right away after unlocked)
+      if (this->world->SimTime() - unfreezeTimeBuffer < 10){
+          return;
+      }
+      // If plug and socket are not joined yet, check the alignment
+      // between them, and if alignment is maintained for more than
+      // 2 seconds, then construct a joint between them
+    if (!this->joined){
       if (this->isAlligned() && this->checkProximity()){
           if (alignmentTime == 0){
             alignmentTime = this->world->SimTime();
-          }
-          if (this->world->SimTime() - alignmentTime > 2){
-            ROS_INFO_THROTTLE(1, "MORE THAN 2 ");
-            this->construct_joint();
+          } else if (this->world->SimTime() - alignmentTime > 2){
+              this->construct_joint();
           }
       } else {
-        if (alignmentTime !=0){
-          ROS_INFO_THROTTLE(1, "wops, reset counter ");
+            alignmentTime = 0;
+      }
+      // If joint is constructed but plug is not yet fixed/locked
+      // into the socket, measure the forces and lock the plug to
+      // the socket if the plug is pushing against it.
+    } else if (this->joined && !this->locked){
+        if(this->isPlugPushingSensorPlate()){
+            this->lockJoint(this->prismaticJoint);
         }
-        alignmentTime = 0;
-      }
-    }
-
-    // initiate counting
-    if (this->recentlyUnfrozen){
-      if (this->unfreezeTimeBuffer == 0){
-        this->unfreezeTimeBuffer =  this->world->SimTime();
-      } else{
-        if (this->world->SimTime() - unfreezeTimeBuffer > 10){
-          this->recentlyUnfrozen = false;
-          this->unfreezeTimeBuffer = 0;
-        } 
-      }
+      //If plug is locked to socket, probe to see if there is
+      // enough force being exerted to pull it out
+    } else if (this->joined && this->locked){
+        if(this->isEndEffectorPushingPlug()){
+            this->unfreezeJoint(prismaticJoint);
+        }
     }
   }
-    // {
-
-
-
-    //   // if (false){
-    // }
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
 } // namespace gazebo
