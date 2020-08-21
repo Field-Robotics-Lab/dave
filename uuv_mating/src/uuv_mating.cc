@@ -268,10 +268,6 @@ namespace gazebo
         return;
       }
       this->joined = true;
-      // this->tubeLink->SetLinkStatic(true);
-      printf("joint formed\n");
-      printf("j#######################\n");
-      // gzmsg << this->world->Physics()->GetType();
 
       this->prismaticJoint = plugModel->CreateJoint(
         "plug_socket_joint",
@@ -285,6 +281,7 @@ namespace gazebo
       // prismaticJoint->SetUpperLimit(0, 0.3);
       prismaticJoint->Init();
       prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
+      ROS_INFO("joint formed\n");
 
       // prismaticJoint->SetUpperLimit(0, 1.0);
   }
@@ -399,39 +396,48 @@ namespace gazebo
 //      }
 //  }
     public: void collisionChecks(){
-            physics::Contact *contact = this->getCollisionBetween("plug", "contact_sensor");
+            int contactIndex  = this->getCollisionBetween("plug", "sensor_plate");
+            if (contactIndex == -1){ 
+              return;
+            }
+            physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(contactIndex);
+            ROS_INFO("AQUI 1");
             if(contact->collision1->GetLink()->GetName()=="plug"){
+              this->addForce(contact->wrench[contactIndex].body1Force[2]);
+              ROS_INFO("AQUI 2");
+            } else {
+              this->addForce(contact->wrench[contactIndex].body2Force[2]);
+              ROS_INFO("AQUI 3");
+            }
+            ROS_INFO("AQUI 5");
+            this->trimForceVector(0.1);
+            ROS_INFO("AQUI 6");
+
+            // if (this->movingTimedAverage() > ){
+            //     this->freezeJoint(this->prismaticJoint);
+            ROS_INFO( "%s %.2f %s %.2f", contact->collision1->GetLink()->GetName().c_str(),
+                      contact->wrench[contactIndex].body1Force[2],
+                      contact->collision2->GetLink()->GetName().c_str(),
+                      contact->wrench[contactIndex].body2Force[2]);
                 
-            }
-
-            if (contact->wrench[i].body1Force[2] > 15){
-                ROS_INFO( "%s %.2f %s %.2f", contact->collision1->GetLink()->GetName().c_str(),
-                          contact->wrench[i].body1Force[2],
-                          contact->collision2->GetLink()->GetName().c_str(),
-                          contact->wrench[i].body2Force[2]);
-                collisionForceCount++;
-
-                //   ROS_INFO("%i", collisionForceCount);
-                if (collisionForceCount > 10){
-                    collisionForceCount = 0;
-                    ROS_INFO("freeze");
-                    this->freezeJoint(this->prismaticJoint);
-                }
-            }
+            // }
         }
 
 
 
-  public: physics::Contact * getCollisionBetween(std::string contact1, std::string contact2){
+  public: int getCollisionBetween(std::string contact1, std::string contact2){
           for(int i=0; i<this->world->Physics()->GetContactManager()->GetContactCount(); i++){
               physics::Contact *contact = this->world->Physics()->GetContactManager()->GetContact(i);
               bool isPlugContactingSensorPlate = contact->collision1->GetLink()->GetName() == contact1 && contact->collision2->GetLink()->GetName() == contact2
                                                  ||
-                                                 contact->collision1->GetLink()->GetName() == contact2           && contact->collision2->GetLink()->GetName() == contact1;
+                                                 contact->collision1->GetLink()->GetName() == contact2 && contact->collision2->GetLink()->GetName() == contact1;
               if (isPlugContactingSensorPlate){
-                  return contact;
+                  ROS_INFO(" getCollisionBetween << %d ", i);
+                  return i;
               }
           }
+          return -1;
+
       }
 
   public: void Update(){
