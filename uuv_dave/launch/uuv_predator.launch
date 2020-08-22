@@ -12,26 +12,29 @@
         <arg name="gui" value="$(arg gui)"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
-        <arg name="verbose" value="false"/>
+        <arg name="verbose" value="true"/>
     </include>
 
     <!-- use ned frame north east down -->
-    <!-- <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/> -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
 
-    <!-- <include file="$(find uuv_dave)/launch/upload_rexrov_predator.launch">
+    <!-- rexrov robot with predator arm -->
+    <include file="$(find uuv_dave)/launch/upload_rexrov_predator.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="4.1"/>
+        <arg name="x" value="4"/>
         <arg name="y" value="4"/>
         <arg name="z" value="-93"/>
         <arg name="yaw" value="-1.8"/>
     </include>
 
+    <!-- Acceleration control -->
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
         <arg name="model_name" value="rexrov"/>
     </include>
 
+    <!-- joint control for manipulator -->
     <include file="$(find predator_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov"/>
-    </include> -->
+    </include>
 
 </launch>

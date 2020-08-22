@@ -10,9 +10,6 @@
           <box><size>0.1 0.1 0.5</size></box>
         </geometry>
       </collision>
-      <inertial name ='inertial'>
-        <mass>1</mass>
-      </inertial>
       <visual name ='visual'>
         <laser_retro>255</laser_retro>
         <geometry>

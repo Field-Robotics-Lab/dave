@@ -93,6 +93,12 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
+    <!-- Heightmap -->
+    <include>
+      <uri>model://sand_heightmap</uri>
+      <pose>0 0 -95 0 0 0</pose>
+    </include>
+
     <plugin name="underwater_current_plugin" filename="libuuv_underwater_current_ros_plugin.so">
       <namespace>hydrodynamics</namespace>
       <constant_current>
@@ -125,53 +131,9 @@
 
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
-    <include>
-      <uri>model://socket_bar</uri>
-      <pose>2 0 -99.17 0 1.57 0</pose>
-    </include>
-
-    <!-- <joint name = "joint_to_world" type="fixed">
-      <parent>world</parent>
-      <child>socket_bar::tube</child>
-    </joint> -->
-
-    <model name ='grab_bar'>
-      <pose>2.3 0 -99.17 0 1.57 0</pose>
-      <link name ='grab_bar_link'>
-        <collision name ='collision'>
-          <laser_retro>255</laser_retro>
-          <geometry>
-            <box><size>0.05 0.05 0.6</size></box>
-          </geometry>
-        </collision>
-        <visual name ='visual'>
-          <geometry>
-            <box><size>0.05 0.05 0.6</size></box>
-          </geometry>
-        </visual>
-      </link>
-      <inertial  name ='inertial'>
-        <inertia>
-          <ixx>1.0</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>1.0</iyy>
-          <iyz>0</iyz>
-          <izz>1.0</izz>
-        </inertia>
-        <mass>5.0</mass>
-      </inertial>
-      <!-- <joint name = "fj" type="fixed">
-        <parent>socket_bar::sensor_plate</parent>
-        <child>grab_bar_link</child>
-      </joint> -->
-    </model>
-
-
-    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
-
     <gui fullscreen='0'>
       <camera name='user_camera'>
+<!--    <pose frame=''>34.6042 32.2383 -20.6633 0 0.528384 1.41245</pose> -->
         <pose frame=''>9.0 -3.0 -87.0 0.0 0.7 2.2</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
