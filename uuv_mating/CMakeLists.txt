@@ -45,9 +45,3 @@ catkin_package(
 
 add_library(uuv_mating_plugin SHARED src/uuv_mating.cc)
 target_link_libraries(uuv_mating_plugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
-
-add_library(uuv_force_test_plugin SHARED src/uuv_force_test.cc)
-target_link_libraries(uuv_force_test_plugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
-
-add_library(uuv_move_joint SHARED src/uuv_move_joint.cc)
-target_link_libraries(uuv_move_joint ${GAZEBO_LIBRARIES})
