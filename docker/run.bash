@@ -24,7 +24,6 @@
 # Recommended:
 #   A joystick mounted to /dev/input/js0 or /dev/input/js1
 
-#RUNTIME="runc"
 GPUS="--gpus all"
 
 POSITIONAL=()
