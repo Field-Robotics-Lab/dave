@@ -33,7 +33,6 @@ key="$1"
 
 case $key in
     -w|--without-nvidia)
-#   RUNTIME="nvidia"
     GPUS=""
     shift
     ;;
@@ -72,7 +71,6 @@ then
     chmod a+r $XAUTH
 fi
 
-DOCKER_OPTS=
 # Example: Bind mount a local repository on the host machine:
 #DAVE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
 if [ -z $WORKSPACE ]; then
@@ -80,8 +78,8 @@ if [ -z $WORKSPACE ]; then
 else
   WS_PATH=$WORKSPACE
 fi
-DOCKER_OPTS="$GPUS --mount type=bind,source=${WS_PATH},target=/home/developer/uuv_ws/src"
 
+DOCKER_OPTS="$GPUS --mount type=bind,source=${WS_PATH},target=/home/developer/uuv_ws/src"
 
 # Share your vim settings.
 # VIMRC=~/.vimrc
@@ -102,7 +100,6 @@ docker run -it \
   -v "/dev/input:/dev/input" \
   --privileged \
   --rm \
-  --runtime=$RUNTIME \
   --security-opt seccomp=unconfined \
   -u $USERID:$GROUPID \
   $DOCKER_OPTS \
