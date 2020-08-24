@@ -60,6 +60,7 @@ namespace gazebo
                 this->m_noiseSigma = _sdf->Get<double>("sigma");
             }
 
+                
             // store this entity model
             this->m_model = _model;
 
@@ -72,14 +73,23 @@ namespace gazebo
 
             this->m_rosNode.reset(new ros::NodeHandle(m_entityName));
 
-            ros::SubscribeOptions so_command = 
+            ros::SubscribeOptions iis_ping = 
                 ros::SubscribeOptions::create<std_msgs::String>(
-                    "/" + this->m_namespace + "/" + this->m_entityName + "/command",
+                    "/" + this->m_namespace + "/" + this->m_entityName + "/individual_interrogation_ping",
                     1,
-                    boost::bind(&TransponderPlugin::Receive_rosCB, this, _1),
+                    boost::bind(&TransponderPlugin::IIS_rosCB, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
                 
-            this->m_rosCommandSub = this->m_rosNode->subscribe(so_command);
+            this->m_iisSub = this->m_rosNode->subscribe(iis_ping);
+
+            ros::SubscribeOptions cis_ping = 
+                ros::SubscribeOptions::create<std_msgs::String>(
+                    "/" + this->m_namespace + "/common_interrogation_ping",
+                    1,
+                    boost::bind(&TransponderPlugin::CIS_rosCB, this, _1),
+                    ros::VoidPtr(), &this->m_rosQueue);
+                
+            this->m_cisSub = this->m_rosNode->subscribe(cis_ping);
 
             // create ROS subscriber for temperature
             this->m_rosNode.reset(new ros::NodeHandle(m_entityName));
@@ -96,6 +106,7 @@ namespace gazebo
             this->m_rosQueueThread = std::thread(std::bind(&TransponderPlugin::QueueThread, this));
         }
 
+        // currently publish noisy position to gazebo topic
         private: void Send()
         { 
             // randomly generate from normal distribution for noise
@@ -114,6 +125,7 @@ namespace gazebo
             this->m_globalPosPub->Publish(pub_msg);
         }
 
+        // gets temperature from sensor to adjust sound speed
         private: void Temperature_rosCB(const std_msgs::Float64ConstPtr &msg)
         {
             this->m_temperature = msg->data;
@@ -124,14 +136,34 @@ namespace gazebo
             gzmsg << "Detected change of temperature, transponder sound speed is now: " << this->m_soundSpeed << " m/s\n";
         }
 
-        private: void Receive_rosCB(const std_msgs::StringConstPtr &msg)
+        // receives ping from transponder and call Send()
+        private: void IIS_rosCB(const std_msgs::StringConstPtr &msg)
         {
             auto box = this->m_model->GetWorld()->ModelByName("box");
             double dist = (this->m_model->WorldPose().Pos() - box->WorldPose().Pos()).Length();
             std::string command = msg->data;
             if(!command.compare("ping"))
             {
-                gzmsg << "Received ping, responding\n";
+                gzmsg << "Received iis_ping, responding\n";
+                sleep(dist / this->m_soundSpeed);
+                Send();
+            }
+            else
+            {
+                gzmsg << "Unknown command, ignore\n";
+            }
+
+        }
+
+        // receives ping from transponder and call Send()
+        private: void CIS_rosCB(const std_msgs::StringConstPtr &msg)
+        {
+            auto box = this->m_model->GetWorld()->ModelByName("box");
+            double dist = (this->m_model->WorldPose().Pos() - box->WorldPose().Pos()).Length();
+            std::string command = msg->data;
+            if(!command.compare("ping"))
+            {
+                gzmsg << "Received cis_ping, responding\n";
                 sleep(dist / this->m_soundSpeed);
                 Send();
             }
@@ -162,7 +194,8 @@ namespace gazebo
         private: transport::PublisherPtr m_globalPosPub;
         private: physics::ModelPtr m_model;
 
-        private: ros::Subscriber m_rosCommandSub;
+        private: ros::Subscriber m_iisSub;
+        private: ros::Subscriber m_cisSub;
         private: ros::CallbackQueue m_rosQueue;
         private: ros::Subscriber m_temperatureSub;
 
