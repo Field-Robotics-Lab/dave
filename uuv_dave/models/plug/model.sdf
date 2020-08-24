@@ -25,12 +25,12 @@
         </geometry>
       </collision>collisionChecks
 
-      <collision name ='stand'>
+      <!-- <collision name ='stand'>
          <pose>0 0.1 -0.06 0 0 0</pose>
         <geometry>
           <box><size>0.1 0.19 0.01</size></box>
         </geometry>
-      </collision>
+      </collision> -->
 
       <inertial>
         <pose>0 0.1 0 0 0 0</pose>
@@ -43,7 +43,7 @@
           <izz>0.04</izz>
           <!-- <izz>0.1</izz> -->
         </inertia>
-        <mass>2.0</mass>
+        <mass>0.5</mass>
       </inertial>
     </link>
 

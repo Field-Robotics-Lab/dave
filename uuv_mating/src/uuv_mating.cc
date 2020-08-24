@@ -103,6 +103,7 @@ namespace gazebo
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
       this->world = _world;
       this->socketModel = this->world->ModelByName("socket_box");
+      // this->socketModel = this->world->ModelByName("bop_panel_With_socket");
       this->plugModel = this->world->ModelByName("plug");
 
 
@@ -161,26 +162,26 @@ namespace gazebo
       if (verbose){
         ROS_INFO_THROTTLE(1, "socket euler: %.2f %.2f %.2f plug euler: %.2f %.2f %.2f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]+1.57079632679  );
       }
-      return abs(plugRotation[0] - socketRotation[0]) < 0.1;
+      return abs(plugRotation[0] - socketRotation[0]) < 0.2;
     }
 
   private: bool checkPitchAlignment(bool verbose = false){
       ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
       ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       // ROS_INFO_THROTTLE(1, "socket pitch: %f %f %f plug pitch: %f %f %f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]);
-      return abs(plugRotation[1] - socketRotation[1]) < 0.1;
+      return abs(plugRotation[1] - socketRotation[1]) < 0.2;
     }
 
   private:bool checkYawAlignment(bool verbose = false){
       ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
       ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       // ROS_INFO_THROTTLE(1, "socket yaw: %f %f %f plug yaw: %f %f %f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]);
-      return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < 0.1;
+      return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < 0.2;
     }
 
   private: bool checkRotationalAlignment()
     {
-      if (this->checkYawAlignment() && this->checkPitchAlignment() && this->checkRollAlignment())
+      if (this->checkYawAlignment(true) && this->checkPitchAlignment() && this->checkRollAlignment())
       {
         ROS_INFO_THROTTLE(1,"SOCKET AND PLUG ALIGNED");
         // printf("Aligned, ready for insertion  \n");
@@ -217,7 +218,7 @@ namespace gazebo
 
   private: bool isAlligned(bool verbose = false)
     {
-      if(checkVerticalAlignment() && checkRotationalAlignment()){
+      if(checkVerticalAlignment(true) && checkRotationalAlignment()){
         if (verbose){ROS_INFO_THROTTLE(1,"ALLIGNED ROT and VERT");}
         return true;
       } else {

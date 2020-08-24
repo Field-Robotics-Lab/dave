@@ -127,12 +127,17 @@
 
     <include>
       <uri>model://socket_box</uri>
-      <pose>0 0 -97.5 0 0 0</pose>
+      <pose>0 0 -99.8 0 0 0</pose>
     </include>
+
+    <!-- <include>
+      <uri>model://bop_panel_with_socket</uri>
+      <pose>0 0 -99.5 0 0 0</pose>
+    </include> -->
 
     <include>
       <uri>model://plug</uri>
-      <pose>0.47 0 -97.2 0 0 -1.57079632679</pose>
+      <pose>10 0 -99.5 0 0 -1.57079632679</pose>
       <!-- <pose>0.525207 0.978282 -97.2 1.57079632679 0 -1.57079632679</pose> -->
     </include>
 
