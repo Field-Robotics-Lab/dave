@@ -34,6 +34,7 @@
 #ifndef GAZEBO_ROS_DEPTH_CAMERA_HH
 #define GAZEBO_ROS_DEPTH_CAMERA_HH
 
+
 // ros stuff
 #include <ros/ros.h>
 #include <ros/callback_queue.h>
@@ -57,7 +58,12 @@
 // boost stuff
 #include <boost/thread/mutex.hpp>
 
+// opencv
 #include <opencv2/core.hpp>
+
+// core data types
+#include <string>
+#include <vector>
 
 // gazebo stuff
 #include <sdf/Param.hh>
@@ -109,8 +115,8 @@ namespace gazebo
 
     /// \brief push depth image data into ros topic
     private: void ComputeSonarImage(const float *_src);
-	private: cv::Mat ComputeNormalImage(cv::Mat& depth);
-	private: cv::Mat ConstructSonarImage(cv::Mat& depth, cv::Mat& normals);
+    private: cv::Mat ComputeNormalImage(cv::Mat& depth);
+    private: cv::Mat ConstructSonarImage(cv::Mat& depth, cv::Mat& normals);
     private: cv::Mat ConstructScanImage(cv::Mat& depth, cv::Mat& SNR);
     private: void ApplySpeckleNoise(cv::Mat& scan, float fov);
     private: void ApplySmoothing(cv::Mat& scan, float fov);
@@ -136,15 +142,17 @@ namespace gazebo
     private: void RawSonarImageDisconnect();
     private: common::Time last_depth_image_camera_info_update_time_;
 
-    private: bool FillPointCloudHelper(sensor_msgs::PointCloud2 &point_cloud_msg,
+    private: bool FillPointCloudHelper(
+                                  sensor_msgs::PointCloud2 &point_cloud_msg,
                                   uint32_t rows_arg, uint32_t cols_arg,
                                   uint32_t step_arg, void* data_arg);
 
-    private: bool FillDepthImageHelper( sensor_msgs::Image& image_msg,
+    private: bool FillDepthImageHelper(sensor_msgs::Image& image_msg,
                                   uint32_t rows_arg, uint32_t cols_arg,
                                   uint32_t step_arg, void* data_arg);
 
-    /// \brief A pointer to the ROS node.  A node will be instantiated if it does not exist.
+    /// \brief A pointer to the ROS node.
+    //  A node will be instantiated if it does not exist.
     private: ros::Publisher point_cloud_pub_;
     private: ros::Publisher depth_image_pub_;
     private: ros::Publisher normal_image_pub_;
@@ -184,11 +192,11 @@ namespace gazebo
     protected: ros::Publisher depth_image_camera_info_pub_;
 
     private: event::ConnectionPtr load_connection_;
-    
-	// from DepthCameraPlugin
-	protected: unsigned int width, height, depth;
+
+    // from DepthCameraPlugin
+    protected: unsigned int width, height, depth;
     protected: std::string format;
-		
+
     // precomputed things for the forward-looking sonar
     protected: cv::Mat dist_matrix_;
     std::vector<std::vector<int> > angle_range_indices_;
