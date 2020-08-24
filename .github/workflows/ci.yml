@@ -22,13 +22,13 @@ jobs:
       - name: Checkout gtri based sonar
         uses: actions/checkout@v2
         with:
-          repository:Field-Robotics-Lab/gtri_based_sonar
+          repository: Field-Robotics-Lab/gtri_based_sonar
           path: gtri_based_sonar
 
       - name: Checkout gtri based sonar
         uses: actions/checkout@v2
         with:
-          repository:Field-Robotics-Lab/nps_uw_sensors_gazebo
+          repository: Field-Robotics-Lab/nps_uw_sensors_gazebo
           path: nps_uw_sensors_gazebo
 
 
