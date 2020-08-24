@@ -8,7 +8,7 @@
     </include>
 
     <link name ='socket'>
-      <pose>3.25 0 8.2 0 0 -1.570796</pose>
+      <pose>3.32 0.3 8.3 0 0 -1.570796</pose>
       <visual name ='visual'>
 
         <geometry>
@@ -30,8 +30,7 @@
     </link>
 
     <link name ='sensor_plate'>
-      <pose>0.325 0 0 0 1.570796 0</pose>
-
+      <pose>3.34 0.3 8.3 0 1.570796 0</pose>
       <collision name ='collision'>
         <geometry>
           <cylinder>
@@ -40,11 +39,10 @@
           </cylinder>
         </geometry>
       </collision>
-
     </link>
 
     <joint name="sensor_plate_joint" type="fixed">
-        <pose>0 0 0 0 0 0</pose>
+        <!-- <pose>0 0 0 0 0 0</pose> -->
         <parent>socket</parent>
         <child>sensor_plate</child>
     </joint>
