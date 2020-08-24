@@ -19,10 +19,24 @@ jobs:
       - name: Static code checking
         run: sh tools/code_check.sh
 
+      - name: Checkout gtri based sonar
+        uses: actions/checkout@v2
+        with:
+          repository:Field-Robotics-Lab/gtri_based_sonar
+          path: gtri_based_sonar
+
+      - name: Checkout gtri based sonar
+        uses: actions/checkout@v2
+        with:
+          repository:Field-Robotics-Lab/nps_uw_sensors_gazebo
+          path: nps_uw_sensors_gazebo
+
+
       - name: Set up workspace
         run: |
           mkdir -p /tmp/uuv_ws/src;
           ln -s `pwd` /tmp/uuv_ws/src;
+
 
       - name: Build and run tests
         shell: bash
