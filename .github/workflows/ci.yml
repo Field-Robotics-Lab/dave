@@ -31,6 +31,29 @@ jobs:
           repository: Field-Robotics-Lab/nps_uw_sensors_gazebo
           path: nps_uw_sensors_gazebo
 
+      - name: Checkout uuv simulator 
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/uuv_simulator
+          path: uuv_simulator
+
+      - name: Checkout rexrov2
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/rexrov2
+          path: rexrov2
+
+      - name: Checkout uuv manipulators 
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/uuv_manipulators
+          path: uuv_manipulators
+
+      - name: Checkout eca a9
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/eca_a9
+          path: eca_a9
 
       - name: Set up workspace
         run: |
