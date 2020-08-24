@@ -47,6 +47,18 @@
 #include <std_msgs/Float64.h>
 #include <image_transport/image_transport.h>
 
+// dynamic reconfigure stuff
+#include <gazebo_plugins/GazeboRosCameraConfig.h>
+#include <dynamic_reconfigure/server.h>
+
+// camera stuff
+#include <gazebo_plugins/gazebo_ros_camera_utils.h>
+
+// boost stuff
+#include <boost/thread/mutex.hpp>
+
+#include <opencv2/core.hpp>
+
 // gazebo stuff
 #include <sdf/Param.hh>
 #include <gazebo/physics/physics.hh>
@@ -55,18 +67,6 @@
 #include <gazebo/common/Time.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 #include <gazebo/plugins/DepthCameraPlugin.hh>
-
-// dynamic reconfigure stuff
-#include <gazebo_plugins/GazeboRosCameraConfig.h>
-#include <dynamic_reconfigure/server.h>
-
-// boost stuff
-#include <boost/thread/mutex.hpp>
-
-// camera stuff
-#include <gazebo_plugins/gazebo_ros_camera_utils.h>
-
-#include <opencv2/core.hpp>
 
 namespace gazebo
 {
