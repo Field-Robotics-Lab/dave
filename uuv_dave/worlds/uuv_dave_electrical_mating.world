@@ -89,6 +89,14 @@
       <cast_shadows>false</cast_shadows>
     </light>
 
+    <light type="directional" name="sun_diffuse_5">
+      <pose>10 0 -80 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-1 0 -1</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
     <!-- Virtual NED frame -->
     <include>
       <uri>model://ned_frame</uri>
