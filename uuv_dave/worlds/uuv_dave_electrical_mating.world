@@ -81,6 +81,22 @@
       <cast_shadows>false</cast_shadows>
     </light>
 
+    <light type="directional" name="sun_diffuse_4">
+      <pose>20 0 -90 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-1 0 0</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <light type="directional" name="sun_diffuse_5">
+      <pose>10 0 -80 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-1 0 -1</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
     <!-- Virtual NED frame -->
     <include>
       <uri>model://ned_frame</uri>
@@ -127,14 +143,41 @@
 
     <include>
       <uri>model://socket_box</uri>
-      <pose>0 0 -97.5 0 0 0</pose>
+      <pose>0 0 -99.8 0 0 0</pose>
     </include>
+
+    <!-- <include>
+      <uri>model://bop_panel_with_socket</uri>
+      <pose>0 0 -99.5 0 0 0</pose>
+    </include> -->
 
     <include>
       <uri>model://plug</uri>
-      <pose>0.47 0 -97.2 0 0 -1.57079632679</pose>
+      <pose>5 0 -94.5 1.57079632679 0 -1.57079632679</pose>
       <!-- <pose>0.525207 0.978282 -97.2 1.57079632679 0 -1.57079632679</pose> -->
     </include>
+
+    <model name="platform">
+      <static>true</static>
+      <pose>5 0 -95 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 0.2</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 1 0.2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
 
     <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
 

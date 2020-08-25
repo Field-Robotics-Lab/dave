@@ -103,6 +103,7 @@ namespace gazebo
   public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf){
       this->world = _world;
       this->socketModel = this->world->ModelByName("socket_box");
+      // this->socketModel = this->world->ModelByName("bop_panel_With_socket");
       this->plugModel = this->world->ModelByName("plug");
 
 
@@ -161,7 +162,7 @@ namespace gazebo
       if (verbose){
         ROS_INFO_THROTTLE(1, "socket euler: %.2f %.2f %.2f plug euler: %.2f %.2f %.2f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]+1.57079632679  );
       }
-      return abs(plugRotation[0] - socketRotation[0]) < 0.1;
+      return abs(plugRotation[0] - socketRotation[0]) < 0.3;
     }
 
   private: bool checkPitchAlignment(bool verbose = false){
@@ -175,12 +176,12 @@ namespace gazebo
       ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
       ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
       // ROS_INFO_THROTTLE(1, "socket yaw: %f %f %f plug yaw: %f %f %f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]);
-      return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < 0.1;
+      return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < 0.2;
     }
 
   private: bool checkRotationalAlignment()
     {
-      if (this->checkYawAlignment() && this->checkPitchAlignment() && this->checkRollAlignment())
+      if (this->checkYawAlignment(true) && this->checkPitchAlignment() && this->checkRollAlignment())
       {
         ROS_INFO_THROTTLE(1,"SOCKET AND PLUG ALIGNED");
         // printf("Aligned, ready for insertion  \n");
@@ -195,7 +196,8 @@ namespace gazebo
 
   private: bool checkVerticalAlignment(bool verbose = false)
     {
-      socket_pose = socketModel->RelativePose();
+      // socket_pose = socketModel->RelativePose();
+      socket_pose = this->tubeLink->WorldPose();
       ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
       // printf("%s  \n", typeid(socketPositon).name());
 
@@ -217,7 +219,7 @@ namespace gazebo
 
   private: bool isAlligned(bool verbose = false)
     {
-      if(checkVerticalAlignment() && checkRotationalAlignment()){
+      if(checkVerticalAlignment(true) && checkRotationalAlignment()){
         if (verbose){ROS_INFO_THROTTLE(1,"ALLIGNED ROT and VERT");}
         return true;
       } else {
@@ -227,7 +229,7 @@ namespace gazebo
 
   private: bool checkProximity(bool verbose = false)
     {
-      socket_pose = socketModel->WorldPose();
+      socket_pose = this->tubeLink->WorldPose();
       // socket_pose = socketLink->RelativePose();
       ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
       // printf("%s  \n", typeid(socketPositon).name());
@@ -243,7 +245,7 @@ namespace gazebo
         ROS_INFO_THROTTLE(1, "eucleadian distance: %f", pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5));
       }
 
-      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 0.4;
+      bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 0.14;
       if (withinProximity)
       {
         // printf("%f Within Proximity  \n", plugPosition[0]);
@@ -275,31 +277,17 @@ namespace gazebo
       }
       this->joined = true;
       this->alignmentTime = 0;
-//          this->world->SetPaused(true);
-        ROS_INFO("Print 11");
-          // "fixed",
-          this->prismaticJoint = plugModel->CreateJoint(
-                  "plug_socket_joint",
-
-          "prismatic",
+      this->prismaticJoint = plugModel->CreateJoint(
+        "plug_socket_joint",
+        "prismatic",
         tubeLink,
         plugLink);
-          ROS_INFO("Print 12");
-          if (this->ccount==0){
-              prismaticJoint->Load(this->tubeLink, this->plugLink,
-                                   ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0),
-                                                                 ignition::math::Quaternion<double>(0, 0, 0, 0)));
-              prismaticJoint->Init();
-              ccount++;
-          }
-
-          ROS_INFO("Print 13");
-          // prismaticJoint->SetUpperLimit(0, 0.3);
-          ROS_INFO("Print 14");
+      prismaticJoint->Load(this->tubeLink, this->plugLink,
+                            ignition::math::Pose3<double>(ignition::math::Vector3<double>(0, 0, 0),
+                                                          ignition::math::Quaternion<double>(0, 0, 0, 0)));
+      prismaticJoint->Init();
       prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
       ROS_INFO("joint formed\n");
-//          this->world->SetPaused(false);
-      // prismaticJoint->SetUpperLimit(0, 1.0);
   }
     
   private: void remove_joint(){
@@ -348,7 +336,7 @@ namespace gazebo
         }
             /// \brief Determine of Electrical Plug is pushing against electrical socket
             /// \return boolean weather the plug is pushing against the socket
-  public: bool isEndEffectorPushingPlug(float averageForceThreshold = 30, int numberOfDatapointsThresh = 10){
+  public: bool isEndEffectorPushingPlug(float averageForceThreshold = 200, int numberOfDatapointsThresh = 10){
             if (!this->averageForceOnLink("plug", "finger_tip")){
                 return false;
             } else{
@@ -398,14 +386,14 @@ namespace gazebo
   public: void Update(){
 
       //check if recently removed the joint (to avoid it locking right away after unlocked)
-      if (this->world->SimTime() - unfreezeTimeBuffer < 10){
+      if (this->world->SimTime() - unfreezeTimeBuffer < 2){
           return;
       }
       // If plug and socket are not joined yet, check the alignment
       // between them, and if alignment is maintained for more than
       // 2 seconds, then construct a joint between them
     if (!this->joined){
-      if (this->isAlligned() && this->checkProximity()){
+      if (this->isAlligned() && this->checkProximity(true)){
           if (alignmentTime == 0){
             alignmentTime = this->world->SimTime();
           } else if (this->world->SimTime() - alignmentTime > 2){
