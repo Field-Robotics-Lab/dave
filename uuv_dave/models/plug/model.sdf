@@ -9,7 +9,7 @@
       <visual name ='visual'>
         <geometry>
           <mesh>
-            <uri>model://Hybrid-Connector-Inner-sans-animation.dae</uri>
+            <uri>model://Electrical-Plug.dae</uri>
             <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
@@ -17,9 +17,8 @@
 
       <collision name ='collision'>
         <geometry>
-        <!-- <box><size>0.1 0.1 0.1</size></box> -->
           <mesh>
-            <uri>model://Hybrid-Connector-Inner-sans-animation.dae</uri>
+            <uri>model://Electrical-Plug.dae</uri>
             <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
@@ -41,7 +40,6 @@
           <iyy>0.04</iyy>
           <iyz>0</iyz>
           <izz>0.04</izz>
-          <!-- <izz>0.1</izz> -->
         </inertia>
         <mass>0.5</mass>
       </inertial>

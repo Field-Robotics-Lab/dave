@@ -13,7 +13,7 @@
 
         <geometry>
           <mesh>
-            <uri>model://untitled_out.dae</uri>
+            <uri>model://Electrical-Socket.dae</uri>
             <scale>0.12 0.12 0.12</scale>
           </mesh>
         </geometry>
@@ -21,7 +21,7 @@
       <collision name ='collision'>
         <geometry>
           <mesh>
-            <uri>model://untitled_out.dae</uri>
+            <uri>model://Electrical-Socket.dae</uri>
             <scale>0.12 0.12 0.12</scale>
           </mesh>
         </geometry>
