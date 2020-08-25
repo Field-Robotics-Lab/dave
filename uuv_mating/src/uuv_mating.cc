@@ -1,20 +1,90 @@
 #include "uuv_mating/uuv_mating.hh"
+#include <gazebo/physics/Collision.hh>
+#include <algorithm>    // std::lower_bound
 
 using namespace gazebo;
 
 //////////////////////////////////////////////////
 void WorldUuvPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
 {
-    this->world = _world;
-    this->socketModel = this->world->ModelByName("socket_box");
-    this->plugModel = this->world->ModelByName("plug");
-    this->sensorPlate = this->socketModel->GetLink("sensor_plate");
-    this->tubeLink = this->socketModel->GetLink("socket");
-    this->plugLink = this->plugModel->GetLink("plug");
-    this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
-    this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
-        std::bind(&WorldUuvPlugin::Update, this));
+  this->world = _world;
+
+  // Retrieve models' parameters from SDF
+  if (_sdf->HasElement("rollAlignmentTolerence"))
+  {
+    this->rollAlignmentTolerence = _sdf->GetElement("rollAlignmentTolerence")->Get<double>();
+    ROS_INFO("Roll Mating Alignment Tolerence is: %f", this->rollAlignmentTolerence);
+  } 
+  else
+  {
+    this->rollAlignmentTolerence = 0.3;
+    ROS_INFO("Roll Mating Alignment Tolerence was not stated, using value of %f", this->rollAlignmentTolerence);
   }
+
+  if (_sdf->HasElement("pitchAlignmentTolerence"))
+  {
+    this->pitchAlignmentTolerence = _sdf->GetElement("pitchAlignmentTolerence")->Get<double>();
+    ROS_INFO("Pitch Mating Alignment Tolerence is: %f", this->pitchAlignmentTolerence);
+  } 
+  else
+  {
+    this->pitchAlignmentTolerence = 0.3;
+    ROS_INFO("Pitch Mating Alignment Tolerence was not stated, using value of %f", this->pitchAlignmentTolerence);
+  }
+
+  if (_sdf->HasElement("yawAlignmentTolerence"))
+  {
+    this->yawAlignmentTolerence = _sdf->GetElement("yawAlignmentTolerence")->Get<double>();
+    ROS_INFO("Yaw Mating Alignment Tolerence is: %f", this->yawAlignmentTolerence);
+  } 
+  else
+  {
+    this->yawAlignmentTolerence = 0.3;
+    ROS_INFO("Yaw Mating Alignment Tolerence was not stated, using value of %f", this->yawAlignmentTolerence);
+  }
+
+  if (_sdf->HasElement("zAlignmentTolerence"))
+  {
+    this->zAlignmentTolerence = _sdf->GetElement("zAlignmentTolerence")->Get<double>();
+    ROS_INFO("Z Mating Alignment Tolerence is: %f", this->zAlignmentTolerence);
+  } 
+  else
+  {
+    this->zAlignmentTolerence = 0.1;
+    ROS_INFO("Yaw Mating Alignment Tolerence was not stated, using value of %f", this->zAlignmentTolerence);
+  }
+
+  if (_sdf->HasElement("matingForce"))
+  {
+    this->matingForce = _sdf->GetElement("matingForce")->Get<double>();
+    ROS_INFO("Mating force: ", this->matingForce);
+  } 
+  else
+  {
+    this->matingForce = 50;
+    ROS_INFO("Mating Force not stated, using value of %f", this->matingForce);
+  }
+
+  if (_sdf->HasElement("unmatingForce"))
+  {
+    this->unmatingForce = _sdf->GetElement("unmatingForce")->Get<double>();
+    ROS_INFO("Unmating Force: %f", this->unmatingForce);
+  } 
+  else
+  {
+    this->unmatingForce = 190;
+    ROS_INFO("Unmating Force not stated, using value of %f", this->unmatingForce);
+  }
+
+  this->socketModel = this->world->ModelByName("socket_box");
+  this->plugModel = this->world->ModelByName("plug");
+  this->sensorPlate = this->socketModel->GetLink("sensor_plate");
+  this->tubeLink = this->socketModel->GetLink("socket");
+  this->plugLink = this->plugModel->GetLink("plug");
+  this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
+  this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+      std::bind(&WorldUuvPlugin::Update, this));
+}
 
 //////////////////////////////////////////////////
 void WorldUuvPlugin::trimForceVector(double trimDuration)
@@ -23,9 +93,13 @@ void WorldUuvPlugin::trimForceVector(double trimDuration)
     if (this->timeStamps.size() == 0)
       return;
     
-    low=std::lower_bound (this->timeStamps.begin(), this->timeStamps.end(), this->timeStamps.back()-trimDuration);
-    this->timeStamps.erase (this->timeStamps.begin(), this->timeStamps.begin() + std::distance( this->timeStamps.begin(), low ));
-    this->forcesBuffer.erase (this->forcesBuffer.begin(), this->forcesBuffer.begin() + std::distance( this->timeStamps.begin(), low ));
+    low = std::lower_bound (this->timeStamps.begin(), this->timeStamps.end(), 
+        this->timeStamps.back()-trimDuration);
+    this->timeStamps.erase (this->timeStamps.begin(), this->timeStamps.begin()
+        + std::distance( this->timeStamps.begin(), low ));
+    this->forcesBuffer.erase (this->forcesBuffer.begin(), 
+        this->forcesBuffer.begin() + std::distance( this->timeStamps.begin(),
+        low));
 };
 
 //////////////////////////////////////////////////
@@ -67,70 +141,71 @@ void WorldUuvPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
 {
   if (!this->locked)
   {
-    ROS_INFO("already unlocked");
+    ROS_INFO("Already unlocked");
     return;
   }
   this->locked = false;
   this->unfreezeTimeBuffer =  this->world->SimTime();
-  ROS_INFO("UNFREEZE");
-  // prismaticJoint->SetUpperLimit(0, 100);
-  // prismaticJoint->SetLowerLimit(0, -100);
+  ROS_INFO("Unfreeze joint");
   this->remove_joint();
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkRollAlignment(bool verbose)
+bool WorldUuvPlugin::checkRollAlignment(double alignmentThreshold)
 {
   ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
   ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+  return abs(plugRotation[0] - socketRotation[0]) < alignmentThreshold;
+}
+
+//////////////////////////////////////////////////
+bool WorldUuvPlugin::checkPitchAlignment(double alignmentThreshold)
+{
+  ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+  ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+  return abs(plugRotation[1] - socketRotation[1]) < alignmentThreshold;
+}
+
+//////////////////////////////////////////////////
+bool WorldUuvPlugin::checkYawAlignment(double alignmentThreshold)
+{
+  ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+  ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+  return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < alignmentThreshold;
+}
+
+//////////////////////////////////////////////////
+bool WorldUuvPlugin::checkRotationalAlignment(bool verbose)
+{
   if (verbose)
-    ROS_INFO_THROTTLE(1, "socket euler: %.2f %.2f %.2f plug euler: %.2f %.2f %.2f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]+1.57079632679  );
-  return abs(plugRotation[0] - socketRotation[0]) < 0.3;
-}
-
-//////////////////////////////////////////////////
-bool WorldUuvPlugin::checkPitchAlignment(bool verbose)
-{
-  ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
-  ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
-  // ROS_INFO_THROTTLE(1, "socket pitch: %f %f %f plug pitch: %f %f %f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]);
-  return abs(plugRotation[1] - socketRotation[1]) < 0.1;
-}
-
-//////////////////////////////////////////////////
-bool WorldUuvPlugin::checkYawAlignment(bool verbose)
-{
-  ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
-  ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
-  // ROS_INFO_THROTTLE(1, "socket yaw: %f %f %f plug yaw: %f %f %f", socketRotation[0], socketRotation[1], socketRotation[2],plugRotation[0],plugRotation[1],plugRotation[2]);
-  return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) < 0.2;
-}
-
-
-//////////////////////////////////////////////////
-bool WorldUuvPlugin::checkRotationalAlignment()
-{
-  if (this->checkYawAlignment(true) && this->checkPitchAlignment() && this->checkRollAlignment())
   {
-    ROS_INFO_THROTTLE(1,"SOCKET AND PLUG ALIGNED");
-    // printf("Aligned, ready for insertion  \n");
+    ignition::math::Vector3<double> socketRotation = socketModel->RelativePose().Rot().Euler();
+    ignition::math::Vector3<double> plugRotation = plugModel->RelativePose().Rot().Euler();
+    ROS_INFO_THROTTLE(1, "socket euler: %.2f %.2f %.2f plug euler: %.2f %.2f %.2f",
+    socketRotation[0], socketRotation[1], socketRotation[2],
+    plugRotation[0],plugRotation[1],plugRotation[2]+1.57079632679);
+  }
+  if (this->checkYawAlignment(this->yawAlignmentTolerence) && 
+      this->checkPitchAlignment(this->pitchAlignmentTolerence) && 
+      this->checkRollAlignment(this->rollAlignmentTolerence))
+  {
+    ROS_INFO_THROTTLE(1,"Socket and plug are aligned");
     return true;
   }
   else
   {
-    // printf("Disaligned, not ready for mating  \n");
     return false;
   }
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkVerticalAlignment(bool verbose)
+bool WorldUuvPlugin::checkVerticalAlignment(double alignmentThreshold, bool verbose)
 {
   ignition::math::Pose3d socket_pose = this->tubeLink->WorldPose();
   ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
   ignition::math::Pose3d plug_pose = plugModel->RelativePose();
   ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
-  bool onSameVerticalLevel = abs(plugPosition[2] - socketPositon[2]) < 0.1;
+  bool onSameVerticalLevel = abs(plugPosition[2] - socketPositon[2]) < alignmentThreshold;
 
   if (verbose)
     ROS_INFO_THROTTLE(1,"Z plug: %f  Z socket: %f",plugPosition[2], socketPositon[2]);
@@ -141,13 +216,13 @@ bool WorldUuvPlugin::checkVerticalAlignment(bool verbose)
   return false;
 }
 
-
 //////////////////////////////////////////////////
 bool WorldUuvPlugin::isAlligned(bool verbose)
 {
   if(checkVerticalAlignment(true) && checkRotationalAlignment())
   {
-    if (verbose){ROS_INFO_THROTTLE(1,"ALLIGNED ROT and VERT");}
+    if (verbose)
+      ROS_INFO_THROTTLE(1,"Plug and socket are aligned in orientation and altitude");
     return true;
   } 
   else 
@@ -156,7 +231,6 @@ bool WorldUuvPlugin::isAlligned(bool verbose)
   }
 }
 
-
 //////////////////////////////////////////////////
 bool WorldUuvPlugin::checkProximity(bool verbose)
 {
@@ -164,7 +238,6 @@ bool WorldUuvPlugin::checkProximity(bool verbose)
   ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
   ignition::math::Pose3d plug_pose = plugModel->RelativePose();
   ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
-  // printf("%f %f %f Within Proximity  \n", plugPosition[0], plugPosition[1], plugPosition[2]);
   float xdiff_squared = pow(abs(plugPosition[0] - socketPositon[0]),2);
   float ydiff_squared = pow(abs(plugPosition[1] - socketPositon[1]),2);
   float zdiff_squared = pow(abs(plugPosition[2] - socketPositon[2]),2);
@@ -175,12 +248,12 @@ bool WorldUuvPlugin::checkProximity(bool verbose)
   bool withinProximity = pow(xdiff_squared+ydiff_squared+zdiff_squared,0.5) < 0.14;
   if (withinProximity)
   {
-    // printf("%f Within Proximity  \n", plugPosition[0]);
+    ROS_INFO_THROTTLE(1,"Within proximity");
     return true;
   }
   else 
   {
-    // printf("not within Proximity  \n");
+    ROS_INFO_THROTTLE(1,"Not within proximity, please more the plug closer");
   }
   return false;
 }
@@ -204,9 +277,9 @@ void WorldUuvPlugin::construct_joint()
                                                       ignition::math::Quaternion<double>(0, 0, 0, 0)));
   prismaticJoint->Init();
   prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
+  prismaticJoint->SetLowerLimit(0, prismaticJoint->Position(0));
   ROS_INFO("joint formed\n");
 }
-
 
 //////////////////////////////////////////////////
 void WorldUuvPlugin::remove_joint()
@@ -216,10 +289,9 @@ void WorldUuvPlugin::remove_joint()
     this->prismaticJoint->Detach();
     this->prismaticJoint->Reset();
     this->prismaticJoint->~Joint();
-    printf("joint removed\n");
+    ROS_INFO("Joint removed");
   }
 }
-
 
 //////////////////////////////////////////////////
 bool WorldUuvPlugin::averageForceOnLink(std::string contact1, std::string contact2)
@@ -241,7 +313,7 @@ bool WorldUuvPlugin::averageForceOnLink(std::string contact1, std::string contac
 }
 
 //////////////////////////////////////////////////        
-bool WorldUuvPlugin::isPlugPushingSensorPlate(float averageForceThreshold, int numberOfDatapointsThresh) 
+bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh) 
 {
   if (!this->averageForceOnLink("plug", "sensor_plate")) {
       return false;
@@ -249,7 +321,7 @@ bool WorldUuvPlugin::isPlugPushingSensorPlate(float averageForceThreshold, int n
   else 
   {
     double averageForce = this->movingTimedAverage();
-    if ((averageForce > averageForceThreshold) && (this->forcesBuffer.size() > numberOfDatapointsThresh)) 
+    if ((averageForce > this->matingForce) && (this->forcesBuffer.size() > numberOfDatapointsThresh)) 
     {
       // ROS_INFO("sensor plate average: %f, size %i", averageForce, this->forcesBuffer.size());
       this->forcesBuffer.clear();
@@ -260,7 +332,7 @@ bool WorldUuvPlugin::isPlugPushingSensorPlate(float averageForceThreshold, int n
 }
 
 ////////////////////////////////////////////////// 
-bool WorldUuvPlugin::isEndEffectorPushingPlug(float averageForceThreshold, int numberOfDatapointsThresh)
+bool WorldUuvPlugin::isEndEffectorPushingPlug(int numberOfDatapointsThresh)
 {
   if (!this->averageForceOnLink("plug", "finger_tip"))
   {
@@ -269,7 +341,7 @@ bool WorldUuvPlugin::isEndEffectorPushingPlug(float averageForceThreshold, int n
   else
   {
     double averageForce = this->movingTimedAverage();
-    if ((averageForce > averageForceThreshold) && (this->forcesBuffer.size() > numberOfDatapointsThresh))
+    if ((averageForce > this->unmatingForce) && (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
       // ROS_INFO("end effector average: %f, size %i",averageForce, this->forcesBuffer.size());
       this->forcesBuffer.clear();

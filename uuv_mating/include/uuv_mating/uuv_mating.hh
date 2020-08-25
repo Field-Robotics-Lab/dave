@@ -2,17 +2,11 @@
 #include <gazebo/physics/physics.hh>
 #include <ignition/math/Pose3.hh>
 #include <ignition/math/Vector3.hh>
-#include <gazebo/physics/Collision.hh>
 #include "ros/ros.h"
-#include "std_msgs/Float64.h"
-
 #include <gazebo/common/common.hh>
-
 #include <sstream>
-
 #include <vector> 
 
-#include <algorithm>    // std::lower_bound
 
 namespace gazebo
 {
@@ -63,6 +57,24 @@ namespace gazebo
     /// \brief Time the plug and the socket has been freed.
     /// Used to put some buffer between unfreezing and another possible mating.
     private: common::Time unfreezeTimeBuffer = 0;
+
+    /// \brief Roll alignment tolerence.
+    private: double rollAlignmentTolerence;
+
+    /// \brief pitch alignment tolerence.
+    private: double pitchAlignmentTolerence;
+
+    /// \brief Yaw alignment tolerence.
+    private: double yawAlignmentTolerence;
+
+    /// \brief Z alignment tolerence.
+    private: double zAlignmentTolerence;
+
+    /// \brief Yaw alignment tolerence.
+    private: double matingForce;
+
+    /// \brief Z alignment tolerence.
+    private: double unmatingForce;
     
     /// \brief Concatenates/trims forcesBuffer and timeStamps vectors to 
     /// include only the last trimDuration.
@@ -90,23 +102,23 @@ namespace gazebo
 
     /// \brief Check that plug and socket are aligned in the roll orientation.
     /// \return Return true of aligned.
-    private: bool checkRollAlignment(bool verbose = false);
+    private: bool checkRollAlignment(double alignmentThreshold);
 
     /// \brief Check that plug and socket are aligned in the pitch orientation.
     /// \return Return true if aligned.
-    private: bool checkPitchAlignment(bool verbose = false);
+    private: bool checkPitchAlignment(double alignmentThreshold);
 
     /// \brief Check that plug and socket are aligned in the yaw orientation.
     /// \return Return true if aligned.
-    private:bool checkYawAlignment(bool verbose = false);
+    private:bool checkYawAlignment(double alignmentThreshold);
 
     /// \brief Check that plug and socket are aligned in the all orientations.
     /// \return Return true if aligned.
-    private: bool checkRotationalAlignment();
+    private: bool checkRotationalAlignment(bool verbose = false);
 
     /// \brief Check if plug and socket have the same altitude.
     /// \return Return true if on same altitude.
-    private: bool checkVerticalAlignment(bool verbose = false);
+    private: bool checkVerticalAlignment(double alignmentThreshold, bool verbose = false);
 
     /// \brief Check if plug and socket have the same orientation and altitude.
     /// \return Return true if same r,p,y and z.
@@ -128,11 +140,11 @@ namespace gazebo
 
     /// \brief Determine of Electrical Plug is pushing against electrical socket.
     /// \return boolean weather the plug is pushing against the socket.
-    public: bool isPlugPushingSensorPlate(float averageForceThreshold = 50, int numberOfDatapointsThresh = 10);
+    public: bool isPlugPushingSensorPlate(int numberOfDatapointsThresh = 10);
 
     /// \brief Determine of Electrical Plug is pushing against electrical socket.
     /// \return boolean weather the plug is pushing against the socket.
-    public: bool isEndEffectorPushingPlug(float averageForceThreshold = 200, int numberOfDatapointsThresh = 10);
+    public: bool isEndEffectorPushingPlug(int numberOfDatapointsThresh = 10);
 
     /// \brief Gets the collision index between two links.
     /// \return Collision index between contact1 and contact2.

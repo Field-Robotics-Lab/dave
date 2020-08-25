@@ -179,7 +179,24 @@
       </link>
     </model>
 
-    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so"/>
+    <plugin name="vehicle_docked_bay1_exterior" filename="libContainPlugin.so">
+      <entity>wamv::base_link</entity>
+      <namespace>vrx/dock_2018/bay_1_external</namespace>
+      <pose frame="robotx_dock_2018::dock_2018_placard1::placard::link">0 -10 -1.5 0 0 0</pose>
+      <geometry>
+        <box>
+          <size>8 1.5 2</size>
+        </box>
+      </geometry>
+    </plugin>
+
+    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so">
+      <rollAlignmentTolerence>0.3</rollAlignmentTolerence>
+      <pitchAlignmentTolerence>0.3</pitchAlignmentTolerence>
+      <yawAlignmentTolerence>0.3</yawAlignmentTolerence>
+      <zAlignmentTolerence>0.5</zAlignmentTolerence>
+    </plugin>
+
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
