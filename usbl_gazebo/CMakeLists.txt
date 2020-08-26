@@ -10,17 +10,31 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   gazebo_ros
+  message_generation
 )
 
 find_package(gazebo REQUIRED)
 
-catkin_package(
-  DEPENDS
-  roscpp
-  gazebo_ros
+add_message_files(
+  FILES
+  USBLCommand.msg
+  USBLResponse.msg
 )
 
+generate_messages(
+  DEPENDENCIES
+)
+
+catkin_package(
+  CATKIN_DEPENDS
+  roscpp
+  gazebo_ros
+  message_runtime
+)
+
+
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
   ${GAZEBO_INCLUDE_DIRS}
 )

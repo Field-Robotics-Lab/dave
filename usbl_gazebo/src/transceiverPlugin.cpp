@@ -3,6 +3,7 @@
 
 #include <ignition/transport/Node.hh>
 #include <ignition/math/Pose3.hh>
+#include <ignition/common/StringUtils.hh>
 
 #include <ros/ros.h>
 #include <ros/callback_queue.h>
@@ -12,6 +13,8 @@
 #include <std_msgs/Float64.h>
 #include <std_msgs/Int8.h>
 #include <geometry_msgs/Vector3.h>
+#include "usbl_gazebo/USBLCommand.h"
+#include "usbl_gazebo/USBLResponse.h"
 
 #include <thread>
 #include <math.h>
@@ -19,6 +22,9 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <unordered_map>
+
+#include "usblCommandId.hpp"
 
 std::vector<std::string> im = {"common", "individual"}; // available interrogation modes
 
@@ -31,6 +37,9 @@ namespace gazebo
 
         public: void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         {
+
+            /***************************************************  SDF PARAMETERS ********************************************************/
+
             // Ensure ROS is initialized for publishers and subscribers
             if(!ros::isInitialized())
             {
@@ -41,47 +50,89 @@ namespace gazebo
                 return ;
             }
 
-            // Obtain Entity name from SDF
-            if(!_sdf->HasElement("entity"))
-            {
-                gzerr << "Missing required parameter <entity>, plugin will not be initialized." << std::endl;
-                return;
-            }
-            
-            this->m_attr.entityName = _sdf->Get<std::string>("entity");
-            gzmsg << "Entity: " << this->m_attr.entityName << std::endl;
-
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
             // Grab namespace from SDF
             if(!_sdf->HasElement("namespace"))
             {
                 gzerr << "Missing required parameter <namespace>, plugin will not be initialized." << std::endl;
                 return;
             }
-            this->m_attr.entityNamespace = _sdf->Get<std::string>("namespace");
+            this->m_namespace = _sdf->Get<std::string>("namespace");
 
-            // enable automation of sending pings to transponder 
-            if(!_sdf->HasElement("enable"))
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
+            // Obtain transceiver device name from SDF
+            if(!_sdf->HasElement("transceiver_device"))
             {
-                gzerr << "Missing required parameter <enable>, plugin will not be initialized." << std::endl;
+                gzerr << "Missing required parameter <transceiver_device>, plugin will not be initialized." << std::endl;
                 return;
             }
             
-            this->m_attr.enablePinger = _sdf->Get<bool>("enable");
-            gzmsg << "pinger enable? " << this->m_attr.enablePinger << std::endl; 
+            this->m_transceiverDevice = _sdf->Get<std::string>("transceiver_device");
+            gzmsg << "Entity: " << this->m_transceiverDevice << std::endl;
 
-            // Get object that transponder attached to
-            if(!_sdf->HasElement("transponder_object"))
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
+            // get transceiver device id
+            if(!_sdf->HasElement("transceiver_ID"))
             {
-                gzerr << "Missing required parameter <transponder_object>, plugin will not be initialized." << std::endl;
+                gzerr << "Missing required parameter <transceiver_ID>, plugin will not be initialized." << std::endl;
                 return;
             }
-            this->m_attr.transponderName = _sdf->Get<std::string>("transponder_object");
+            
+            this->m_transceiverID = _sdf->Get<std::string>("transceiver_ID");
 
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
+            // get transponder device name
+            if(!_sdf->HasElement("transponder_device"))
+            {
+                gzerr << "Missing required parameter <transponder_device>, plugin will not be initialized." << std::endl;
+                return;
+            }
+            this->m_transponderDevice = _sdf->Get<std::string>("transponder_device");
+            gzmsg << "Transponder device: " << this->m_transponderDevice << std::endl;
+
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
+            // get commanding transponders
+            if(!_sdf->HasElement("transponder_ID"))
+            {
+                gzerr << "Missing required parameter <transponder_ID>, plugin will not be initialized." << std::endl;
+                return;
+            }
+
+            auto transponders = ignition::common::Split(_sdf->Get<std::string>("transponder_ID"), ',');
+            gzmsg << "Current deployed transponders are: \n";
+            
+            for( auto &transponder : transponders)
+            {
+                gzmsg << transponder << std::endl;
+                this->m_deployedTransponders.push_back(transponder);
+            }
+            
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
+            // enable automation of sending pings to transponder 
+            if(!_sdf->HasElement("enable_ping_scheduler"))
+            {
+                gzerr << "Missing required parameter <enable_ping_scheduler>, plugin will not be initialized." << std::endl;
+                return;
+            }
+            
+            this->m_enablePingerScheduler = _sdf->Get<bool>("enable_ping_scheduler");
+            gzmsg << "pinger enable? " << this->m_enablePingerScheduler << std::endl; 
+
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
+            // Get object that transponder attached to
+            if(!_sdf->HasElement("transponder_attached_object"))
+            {
+                gzerr << "Missing required parameter <transponder_attached_object>, plugin will not be initialized." << std::endl;
+                return;
+            }
+            this->m_transponderAttachedObject = _sdf->Get<std::string>("transponder_attached_object");
+
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
             /*  interrogation mode - 2 options
              *  II (individual interrogation) <----->  CRS (common response signal)
-             *  CI (common interrogation)     <----->  IRS (individual response signal) from beacon_01
-             *                                    ͱ->  IRS from beacon_02
-             *                                    ͱ->  IRS from beacon_03
+             *  CI (common interrogation)     <----->  IRS (individual response signal) from transponder_01
+             *                                    ͱ->  IRS from transponder_02
+             *                                    ͱ->  IRS from transponder_03
              *                                            ⋮
              */ 
             if(_sdf->HasElement("interrogation_mode"))
@@ -90,19 +141,23 @@ namespace gazebo
                 if(std::find(im.begin(), im.end(), interrogation_mode) != im.end())
                 {
                     gzmsg << interrogation_mode << " interrogation mode is used" << std::endl;
-                    this->m_attr.interrogationMode = interrogation_mode;
+                    this->m_interrogationMode = interrogation_mode;
                 }
                 else
                 {
                     gzmsg << "Specified interrogation mode is unavailable, Common mode is used" << std::endl;
-                    this->m_attr.interrogationMode = "common";
+                    this->m_interrogationMode = "common";
                 }
             }
             else
             {
                 gzmsg << "Interrogation mode is not specified, Common mode is used" << std::endl;
-                this->m_attr.interrogationMode = "common";
+                this->m_interrogationMode = "common";
             }
+
+            /*****************************************************************************************************************************/
+
+            /************************************************  GAZEBO SUBSCRIBER *********************************************************/
 
             // store this entity model
             this->m_model = _model;
@@ -112,71 +167,153 @@ namespace gazebo
             this->m_gzNode->Init();
 
             // Gazebo subscriber for getting position of the transponder
-            std::string transponder_position = "/" + this->m_attr.entityNamespace + "/" + "Transponder" + "/global_position";
-            this->m_transponderPoseSub = this->m_gzNode->Subscribe(transponder_position, &TransceiverPlugin::receiveGezeboCallback, this);
+            for( auto& transponder : this->m_deployedTransponders)
+            {
+                std::string transponder_position = "/" + this->m_namespace + "/transponder_" + transponder + "/global_position";
+                this->m_transponderPoseSub.push_back(this->m_gzNode->Subscribe(transponder_position, &TransceiverPlugin::receiveGezeboCallback, this));
+            }
+            /*****************************************************************************************************************************/
+            
+            /***************************************************  ROS PUBLISHERS *********************************************************/
 
             // ROS node initialization
-            this->m_rosNode.reset(new ros::NodeHandle(this->m_attr.entityName));
+            this->m_rosNode.reset(new ros::NodeHandle(this->m_transceiverDevice));
 
-            // ROS publisher for broadcasting beacon's relative location to the transceiver
-            std::string beacon_location_topic = "/" + this->m_attr.entityNamespace + "/" + this->m_attr.entityName + "/beacon_location";
-            this->m_publishTransponderRelPos = this->m_rosNode->advertise<geometry_msgs::Vector3>(beacon_location_topic, 1);
+            // ROS publisher for broadcasting transponder's relative location to the transceiver
+            std::string transponder_location_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location";
+            this->m_publishTransponderRelPos = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_topic, 1);
 
-            // ROS publisher for pinging the transponder
-            std::string cis_pinger_topic = "/" + m_attr.entityNamespace + "/common_interrogation_ping";
+            // ROS publisher for common interrogation signal ping
+            std::string cis_pinger_topic = "/" + m_namespace + "/common_interrogation_ping";
             this->m_cisPinger = this->m_rosNode->advertise<std_msgs::String>(cis_pinger_topic, 1);
 
+            // ROS publisher for individual signal ping and command for each transponder
+            for(auto& transponder: this->m_deployedTransponders)
+            {
+                std::string ping_topic("/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + transponder + "/individual_interrogation_ping");
+                std::string command_topic("/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + transponder + "/command_request");
+                this->m_iisPinger[transponder] = this->m_rosNode->advertise<std_msgs::String>(ping_topic, 1);
+                this->m_commandPubs[transponder] = this->m_rosNode->advertise<usbl_gazebo::USBLCommand>(command_topic, 1);
+            }
+
+            /*****************************************************************************************************************************/
+            
+            /***************************************************  ROS SUBSCRIBERS ********************************************************/
+
             // create ROS subscriber for temperature
-            this->m_rosNode.reset(new ros::NodeHandle(m_attr.entityName));
+            this->m_rosNode.reset(new ros::NodeHandle(m_transceiverDevice));
 
             // subscriber for temperature sensor
-            ros::SubscribeOptions temperatureSub = 
+            ros::SubscribeOptions temperature_sub = 
                 ros::SubscribeOptions::create<std_msgs::Float64>(
-                    "/" + this->m_attr.entityNamespace + "/" + this->m_attr.entityName + "/temperature",
+                    "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/temperature",
                     1,
                     boost::bind(&TransceiverPlugin::temperatureRosCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
                 
-            this->m_temperatureSub = this->m_rosNode->subscribe(temperatureSub);
+            this->m_temperatureSub = this->m_rosNode->subscribe(temperature_sub);
             
             // subscriber for setting interrogation mode
-            ros::SubscribeOptions interrogationModeSub = 
+            ros::SubscribeOptions interrogation_mode_sub = 
                 ros::SubscribeOptions::create<std_msgs::String>(
-                    "/" + this->m_attr.entityNamespace + "/" + this->m_attr.entityName + "/interrogation_mode",
+                    "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/interrogation_mode",
                     1,
-                    boost::bind(&TransceiverPlugin::interrogationModeRosCB, this, _1),
+                    boost::bind(&TransceiverPlugin::interrogationModeRosCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
                 
-            this->m_interrogationModeSub = this->m_rosNode->subscribe(interrogationModeSub);
+            this->m_interrogationModeSub = this->m_rosNode->subscribe(interrogation_mode_sub);
 
+            // subscriber for command response
+            ros::SubscribeOptions command_response = 
+                ros::SubscribeOptions::create<usbl_gazebo::USBLResponse>(
+                    "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response",
+                    1,
+                    boost::bind(&TransceiverPlugin::commandingResponseCallback, this, _1),
+                    ros::VoidPtr(), &this->m_rosQueue);
+                
+            this->m_commandResponseSub = this->m_rosNode->subscribe(command_response);
+
+            // subscriber for testing command response
+            ros::SubscribeOptions channel_switch = 
+                ros::SubscribeOptions::create<std_msgs::String>(
+                    "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/channel_switch",
+                    1,
+                    boost::bind(&TransceiverPlugin::channelSwitchCallback, this, _1),
+                    ros::VoidPtr(), &this->m_rosQueue);
+                
+            this->m_channelSwitchSub = this->m_rosNode->subscribe(channel_switch);
+
+            // subscriber for testing command response
+            ros::SubscribeOptions command_response_test = 
+                ros::SubscribeOptions::create<std_msgs::String>(
+                    "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response_test",
+                    1,
+                    boost::bind(&TransceiverPlugin::commandingResponseTestCallback, this, _1),
+                    ros::VoidPtr(), &this->m_rosQueue);
+                
+            this->m_commandResponseTestSub = this->m_rosNode->subscribe(command_response_test);
+
+            /*****************************************************************************************************************************/
+
+            /***************************************************  ROS MISC  **************************************************************/
             // timer to send ping Command
-            if(this->m_attr.enablePinger)
+            if(this->m_enablePingerScheduler)
             {
-                this->m_timer = this->m_rosNode->createTimer(ros::Duration(1.0), &TransceiverPlugin::ping, this);
+                this->m_timer = this->m_rosNode->createTimer(ros::Duration(1.0), &TransceiverPlugin::sendPing, this);
             }
 
             this->m_rosQueueThread = std::thread(std::bind(&TransceiverPlugin::queueThread, this));
         }
 
+        public: void commandingResponseTestCallback(const std_msgs::StringConstPtr &msg)
+        {   
+            std::string transponder_id = msg->data;
+            sendCommand(BATTERY_LEVEL, transponder_id);
+        }
+
+        public: void commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg)
+        {
+            gzmsg << "Response_id: " << msg->responseID << ", transponder id: " << msg->transceverID << ", data: " << msg->data << std::endl;
+        }
+
+        public: void sendCommand(int command_id, std::string& transponder_id)
+        {
+            usbl_gazebo::USBLCommand command;
+            command.commandID = command_id;
+            command.transponderID = std::stoi(transponder_id);
+            if(command_id == BATTERY_LEVEL){
+                command.data = "report battery level";
+            }
+            else if(command_id == GO_TO)
+            {
+                command.data = "go to this location";
+            }
+            else
+            {
+                command.data = "this is dummy message";
+            }
+            this->m_commandPubs[transponder_id].publish(command);
+        }
+
         // publish ROS ping topic to get response from transponder depending on the interrogation modes
-        public: void ping(const ros::TimerEvent&)
+        public: void sendPing(const ros::TimerEvent&)
         {
             std_msgs::String ping_msg;
             ping_msg.data = "ping";
 
             // need to fake the transmission by applying distance based delay
-            physics::ModelPtr tranponder = this->m_model->GetWorld()->ModelByName(this->m_attr.transponderName);
+            physics::ModelPtr tranponder = this->m_model->GetWorld()->ModelByName(this->m_transponderAttachedObject);
             double dist = (this->m_model->WorldPose().Pos() - tranponder->WorldPose().Pos()).Length();
             gzmsg << "distance to tranponder: " << dist << " m\n";
             sleep(dist/this->m_soundSpeed);
 
-            if(this->m_attr.interrogationMode.compare("common") == 0)
+            if(this->m_interrogationMode.compare("common") == 0)
             {
                 this->m_cisPinger.publish(ping_msg);
             }
-            else if(this->m_attr.interrogationMode.compare("individual") == 0)
+            else if(this->m_interrogationMode.compare("individual") == 0)
             {
-                this->m_iisPinger.publish(ping_msg);
+                this->m_iisPinger[this->m_channel].publish(ping_msg);
             }
             else
             {
@@ -184,10 +321,11 @@ namespace gazebo
             }
         }
 
-        public: void channelSwitch(const std::string &channel)
+        // switch channel to ping another transponder or all transponders
+        public: void channelSwitchCallback(const std_msgs::StringConstPtr &msg)
         {
-            std::string iis_pinger_topic = "/" + this->m_attr.entityNamespace + "/" + channel + "/individual_interrogation_ping";
-            this->m_iisPinger = this->m_rosNode->advertise<std_msgs::String>(iis_pinger_topic, 1);
+            gzmsg << "Switching to transponder_" << msg->data << " channel\n";
+            this->m_channel = msg->data;
         }
 
         // gets temperature from sensor to adjust sound speed
@@ -201,29 +339,29 @@ namespace gazebo
             gzmsg << "Detected change of temperature, sound speed is now: " << this->m_soundSpeed << " m/s\n";
         }
 
-        public: void interrogationModeRosCB(const std_msgs::StringConstPtr &msg)
+        // callback for interrogation mode switch
+        public: void interrogationModeRosCallback(const std_msgs::StringConstPtr &msg)
         {
             std::string mode = msg->data;
             if(std::find(im.begin(), im.end(), mode) != im.end())
             {
-                this->m_attr.interrogationMode = mode;
+                this->m_interrogationMode = mode;
             }
             else
             {
                 gzmsg << "The input mode is not available\n";
             }
-            
         }
         
         // Gazebo callback for receiving transponder position, simulating Transceiver's positioning calculation
-        public: void receiveGezeboCallback(ConstVector3dPtr& beacon_position)
+        public: void receiveGezeboCallback(ConstVector3dPtr& transponder_position)
         {
-            gzmsg << "Transceiver acquires transponders position: " << beacon_position->x() << " " << beacon_position->y() << " " << beacon_position->z() << std::endl;
+            gzmsg << "Transceiver acquires transponders position: " << transponder_position->x() << " " << transponder_position->y() << " " << transponder_position->z() << std::endl;
             
-            ignition::math::Vector3d beacon_position_ign = ignition::math::Vector3d(beacon_position->x(), beacon_position->y(), beacon_position->z());
+            ignition::math::Vector3d transponder_position_ign = ignition::math::Vector3d(transponder_position->x(), transponder_position->y(), transponder_position->z());
             
             double bearing=0, range=0, elevation=0;
-            calcuateRelativePose(beacon_position_ign, bearing, range, elevation);
+            calcuateRelativePose(transponder_position_ign, bearing, range, elevation);
 
             publishPosition(bearing, range, elevation);
         }
@@ -258,6 +396,7 @@ namespace gazebo
             gzmsg << "elevation: " << elevation << "\n\n";
         }
 
+        // use threads to execute callback associated with each subscriber
         public: void queueThread()
         {
             static const double timeout = 0.01;
@@ -268,30 +407,37 @@ namespace gazebo
         }
 
         // This entity's attributes
-        private: struct attribute{
-            std::string transponderName;
-            std::string entityNamespace;
-            std::string entityName;
-            std::string interrogationMode;
-            bool enablePinger;
-        } m_attr;
+        std::string m_namespace;
+        std::string m_transceiverDevice;
+        std::string m_transceiverID;
+        std::string m_transponderAttachedObject;
+        std::string m_channel = "1";
+        std::string m_interrogationMode;
+        bool m_enablePingerScheduler;
 
+
+        private: std::string m_transponderDevice;
         private: double m_temperature;
         private: double m_soundSpeed;
+        private: std::vector<std::string> m_deployedTransponders;
 
         // Gazebo nodes, publishers, and subscribers
         private: ros::Timer m_timer;
         private: physics::ModelPtr m_model;
         private: transport::NodePtr m_gzNode;
-        private: transport::SubscriberPtr m_transponderPoseSub;
+        private: std::vector<transport::SubscriberPtr> m_transponderPoseSub;
 
         // ROS nodes, publishers and subscibers
         private: std::unique_ptr<ros::NodeHandle> m_rosNode;
         private: ros::Publisher m_publishTransponderRelPos;
         private: ros::Publisher m_cisPinger;
-        private: ros::Publisher m_iisPinger;
+        private: std::unordered_map<std::string, ros::Publisher> m_iisPinger;
+        private: std::unordered_map<std::string, ros::Publisher> m_commandPubs;
         private: ros::Subscriber m_temperatureSub;
+        private: ros::Subscriber m_commandResponseSub;
+        private: ros::Subscriber m_commandResponseTestSub;
         private: ros::Subscriber m_interrogationModeSub;
+        private: ros::Subscriber m_channelSwitchSub;
         private: ros::CallbackQueue m_rosQueue;
 
         private: std::thread m_rosQueueThread;
