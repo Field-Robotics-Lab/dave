@@ -46,6 +46,8 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
  && wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add - \
  && apt update \
  && apt install -y \
+    python-rosdep \
+    qtbase5-dev \
     libgles2-mesa-dev \
     ros-${DIST}-desktop-full \
     ros-${DIST}-velodyne-gazebo-plugins \
@@ -64,9 +66,11 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
     ros-${DIST}-robot-localization \
     ros-${DIST}-robot-state-publisher \
     ros-${DIST}-xacro \
-    python-rosdep \
     libignition-math2 \
+ && rosdep init \
  && apt clean
+
+RUN rosdep update
 
 # Set USER and GROUP
 ARG USER=developer
