@@ -11,14 +11,14 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<robot name="glider_slocum" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="glider_wave_liquidrobotics" xmlns:xacro="http://www.ros.org/wiki/xacro" >
   <xacro:arg name="debug" default="0"/>
-  <xacro:arg name="namespace" default="glider_slocum"/>
+  <xacro:arg name="namespace" default="glider_wave_liquidrobotics"/>
   <xacro:arg name="inertial_reference_frame" default="world"/>
   <!-- Include the UUV macro file -->
-  <xacro:include filename="$(find uuv_dave)/models/glider_slocum/urdf/glider_slocum.xacro"/>
-  <!-- Create the glider_slocum -->
-  <xacro:glider_slocum 
+  <xacro:include filename="$(find uuv_dave)/urdf/glider_wave_liquidrobotics.xacro"/>
+  <!-- Create the glider_wave_liquidrobotics -->
+  <xacro:glider_wave_liquidrobotics 
     namespace="$(arg namespace)" 
     debug="$(arg debug)"
     inertial_reference_frame="$(arg inertial_reference_frame)"/>

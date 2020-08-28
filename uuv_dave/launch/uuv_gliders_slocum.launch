@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="gui" default="true"/>
-    <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
-    <arg name="namespace" default="glider_slocum"/>
+    <!--
+    <arg name="namespace" default="rexrov"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
-    <arg name="velocity_control" default="true"/>
+    <arg name="velocity_control" default="true"/> -->
+    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/> 
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -57,36 +58,18 @@
     </node>
 
     <!-- timeout -->
-    <group if="$(arg set_timeout)">
+    <!-- <group if="$(arg set_timeout)">
         <include file="$(find uuv_assistants)/launch/set_simulation_timer.launch">
             <arg name="timeout" value="$(arg timeout)"/>
         </include>
-    </group>
+    </group> -->
 
-
-    <arg name="use_ned_frame" default="false"/>
-    <!-- load Slocum glider -->
-    <include file="$(find uuv_dave)/models/glider_slocum/launch/upload_glider_slocum.launch">
+    <!-- standard glider : glider_slocum -->
+    <include file="$(find uuv_dave)/launch/upload_glider_slocum.launch">
+        <arg name="namespace" value="glider_slocum"/>
         <arg name="x" value="4"/>
         <arg name="y" value="4"/>
-        <arg name="z" value="-30"/>
-        <arg name="yaw" value="-1.8"/>
-    </include>
-
-    <include file="$(find uuv_dave)/launch/start_glider_teleop.launch">
-        <arg name="uuv_name" value="$(arg namespace)"/>
-        <arg name="joy_id" default="0"/>
-    </include>
-
-
-    <arg name="bag_filename" default="recording.bag"/>
-
-    <arg name="record" default="false"/>
-    <!-- Initialize the recording fo the simulation according to the record flag  -->
-    <include file="$(find uuv_dave)/launch/record_demo.launch">
-        <arg name="record" value="$(arg record)"/>
-        <arg name="use_ned_frame" value="$(arg use_ned_frame)"/>
-        <arg name="bag_filename" value="$(arg bag_filename)"/>
+        <arg name="z" value="-93"/>
     </include>
 
 </launch>
