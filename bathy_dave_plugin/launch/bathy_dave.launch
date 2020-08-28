@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find bathy_dave_plugin)/world/bathy_dave.world --verbose -u -e ode -s libdsros_sensors.so" respawn="false" output="screen">
+        <env name="GAZEBO_RESOURCE_PATH" value="$(optenv GAZEBO_RESOURCE_PATH):$(find bathy_dave_plugin)/world/:/tmp/"/>
+    </node>
+
+    <!-- include robots -->
+    <include file="$(find bathy_dave_plugin)/launch/robots.launch"/>
+
+</launch>
+

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- rexrov robot -->
+    <!-- <group ns="rexrov"> -->
+        <include file="$(find bathy_dave_plugin)/launch/rexrov.launch">
+            <arg name="robot_name" value="rexrov"/>
+            <arg name="init_pose" value="-x 485454.0 -y 57719.0 -z -1 -P 0.35" />
+        </include>
+    <!-- </group> -->
+
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <arg name="velocity_control" default="true"/>
+    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
+    </include>
+
+    <!-- rqt_image_view for image_raw_sonar -->
+    <!-- <node name="rqt_image_view_sonar" pkg="rqt_image_view"
+        type="rqt_image_view" args="/rexrov/depth/image_raw_sonar">
+    </node> -->
+
+
+</launch>

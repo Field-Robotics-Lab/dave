@@ -134,11 +134,13 @@ class BathyPlugin : public WorldPlugin
 	  }
 	if ( isnew ) // in the list of active models but not in the internal list
 	  {
+	 gzmsg << "FLAGFLSG" << std::endl;
 
 	    this->models.push_back(std::make_tuple(ii,static_cast<bathy_interface_t*>(nullptr)));
 
 	    if (ii->GetSDF()->HasElement("plugin"))
 	      {
+	 gzmsg << "FLAGFLSG2" << std::endl;
 		sdf::ElementPtr pluginSDF = ii->GetSDF()->GetElement("plugin");
 		while (pluginSDF) 
 		  {
@@ -240,6 +242,19 @@ class BathyPlugin : public WorldPlugin
 			      
 			      int col = floor((tLon - bg->anchor_lon)/bg->spacing_lon);
 			      int row = floor((tLat - bg->anchor_lat)/bg->spacing_lat);
+
+
+	 			  gzmsg << col << std::endl;
+	 			  gzmsg << row << std::endl;
+	 			  gzmsg << tLon << std::endl;
+	 			  gzmsg << tLat << std::endl;
+	 			  gzmsg << bg->anchor_lon << std::endl;
+	 			  gzmsg << bg->anchor_lat << std::endl;
+	 			  gzmsg << bg->spacing_lon << std::endl;
+	 			  gzmsg << bg->spacing_lat << std::endl;
+	 			  gzmsg << bg->colmax << std::endl;
+	 			  gzmsg << bg->rowmax << std::endl;
+	 			  gzmsg << this->bathy_grids.size() << std::endl;
 
 			      // If bathymetry exists for this location it is the highest priority available
 			      // so use it and don't check lower priority bathy.
