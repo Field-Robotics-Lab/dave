@@ -21,16 +21,21 @@
     <!-- rexrov robot with predator arm -->
     <include file="$(find uuv_dave)/launch/upload_rexrov_predator.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="4"/>
-        <arg name="y" value="4"/>
-        <arg name="z" value="-93"/>
+        <arg name="x" value="0"/>
+        <arg name="y" value="0"/>
+        <arg name="z" value="-98"/>
         <arg name="yaw" value="-1.8"/>
     </include>
 
     <!-- Acceleration control -->
-    <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
-        <arg name="model_name" value="rexrov"/>
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
     </include>
+
+    <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar">
+    </node>
 
     <!-- joint control for manipulator -->
     <include file="$(find predator_control)/launch/joint_control.launch">
