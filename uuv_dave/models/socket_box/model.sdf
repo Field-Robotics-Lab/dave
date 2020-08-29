@@ -1,0 +1,57 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='socket_box'>
+
+    <include>
+      <uri>model://bop_panel</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <link name ='socket'>
+      <pose>3.32 0.3 8.3 0 0 -1.570796</pose>
+      <visual name ='visual'>
+
+        <geometry>
+          <mesh>
+            <uri>model://Electrical-Socket.dae</uri>
+            <scale>0.12 0.12 0.12</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name ='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://Electrical-Socket.dae</uri>
+            <scale>0.12 0.12 0.12</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+    </link>
+
+    <link name ='sensor_plate'>
+      <pose>3.34 0.3 8.3 0 1.570796 0</pose>
+      <collision name ='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.06</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="sensor_plate_joint" type="fixed">
+        <!-- <pose>0 0 0 0 0 0</pose> -->
+        <parent>socket</parent>
+        <child>sensor_plate</child>
+    </joint>
+
+    <joint name="socket_joint" type="fixed">
+      <!-- <pose>0 0 10 0 0 0</pose> -->
+      <parent>bop_panel::block</parent>
+      <child>socket</child>
+    </joint>
+
+  </model>
+</sdf>
