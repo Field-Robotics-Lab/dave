@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
-    <arg name="paused" default="false"/>
+    <arg name="paused" default="true"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->

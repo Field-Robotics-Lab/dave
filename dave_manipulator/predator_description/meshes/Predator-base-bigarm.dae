@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.83.3 commit date:2020-07-22, commit time:06:01, hash:353e5bd7493e</authoring_tool>
     </contributor>
-    <created>2020-08-07T11:20:45</created>
-    <modified>2020-08-07T11:20:45</modified>
+    <created>2020-08-06T15:50:43</created>
+    <modified>2020-08-06T15:50:43</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -94,20 +94,7 @@
     </geometry>
   </library_geometries>
   <library_visual_scenes>
-    <visual_scene id="Scene" name="Scene">
-      <node id="root-base-bigarm" name="root-base-bigarm" type="NODE">
-        <matrix sid="transform">1 0 0 -1.67638e-8 0 1 0 -0.1997652 0 0 1 0.1868463 0 0 0 1</matrix>
-        <instance_geometry url="#root-base-bigarm-mesh" name="root-base-bigarm">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="Predator-material" target="#Predator-material">
-                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
-              </instance_material>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
-    </visual_scene>
+    <visual_scene id="Scene" name="Scene"/>
   </library_visual_scenes>
   <scene>
     <instance_visual_scene url="#Scene"/>

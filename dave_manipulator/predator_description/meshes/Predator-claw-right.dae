@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.83.3 commit date:2020-07-22, commit time:06:01, hash:353e5bd7493e</authoring_tool>
     </contributor>
-    <created>2020-08-07T14:14:21</created>
-    <modified>2020-08-07T14:14:21</modified>
+    <created>2020-08-07T11:21:23</created>
+    <modified>2020-08-07T11:21:23</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -50,54 +50,54 @@
     </material>
   </library_materials>
   <library_geometries>
-    <geometry id="root-base-bigarm-smallarm-knuckle-clawleft-mesh" name="root-base-bigarm-smallarm-knuckle-clawleft">
+    <geometry id="root-base-bigarm-smallarm-knuckle-clawright-mesh" name="root-base-bigarm-smallarm-knuckle-clawright">
       <mesh>
-        <source id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-positions">
-          <float_array id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-positions-array" count="36">-0.003346443 -0.01584076 -0.0804786 -0.003346443 0.0158407 -0.0804786 0.01650184 -0.01584076 -0.0804786 0.01650184 0.0158407 -0.0804786 -0.01650184 -0.01584076 0 -0.01650184 0.0158407 0 0.01650184 0.0158407 0 0.01650184 -0.01584076 0 -0.01387077 0.0158407 -0.04041153 0.01650184 0.0158407 -0.04041153 0.01650184 -0.01584076 -0.04041153 -0.01387077 -0.01584076 -0.04041153</float_array>
+        <source id="root-base-bigarm-smallarm-knuckle-clawright-mesh-positions">
+          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-mesh-positions-array" count="36">0.003346443 -0.01584076 -0.0804786 0.003346443 0.0158407 -0.0804786 -0.01650184 -0.01584076 -0.0804786 -0.01650184 0.0158407 -0.0804786 0.01650184 -0.01584076 0 0.01650184 0.0158407 0 -0.01650184 0.0158407 0 -0.01650184 -0.01584076 0 0.01387077 0.0158407 -0.04041153 -0.01650184 0.0158407 -0.04041153 -0.01650184 -0.01584076 -0.04041153 0.01387077 -0.01584076 -0.04041153</float_array>
           <technique_common>
-            <accessor source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-positions-array" count="12" stride="3">
+            <accessor source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-positions-array" count="12" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-normals">
-          <float_array id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-normals-array" count="33">0 0 1 0 0 -1 0 -1 0 1 0 0 0 1 0 -0.9978873 0 -0.06496965 -0.9671912 0 -0.25405 0 -1 0 -0.9978873 0 -0.06496965 -0.9671911 0 -0.25405 0 -1 0</float_array>
+        <source id="root-base-bigarm-smallarm-knuckle-clawright-mesh-normals">
+          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-mesh-normals-array" count="27">0 0 1 0 0 -1 0 -1 0 -1 0 0 0 1 0 0.9978873 0 -0.06496965 0.9671912 0 -0.25405 0.9978873 0 -0.06496965 0.9671911 0 -0.25405</float_array>
           <technique_common>
-            <accessor source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-normals-array" count="11" stride="3">
+            <accessor source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-normals-array" count="9" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-map-0">
-          <float_array id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-map-0-array" count="120">0.8205124 0.5618458 0.8033333 0.5414441 0.8205124 0.5414442 0.7737512 0.6841596 0.7629885 0.7037439 0.7629885 0.6841596 0.9172399 0.8733065 0.9007704 0.8483255 0.9172398 0.8483255 0.9800685 0.05235761 0.9628895 0.02737671 0.9800686 0.02737671 0.8879299 0.9485059 0.9043993 0.9235252 0.9043993 0.9485059 0.9794778 0.1529029 0.9622589 0.1279267 0.9794777 0.1279267 0.9794777 0.1279267 0.9622589 0.1023774 0.9794778 0.1023774 0.8936365 0.9732739 0.9043993 0.9485059 0.9043992 0.9732739 0.9800686 0.02737671 0.9628895 0.002608716 0.9800686 0.002608716 0.9172398 0.8483255 0.906477 0.8235576 0.9172399 0.8235576 0.8205124 0.5618458 0.8033333 0.5618458 0.8033333 0.5414441 0.7737512 0.6841596 0.7737512 0.7037439 0.7629885 0.7037439 0.9172399 0.8733065 0.8993436 0.8733065 0.9007704 0.8483255 0.9800685 0.05235761 0.9628894 0.05235761 0.9628895 0.02737671 0.8879299 0.9485059 0.8865032 0.9235251 0.9043993 0.9235252 0.9794778 0.1529029 0.9622589 0.1529029 0.9622589 0.1279267 0.9794777 0.1279267 0.9622589 0.1279267 0.9622589 0.1023774 0.8936365 0.9732739 0.8879299 0.9485059 0.9043993 0.9485059 0.9800686 0.02737671 0.9628895 0.02737671 0.9628895 0.002608716 0.9172398 0.8483255 0.9007704 0.8483255 0.906477 0.8235576</float_array>
+        <source id="root-base-bigarm-smallarm-knuckle-clawright-mesh-map-0">
+          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-mesh-map-0-array" count="120">0.7846054 0.1717693 0.8017846 0.1513677 0.8017846 0.1717693 0.71908 0.3072562 0.7083172 0.2876719 0.71908 0.2876719 0.4527468 0.7934352 0.4777278 0.8099046 0.4527468 0.8099046 0.9629487 0.2581728 0.9801279 0.2331919 0.9801279 0.2581728 0.7365621 0.6855863 0.7115812 0.7020557 0.7115812 0.6841596 0.978455 0.5768861 0.9612362 0.6018622 0.9612362 0.5768861 0.9784551 0.5513368 0.9612362 0.5768861 0.9612362 0.5513368 0.7613301 0.691293 0.7365621 0.7020557 0.7365621 0.6855863 0.9629487 0.2829408 0.9801279 0.2581728 0.9801279 0.2829408 0.427979 0.799142 0.4527468 0.8099046 0.427979 0.8099046 0.7846054 0.1717693 0.7846054 0.1513676 0.8017846 0.1513677 0.71908 0.3072562 0.7083172 0.3072562 0.7083172 0.2876719 0.4527468 0.7934352 0.4777278 0.7920086 0.4777278 0.8099046 0.9629487 0.2581728 0.9629487 0.2331919 0.9801279 0.2331919 0.7365621 0.6855863 0.7365621 0.7020557 0.7115812 0.7020557 0.978455 0.5768861 0.9784551 0.6018622 0.9612362 0.6018622 0.9784551 0.5513368 0.978455 0.5768861 0.9612362 0.5768861 0.7613301 0.691293 0.7613301 0.7020557 0.7365621 0.7020557 0.9629487 0.2829408 0.9629487 0.2581728 0.9801279 0.2581728 0.427979 0.799142 0.4527468 0.7934352 0.4527468 0.8099046</float_array>
           <technique_common>
-            <accessor source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-map-0-array" count="60" stride="2">
+            <accessor source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-map-0-array" count="60" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="root-base-bigarm-smallarm-knuckle-clawleft-mesh-vertices">
-          <input semantic="POSITION" source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-positions"/>
+        <vertices id="root-base-bigarm-smallarm-knuckle-clawright-mesh-vertices">
+          <input semantic="POSITION" source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-positions"/>
         </vertices>
         <triangles material="Predator-material" count="20">
-          <input semantic="VERTEX" source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#root-base-bigarm-smallarm-knuckle-clawleft-mesh-map-0" offset="2" set="0"/>
-          <p>7 0 0 5 0 1 4 0 2 3 1 3 0 1 4 1 1 5 7 2 6 11 2 7 10 2 8 6 3 9 10 3 10 9 3 11 8 4 12 6 4 13 9 4 14 4 5 15 8 5 16 11 5 17 11 6 18 1 6 19 0 6 20 1 4 21 9 4 22 3 4 23 9 3 24 2 3 25 3 3 26 10 2 27 0 2 28 2 2 29 7 0 30 6 0 31 5 0 32 3 1 33 2 1 34 0 1 35 7 7 36 4 7 37 11 7 38 6 3 39 7 3 40 10 3 41 8 4 42 5 4 43 6 4 44 4 8 45 5 8 46 8 8 47 11 9 48 8 9 49 1 9 50 1 4 51 8 4 52 9 4 53 9 3 54 10 3 55 2 3 56 10 10 57 11 10 58 0 10 59</p>
+          <input semantic="VERTEX" source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#root-base-bigarm-smallarm-knuckle-clawright-mesh-map-0" offset="2" set="0"/>
+          <p>5 0 0 7 0 1 4 0 2 0 1 3 3 1 4 1 1 5 11 2 6 7 2 7 10 2 8 10 3 9 6 3 10 9 3 11 8 4 12 6 4 13 5 4 14 8 5 15 4 5 16 11 5 17 1 6 18 11 6 19 0 6 20 1 4 21 9 4 22 8 4 23 2 3 24 9 3 25 3 3 26 0 2 27 10 2 28 2 2 29 5 0 30 6 0 31 7 0 32 0 1 33 2 1 34 3 1 35 11 2 36 4 2 37 7 2 38 10 3 39 7 3 40 6 3 41 8 4 42 9 4 43 6 4 44 8 7 45 5 7 46 4 7 47 1 8 48 8 8 49 11 8 50 1 4 51 3 4 52 9 4 53 2 3 54 10 3 55 9 3 56 0 2 57 11 2 58 10 2 59</p>
         </triangles>
       </mesh>
     </geometry>
   </library_geometries>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="root-base-bigarm-smallarm-knuckle-clawleft" name="root-base-bigarm-smallarm-knuckle-clawleft" type="NODE">
-        <matrix sid="transform">1 0 0 -0.01712102 0 0.9999999 0 -0.3361495 0 0 0.9999999 0.1497265 0 0 0 1</matrix>
-        <instance_geometry url="#root-base-bigarm-smallarm-knuckle-clawleft-mesh" name="root-base-bigarm-smallarm-knuckle-clawleft">
+      <node id="root-base-bigarm-smallarm-knuckle-clawright" name="root-base-bigarm-smallarm-knuckle-clawright" type="NODE">
+        <matrix sid="transform">1 0 0 0.01712098 0 0.9999999 0 -0.3361493 0 0 0.9999999 1.435461 0 0 0 1</matrix>
+        <instance_geometry url="#root-base-bigarm-smallarm-knuckle-clawright-mesh" name="root-base-bigarm-smallarm-knuckle-clawright">
           <bind_material>
             <technique_common>
               <instance_material symbol="Predator-material" target="#Predator-material">

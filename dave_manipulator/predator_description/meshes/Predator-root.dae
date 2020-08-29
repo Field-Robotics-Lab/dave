@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.83.3 commit date:2020-07-22, commit time:06:01, hash:353e5bd7493e</authoring_tool>
     </contributor>
-    <created>2020-08-07T14:12:27</created>
-    <modified>2020-08-07T14:12:27</modified>
+    <created>2020-08-07T11:20:29</created>
+    <modified>2020-08-07T11:20:29</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -96,7 +96,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Predator-root" name="Predator-root" type="NODE">
-        <matrix sid="transform">1 0 0 1.49012e-8 0 1 0 2.99335e-4 0 0 1 -0.03867336 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 1.49012e-8 0 1 0 2.99335e-4 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#Predator-root-mesh" name="Predator-root">
           <bind_material>
             <technique_common>

@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.83.3 commit date:2020-07-22, commit time:06:01, hash:353e5bd7493e</authoring_tool>
     </contributor>
-    <created>2020-08-07T14:13:50</created>
-    <modified>2020-08-07T14:13:50</modified>
+    <created>2020-08-07T11:20:58</created>
+    <modified>2020-08-07T11:20:58</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -96,7 +96,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="root-base-bigarm-smallarm-knuckle" name="root-base-bigarm-smallarm-knuckle" type="NODE">
-        <matrix sid="transform">1 0 0 -1.67638e-8 0 -0.9999933 0.003697475 -0.3125247 0 -0.003697475 -0.9999933 0.5049672 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 -1.67638e-8 0 -0.9999933 0.003697475 -0.3125245 0 -0.003697475 -0.9999933 1.790702 0 0 0 1</matrix>
         <instance_geometry url="#root-base-bigarm-smallarm-knuckle-mesh" name="root-base-bigarm-smallarm-knuckle">
           <bind_material>
             <technique_common>

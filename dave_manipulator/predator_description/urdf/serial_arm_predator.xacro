@@ -61,13 +61,9 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="0 0 ${-base_height/2.5}" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <!-- <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" /> -->
-                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator.dae"/> -->
-                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-base-bigarm.dae"/> -->
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-root.dae"/>
-                    <!-- <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" /> -->
+                    <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" />
                 </geometry>
             </visual>
 
@@ -75,7 +71,6 @@
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
                     <box size="${predator_base_width} ${predator_base_width} ${predator_shoulder_height/4}" />
-                    <!-- <mesh filename="file://$(find oberon7_description)/meshes/serial_arm/collision/Base.stl"/> -->
                 </geometry>
             </collision>
         </link>
@@ -91,9 +86,10 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${shoulder_link_com}" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 1.57079632679"/>
+                <!-- <origin xyz="${shoulder_link_com}" rpy="0 0 0"/> -->
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-base.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-base_centralized.dae"/>
                 </geometry>
             </visual>
 
@@ -106,6 +102,8 @@
         </link>
 
         <joint name="${namespace}/azimuth" type="revolute">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <!-- <origin xyz="0 -0.1 0.1" rpy="0 0 0"/> -->
             <parent link="${namespace}/base"/>
             <child link="${namespace}/shoulder_link"/>
             <axis xyz="0 0 1"/>
@@ -128,16 +126,14 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${predator_upper_arm_length/2} 0 0" rpy="0 ${0.5*pi} 0"/>
+                <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-upperarm.dae"/>
-                <!-- Predator-upperarm.dae -->
-                    <!-- <cylinder radius="${0.5 * upper_arm_width}" length="${predator_upper_arm_length}"/> -->
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-upperarm_centralized.dae"/>
                 </geometry>
             </visual>
 
             <collision>
-                <origin xyz="${predator_upper_arm_length/2} 0 0" rpy="0 ${0.5*pi} 0"/>
+                <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
                     <cylinder radius="${0.5 * upper_arm_width}" length="${predator_upper_arm_length}"/>
                 </geometry>
@@ -148,7 +144,7 @@
             <parent link="${namespace}/shoulder_link"/>
             <child link="${namespace}/upper_arm"/>
             <!-- <origin xyz="0.06955 0.00015 0.01536" rpy="${0.5*pi} 0 0"/> -->
-            <origin xyz="${predator_joint_1_2_x} 0 ${predator_joint_1_2_z}" rpy="${0.5*pi} 0 0"/>
+            <origin xyz="0.200369 0 0.209467" rpy="${0.5*pi} 0 0"/>
             <axis xyz="0 0 1"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="50" friction="150"/>
@@ -169,17 +165,14 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="${elbow_link_x_disp} ${-predator_elbow_length/2} 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
+                <origin xyz="0 0 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-forearm.dae"/>
-                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-base-bigarm.dae"/> -->
-                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-claw-left.dae"/> -->
-                    <!-- <cylinder radius="${0.5 * elbow_link_height}" length="${predator_elbow_length}"/> -->
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-forearm_centralized.dae"/>
                 </geometry>
             </visual>
 
             <collision>
-                <origin xyz="${elbow_link_x_disp} ${-predator_elbow_length/2} 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
+                <origin xyz="0 0 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
                     <cylinder radius="${0.5 * elbow_link_height}" length="${predator_elbow_length}"/>
                 </geometry>
@@ -190,7 +183,7 @@
             <parent link="${namespace}/upper_arm"/>
             <child link="${namespace}/elbow_link"/>
             <!-- <origin xyz="0.55616 -0.01229 0" rpy="0 0 0"/> -->
-            <origin xyz="${predator_upper_arm_length} -0.01229 0" rpy="0 0 0"/>
+            <origin xyz="0.87315 0 0" rpy="0 0 0"/>
             <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="50" friction="150"/>
             <axis xyz="0 0 1"/>
@@ -211,12 +204,9 @@
             </xacro:link_box_inertial>
 
             <visual>
-                <origin xyz="0 0 0" rpy="${0.5*PI} 0 0"/>
-                <!-- <origin xyz="${forearm_com}" rpy="${0.5*PI} 0 0"/> -->
+                <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-knuckle.dae"/>
-                    <!-- <mesh filename="file://$(find predator_description)/meshes/Predator-hand.dae"/> -->
-                    <!-- <cylinder radius="${0.5 * forearm_width}" length="${forearm_height}"/> -->
+                    <mesh filename="file://$(find predator_description)/meshes/Predator-knuckle_centralized.dae"/>
                 </geometry>
             </visual>
 
@@ -231,7 +221,7 @@
         <joint name="${namespace}/roll" type="revolute">
             <parent link="${namespace}/elbow_link"/>
             <child link="${namespace}/forearm"/>
-            <origin xyz="${elbow_link_x_disp} ${-predator_joint_3_4_y} 0" rpy="0 0 0"/>
+            <origin xyz="0.11275 -0.55503 0" rpy="0 0 -1.57079632679"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="150" friction="500"/>
             <!-- <dynamics damping="300" friction="1000"/> -->
@@ -240,44 +230,6 @@
         </joint>
 
         <xacro:simple_transmission joint="${namespace}/roll" />
-
-        <!-- WRIST 1  -->
-
-        <link name="${namespace}/wrist_link">
-            <xacro:link_box_inertial mass="${total_mass * wrist_volume / total_volume_bbox}"
-                        width="${wrist_width}"
-                        length="${predator_wrist_height}"
-                        height="${wrist_height}">
-                <origin xyz="${wrist_com}" rpy="0 0 0"/>
-            </xacro:link_box_inertial>
-
-            <!-- <visual>
-                <origin xyz="${predator_wrist_height/2} 0 0" rpy="0 ${0.5*pi} 0"/>
-                <geometry>
-                    <cylinder radius="${0.5 * wrist_height}" length="${predator_wrist_height}"/>
-                </geometry>
-            </visual> -->
-
-            <collision>
-                <origin xyz="${wrist_com}" rpy="0 ${0.5*pi} 0"/>
-                <geometry>
-                    <cylinder radius="${0.5 * wrist_height}" length="${predator_wrist_height}"/>
-                </geometry>
-            </collision>
-        </link>
-
-        <joint name="${namespace}/pitch" type="revolute">
-            <parent link="${namespace}/forearm"/>
-            <child link="${namespace}/wrist_link"/>
-            <origin xyz="0 ${-forearm_height} 0" rpy="${1.5*PI} ${PI} ${0.5*PI}"/>
-            <axis xyz="0 0 1"/>
-            <!-- <dynamics damping="50" friction="200"/> -->
-            <dynamics damping="10" friction="10"/>
-            <!-- <limit lower="${-90 * d2r}" upper="${90 * d2r}" velocity=".26" effort="200"/> -->
-            <limit lower="${-90 * d2r}" upper="${90 * d2r}" velocity=".3" effort="50"/>
-        </joint>
-
-        <xacro:simple_transmission joint="${namespace}/pitch" />
 
         <!-- Adding parallel gripper  -->
         <xacro:include filename="$(find predator_description)/urdf/parallel_gripper_predator.xacro" />
