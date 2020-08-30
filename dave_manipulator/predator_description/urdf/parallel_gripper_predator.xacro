@@ -85,7 +85,7 @@
     <joint name="${namespace}/finger_left_joint" type="revolute">
         <parent link="${namespace}/end_effector"/>
         <child link="${namespace}/finger_left"/>
-        <origin xyz="0.23387 -0.02401 -0.017121" rpy="0 0 0"/>
+        <origin xyz="0.23387 -0.02401 -0.017121" rpy="0 0 ${-15*d2r}"/>
         <axis xyz="0 0 -1"/>
         <dynamics damping="5" friction="10"/>
         <limit effort="${gripper_effort}" lower="0" upper="${PI*0.3333}" velocity="${gripper_velocity}"/>
@@ -121,7 +121,7 @@
     <joint name="${namespace}/finger_tip_left_joint" type="revolute">
         <parent link="${namespace}/finger_left"/>
         <child link="${namespace}/finger_tip_left"/>
-        <origin xyz="0.0805 0.006578 0" rpy="0 0 0"/>
+        <origin xyz="0.0805 0.006578 0" rpy="0 0 ${15*d2r}"/>
         <axis xyz="0 0 1"/>
         <dynamics damping="5" friction="10"/>
         <limit effort="0" lower="0" upper="0" velocity="0"/>
@@ -156,7 +156,7 @@
         <parent link="${namespace}/end_effector"/>
         <child link="${namespace}/finger_right"/>
         <!-- <origin xyz="0.0444267 -0.0391376 0" rpy="${PI} ${PI} ${PI}"/> -->
-        <origin xyz="0.23387 0.02401 -0.017121" rpy="0 0 0"/>
+        <origin xyz="0.23387 0.02401 -0.017121" rpy="0 0 ${15*d2r}"/>
         <axis xyz="0 0 1"/>
         <dynamics damping="5" friction="10"/>
         <limit effort="${gripper_effort}" lower="0" upper="${PI*0.3333}" velocity="${gripper_velocity}"/>
@@ -192,7 +192,7 @@
     <joint name="${namespace}/finger_tip_right_joint" type="revolute">
         <parent link="${namespace}/finger_right"/>
         <child link="${namespace}/finger_tip_right"/>
-        <origin xyz="0.0805 -0.006578 0" rpy="0 0 0"/>
+        <origin xyz="0.0805 -0.006578 0" rpy="0 0 ${-15*d2r}"/>
         <axis xyz="0 0 -1"/>
         <dynamics damping="5" friction="10"/>
         <limit effort="0" lower="0" upper="0" velocity="0"/>
