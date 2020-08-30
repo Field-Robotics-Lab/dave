@@ -87,8 +87,9 @@
         <child link="${namespace}/finger_left"/>
         <origin xyz="0.23387 -0.02401 -0.017121" rpy="0 0 ${-15*d2r}"/>
         <axis xyz="0 0 -1"/>
-        <dynamics damping="5" friction="10"/>
-        <limit effort="${gripper_effort}" lower="0" upper="${PI*0.3333}" velocity="${gripper_velocity}"/>
+        <dynamics damping="2" />
+        <!-- <dynamics damping="5" friction="5"/> -->
+        <limit effort="${gripper_effort}" lower="${-10*d2r}" upper="${PI*0.3333}" velocity="0.1"/>
     </joint>
 
     <xacro:simple_transmission joint="${namespace}/finger_left_joint" />
@@ -158,8 +159,9 @@
         <!-- <origin xyz="0.0444267 -0.0391376 0" rpy="${PI} ${PI} ${PI}"/> -->
         <origin xyz="0.23387 0.02401 -0.017121" rpy="0 0 ${15*d2r}"/>
         <axis xyz="0 0 1"/>
-        <dynamics damping="5" friction="10"/>
-        <limit effort="${gripper_effort}" lower="0" upper="${PI*0.3333}" velocity="${gripper_velocity}"/>
+        <dynamics damping="2" />
+        <!-- <dynamics damping="5" friction="5"/> -->
+        <limit effort="${gripper_effort}" lower="${-10*d2r}" upper="${PI*0.3333}" velocity="0.1"/>
     </joint>
 
     <xacro:simple_transmission joint="${namespace}/finger_right_joint" />

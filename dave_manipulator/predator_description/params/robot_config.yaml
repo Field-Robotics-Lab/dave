@@ -9,5 +9,5 @@ default_configs:
     azimuth: 0
     shoulder: 1.5
     elbow:  -1.5
-    roll: 1.5    
+    roll: 1.57
     wrist: 0
