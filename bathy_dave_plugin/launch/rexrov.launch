@@ -25,11 +25,11 @@
             inertial_reference_frame:=world" />
         </group>
         <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-        <!-- <node name="urdf_spawner" pkg="uuv_descriptions" type="spawn_model" respawn="false" output="screen"
-            args="-urdf $(arg init_pose) -model $(arg namespace) -param /$(arg namespace)/robot_description"/> -->
+        <node name="urdf_spawner" pkg="uuv_descriptions" type="spawn_model" respawn="false" output="screen"
+            args="-urdf $(arg init_pose) -model $(arg namespace) -param /$(arg namespace)/robot_description"/>
         
-        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-            args="$(arg init_pose) -file $(find wind_config)/vehicle_model/lrauv_sim.urdf -urdf -model $(arg robot_name)"/>
+        <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+            args="$(arg init_pose) -file $(find wind_config)/vehicle_model/lrauv_sim.urdf -urdf -model $(arg robot_name)"/> -->
   
         <!-- A joint state publisher plugin already is started with the model, no need to use the default joint state publisher -->
 
