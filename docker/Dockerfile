@@ -1,5 +1,5 @@
 # Ubuntu 18.04 with nvidia-docker2 beta opengl support.
-ARG BASEIMG=ubuntu:bionic
+ARG BASEIMG=nvidia/opengl:1.0-glvnd-devel-ubuntu18.04
 FROM $BASEIMG
 
 # Set ROS distribution
@@ -18,7 +18,6 @@ RUN apt update \
         lsb-release \
         gdb \
         git \
-        mercurial \
         python3-dbg \
         python3-pip \
         python3-venv \
@@ -47,38 +46,27 @@ RUN /bin/sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
  && wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add - \
  && apt update \
  && apt install -y \
+    python-rosdep \
     qtbase5-dev \
     libgles2-mesa-dev \
-    ${GAZ} \
-    lib${GAZ}-dev \
-    ros-${DIST}-ros-base \
-    ros-${DIST}-xacro \
-    ros-${DIST}-gazebo-ros \
-    ros-${DIST}-gazebo-plugins \
-    ros-${DIST}-hector-gazebo-plugins \
+    ros-${DIST}-desktop-full \
+    ros-${DIST}-velodyne-gazebo-plugins \
+    ros-${DIST}-effort-controllers \
+    ros-${DIST}-rqt \
+    ros-${DIST}-rqt-robot-plugins \
+    ros-${DIST}-rqt-common-plugins \
     ros-${DIST}-joy \
+    ros-${DIST}-teleop-twist-joy \
+    ros-${DIST}-teleop-twist-keyboard \
+    ros-${DIST}-teleop-tools \
     ros-${DIST}-joy-teleop \
     ros-${DIST}-key-teleop \
+    ros-${DIST}-geographic-info \
+    ros-${DIST}-move-base \
     ros-${DIST}-robot-localization \
     ros-${DIST}-robot-state-publisher \
-    ros-${DIST}-rviz \
-    ros-${DIST}-teleop-tools \
-    ros-${DIST}-teleop-twist-keyboard \
-    ros-${DIST}-velodyne-simulator \
-    ros-${DIST}-rqt \
-    ros-${DIST}-rqt-common-plugins \
-		ros-${DIST}-effort-controllers \
-		ros-${DIST}-control-toolbox \
- 		ros-${DIST}-controller-manager \
-		ros-${DIST}-ros-control \
-		python-scipy \
-		ros-${DIST}-joint-state-publisher \
-		ros-${DIST}-urdfdom-py \
-		python-lxml \
-		ros-${DIST}-ros-controllers \
-		ros-${DIST}-kdl-parser-py \
-		ros-${DIST}-gazebo-ros-control \
-		ros-${DIST}-gazebo-ros-pkgs \
+    ros-${DIST}-xacro \
+    libignition-math2 \
  && rosdep init \
  && apt clean
 
@@ -109,20 +97,13 @@ USER $USER:$GROUP
 # When running a container start in the developer's home folder.
 WORKDIR /home/$USER
 
+
 # Create workspace
-RUN mkdir -p uuv_ws/src/uuv_simulator
-
-# Copy the VRX repository from the local file system
-# We can't use the USER:GROUP variables until Docker adds support to --chown
-#COPY --chown=developer:developer . uuv_ws/src/uuv_simulator
-
-# Compile the VRX project.
-#RUN /bin/bash -c ". /opt/ros/${DIST}/setup.bash && cd uuv_ws && catkin_make"
+RUN mkdir -p uuv_ws/src/
 
 # Source all the needed environment files.
 RUN /bin/sh -c 'echo ". /opt/ros/${DIST}/setup.bash" >> ~/.bashrc' \
  && /bin/sh -c 'echo ". /usr/share/gazebo/setup.sh" >> ~/.bashrc'
-# && /bin/sh -c 'echo ". ~/uuv_ws/devel/setup.sh" >> ~/.bashrc'
 
 ENTRYPOINT ["fixuid"]
 
