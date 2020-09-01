@@ -5,6 +5,6 @@ find_package(catkin REQUIRED COMPONENTS gazebo_ros)
 
 catkin_package()
 
-install(DIRECTORY launch
+install(DIRECTORY launch urdf models worlds
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
         PATTERN "*~" EXCLUDE)
