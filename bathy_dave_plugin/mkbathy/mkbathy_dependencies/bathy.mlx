@@ -1,0 +1,26 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Select Faces with edges longer than...">
+  <Param description="Edge Threshold" max="319.321" min="0" type="RichDynamicFloat" value="6" isxmlparam="0" tooltip="All the faces with an edge &lt;b>longer&lt;/b> than this threshold will be deleted. Useful for removing long skinny faces obtained by bad triangulation of range maps." name="Threshold"/>
+ </filter>
+ <filter name="Delete Selected Faces and Vertices"/>
+  <filter name="Simplification: Quadric Edge Collapse Decimation">
+  <Param type="RichInt" value="0" name="TargetFaceNum"/>
+  <Param type="RichFloat" value="0.1" name="TargetPerc"/>
+  <Param type="RichFloat" value="0.3" name="QualityThr"/>
+  <Param type="RichBool" value="true" name="PreserveBoundary"/>
+  <Param type="RichFloat" value="1" name="BoundaryWeight"/>
+  <Param type="RichBool" value="false" name="PreserveNormal"/>
+  <Param type="RichBool" value="false" name="PreserveTopology"/>
+  <Param type="RichBool" value="true" name="OptimalPlacement"/>
+  <Param type="RichBool" value="false" name="PlanarQuadric"/>
+  <Param type="RichBool" value="false" name="QualityWeight"/>
+  <Param type="RichBool" value="true" name="AutoClean"/>
+  <Param type="RichBool" value="false" name="Selected"/>
+  </filter>
+  <filter name="Parametrization: Flat Plane">
+    <Param enum_val0="XY" description="Projection plane" enum_val1="XZ" type="RichEnum" enum_cardinality="3" name="projectionPlane" isxmlparam="0" tooltip="Choose the projection plane" enum_val2="YZ" value="0"/>
+    <Param description="Preserve Ratio" type="RichBool" name="aspectRatio" isxmlparam="0" tooltip="If checked the resulting parametrization will preserve the original apsect ratio of the model otherwise it will fill up the whole 0..1 uv space" value="false"/>
+    <Param description="Side Gutter" type="RichFloat" name="sideGutter" isxmlparam="0" tooltip="Leave an empty space around the parametrization area of the specified size (in texture space); accepted range [0.0 - 0.5]." value="0"/>
+  </filter>
+</FilterScript>
