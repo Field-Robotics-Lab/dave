@@ -63,14 +63,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-root_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/base.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-root_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/base.dae"/>
                 </geometry>
             </collision>
         </link>
@@ -88,14 +88,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-base_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/shoulder.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-base_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/shoulder.dae"/>
                 </geometry>                
             </collision>
         </link>
@@ -125,14 +125,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-upperarm_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/upperarm.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-upperarm_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/upperarm.dae"/>
                 </geometry>
             </collision>
         </link>
@@ -163,14 +163,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-forearm_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/forearm.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="0 ${0.5*pi} ${0.5*pi}"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-forearm_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/forearm.dae"/>
                 </geometry>
             </collision>
         </link>
@@ -200,14 +200,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-knuckle_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/knuckle.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/Predator-knuckle_centralized.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/knuckle.dae"/>
                 </geometry>
             </collision>
         </link>

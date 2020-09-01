@@ -29,7 +29,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-hand_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/hand.dae"/>
             </geometry>
         </visual>
 
@@ -40,7 +40,7 @@
             </geometry> -->
             <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-hand_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/hand.dae"/>
             </geometry>
         </collision>
     </link>
@@ -70,14 +70,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-claw-right_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_right.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-claw-right_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_right.dae"/>
             </geometry>
         </collision>
     </link>
@@ -107,14 +107,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="${PI/2}  0  ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-tip-right_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_right.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="${PI/2}  0  ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-tip-right_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_right.dae"/>
             </geometry>
         </collision>
     </link>
@@ -141,14 +141,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-claw-left_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_left.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-claw-left_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_left.dae"/>
             </geometry>
         </collision>
     </link>
@@ -179,14 +179,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-tip-left_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_left.dae"/>
             </geometry>
         </visual>
 
         <collision>
             <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find predator_description)/meshes/Predator-tip-left_centralized.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_left.dae"/>
             </geometry>
         </collision>
     </link>
