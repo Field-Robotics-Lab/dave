@@ -217,7 +217,7 @@
             <child link="${namespace}/forearm"/>
             <origin xyz="0.11275 -0.55503 0" rpy="0 0 -1.57079632679"/>
             <axis xyz="0 0 1"/>
-            <dynamics damping="50" friction="150"/>
+            <dynamics damping="30" friction="50"/>
             <limit lower="${-135 * d2r}" upper="${135 * d2r}" velocity=".25" effort="1000"/>
         </joint>
 
