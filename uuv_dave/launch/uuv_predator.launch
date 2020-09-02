@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
-    <arg name="paused" default="true"/>
+    <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
  
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
@@ -21,9 +21,9 @@
     <!-- rexrov robot with predator arm -->
     <include file="$(find uuv_dave)/launch/upload_rexrov_predator.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="0"/>
-        <arg name="y" value="0"/>
-        <arg name="z" value="-98"/>
+        <arg name="x" value="4"/>
+        <arg name="y" value="4"/>
+        <arg name="z" value="-93"/>
         <arg name="yaw" value="-1.8"/>
     </include>
 
