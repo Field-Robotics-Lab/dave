@@ -21,10 +21,10 @@
             type: effort_controllers/JointEffortController
             joint: $(arg arm_name)/elbow
             pid: {p: 2000, i: 100, d: 50}
-        roll:
+        pitch:
           controller:
             type: effort_controllers/JointEffortController
-            joint: $(arg arm_name)/roll
+            joint: $(arg arm_name)/pitch
             pid: {p: 1000, i: 50, d: 10}
         wrist:
           controller:
@@ -44,7 +44,7 @@
           args="/$(arg uuv_name)/$(arg arm_name)/azimuth/controller
                 /$(arg uuv_name)/$(arg arm_name)/shoulder/controller
                 /$(arg uuv_name)/$(arg arm_name)/elbow/controller
-                /$(arg uuv_name)/$(arg arm_name)/roll/controller
+                /$(arg uuv_name)/$(arg arm_name)/pitch/controller
                 /$(arg uuv_name)/$(arg arm_name)/wrist/controller"/>
 
   </group>

@@ -104,8 +104,7 @@
     <xacro:joint_ft_sensor joint_name="azimuth" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="shoulder" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="elbow" namespace="${namespace}"/>
-    <xacro:joint_ft_sensor joint_name="roll" namespace="${namespace}"/>
-    <!-- <xacro:joint_ft_sensor joint_name="pitch" namespace="${namespace}"/> -->
+    <xacro:joint_ft_sensor joint_name="pitch" namespace="${namespace}"/>
 
 
   </xacro:macro>

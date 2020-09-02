@@ -46,7 +46,7 @@
     </link>
 
     <joint name="${namespace}/wrist" type="revolute">
-      <parent link="${namespace}/forearm"/>
+      <parent link="${namespace}/wrist"/>
       <child link="${namespace}/end_effector"/>
        <origin xyz="0.12137 -0.00038 0" rpy="${PI*0.5} 0 0"/>
       <axis xyz="0 0 1"/>

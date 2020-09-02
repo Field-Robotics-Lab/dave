@@ -142,17 +142,15 @@
             <child link="${namespace}/upper_arm"/>
             <origin xyz="0.200369 0 0.209467" rpy="${0.5*pi} 0 0"/>
             <axis xyz="0 0 1"/>
-            <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="50" friction="150"/>
             <limit lower="${-90 * d2r}" upper="${90 * d2r}" velocity=".17" effort="5000"/>
-            <!-- <limit lower="${-90 * d2r}" upper="${90 * d2r}" velocity=".17" effort="1000"/> -->
         </joint>
 
         <xacro:simple_transmission joint="${namespace}/shoulder" />
 
-        <!-- ELBOW LINK -->
+        <!-- FOREARM -->
 
-        <link name="${namespace}/elbow_link">
+        <link name="${namespace}/forearm">
             <xacro:link_box_inertial mass="${total_mass * elbow_link_volume / total_volume_bbox}"
                         width="${elbow_link_width}"
                         length="${elbow_link_length}"
@@ -177,9 +175,8 @@
 
         <joint name="${namespace}/elbow" type="revolute">
             <parent link="${namespace}/upper_arm"/>
-            <child link="${namespace}/elbow_link"/>
+            <child link="${namespace}/forearm"/>
             <origin xyz="0.87315 0 0" rpy="0 0 0"/>
-            <!-- <dynamics damping="50" friction="200"/> -->
             <dynamics damping="50" friction="150"/>
             <axis xyz="0 0 1"/>
             <limit lower="${-90 * d2r}" upper="${60 * d2r}" velocity=".15" effort="300"/>
@@ -187,9 +184,9 @@
 
         <xacro:simple_transmission joint="${namespace}/elbow" />
 
-        <!-- FOREARM -->
+        <!-- WRIST -->
 
-        <link name="${namespace}/forearm">
+        <link name="${namespace}/wrist">
             <xacro:link_box_inertial mass="${total_mass * forearm_volume / total_volume_bbox}"
                         width="${forearm_width}"
                         length="${forearm_length}"
@@ -212,16 +209,16 @@
             </collision>
         </link>
 
-        <joint name="${namespace}/roll" type="revolute">
-            <parent link="${namespace}/elbow_link"/>
-            <child link="${namespace}/forearm"/>
+        <joint name="${namespace}/pitch" type="revolute">
+            <parent link="${namespace}/forearm"/>
+            <child link="${namespace}/wrist"/>
             <origin xyz="0.11275 -0.55503 0" rpy="0 0 -1.57079632679"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="30" friction="50"/>
             <limit lower="${-135 * d2r}" upper="${135 * d2r}" velocity=".25" effort="1000"/>
         </joint>
 
-        <xacro:simple_transmission joint="${namespace}/roll" />
+        <xacro:simple_transmission joint="${namespace}/pitch" />
 
         <!-- Adding parallel gripper  -->
         <xacro:include filename="$(find predator_description)/urdf/parallel_gripper_predator.xacro" />
