@@ -31,7 +31,7 @@ std::vector<std::string> im = {"common", "individual"}; // available interrogati
 namespace gazebo
 {
     class TransceiverPlugin : public ModelPlugin
-    {   
+    {
         // default temperature = 10 degrees Celsius
         public: TransceiverPlugin(): m_temperature(10.0) {}
 
@@ -66,7 +66,7 @@ namespace gazebo
                 gzerr << "Missing required parameter <transceiver_device>, plugin will not be initialized." << std::endl;
                 return;
             }
-            
+
             this->m_transceiverDevice = _sdf->Get<std::string>("transceiver_device");
             gzmsg << "Entity: " << this->m_transceiverDevice << std::endl;
 
@@ -77,7 +77,7 @@ namespace gazebo
                 gzerr << "Missing required parameter <transceiver_ID>, plugin will not be initialized." << std::endl;
                 return;
             }
-            
+
             this->m_transceiverID = _sdf->Get<std::string>("transceiver_ID");
 
             /*---------------------------------------------------------------------------------------------------------------------------------*/
@@ -100,23 +100,23 @@ namespace gazebo
 
             auto transponders = ignition::common::Split(_sdf->Get<std::string>("transponder_ID"), ',');
             gzmsg << "Current deployed transponders are: \n";
-            
+
             for( auto &transponder : transponders)
             {
                 gzmsg << transponder << std::endl;
                 this->m_deployedTransponders.push_back(transponder);
             }
-            
+
             /*---------------------------------------------------------------------------------------------------------------------------------*/
-            // enable automation of sending pings to transponder 
+            // enable automation of sending pings to transponder
             if(!_sdf->HasElement("enable_ping_scheduler"))
             {
                 gzerr << "Missing required parameter <enable_ping_scheduler>, plugin will not be initialized." << std::endl;
                 return;
             }
-            
+
             this->m_enablePingerScheduler = _sdf->Get<bool>("enable_ping_scheduler");
-            gzmsg << "pinger enable? " << this->m_enablePingerScheduler << std::endl; 
+            gzmsg << "pinger enable? " << this->m_enablePingerScheduler << std::endl;
 
             /*---------------------------------------------------------------------------------------------------------------------------------*/
             // Get object that transponder attached to
@@ -134,7 +134,7 @@ namespace gazebo
              *                                    ͱ->  IRS from transponder_02
              *                                    ͱ->  IRS from transponder_03
              *                                            ⋮
-             */ 
+             */
             if(_sdf->HasElement("interrogation_mode"))
             {
                 std::string interrogation_mode = _sdf->Get<std::string>("interrogation_mode");
@@ -169,11 +169,11 @@ namespace gazebo
             // Gazebo subscriber for getting position of the transponder
             for( auto& transponder : this->m_deployedTransponders)
             {
-                std::string transponder_position = "/" + this->m_namespace + "/transponder_" + transponder + "/global_position";
+                std::string transponder_position = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + transponder + "/global_position";
                 this->m_transponderPoseSub.push_back(this->m_gzNode->Subscribe(transponder_position, &TransceiverPlugin::receiveGezeboCallback, this));
             }
             /*****************************************************************************************************************************/
-            
+
             /***************************************************  ROS PUBLISHERS *********************************************************/
 
             // ROS node initialization
@@ -196,61 +196,64 @@ namespace gazebo
                 this->m_commandPubs[transponder] = this->m_rosNode->advertise<usbl_gazebo::USBLCommand>(command_topic, 1);
             }
 
+            std::string transponder_location_cartesion_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location_cartesion";
+            this->m_publishTransponderRelPosCartesion = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_cartesion_topic, 1);
+
             /*****************************************************************************************************************************/
-            
+
             /***************************************************  ROS SUBSCRIBERS ********************************************************/
 
             // create ROS subscriber for temperature
             this->m_rosNode.reset(new ros::NodeHandle(m_transceiverDevice));
 
             // subscriber for temperature sensor
-            ros::SubscribeOptions temperature_sub = 
+            ros::SubscribeOptions temperature_sub =
                 ros::SubscribeOptions::create<std_msgs::Float64>(
                     "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/temperature",
                     1,
                     boost::bind(&TransceiverPlugin::temperatureRosCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
-                
+
             this->m_temperatureSub = this->m_rosNode->subscribe(temperature_sub);
-            
+
             // subscriber for setting interrogation mode
-            ros::SubscribeOptions interrogation_mode_sub = 
+            ros::SubscribeOptions interrogation_mode_sub =
                 ros::SubscribeOptions::create<std_msgs::String>(
                     "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/interrogation_mode",
                     1,
                     boost::bind(&TransceiverPlugin::interrogationModeRosCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
-                
+
             this->m_interrogationModeSub = this->m_rosNode->subscribe(interrogation_mode_sub);
 
             // subscriber for command response
-            ros::SubscribeOptions command_response = 
+            ros::SubscribeOptions command_response =
                 ros::SubscribeOptions::create<usbl_gazebo::USBLResponse>(
                     "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response",
                     1,
                     boost::bind(&TransceiverPlugin::commandingResponseCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
-                
+
             this->m_commandResponseSub = this->m_rosNode->subscribe(command_response);
 
             // subscriber for testing command response
-            ros::SubscribeOptions channel_switch = 
+            ros::SubscribeOptions channel_switch =
                 ros::SubscribeOptions::create<std_msgs::String>(
                     "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/channel_switch",
                     1,
                     boost::bind(&TransceiverPlugin::channelSwitchCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
-                
+
             this->m_channelSwitchSub = this->m_rosNode->subscribe(channel_switch);
 
             // subscriber for testing command response
-            ros::SubscribeOptions command_response_test = 
+            ros::SubscribeOptions command_response_test =
                 ros::SubscribeOptions::create<std_msgs::String>(
                     "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response_test",
                     1,
                     boost::bind(&TransceiverPlugin::commandingResponseTestCallback, this, _1),
                     ros::VoidPtr(), &this->m_rosQueue);
-                
+
             this->m_commandResponseTestSub = this->m_rosNode->subscribe(command_response_test);
 
             /*****************************************************************************************************************************/
@@ -266,7 +269,7 @@ namespace gazebo
         }
 
         public: void commandingResponseTestCallback(const std_msgs::StringConstPtr &msg)
-        {   
+        {
             std::string transponder_id = msg->data;
             sendCommand(BATTERY_LEVEL, transponder_id);
         }
@@ -352,14 +355,14 @@ namespace gazebo
                 gzmsg << "The input mode is not available\n";
             }
         }
-        
+
         // Gazebo callback for receiving transponder position, simulating Transceiver's positioning calculation
         public: void receiveGezeboCallback(ConstVector3dPtr& transponder_position)
         {
             gzmsg << "Transceiver acquires transponders position: " << transponder_position->x() << " " << transponder_position->y() << " " << transponder_position->z() << std::endl;
-            
+
             ignition::math::Vector3d transponder_position_ign = ignition::math::Vector3d(transponder_position->x(), transponder_position->y(), transponder_position->z());
-            
+
             double bearing=0, range=0, elevation=0;
             calcuateRelativePose(transponder_position_ign, bearing, range, elevation);
 
@@ -374,19 +377,29 @@ namespace gazebo
             location.y = range;
             location.z = elevation;
 
+            geometry_msgs::Vector3 location_cartesion;
+            location_cartesion.x = range * cos(bearing * 3.1415926/180);
+            location_cartesion.y = range * sin(bearing* 3.1415926/180);
+            location_cartesion.z = elevation;
+
+
+            gzmsg << "Spherical Coordinate: " << location.x << " " << location.y << " " << location.z << std::endl;
+            gzmsg << "Cartesion Coordinate: " << location_cartesion.x << " " << location_cartesion.y << " " << location_cartesion.z << std::endl;
+
             this->m_publishTransponderRelPos.publish(location);
+            this->m_publishTransponderRelPosCartesion.publish(location_cartesion);
         }
 
         public: void calcuateRelativePose(ignition::math::Vector3d position, double &bearing, double &range, double &elevation)
         {
-            
+
             auto my_pos = this->m_model->WorldPose();
             auto direction = position - my_pos.Pos();
-            
+
             ignition::math::Vector3d directionTransceiverFrame = my_pos.Rot().RotateVectorReverse(direction);
 
             ignition::math::Vector3d directionTransceiverFrame2d = ignition::math::Vector3d(directionTransceiverFrame.X(), directionTransceiverFrame.Y(), 0);
-            
+
             bearing = atan2(directionTransceiverFrame.Y(), directionTransceiverFrame.X()) * 180 / 3.1415926;
             range = directionTransceiverFrame.Length();
             elevation = atan2(directionTransceiverFrame.Z(), directionTransceiverFrame.Length()) * 180 / 3.1415926;
@@ -430,6 +443,7 @@ namespace gazebo
         // ROS nodes, publishers and subscibers
         private: std::unique_ptr<ros::NodeHandle> m_rosNode;
         private: ros::Publisher m_publishTransponderRelPos;
+        private: ros::Publisher m_publishTransponderRelPosCartesion;
         private: ros::Publisher m_cisPinger;
         private: std::unordered_map<std::string, ros::Publisher> m_iisPinger;
         private: std::unordered_map<std::string, ros::Publisher> m_commandPubs;
