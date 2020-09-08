@@ -69,6 +69,7 @@
         <arg name="x" value="4"/>
         <arg name="y" value="4"/>
         <arg name="z" value="-93"/>
+	<arg name="pitch" value="0.4"/>
     </include>
 
     <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find uuv_dave)/rviz/glider_slocum_control.rviz"/>
