@@ -8,8 +8,9 @@
   <arg name="pitch" default="0.0"/>
   <arg name="yaw" default="0.0"/>
 
+  <arg name="use_ned_frame" default="true"/>
+
   <arg name="namespace" default="glider_slocum"/>
-  <arg name="use_ned_frame" default="false"/>
 
   <group ns="$(arg namespace)">
     <group if="$(arg use_ned_frame)">

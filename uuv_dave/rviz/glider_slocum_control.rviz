@@ -7,13 +7,6 @@ Panels:
         - /Global Options1
         - /Status1
         - /RobotModel1
-        - /Sonar left1
-        - /Sonar right1
-        - /Waypoint path1
-        - /Fin 0 - Wrench1
-        - /Fin 1 - Wrench1
-        - /Fin 2 - Wrench1
-        - /Fin 3 - Wrench1
         - /Thrust Wrench1
       Splitter Ratio: 0.5
     Tree Height: 486
@@ -35,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Sonar left
+    SyncSource: Thrust_wrench
 Visualization Manager:
   Class: ""
   Displays:
@@ -115,26 +108,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        glider_slocum/fin0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        glider_slocum/fin1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        glider_slocum/fin2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        glider_slocum/fin3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         glider_slocum/gps_link:
           Alpha: 1
           Show Axes: false
@@ -148,16 +121,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         glider_slocum/pressure_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        glider_slocum/sonarleft_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        glider_slocum/sonarright_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -204,14 +167,6 @@ Visualization Manager:
           Value: true
         glider_slocum/dvl_sonar3_link:
           Value: true
-        glider_slocum/fin0:
-          Value: true
-        glider_slocum/fin1:
-          Value: true
-        glider_slocum/fin2:
-          Value: true
-        glider_slocum/fin3:
-          Value: true
         glider_slocum/gps_link:
           Value: true
         glider_slocum/imu_link:
@@ -219,10 +174,6 @@ Visualization Manager:
         glider_slocum/pose_sensor_link_default:
           Value: true
         glider_slocum/pressure_link:
-          Value: true
-        glider_slocum/sonarleft_link:
-          Value: true
-        glider_slocum/sonarright_link:
           Value: true
         glider_slocum/thruster_0:
           Value: true
@@ -258,14 +209,6 @@ Visualization Manager:
                     {}
                   glider_slocum/dvl_sonar3_link:
                     {}
-                glider_slocum/fin0:
-                  {}
-                glider_slocum/fin1:
-                  {}
-                glider_slocum/fin2:
-                  {}
-                glider_slocum/fin3:
-                  {}
                 glider_slocum/gps_link:
                   {}
                 glider_slocum/imu_link:
@@ -273,10 +216,6 @@ Visualization Manager:
                 glider_slocum/pose_sensor_link_default:
                   {}
                 glider_slocum/pressure_link:
-                  {}
-                glider_slocum/sonarleft_link:
-                  {}
-                glider_slocum/sonarright_link:
                   {}
                 glider_slocum/thruster_0:
                   {}
@@ -291,66 +230,6 @@ Visualization Manager:
       Namespaces:
         "": true
       Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: -91.8094254
-        Min Value: -95.5871582
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/LaserScan
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 300
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 0
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: Sonar left
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.00999999978
-      Style: Points
-      Topic: /glider_slocum/sss_left
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: -75.8892899
-        Min Value: -95.6470261
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/LaserScan
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 300
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 0
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: Sonar right
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.00999999978
-      Style: Points
-      Topic: /glider_slocum/sss_right
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
       Value: true
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
@@ -384,112 +263,6 @@ Visualization Manager:
         Shaft Radius: 0.0500000007
         Value: Arrow
       Topic: /glider_slocum/pose_gt
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 85; 255
-      Enabled: true
-      Head Diameter: 0.300000012
-      Head Length: 0.200000003
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Trajectory
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.100000001
-      Shaft Length: 0.100000001
-      Topic: /glider_slocum/trajectory_marker
-      Unreliable: false
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /glider_slocum/waypoint_markers
-      Name: Waypoints
-      Namespaces:
-        "": true
-      Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 85; 0
-      Enabled: true
-      Head Diameter: 0.300000012
-      Head Length: 0.200000003
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Waypoint path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.100000001
-      Shaft Length: 0.100000001
-      Topic: /glider_slocum/waypoint_path_marker
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Arrow Width: 0.200000003
-      Class: rviz/WrenchStamped
-      Enabled: true
-      Force Arrow Scale: 0.100000001
-      Force Color: 204; 51; 51
-      History Length: 1
-      Name: Fin 0 - Wrench
-      Topic: /glider_slocum/fins/0/wrench_topic
-      Torque Arrow Scale: 2
-      Torque Color: 204; 204; 51
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Arrow Width: 0.300000012
-      Class: rviz/WrenchStamped
-      Enabled: true
-      Force Arrow Scale: 0.100000001
-      Force Color: 204; 51; 51
-      History Length: 1
-      Name: Fin 1 - Wrench
-      Topic: /glider_slocum/fins/1/wrench_topic
-      Torque Arrow Scale: 2
-      Torque Color: 204; 204; 51
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Arrow Width: 0.300000012
-      Class: rviz/WrenchStamped
-      Enabled: true
-      Force Arrow Scale: 0.100000001
-      Force Color: 204; 51; 51
-      History Length: 1
-      Name: Fin 2 - Wrench
-      Topic: /glider_slocum/fins/2/wrench_topic
-      Torque Arrow Scale: 2
-      Torque Color: 204; 204; 51
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Arrow Width: 0.300000012
-      Class: rviz/WrenchStamped
-      Enabled: true
-      Force Arrow Scale: 0.100000001
-      Force Color: 204; 51; 51
-      History Length: 1
-      Name: Fin 3 - Wrench
-      Topic: /glider_slocum/fins/3/wrench_topic
-      Torque Arrow Scale: 2
-      Torque Color: 204; 204; 51
       Unreliable: false
       Value: true
     - Alpha: 1
