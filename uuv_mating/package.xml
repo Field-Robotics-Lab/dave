@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>uuv_mating</name>
+  <version>0.0.0</version>
+  <description>The uuv_mating package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="yk@todo.todo">yk</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_export_depend>gazebo_ros</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+
+
+  <!-- <export>
+  <gazebo_ros plugin_path="${prefix}/../../lib" gazebo_media_path="${prefix}" />
+  </export> -->
+  <export>
+      <gazebo_ros gazebo_model_path="${prefix}/models"/>
+      <gazebo_ros gazebo_media_path="${prefix}/models"/>
+  </export>
+</package>
