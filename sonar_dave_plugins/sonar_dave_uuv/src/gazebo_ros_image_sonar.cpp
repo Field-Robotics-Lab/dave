@@ -980,7 +980,7 @@ void GazeboRosImageSonar::ComputeSonarImage(const float *_src)
   // copy from depth to depth image (OpenCV)
   int rows_arg = this->height;
   int cols_arg = this->width;
-  int step_arg = this->skip_;
+  // int step_arg = this->skip_; // never used; do we need it?
 
   sensor_msgs::Image image_msg;
   image_msg.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
