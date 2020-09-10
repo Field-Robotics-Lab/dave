@@ -1,0 +1,50 @@
+<launch>
+  <arg name="record" default="false"/>
+  <arg name="bag_filename" default="recording.bag"/>
+  <arg name="use_ned_frame" default="false"/>
+  <arg name="uuv_name" default="uuv_name"/>
+
+  <group if="$(arg record)">
+    <node pkg="rosbag" type="record" name="recording"
+      args="record -O $(arg bag_filename)
+        /$(arg uuv_name)/dp_controller/trajectory
+        /$(arg uuv_name)/dp_controller/reference
+        /$(arg uuv_name)/pose_gt_ned
+        /$(arg uuv_name)/dp_controller/error
+        /hydrodynamics/current_velocity        
+        /$(arg uuv_name)/wrench_perturbation
+        /$(arg uuv_name)/control_allocation/control_input
+        /$(arg uuv_name)/thrusters/0/thrust
+        /$(arg uuv_name)/thrusters/0/input
+        /$(arg uuv_name)/fins/0/input
+        /$(arg uuv_name)/fins/1/input
+        /$(arg uuv_name)/fins/2/input
+        /$(arg uuv_name)/fins/3/input
+        /$(arg uuv_name)/fins/0/output
+        /$(arg uuv_name)/fins/1/output
+        /$(arg uuv_name)/fins/2/output
+        /$(arg uuv_name)/fins/3/output"
+      if="$(arg use_ned_frame)"/>
+
+      <node pkg="rosbag" type="record" name="recording"
+        args="record -O $(arg bag_filename)
+          /$(arg uuv_name)/dp_controller/trajectory
+          /$(arg uuv_name)/dp_controller/reference
+          /$(arg uuv_name)/pose_gt
+          /$(arg uuv_name)/dp_controller/error
+          /hydrodynamics/current_velocity
+          /$(arg uuv_name)/wrench_perturbation
+          /$(arg uuv_name)/control_allocation/control_input
+          /$(arg uuv_name)/thrusters/0/thrust
+          /$(arg uuv_name)/thrusters/0/input
+          /$(arg uuv_name)/fins/0/input
+          /$(arg uuv_name)/fins/1/input
+          /$(arg uuv_name)/fins/2/input
+          /$(arg uuv_name)/fins/3/input
+          /$(arg uuv_name)/fins/0/output
+          /$(arg uuv_name)/fins/1/output
+          /$(arg uuv_name)/fins/2/output
+          /$(arg uuv_name)/fins/3/output"
+        unless="$(arg use_ned_frame)"/>
+  </group>
+</launch>

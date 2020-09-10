@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="glider_slocum">
+    <static>false</static>
+    <link name="base_link">
+      <visual name="base_link_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_slocum/mesh/Slocum-Glider.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="base_link_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_slocum/mesh/COLLISION-Slocum-Glider.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <inertial>
+          <pose>0 0 0 0 0 0</pose>
+          <mass>69.25</mass>
+          <inertia>
+              <ixx>10</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>10</iyy>
+              <iyz>0</iyz>
+              <izz>10</izz>
+          </inertia>
+      </inertial>
+    </link>
+    <link name='battery_link'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+      <battery name='battery'>
+        <voltage>4.2</voltage>
+      </battery>
+    </link>
+    <joint name='battery_joint' type='fixed'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>battery_link</child>
+    </joint>
+    <link name="propeller_link">
+      <visual name="propeller_link_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_slocum/mesh/Slocum-Glider-Propeller.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+              <ixx>0.1</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.1</iyy>
+              <iyz>0</iyz>
+              <izz>0.1</izz>
+          </inertia>
+          <mass>0.5</mass>
+      </inertial>
+    </link>
+    <joint name="propeller_joint" type="revolute">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>base_link</parent>
+        <child>propeller_link</child>
+        <axis>
+            <xyz>0 1 0</xyz>
+        </axis>
+    </joint>
+    <plugin name='linear_battery_ros_plugin' filename='liblinear_battery_ros_plugin.so'>
+      <namespace>/</namespace>
+      <link_name>battery_link</link_name>
+      <battery_name>battery</battery_name>
+      <open_circuit_voltage_constant_coef>3.7</open_circuit_voltage_constant_coef>
+      <open_circuit_voltage_linear_coef>-3.1424</open_circuit_voltage_linear_coef>
+      <initial_charge>1.1665</initial_charge>
+      <capacity>0.5</capacity>
+      <resistance>0.002</resistance>
+      <smooth_current_tau>1.9499</smooth_current_tau>
+      <update_rate>2.0</update_rate>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='glider_slocum_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+      <linkName>propeller_link</linkName>
+      <jointName>propeller_joint</jointName>
+      <thrusterID>0</thrusterID>
+      <dynamics>
+        <type>FirstOrder</type>
+        <timeConstant>0.1</timeConstant>
+      </dynamics>
+      <conversion>
+        <type>Basic</type>
+        <rotorConstant>4.9e-05</rotorConstant>
+      </conversion>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+<!--    <plugin name='fin0_model' filename='libuuv_fin_ros_plugin.so'>
+      <dynamics>
+        <type>FirstOrder</type>
+        <timeConstant>0.1</timeConstant>
+      </dynamics>
+      <liftdrag>
+        <type>TwoLines</type>
+        <area>0.04155</area>
+        <fluid_density>1027.0</fluid_density>
+        <a0>0.0</a0>
+        <alpha_stall>0.174533</alpha_stall>
+        <cla>13.98</cla>
+        <cla_stall>0.0</cla_stall>
+        <cda>0.0</cda>
+        <cda_stall/>
+      </liftdrag>
+      <current_velocity_topic>hydrodynamics/current_velocity</current_velocity_topic>
+      <fin_id>0</fin_id>
+      <link_name>fin0</link_name>
+      <joint_name>fin0_joint</joint_name>
+      <robotNamespace>/</robotNamespace>
+    </plugin> -->
+    <plugin name='glider_slocum_plugin' filename='libuuv_underwater_object_ros_plugin.so'>
+      <fluid_density>1027.0</fluid_density>
+      <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+      <debug>0</debug>
+      <link name='base_link'>
+        <volume>0.0679998770412</volume>
+        <center_of_buoyancy>0 0 0.06</center_of_buoyancy>
+        <neutrally_buoyant>0</neutrally_buoyant>
+        <hydrodynamic_model>
+          <type>fossen</type>
+          <added_mass>
+            4  0   0   0    0   0
+            0  95  0   0    0   0
+            0  0   75  0    0   0
+            0  0   0   0.4  0   0
+            0  0   0   0    27  0
+            0  0   0   0    0   32
+          </added_mass>
+          <linear_damping_forward_speed>
+            -8   0    0     0    0    0
+             0  -162  0     0    0    150
+             0   0   -108   0   -100  0
+             0   0    0    -13   0    0
+             0   0    37    0   -20   0
+             0  -34   0     0    0   -32
+          </linear_damping_forward_speed>
+        </hydrodynamic_model>
+      </link>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </model>
+</sdf>
