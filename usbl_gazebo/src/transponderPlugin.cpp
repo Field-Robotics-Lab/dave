@@ -178,7 +178,7 @@ namespace gazebo
             auto curr_pose = this->m_model->WorldPose();
             ignition::math::Vector3<double> position = curr_pose.Pos();
             auto pub_msg = msgs::Vector3d();
-            std::cout << position.X() << " " << position.Y() << " " << position.Z() << std::endl;
+            // std::cout << position.X() << " " << position.Y() << " " << position.Z() << std::endl;
             pub_msg.set_x(position.X() + d(gen));
             pub_msg.set_y(position.Y() + d(gen));
             pub_msg.set_z(position.Z() + d(gen));
@@ -223,7 +223,7 @@ namespace gazebo
             std::string command = msg->data;
             if(!command.compare("ping"))
             {
-                gzmsg << this->m_transponderDevice+ "_" + this->m_transponderID + ": Received cis_ping, responding\n";
+                // gzmsg << this->m_transponderDevice+ "_" + this->m_transponderID + ": Received cis_ping, responding\n";
                 sleep(dist / this->m_soundSpeed);
                 sendLocation();
             }
@@ -235,7 +235,7 @@ namespace gazebo
 
         private: void commandRosCallback(const usbl_gazebo::USBLCommandConstPtr& msg)
         {
-            gzmsg << "transponder ID: " << msg->commandID << ", command ID" << msg->transponderID << ", data: " << msg->data << std::endl;
+            // gzmsg << "transponder ID: " << msg->commandID << ", command ID" << msg->transponderID << ", data: " << msg->data << std::endl;
 
             // send back command response
             usbl_gazebo::USBLResponse response_msg;

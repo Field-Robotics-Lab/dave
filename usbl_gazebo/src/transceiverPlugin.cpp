@@ -18,7 +18,6 @@
 
 #include <thread>
 #include <math.h>
-#include <mutex>
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -307,7 +306,7 @@ namespace gazebo
             // need to fake the transmission by applying distance based delay
             physics::ModelPtr tranponder = this->m_model->GetWorld()->ModelByName(this->m_transponderAttachedObject);
             double dist = (this->m_model->WorldPose().Pos() - tranponder->WorldPose().Pos()).Length();
-            gzmsg << "distance to tranponder: " << dist << " m\n";
+            // gzmsg << "distance to tranponder: " << dist << " m\n";
             sleep(dist/this->m_soundSpeed);
 
             if(this->m_interrogationMode.compare("common") == 0)
@@ -359,7 +358,7 @@ namespace gazebo
         // Gazebo callback for receiving transponder position, simulating Transceiver's positioning calculation
         public: void receiveGezeboCallback(ConstVector3dPtr& transponder_position)
         {
-            gzmsg << "Transceiver acquires transponders position: " << transponder_position->x() << " " << transponder_position->y() << " " << transponder_position->z() << std::endl;
+            // gzmsg << "Transceiver acquires transponders position: " << transponder_position->x() << " " << transponder_position->y() << " " << transponder_position->z() << std::endl;
 
             ignition::math::Vector3d transponder_position_ign = ignition::math::Vector3d(transponder_position->x(), transponder_position->y(), transponder_position->z());
 
@@ -378,13 +377,13 @@ namespace gazebo
             location.z = elevation;
 
             geometry_msgs::Vector3 location_cartesion;
-            location_cartesion.x = range * cos(bearing * 3.1415926/180);
-            location_cartesion.y = range * sin(bearing* 3.1415926/180);
-            location_cartesion.z = elevation;
+            location_cartesion.x = range * cos(elevation * M_PI/180) * cos(bearing * M_PI/180);
+            location_cartesion.y = range * cos(elevation * M_PI/180) * sin(bearing * M_PI/180);
+            location_cartesion.z = range * sin(elevation * M_PI/180);
 
 
-            gzmsg << "Spherical Coordinate: " << location.x << " " << location.y << " " << location.z << std::endl;
-            gzmsg << "Cartesion Coordinate: " << location_cartesion.x << " " << location_cartesion.y << " " << location_cartesion.z << std::endl;
+            gzmsg << "Spherical Coordinate: \n\tBearing: " << location.x << " degree(s)\n\tRange: " << location.y << " m\n\tElevation: " << location.z << " degree(s)\n";
+            gzmsg << "Cartesion Coordinate: \n\tX: " << location_cartesion.x << " m\n\tY: " << location_cartesion.y << " m\n\tZ: " << location_cartesion.z << " m\n\n";
 
             this->m_publishTransponderRelPos.publish(location);
             this->m_publishTransponderRelPosCartesion.publish(location_cartesion);
@@ -396,17 +395,13 @@ namespace gazebo
             auto my_pos = this->m_model->WorldPose();
             auto direction = position - my_pos.Pos();
 
-            ignition::math::Vector3d directionTransceiverFrame = my_pos.Rot().RotateVectorReverse(direction);
+            bearing = atan2(direction.Y(), direction.X()) * 180 / M_PI;
+            range = sqrt(direction.X()*direction.X() + direction.Y()*direction.Y() + direction.Z()*direction.Z());
+            elevation = asin(direction.Z()/direction.Length()) * 180 / M_PI;
 
-            ignition::math::Vector3d directionTransceiverFrame2d = ignition::math::Vector3d(directionTransceiverFrame.X(), directionTransceiverFrame.Y(), 0);
-
-            bearing = atan2(directionTransceiverFrame.Y(), directionTransceiverFrame.X()) * 180 / 3.1415926;
-            range = directionTransceiverFrame.Length();
-            elevation = atan2(directionTransceiverFrame.Z(), directionTransceiverFrame.Length()) * 180 / 3.1415926;
-
-            gzmsg << "bearing: " << bearing << "\n";
-            gzmsg << "range: " << range << "\n";
-            gzmsg << "elevation: " << elevation << "\n\n";
+            // gzmsg << "bearing: " << bearing << "\n";
+            // gzmsg << "range: " << range << "\n";
+            // gzmsg << "elevation: " << elevation << "\n\n";
         }
 
         // use threads to execute callback associated with each subscriber
