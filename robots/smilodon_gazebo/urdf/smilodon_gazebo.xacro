@@ -25,22 +25,17 @@
   <!--xacro:include filename="$(find uuv_dave)/urdf/sensor_snippets.xacro"/>-->
   <!---->
 
-  
-  <xacro:property name="visual_mesh_file" value="file://$(find smilodon_description)/meshes/smilodon_visual.dae"/>
-  <xacro:property name="prop_mesh_file" value="file://$(find uuv_descriptions)/meshes/prop.dae"/>
- <xacro:property name="mass" value="1862.87"/>
-
  <!-- base_link according to ROS conventions: x forward, z up -->
  <link name="$(arg namespace)/base_link">
    <inertial>
-     <mass value="${mass}"/>
+     <mass value="1862.87"/>
      <origin xyz="0 0 0"/>
      <inertia ixx="525.39" ixy="1.44" ixz="33.41" iyy="794.20" iyz="2.6" izz="691.23"/>
    </inertial>
    <visual>
      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
      <geometry>
-       <mesh filename="package://smilodon_description/meshes/smilodon_visual.dae" scale="1 1 1"/>
+       <mesh filename="package://smilodon_description/meshes/smilodon_nologo_visual.dae" scale="1 1 1"/>
      </geometry>
    </visual>
    <collision>
@@ -105,6 +100,7 @@
  </gazebo>
 
  <!-- Define thrusters for propulsion -->
+ <xacro:property name="prop_mesh_file" value="file://$(find uuv_descriptions)/meshes/prop.dae"/>
  <!-- Common values, colors, converstion, standard shapes/inertia etc.
       Dependency for the thruster_snippets.xacro-->
  <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro"/>
