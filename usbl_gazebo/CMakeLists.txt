@@ -10,6 +10,7 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   gazebo_ros
+  std_msgs
   message_generation
 )
 
@@ -17,12 +18,14 @@ find_package(gazebo REQUIRED)
 
 add_message_files(
   FILES
+
   USBLCommand.msg
   USBLResponse.msg
 )
 
 generate_messages(
   DEPENDENCIES
+  std_msgs
 )
 
 catkin_package(
@@ -43,6 +46,5 @@ include_directories(
 add_library(transponderPlugin SHARED src/transponderPlugin.cpp)
 add_library(transceiverPlugin SHARED src/transceiverPlugin.cpp)
 
-## Specify libraries to link a library or executable target against
-target_link_libraries(transponderPlugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} )
-target_link_libraries(transceiverPlugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} )
+add_dependencies(transponderPlugin usbl_gazebo_generate_messages_cpp)
+add_dependencies(transceiverPlugin usbl_gazebo_generate_messages_cpp)

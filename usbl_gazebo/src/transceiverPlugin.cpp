@@ -13,8 +13,6 @@
 #include <std_msgs/Float64.h>
 #include <std_msgs/Int8.h>
 #include <geometry_msgs/Vector3.h>
-#include "usbl_gazebo/USBLCommand.h"
-#include "usbl_gazebo/USBLResponse.h"
 
 #include <thread>
 #include <math.h>
@@ -23,6 +21,8 @@
 #include <functional>
 #include <unordered_map>
 
+#include "usbl_gazebo/USBLCommand.h"
+#include "usbl_gazebo/USBLResponse.h"
 #include "usblCommandId.hpp"
 
 std::vector<std::string> im = {"common", "individual"}; // available interrogation modes

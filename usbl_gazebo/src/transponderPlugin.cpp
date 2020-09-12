@@ -9,11 +9,12 @@
 #include <ros/subscribe_options.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Float64.h>
-#include "usbl_gazebo/USBLResponse.h"
-#include "usbl_gazebo/USBLCommand.h"
 
 #include <thread>
 #include <random>
+
+#include "usbl_gazebo/USBLResponse.h"
+#include "usbl_gazebo/USBLCommand.h"
 
 namespace gazebo
 {
