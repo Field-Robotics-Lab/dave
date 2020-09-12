@@ -3,11 +3,7 @@
 USBL is used to assist underwater navigation and positioning. It consists of one transceiver and one or multiple transponders (or beacons). Usually, the transceiver will be attached to either a stationary object or mobile central node, whereas the transponder(s) is attached to objects that are being tracked. For more information, see [this] video (best explanation I have seen so far). 
 
 ### Build the plugin
-To build the USBL plugin, first build only the usbl_gazebo package
-`catkin_make --only-pkg-with-deps usbl_gazebo`
-
-Once the build is successful, execute following command to build the rest of the package
-`catkin_make -DCATKIN_WHITELIST_PACKAGES=""`
+`catkin_make` at workspace root directory is sufficient to build the plugin.
 
 
 ### Creating world with at least two models
