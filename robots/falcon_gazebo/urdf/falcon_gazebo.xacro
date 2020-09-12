@@ -155,7 +155,7 @@
   </xacro:thruster_macro>
   <!-- Vertical (centerline) -->
   <xacro:thruster_macro thruster_id="4">
-    <origin xyz="0.0 0.0 0.2" rpy="${0*d2r} ${90*d2r} ${0.0*d2r}"/>
+    <origin xyz="-0.15 0.0 0.33" rpy="${0*d2r} ${-90*d2r} ${0.0*d2r}"/>
   </xacro:thruster_macro>
 
  <!-- Default joint state publisher -->
