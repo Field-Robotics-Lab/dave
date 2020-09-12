@@ -11,7 +11,7 @@ from uuv_gazebo_ros_plugins_msgs.msg import FloatStamped
 
 class ThrusterOp:
     def __init__(self):
-        namespace = 'smilodon'
+        namespace = 'falcon'
         self.gain = 1000.0
         # Joystick to thruster i.d. mapping
         # Keys are the joystick axes, publishers
