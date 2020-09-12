@@ -3,7 +3,7 @@
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
-    <arg name="namespace" default="falcon"/>
+    <arg name="namespace" default="caracara"/>
     <arg name="velocity_control" default="true"/>
     <arg name="debug" default="false"/>
     <arg name="verbose" default="false"/>
@@ -63,7 +63,7 @@
     </node>
 
      <param name="/$(arg namespace)/robot_description"
-           command="$(find xacro)/xacro '$(find falcon_gazebo)/urdf/falcon_gazebo.xacro' --inorder
+           command="$(find xacro)/xacro '$(find caracara_gazebo)/urdf/caracara_gazebo.xacro' --inorder
 		    debug:=$(arg debug)
 		    namespace:=$(arg namespace)
 		    inertial_reference_frame:=world" />

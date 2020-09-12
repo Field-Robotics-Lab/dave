@@ -73,16 +73,16 @@
     </light>
   </library_lights>
   <library_effects>
-    <effect id="Falcon-effect">
+    <effect id="Caracara-effect">
       <profile_COMMON>
-        <newparam sid="Falcon_psd-surface">
+        <newparam sid="Caracara_psd-surface">
           <surface type="2D">
-            <init_from>Falcon_psd</init_from>
+            <init_from>Caracara_psd</init_from>
           </surface>
         </newparam>
-        <newparam sid="Falcon_psd-sampler">
+        <newparam sid="Caracara_psd-sampler">
           <sampler2D>
-            <source>Falcon_psd-surface</source>
+            <source>Caracara_psd-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -91,7 +91,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="Falcon_psd-sampler" texcoord="UVMap"/>
+              <texture texture="Caracara_psd-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -102,13 +102,13 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="Falcon_psd" name="Falcon_psd">
-      <init_from>falcon.png</init_from>
+    <image id="Caracara_psd" name="Caracara_psd">
+      <init_from>caracara.png</init_from>
     </image>
   </library_images>
   <library_materials>
-    <material id="Falcon-material" name="Falcon">
-      <instance_effect url="#Falcon-effect"/>
+    <material id="Caracara-material" name="Caracara">
+      <instance_effect url="#Caracara-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -146,7 +146,7 @@
         <vertices id="Cube-mesh-vertices">
           <input semantic="POSITION" source="#Cube-mesh-positions"/>
         </vertices>
-        <triangles material="Falcon-material" count="10868">
+        <triangles material="Caracara-material" count="10868">
           <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Cube-mesh-map-0" offset="2" set="0"/>
@@ -157,12 +157,12 @@
   </library_geometries>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="Falcon" name="Falcon" type="NODE">
+      <node id="Caracara" name="Caracara" type="NODE">
         <matrix sid="transform">0.6 0 0 0 0 1 0 0 0 0 0.5 0 0 0 0 1</matrix>
-        <instance_geometry url="#Cube-mesh" name="Falcon">
+        <instance_geometry url="#Cube-mesh" name="Caracara">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Falcon-material" target="#Falcon-material">
+              <instance_material symbol="Caracara-material" target="#Caracara-material">
                 <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>

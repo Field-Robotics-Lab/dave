@@ -15,17 +15,17 @@
      limitations under the License.
 -->
 
-<robot name="falcon" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="caracara" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
   <xacro:arg name="debug" default="0"/>
-  <xacro:arg name="namespace" default="falcon"/>
+  <xacro:arg name="namespace" default="caracara"/>
 
   <!-- "Dummy" base link to eliminate root link inertia warning --> 
   <link name="$(arg namespace)/base_link"/>
 
-  <link name="$(arg namespace)/falcon_link">
-    <!-- Mass and inertia from the Saab Falcon technical specifications:
-         https://www.saabseaeye.com/solutions/underwater-vehicles/falcon -->
+  <link name="$(arg namespace)/caracara_link">
+    <!-- Mass and inertia from the Saab Caracara technical specifications:
+         https://www.saabseaeye.com/solutions/underwater-vehicles/caracara -->
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="60.0"/>
@@ -37,22 +37,22 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 1.5708"/>
       <geometry>
-        <mesh filename="package://falcon_description/meshes/falcon_visual.dae" scale="1 1 1"/>
+        <mesh filename="package://caracara_description/meshes/caracara_visual.dae" scale="1 1 1"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 1.5708"/>
       <geometry>
-        <mesh filename="package://falcon_description/meshes/falcon_collision.dae" scale="1 1 1"/>
+        <mesh filename="package://caracara_description/meshes/caracara_collision.dae" scale="1 1 1"/>
       </geometry>
     </collision>
   </link>
 
-  <!-- Attach falcon_link to the dummy base link -->
-  <joint name="$(arg namespace)/falcon_base_joint" type="fixed">
+  <!-- Attach caracara_link to the dummy base link -->
+  <joint name="$(arg namespace)/caracara_base_joint" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
     <parent link="$(arg namespace)/base_link"/>
-    <child link="$(arg namespace)/falcon_link"/>
+    <child link="$(arg namespace)/caracara_link"/>
   </joint>
 
  <gazebo>
@@ -64,7 +64,7 @@
 
      <link name="$(arg namespace)/base_link">
        <neutrally_buoyant>1</neutrally_buoyant>
-       <!-- See Saab Falcon technical specifications -->
+       <!-- See Caracara technical specifications -->
        <volume>0.15</volume> <!-- This is a guess (mostly open chassis) -->
        <box>
          <width>0.6</width>

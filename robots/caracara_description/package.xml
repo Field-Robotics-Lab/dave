@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>falcon_description</name>
+  <name>caracara_description</name>
   <version>1.0.0</version>
   <description>The falcon_description package</description>
   <maintainer email="dtdavi1@nps.edu">dtdavi1</maintainer>
