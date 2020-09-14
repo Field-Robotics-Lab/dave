@@ -25,11 +25,17 @@ jobs:
           repository: Field-Robotics-Lab/gtri_based_sonar
           path: gtri_based_sonar
 
-      - name: Checkout gtri based sonar
+      - name: Checkout nps underwater sensors 
         uses: actions/checkout@v2
         with:
           repository: Field-Robotics-Lab/nps_uw_sensors_gazebo
           path: nps_uw_sensors_gazebo
+
+      - name: Checkout nps messages
+        uses: actions/checkout@v2
+        with:
+          repository: Field-Robotics-Lab/frl_msgs
+          path: frl_msgs
 
       - name: Checkout uuv simulator 
         uses: actions/checkout@v2
