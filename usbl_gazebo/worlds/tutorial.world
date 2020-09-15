@@ -34,7 +34,7 @@
 	      <namespace>USBL</namespace>
 	      <transponder_device>trasnponder_manufacturer</transponder_device>
 	      <transponder_ID>1</transponder_ID>
-	      <transceiver_device>tranceiver_manufacturer</transceiver_device>
+	      <transceiver_device>transceiver_manufacturer</transceiver_device>
 	      <transceiver_ID>168</transceiver_ID>
 	      <enable_ping_scheduler>false</enable_ping_scheduler>
 	      <transponder_attached_object>sphere</transponder_attached_object>
@@ -64,7 +64,7 @@
 	      <namespace>USBL</namespace>
 	      <transponder_device>transponder_manufacturer</transponder_device>
 	      <transponder_ID>1</transponder_ID>
-	      <transceiver_device>tranceiver_manufacturer</transceiver_device>
+	      <transceiver_device>transceiver_manufacturer</transceiver_device>
 	      <transceiver_ID>168</transceiver_ID>
 	      <mu>0</mu>
 	      <sigma>0.0</sigma>
