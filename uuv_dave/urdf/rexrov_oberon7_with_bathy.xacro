@@ -25,7 +25,7 @@
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
   <xacro:include filename="$(find uuv_dave)/urdf/oberon7_default.xacro" />
 
-  <xacro:uuv_forward_looking_sonar
+  <!-- <xacro:uuv_forward_looking_sonar
       namespace="${namespace}"
       suffix="down"
       parent_link="${namespace}/base_link"
@@ -37,11 +37,10 @@
         width="768"
         height="492">
       <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
-      <!--origin xyz="0.83 0 -0.22" rpy="0 ${0.2*pi} 0" /-->
       <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
       <visual>
       </visual>
-    </xacro:uuv_forward_looking_sonar>
+    </xacro:uuv_forward_looking_sonar> -->
 
 <!--
   <xacro:uuv_forward_multibeam_p900
