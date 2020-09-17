@@ -15,7 +15,7 @@ TransceiverPlugin::~TransceiverPlugin(){}
 void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
 
-    /***************************************************  SDF PARAMETERS ********************************************************/
+    /** SDF PARAMETERS*****************/
 
     // Ensure ROS is initialized for publishers and subscribers
     if(!ros::isInitialized())
