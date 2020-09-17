@@ -1,0 +1,70 @@
+name: Ubuntu CI
+
+on: [pull_request]
+
+jobs:
+  test-gazebo9-melodic:
+
+    runs-on: ubuntu-18.04
+    container: 
+      image: npslearninglab/dave:current
+    steps:
+      - run: sudo chown -R `whoami`:`whoami` .
+      - uses: actions/checkout@v2
+      - name: Install base dependencies
+        run: |
+          sudo apt update;
+          sudo apt-get -y install cppcheck protobuf-compiler;
+  
+      - name: Static code checking
+        run: sh tools/code_check.sh
+
+      - name: Checkout gtri based sonar
+        uses: actions/checkout@v2
+        with:
+          repository: Field-Robotics-Lab/gtri_based_sonar
+          path: gtri_based_sonar
+
+      - name: Checkout gtri based sonar
+        uses: actions/checkout@v2
+        with:
+          repository: Field-Robotics-Lab/nps_uw_sensors_gazebo
+          path: nps_uw_sensors_gazebo
+
+      - name: Checkout uuv simulator 
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/uuv_simulator
+          path: uuv_simulator
+
+      - name: Checkout rexrov2
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/rexrov2
+          path: rexrov2
+
+      - name: Checkout uuv manipulators 
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/uuv_manipulators
+          path: uuv_manipulators
+
+      - name: Checkout eca a9
+        uses: actions/checkout@v2
+        with:
+          repository: uuvsimulator/eca_a9
+          path: eca_a9
+
+      - name: Set up workspace
+        run: |
+          mkdir -p /tmp/uuv_ws/src;
+          ln -s `pwd` /tmp/uuv_ws/src;
+
+
+      - name: Build and run tests
+        shell: bash
+        run: |
+          cd /tmp/uuv_ws;
+          source /opt/ros/melodic/setup.bash;
+          catkin_make -j1;
+          catkin_make run_tests -j1;
