@@ -61,9 +61,7 @@ then
   CPPLINT_FILES="$CHECK_FILES"
   QUICK_TMP=`mktemp -t asdfXXXXXXXXXX`
 else
-  CHECK_DIRS=" \
-    ./sonar_dave_plugins/sonar_dave_uuv/src ./sonar_dave_plugins/sonar_dave_uuv/include \
-    "
+  CHECK_DIRS=""
   if [ $CPPCHECK_LT_157 -eq 1 ]; then
     # cppcheck is older than 1.57, so don't check header files (issue #907)
     CPPCHECK_FILES=`find $CHECK_DIRS -name "*.cc" -o -name "*.cpp"`

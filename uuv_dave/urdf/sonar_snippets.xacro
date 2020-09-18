@@ -234,7 +234,7 @@
             <path>/tmp/camera</path>
           </save>
         </camera>
-	    <plugin filename="libimage_sonar_dave_plugin.so" name="forward_sonar${suffix}_controller">
+	    <plugin filename="libimage_sonar_ros_plugin.so" name="forward_sonar${suffix}_controller">
 		  <topicName>${topic}</topicName>
           <frameName>forward_sonar${suffix}_optical_frame</frameName>
         </plugin>
