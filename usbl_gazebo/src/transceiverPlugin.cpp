@@ -7,14 +7,119 @@ using namespace gazebo;
 
 std::vector<std::string> im = {"common", "individual"}; // available interrogation modes
 
-// default temperature = 10 degrees Celsius
-TransceiverPlugin::TransceiverPlugin(): m_temperature(10.0) {}
+// set default sound speed
+TransceiverPlugin::TransceiverPlugin(): m_soundSpeed(1540.4) {}
 
 TransceiverPlugin::~TransceiverPlugin(){}
 
 void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
+    parseSDF(_sdf);
 
+    /*****************************************************************************************************************************/
+
+    /************************************************  GAZEBO SUBSCRIBER *********************************************************/
+
+    // store this entity model
+    this->m_model = _model;
+
+    // initialize Gazebo node
+    this->m_gzNode = transport::NodePtr(new transport::Node());
+    this->m_gzNode->Init();
+
+    // Gazebo subscriber for getting position of the transponder
+    for( auto& transponder : this->m_deployedTransponders)
+    {
+        std::string transponder_position = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + transponder + "/global_position";
+        this->m_transponderPoseSub.push_back(this->m_gzNode->Subscribe(transponder_position, &TransceiverPlugin::receiveGezeboCallback, this));
+    }
+    /*****************************************************************************************************************************/
+
+    /***************************************************  ROS PUBLISHERS *********************************************************/
+
+    // ROS node initialization
+    this->m_rosNode.reset(new ros::NodeHandle(this->m_transceiverDevice));
+
+    // ROS publisher for broadcasting transponder's relative location to the transceiver
+    std::string transponder_location_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location";
+    this->m_publishTransponderRelPos = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_topic, 1);
+
+    // ROS publisher for common interrogation signal ping
+    std::string cis_pinger_topic = "/" + m_namespace + "/common_interrogation_ping";
+    this->m_cisPinger = this->m_rosNode->advertise<std_msgs::String>(cis_pinger_topic, 1);
+
+    // ROS publisher for individual signal ping and command for each transponder
+    for(auto& transponder: this->m_deployedTransponders)
+    {
+        std::string ping_topic("/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + transponder + "/individual_interrogation_ping");
+        std::string command_topic("/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + transponder + "/command_request");
+        this->m_iisPinger[transponder] = this->m_rosNode->advertise<std_msgs::String>(ping_topic, 1);
+        this->m_commandPubs[transponder] = this->m_rosNode->advertise<usbl_gazebo::USBLCommand>(command_topic, 1);
+    }
+
+    std::string transponder_location_cartesion_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location_cartesion";
+    this->m_publishTransponderRelPosCartesion = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_cartesion_topic, 1);
+
+    /*****************************************************************************************************************************/
+
+    /***************************************************  ROS SUBSCRIBERS ********************************************************/
+
+    this->m_rosNode.reset(new ros::NodeHandle(m_transceiverDevice));
+
+    // subscriber for setting interrogation mode
+    ros::SubscribeOptions interrogation_mode_sub =
+        ros::SubscribeOptions::create<std_msgs::String>(
+            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/interrogation_mode",
+            1,
+            boost::bind(&TransceiverPlugin::interrogationModeRosCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_interrogationModeSub = this->m_rosNode->subscribe(interrogation_mode_sub);
+
+    // subscriber for command response
+    ros::SubscribeOptions command_response =
+        ros::SubscribeOptions::create<usbl_gazebo::USBLResponse>(
+            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response",
+            1,
+            boost::bind(&TransceiverPlugin::commandingResponseCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_commandResponseSub = this->m_rosNode->subscribe(command_response);
+
+    // subscriber for testing command response
+    ros::SubscribeOptions channel_switch =
+        ros::SubscribeOptions::create<std_msgs::String>(
+            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/channel_switch",
+            1,
+            boost::bind(&TransceiverPlugin::channelSwitchCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_channelSwitchSub = this->m_rosNode->subscribe(channel_switch);
+
+    // subscriber for testing command response
+    ros::SubscribeOptions command_response_test =
+        ros::SubscribeOptions::create<std_msgs::String>(
+            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response_test",
+            1,
+            boost::bind(&TransceiverPlugin::commandingResponseTestCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_commandResponseTestSub = this->m_rosNode->subscribe(command_response_test);
+
+    /*****************************************************************************************************************************/
+
+    /***************************************************  ROS MISC  **************************************************************/
+    // timer to send ping Command
+    if(this->m_enablePingerScheduler)
+    {
+        this->m_timer = this->m_rosNode->createTimer(ros::Duration(1.0), &TransceiverPlugin::sendPing, this);
+    }
+
+    this->m_rosQueueThread = std::thread(std::bind(&TransceiverPlugin::queueThread, this));
+}
+
+void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
+{
     /***************************************************  SDF PARAMETERS ********************************************************/
 
     // Ensure ROS is initialized for publishers and subscribers
@@ -132,117 +237,11 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         this->m_interrogationMode = "common";
     }
 
-    /*****************************************************************************************************************************/
-
-    /************************************************  GAZEBO SUBSCRIBER *********************************************************/
-
-    // store this entity model
-    this->m_model = _model;
-
-    // initialize Gazebo node
-    this->m_gzNode = transport::NodePtr(new transport::Node());
-    this->m_gzNode->Init();
-
-    // Gazebo subscriber for getting position of the transponder
-    for( auto& transponder : this->m_deployedTransponders)
+    // get the sound speed (optional)
+    if(_sdf->HasElement("sound_speed"))
     {
-        std::string transponder_position = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + transponder + "/global_position";
-        this->m_transponderPoseSub.push_back(this->m_gzNode->Subscribe(transponder_position, &TransceiverPlugin::receiveGezeboCallback, this));
+        this->m_soundSpeed = _sdf->Get<double>("sound_speed");
     }
-    /*****************************************************************************************************************************/
-
-    /***************************************************  ROS PUBLISHERS *********************************************************/
-
-    // ROS node initialization
-    this->m_rosNode.reset(new ros::NodeHandle(this->m_transceiverDevice));
-
-    // ROS publisher for broadcasting transponder's relative location to the transceiver
-    std::string transponder_location_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location";
-    this->m_publishTransponderRelPos = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_topic, 1);
-
-    // ROS publisher for common interrogation signal ping
-    std::string cis_pinger_topic = "/" + m_namespace + "/common_interrogation_ping";
-    this->m_cisPinger = this->m_rosNode->advertise<std_msgs::String>(cis_pinger_topic, 1);
-
-    // ROS publisher for individual signal ping and command for each transponder
-    for(auto& transponder: this->m_deployedTransponders)
-    {
-        std::string ping_topic("/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + transponder + "/individual_interrogation_ping");
-        std::string command_topic("/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + transponder + "/command_request");
-        this->m_iisPinger[transponder] = this->m_rosNode->advertise<std_msgs::String>(ping_topic, 1);
-        this->m_commandPubs[transponder] = this->m_rosNode->advertise<usbl_gazebo::USBLCommand>(command_topic, 1);
-    }
-
-    std::string transponder_location_cartesion_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location_cartesion";
-    this->m_publishTransponderRelPosCartesion = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_cartesion_topic, 1);
-
-    /*****************************************************************************************************************************/
-
-    /***************************************************  ROS SUBSCRIBERS ********************************************************/
-
-    // create ROS subscriber for temperature
-    this->m_rosNode.reset(new ros::NodeHandle(m_transceiverDevice));
-
-    // subscriber for temperature sensor
-    ros::SubscribeOptions temperature_sub =
-        ros::SubscribeOptions::create<std_msgs::Float64>(
-            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/temperature",
-            1,
-            boost::bind(&TransceiverPlugin::temperatureRosCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_temperatureSub = this->m_rosNode->subscribe(temperature_sub);
-
-    // subscriber for setting interrogation mode
-    ros::SubscribeOptions interrogation_mode_sub =
-        ros::SubscribeOptions::create<std_msgs::String>(
-            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/interrogation_mode",
-            1,
-            boost::bind(&TransceiverPlugin::interrogationModeRosCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_interrogationModeSub = this->m_rosNode->subscribe(interrogation_mode_sub);
-
-    // subscriber for command response
-    ros::SubscribeOptions command_response =
-        ros::SubscribeOptions::create<usbl_gazebo::USBLResponse>(
-            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response",
-            1,
-            boost::bind(&TransceiverPlugin::commandingResponseCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_commandResponseSub = this->m_rosNode->subscribe(command_response);
-
-    // subscriber for testing command response
-    ros::SubscribeOptions channel_switch =
-        ros::SubscribeOptions::create<std_msgs::String>(
-            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/channel_switch",
-            1,
-            boost::bind(&TransceiverPlugin::channelSwitchCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_channelSwitchSub = this->m_rosNode->subscribe(channel_switch);
-
-    // subscriber for testing command response
-    ros::SubscribeOptions command_response_test =
-        ros::SubscribeOptions::create<std_msgs::String>(
-            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response_test",
-            1,
-            boost::bind(&TransceiverPlugin::commandingResponseTestCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_commandResponseTestSub = this->m_rosNode->subscribe(command_response_test);
-
-    /*****************************************************************************************************************************/
-
-    /***************************************************  ROS MISC  **************************************************************/
-    // timer to send ping Command
-    if(this->m_enablePingerScheduler)
-    {
-        this->m_timer = this->m_rosNode->createTimer(ros::Duration(1.0), &TransceiverPlugin::sendPing, this);
-    }
-
-    this->m_rosQueueThread = std::thread(std::bind(&TransceiverPlugin::queueThread, this));
 }
 
 void TransceiverPlugin::commandingResponseTestCallback(const std_msgs::StringConstPtr &msg)
@@ -308,16 +307,6 @@ void TransceiverPlugin::channelSwitchCallback(const std_msgs::StringConstPtr &ms
     this->m_channel = msg->data;
 }
 
-// gets temperature from sensor to adjust sound speed
-void TransceiverPlugin::temperatureRosCallback(const std_msgs::Float64ConstPtr &msg)
-{
-    this->m_temperature = msg->data;
-    auto my_pos = this->m_model->WorldPose();
-
-    // Base on https://dosits.org/tutorials/science/tutorial-speed/
-    this->m_soundSpeed = 1540.4 + my_pos.Pos().Z() / 1000 * 17 + (this->m_temperature - 10) * 4;
-    gzmsg << "Detected change of temperature, sound speed is now: " << this->m_soundSpeed << " m/s\n";
-}
 
 // callback for interrogation mode switch
 void TransceiverPlugin::interrogationModeRosCallback(const std_msgs::StringConstPtr &msg)

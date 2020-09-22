@@ -32,12 +32,12 @@ namespace gazebo
             TransceiverPlugin();
             ~TransceiverPlugin();
             void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
+            void parseSDF(sdf::ElementPtr _sdf);
             void commandingResponseTestCallback(const std_msgs::StringConstPtr &msg);
             void commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg);
             void sendCommand(int command_id, std::string& transponder_id);
             void sendPing(const ros::TimerEvent&);
             void channelSwitchCallback(const std_msgs::StringConstPtr &msg);
-            void temperatureRosCallback(const std_msgs::Float64ConstPtr &msg);
             void interrogationModeRosCallback(const std_msgs::StringConstPtr &msg);
             void receiveGezeboCallback(ConstVector3dPtr& transponder_position);
             void publishPosition(double &bearing, double &range, double &elevation);
@@ -56,7 +56,6 @@ namespace gazebo
 
         private:
             std::string m_transponderDevice;
-            double m_temperature;
             double m_soundSpeed;
             std::vector<std::string> m_deployedTransponders;
 
@@ -74,7 +73,6 @@ namespace gazebo
             ros::Publisher m_cisPinger;
             std::unordered_map<std::string, ros::Publisher> m_iisPinger;
             std::unordered_map<std::string, ros::Publisher> m_commandPubs;
-            ros::Subscriber m_temperatureSub;
             ros::Subscriber m_commandResponseSub;
             ros::Subscriber m_commandResponseTestSub;
             ros::Subscriber m_interrogationModeSub;

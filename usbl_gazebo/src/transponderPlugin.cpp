@@ -3,9 +3,76 @@
 using namespace gazebo;
 
 
-TransponderPlugin::TransponderPlugin(): m_temperature(10.0), m_noiseMu(0), m_noiseSigma(1) {}
+TransponderPlugin::TransponderPlugin(): m_noiseMu(0), m_noiseSigma(1) {}
+
+TransponderPlugin::~TransponderPlugin(){}
 
 void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
+{
+    parseSDF(_sdf);
+
+    // store this entity model
+    this->m_model = _model;
+
+    /*****************************************************************************************************************************/
+
+    /************************************************  GAZEBO PUBLISHERS *********************************************************/
+    // initialize Gazebo node
+    this->m_gzNode = transport::NodePtr(new transport::Node());
+    this->m_gzNode->Init();
+
+    // define Gazebo publisher for entity's global position
+    this->m_globalPosPub = this->m_gzNode->Advertise<msgs::Vector3d>("/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transponderID + "/global_position");
+    /******************************************************************************************************************************/
+
+    /***************************************************  ROS PUBLISHERS *********************************************************/
+    this->m_rosNode.reset(new ros::NodeHandle(this->m_transponderDevice));
+
+    std::string commandResponseTopic("/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response");
+    this->m_commandResponsePub = this->m_rosNode->advertise<usbl_gazebo::USBLResponse>(commandResponseTopic, 1);
+
+    /******************************************************************************************************************************/
+
+    /***************************************************  ROS SUBSCRIBERS *********************************************************/
+
+    this->m_rosNode.reset(new ros::NodeHandle(this->m_transponderDevice));
+
+    ros::SubscribeOptions iis_ping =
+        ros::SubscribeOptions::create<std_msgs::String>(
+            "/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + this->m_transponderID + "/individual_interrogation_ping",
+            1,
+            boost::bind(&TransponderPlugin::iisRosCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_iisSub = this->m_rosNode->subscribe(iis_ping);
+
+    ros::SubscribeOptions cis_ping =
+        ros::SubscribeOptions::create<std_msgs::String>(
+            "/" + this->m_namespace + "/common_interrogation_ping",
+            1,
+            boost::bind(&TransponderPlugin::cisRosCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_cisSub = this->m_rosNode->subscribe(cis_ping);
+
+    ros::SubscribeOptions command_sub =
+        ros::SubscribeOptions::create<usbl_gazebo::USBLCommand>(
+            "/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + this->m_transponderID + "/command_request",
+            1,
+            boost::bind(&TransponderPlugin::commandRosCallback, this, _1),
+            ros::VoidPtr(), &this->m_rosQueue);
+
+    this->m_commandSub = this->m_rosNode->subscribe(command_sub);
+
+    /*****************************************************************************************************************************/
+
+    /***************************************************  ROS MISC ***************************************************************/
+
+    this->m_rosQueueThread = std::thread(std::bind(&TransponderPlugin::queueThread, this));
+    gzmsg << "transponder plugin loaded\n";
+}
+
+void TransponderPlugin::parseSDF(sdf::ElementPtr _sdf)
 {
     /***************************************************  SDF PARAMETERS ********************************************************/
 
@@ -79,75 +146,13 @@ void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         this->m_noiseSigma = _sdf->Get<double>("sigma");
     }
 
-    // store this entity model
-    this->m_model = _model;
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    // get the sound speed (optional)
+    if(_sdf->HasElement("sound_speed"))
+    {
+        this->m_soundSpeed = _sdf->Get<double>("sound_speed");
+    }
 
-    /*****************************************************************************************************************************/
-
-    /************************************************  GAZEBO PUBLISHERS *********************************************************/
-    // initialize Gazebo node
-    this->m_gzNode = transport::NodePtr(new transport::Node());
-    this->m_gzNode->Init();
-
-    // define Gazebo publisher for entity's global position
-    this->m_globalPosPub = this->m_gzNode->Advertise<msgs::Vector3d>("/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transponderID + "/global_position");
-    /******************************************************************************************************************************/
-
-    /***************************************************  ROS PUBLISHERS *********************************************************/
-    this->m_rosNode.reset(new ros::NodeHandle(this->m_transponderDevice));
-
-    std::string commandResponseTopic("/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response");
-    this->m_commandResponsePub = this->m_rosNode->advertise<usbl_gazebo::USBLResponse>(commandResponseTopic, 1);
-
-    /******************************************************************************************************************************/
-
-    /***************************************************  ROS SUBSCRIBERS *********************************************************/
-
-    this->m_rosNode.reset(new ros::NodeHandle(this->m_transponderDevice));
-
-    ros::SubscribeOptions iis_ping =
-        ros::SubscribeOptions::create<std_msgs::String>(
-            "/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + this->m_transponderID + "/individual_interrogation_ping",
-            1,
-            boost::bind(&TransponderPlugin::iisRosCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_iisSub = this->m_rosNode->subscribe(iis_ping);
-
-    ros::SubscribeOptions cis_ping =
-        ros::SubscribeOptions::create<std_msgs::String>(
-            "/" + this->m_namespace + "/common_interrogation_ping",
-            1,
-            boost::bind(&TransponderPlugin::cisRosCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_cisSub = this->m_rosNode->subscribe(cis_ping);
-
-    // create ROS subscriber for temperature
-    ros::SubscribeOptions temperature_sub =
-        ros::SubscribeOptions::create<std_msgs::Float64>(
-            "/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + this->m_transponderID + "/temperature",
-            1,
-            boost::bind(&TransponderPlugin::temperatureRosCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_temperatureSub = this->m_rosNode->subscribe(temperature_sub);
-
-    ros::SubscribeOptions command_sub =
-        ros::SubscribeOptions::create<usbl_gazebo::USBLCommand>(
-            "/" + this->m_namespace + "/" + this->m_transponderDevice + "_" + this->m_transponderID + "/command_request",
-            1,
-            boost::bind(&TransponderPlugin::commandRosCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
-
-    this->m_commandSub = this->m_rosNode->subscribe(command_sub);
-
-    /*****************************************************************************************************************************/
-
-    /***************************************************  ROS MISC ***************************************************************/
-
-    this->m_rosQueueThread = std::thread(std::bind(&TransponderPlugin::queueThread, this));
-    gzmsg << "transponder plugin loaded\n";
 }
 
 // currently publish noisy position to gazebo topic
@@ -167,17 +172,6 @@ void TransponderPlugin::sendLocation()
     pub_msg.set_y(position.Y() + d(gen));
     pub_msg.set_z(position.Z() + d(gen));
     this->m_globalPosPub->Publish(pub_msg);
-}
-
-// gets temperature from sensor to adjust sound speed
-void TransponderPlugin::temperatureRosCallback(const std_msgs::Float64ConstPtr &msg)
-{
-    this->m_temperature = msg->data;
-    auto my_pos = this->m_model->WorldPose();
-
-    // Base on https://dosits.org/tutorials/science/tutorial-speed/
-    this->m_soundSpeed = 1540.4 + my_pos.Pos().Z() / 1000 * 17 + (this->m_temperature - 10) * 4;
-    gzmsg << "Detected change of temperature, transponder sound speed is now: " << this->m_soundSpeed << " m/s\n";
 }
 
 // receives ping from transponder and call Send()

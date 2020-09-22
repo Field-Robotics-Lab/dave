@@ -25,8 +25,8 @@ namespace gazebo
             ~TransponderPlugin();
 
             void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
+            void parseSDF(sdf::ElementPtr _sdf);
             void sendLocation();
-            void temperatureRosCallback(const std_msgs::Float64ConstPtr &msg);
             void iisRosCallback(const std_msgs::StringConstPtr &msg);
             void cisRosCallback(const std_msgs::StringConstPtr &msg);
             void commandRosCallback(const usbl_gazebo::USBLCommandConstPtr& msg);
@@ -41,7 +41,6 @@ namespace gazebo
             std::string m_transceiverID;
 
             // environment variables
-            double m_temperature;
             double m_soundSpeed;
             double m_noiseMu;
             double m_noiseSigma;
@@ -56,7 +55,6 @@ namespace gazebo
             ros::Subscriber m_iisSub;
             ros::Subscriber m_cisSub;
             ros::Subscriber m_commandSub;
-            ros::Subscriber m_temperatureSub;
             ros::CallbackQueue m_rosQueue;
 
             std::unique_ptr<ros::NodeHandle> m_rosNode;
