@@ -10,8 +10,7 @@ from sensor_msgs.msg import Joy
 from uuv_gazebo_ros_plugins_msgs.msg import FloatStamped
 
 class ThrusterOp:
-    def __init__(self):
-        namespace = 'smilodon'
+    def __init__(self, namespace='smilodon'):
         self.gain = 1000.0
         # Joystick to thruster i.d. mapping
         # Keys are the joystick axes, publishers
@@ -42,7 +41,11 @@ if __name__ == '__main__':
     rospy.init_node(node_name)
     rospy.loginfo('Starting [%s] node' % node_name)
 
-    teleop = ThrusterOp()
+    # Get params
+    ns = 'smilodon'
+    if rospy.has_param('~namespace'):
+        ns = rospy.get_param('~namespace')
 
+    teleop = ThrusterOp(namespace = ns)
     rospy.spin()
     rospy.loginfo('Shutting down [%s] node' % node_name)
