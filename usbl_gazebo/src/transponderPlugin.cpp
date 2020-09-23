@@ -4,7 +4,7 @@ using namespace gazebo;
 
 
 TransponderPlugin::TransponderPlugin(): m_temperature(10.0), m_noiseMu(0), m_noiseSigma(1) {}
-
+TransponderPlugin::~TransponderPlugin(){}
 void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
     /***************************************************  SDF PARAMETERS ********************************************************/
