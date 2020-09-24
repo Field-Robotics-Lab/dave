@@ -7,7 +7,7 @@
         <view_controller>ortho</view_controller>
         <projection_type>orthographic</projection_type>
         <clip>0.1 5000</clip>
-        <pose>485440.7 58113.17 15.66 0 0.576 1.183</pose>
+        <pose>485397.09375 58126.83 8.788642 0 0.523999 1.590999</pose>
       </camera>
     </gui>
 
