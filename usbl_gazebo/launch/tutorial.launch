@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find usbl_gazebo)/worlds/tutorial.world"/>
+  </include>
+</launch>
