@@ -7,9 +7,9 @@
     <arg name="velocity_control" default="true"/>
     <arg name="debug" default="false"/>
     <arg name="verbose" default="false"/>
-    <arg name="x" default="4"/>
-    <arg name="y" default="4"/>
-    <arg name="z" default="-93"/>
+    <arg name="x" default="25"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="-85"/>
     <arg name="roll" default="0"/>
     <arg name="pitch" default="0"/>
     <arg name="yaw" default="-1.8"/>
