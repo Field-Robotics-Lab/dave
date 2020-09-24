@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>smilodon_gazebo</name>
+  <version>1.0.0</version>
+  <description>The smilodon_gazebo package</description>
+  <maintainer email="briansbingham@gmail.com">bsb</maintainer>
+  <license>Apache2</license>
+  <author email="briansbingham@gmail.com">bsb</author> -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>uuv_dave</depend>
+  <depend>smilodon_description</depend>
+  <depend>uuv_assistants</depend>
+  <depend>uuv_descriptions</depend>
+  <depend>uuv_gazebo_plugins</depend>
+  <depend>uuv_gazebo_ros_plugins</depend>
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>
