@@ -72,22 +72,14 @@
               p: 1000
               i: 20
               d: 50
-          roll:
+          pitch:
             joint_input_axis: $(arg axis_roll)
             axis_gain: 0.01
-            topic: /$(arg uuv_name)/$(arg arm_name)/roll/controller/command
-            controller:
-              p: 300
-              i: 10
-              d: 20
-          pitch:
-            joint_input_axis: $(arg axis_pitch)
-            axis_gain: 0.1
             topic: /$(arg uuv_name)/$(arg arm_name)/pitch/controller/command
             controller:
               p: 300
               i: 10
-              d: 0
+              d: 20
           wrist:
             joint_input_axis: $(arg axis_yaw)
             axis_gain: 0.01

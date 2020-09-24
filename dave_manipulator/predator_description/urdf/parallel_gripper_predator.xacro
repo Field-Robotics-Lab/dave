@@ -27,26 +27,29 @@
         </xacro:link_box_inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/BaseGripper.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/hand.dae"/>
             </geometry>
         </visual>
 
         <collision>
-            <origin xyz="${gripper_base_com}" rpy="0 0 0"/>
+            <!-- <origin xyz="${gripper_base_com}" rpy="0 0 0"/>
             <geometry>
                 <box size="${gripper_base_length} ${gripper_base_width} ${gripper_base_height}"/>
+            </geometry> -->
+            <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
+            <geometry>
+                <mesh filename="file://$(find predator_description)/meshes/hand.dae"/>
             </geometry>
         </collision>
     </link>
 
     <joint name="${namespace}/wrist" type="revolute">
-      <parent link="${namespace}/wrist_link"/>
+      <parent link="${namespace}/wrist"/>
       <child link="${namespace}/end_effector"/>
-       <origin xyz="${predator_wrist_height} 0 0" rpy="${-PI*0.5} 0 0"/>
-       <!-- <origin xyz="0.19304 0 0" rpy="${-PI*0.5} 0 0"/> -->
-      <axis xyz="1 0 0"/>
+       <origin xyz="0.12137 -0.00038 0" rpy="${PI*0.5} 0 0"/>
+      <axis xyz="0 0 1"/>
       <dynamics damping="10" friction="5"/>
       <limit effort="10" lower="${-2*PI}" upper="${2*PI}" velocity="${gripper_velocity}"/>
     </joint>
@@ -56,6 +59,7 @@
     <!-- Finger left  -->
 
     <link name="${namespace}/finger_left">
+        <origin xyz=" 0 0 0" rpy="0 0 -1"/>
         <xacro:link_box_inertial mass="${total_mass * finger_volume / total_volume}"
                     width="${finger_width}"
                     length="${finger_length}"
@@ -64,16 +68,16 @@
         </xacro:link_box_inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/Finger.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_right.dae"/>
             </geometry>
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI*0.5} 0 ${-PI*0.5}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/Finger.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_right.dae"/>
             </geometry>
         </collision>
     </link>
@@ -81,10 +85,11 @@
     <joint name="${namespace}/finger_left_joint" type="revolute">
         <parent link="${namespace}/end_effector"/>
         <child link="${namespace}/finger_left"/>
-        <origin xyz="0.0444267 0.0391376 0" rpy="0 0 0"/>
-        <axis xyz="0 0 1"/>
-        <dynamics damping="5" friction="10"/>
-        <limit effort="${gripper_effort}" lower="0" upper="${PI*0.3333}" velocity="${gripper_velocity}"/>
+        <origin xyz="0.23387 -0.02401 -0.017121" rpy="0 0 ${-15*d2r}"/>
+        <axis xyz="0 0 -1"/>
+        <dynamics damping="2" />
+        <!-- <dynamics damping="5" friction="5"/> -->
+        <limit effort="${gripper_effort}" lower="${-10*d2r}" upper="${PI*0.3333}" velocity="0.1"/>
     </joint>
 
     <xacro:simple_transmission joint="${namespace}/finger_left_joint" />
@@ -100,16 +105,16 @@
         </xacro:link_box_inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI/2}  0  ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/FingerTip.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_right.dae"/>
             </geometry>
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI/2}  0  ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/FingerTip.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_right.dae"/>
             </geometry>
         </collision>
     </link>
@@ -117,7 +122,7 @@
     <joint name="${namespace}/finger_tip_left_joint" type="revolute">
         <parent link="${namespace}/finger_left"/>
         <child link="${namespace}/finger_tip_left"/>
-        <origin xyz="0.06431 0 0" rpy="${PI} 0 0"/>
+        <origin xyz="0.0805 0.006578 0" rpy="0 0 ${15*d2r}"/>
         <axis xyz="0 0 1"/>
         <dynamics damping="5" friction="10"/>
         <limit effort="0" lower="0" upper="0" velocity="0"/>
@@ -134,16 +139,16 @@
         </xacro:link_box_inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="${PI} 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/Finger.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_left.dae"/>
             </geometry>
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="${PI} 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/Finger.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/claw_left.dae"/>
             </geometry>
         </collision>
     </link>
@@ -151,10 +156,12 @@
     <joint name="${namespace}/finger_right_joint" type="revolute">
         <parent link="${namespace}/end_effector"/>
         <child link="${namespace}/finger_right"/>
-        <origin xyz="0.0444267 -0.0391376 0" rpy="${PI} ${PI} ${PI}"/>
-        <axis xyz="0 0 -1"/>
-        <dynamics damping="5" friction="10"/>
-        <limit effort="${gripper_effort}" lower="0" upper="${PI*0.3333}" velocity="${gripper_velocity}"/>
+        <!-- <origin xyz="0.0444267 -0.0391376 0" rpy="${PI} ${PI} ${PI}"/> -->
+        <origin xyz="0.23387 0.02401 -0.017121" rpy="0 0 ${15*d2r}"/>
+        <axis xyz="0 0 1"/>
+        <dynamics damping="2" />
+        <!-- <dynamics damping="5" friction="5"/> -->
+        <limit effort="${gripper_effort}" lower="${-10*d2r}" upper="${PI*0.3333}" velocity="0.1"/>
     </joint>
 
     <xacro:simple_transmission joint="${namespace}/finger_right_joint" />
@@ -170,16 +177,16 @@
         </xacro:link_box_inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/FingerTip.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_left.dae"/>
             </geometry>
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
             <geometry>
-                <mesh filename="file://$(find oberon7_description)/meshes/parallel_gripper/visual/FingerTip.dae"/>
+                <mesh filename="file://$(find predator_description)/meshes/tip_left.dae"/>
             </geometry>
         </collision>
     </link>
@@ -187,8 +194,8 @@
     <joint name="${namespace}/finger_tip_right_joint" type="revolute">
         <parent link="${namespace}/finger_right"/>
         <child link="${namespace}/finger_tip_right"/>
-        <origin xyz="0.06431 0 0" rpy="0 0 0"/>
-        <axis xyz="0 0 1"/>
+        <origin xyz="0.0805 -0.006578 0" rpy="0 0 ${-15*d2r}"/>
+        <axis xyz="0 0 -1"/>
         <dynamics damping="5" friction="10"/>
         <limit effort="0" lower="0" upper="0" velocity="0"/>
     </joint>
