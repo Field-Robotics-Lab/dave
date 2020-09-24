@@ -94,7 +94,7 @@
 
     <!-- grabbable bar -->
     <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar">
+          args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar -z -90">
     </node>
 
     <!-- rqt_image_view for image_raw_sonar -->

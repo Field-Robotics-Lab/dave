@@ -2,7 +2,7 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves.world"/>
+    <arg name="world_name" default="$(find uuv_dave)/worlds/valve_manipulation_demo.world"/>
     <arg name="namespace" default="rexrov"/>
     <arg name="joy_id" default="0"/>
  

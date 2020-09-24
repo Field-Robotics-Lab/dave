@@ -29,10 +29,15 @@
     </include>
 
     <!-- Acceleration control -->
-    <include file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
-        <arg name="model_name" value="rexrov"/>
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
         <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
+
+    <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar">
+    </node>
 
     <!-- joint control for manipulator -->
     <include file="$(find predator_control)/launch/joint_control.launch">
