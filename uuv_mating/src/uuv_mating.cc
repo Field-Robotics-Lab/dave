@@ -85,7 +85,7 @@ void WorldUuvPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
   if (_sdf->HasElement("matingForce"))
   {
     this->matingForce = _sdf->GetElement("matingForce")->Get<double>();
-    ROS_INFO("Mating force: ", this->matingForce);
+    ROS_INFO("Mating force: %f", this->matingForce);
   }
   else
   {
