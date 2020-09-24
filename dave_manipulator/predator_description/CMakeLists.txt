@@ -11,6 +11,6 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-install(DIRECTORY meshes params robots urdf
+install(DIRECTORY params urdf
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
         PATTERN "*~" EXCLUDE)
