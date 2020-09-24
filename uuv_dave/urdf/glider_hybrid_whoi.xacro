@@ -43,13 +43,13 @@
   <xacro:macro name="glider_hybrid_whoi" params="namespace debug inertial_reference_frame">
     <link name="${namespace}/base_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 -1.5708" />
         <geometry>
           <mesh filename="${visual_mesh_file}" scale="1 1 1" />
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 -1.5708" />
         <geometry>
           <mesh filename="${collision_mesh_file}" scale="1 1 1" />
         </geometry>
@@ -62,7 +62,7 @@
     </link>
     <link name="${namespace}/left_propeller_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0 " />
         <geometry>
           <mesh filename="${left_prop_mesh_file}" scale="1 1 1" />
         </geometry>
@@ -173,10 +173,11 @@
 
     <!-- TODO: Correct propeller origins and parameters -->
     <xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="0" mesh_filename="${left_prop_mesh_file}" dyn_time_constant="0.1" rotor_constant="0.000049">
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0" rpy="0 0 -1.5708" />
     </xacro:thruster_module_first_order_basic_fcn_macro>
+    
     <xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="1" mesh_filename="${right_prop_mesh_file}" dyn_time_constant="0.1" rotor_constant="0.000049">
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0" rpy="0 0 -1.5708" />
     </xacro:thruster_module_first_order_basic_fcn_macro>
 
     <!-- TODO: Parametrize the battery unit -->

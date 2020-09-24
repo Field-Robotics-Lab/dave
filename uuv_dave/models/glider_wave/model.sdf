@@ -8,7 +8,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/Wave Glider-Float.dae</uri>
+            <uri>model://glider_wave/mesh/Wave Glider-Float.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -17,7 +17,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/COLLISION-Wave Glider-float.dae</uri>
+            <uri>model://glider_wave/mesh/COLLISION-Wave Glider-float.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -40,7 +40,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/Wave Glider-Sub.dae</uri>
+            <uri>model://glider_wave/mesh/Wave Glider-Sub.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -49,7 +49,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/COLLISION-Wave Glider-sub.dae</uri>
+            <uri>model://glider_wave/mesh/COLLISION-Wave Glider-sub.dae</uri>
           </mesh>
         </geometry>
       </collision>
@@ -72,7 +72,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/Wave Glider-Umbilical-Joint.dae</uri>
+            <uri>model://glider_wave/mesh/Wave Glider-Umbilical-Joint.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -95,7 +95,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/Wave Glider-Umbilical.dae</uri>
+            <uri>model://glider_wave/mesh/Wave Glider-Umbilical.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -104,7 +104,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>model://glider_wave_liquidrobotics/mesh/COLLISION-Wave Glider-umbilical.dae</uri>
+            <uri>model://glider_wave/mesh/COLLISION-Wave Glider-umbilical.dae</uri>
           </mesh>
         </geometry>
       </collision>
