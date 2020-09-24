@@ -10,6 +10,10 @@
     uri: https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo.git
     local-name: dave/nps_uw_sensors_gazebo
     version: master
+- git:
+    uri: https://github.com/Field-Robotics-Lab/frl_msgs.git
+    local-name: dave/frl_msgs
+    version: master
 
 - git:
     uri: https://github.com/uuvsimulator/eca_a9.git
