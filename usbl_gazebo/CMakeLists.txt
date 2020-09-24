@@ -43,8 +43,8 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(transponderPlugin SHARED src/transponderPlugin.cpp)
-add_library(transceiverPlugin SHARED src/transceiverPlugin.cpp)
+add_library(transponderPlugin SHARED src/transponderPlugin.cc)
+add_library(transceiverPlugin SHARED src/transceiverPlugin.cc)
 
 add_dependencies(transponderPlugin usbl_gazebo_generate_messages_cpp)
 add_dependencies(transceiverPlugin usbl_gazebo_generate_messages_cpp)

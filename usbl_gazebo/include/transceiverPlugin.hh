@@ -33,10 +33,11 @@ namespace gazebo
             ~TransceiverPlugin();
             void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
             void parseSDF(sdf::ElementPtr _sdf);
+            void onUpdate(const common::UpdateInfo&);
             void commandingResponseTestCallback(const std_msgs::StringConstPtr &msg);
             void commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg);
             void sendCommand(int command_id, std::string& transponder_id);
-            void sendPing(const ros::TimerEvent&);
+            void sendPing();
             void channelSwitchCallback(const std_msgs::StringConstPtr &msg);
             void interrogationModeRosCallback(const std_msgs::StringConstPtr &msg);
             void receiveGezeboCallback(ConstVector3dPtr& transponder_position);
@@ -52,15 +53,16 @@ namespace gazebo
             std::string m_transponderAttachedObject;
             std::string m_channel = "1";
             std::string m_interrogationMode;
-            bool m_enablePingerScheduler;
+            event::ConnectionPtr m_onUpdate;
+            double m_pingFrequency;
+            common::Time m_lastTime;
 
         private:
             std::string m_transponderDevice;
             double m_soundSpeed;
             std::vector<std::string> m_deployedTransponders;
 
-                // Gazebo nodes, publishers, and subscribers
-            ros::Timer m_timer;
+            // Gazebo nodes, publishers, and subscribers
             physics::ModelPtr m_model;
             transport::NodePtr m_gzNode;
             std::vector<transport::SubscriberPtr> m_transponderPoseSub;
@@ -69,7 +71,7 @@ namespace gazebo
             // ROS nodes, publishers and subscibers
             std::unique_ptr<ros::NodeHandle> m_rosNode;
             ros::Publisher m_publishTransponderRelPos;
-            ros::Publisher m_publishTransponderRelPosCartesion;
+            ros::Publisher m_publishTransponderRelPosCartesian;
             ros::Publisher m_cisPinger;
             std::unordered_map<std::string, ros::Publisher> m_iisPinger;
             std::unordered_map<std::string, ros::Publisher> m_commandPubs;

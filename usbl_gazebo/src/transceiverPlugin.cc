@@ -1,19 +1,35 @@
-#include "transceiverPlugin.hpp"
+#include "transceiverPlugin.hh"
 
-
-#include "usblCommandId.hpp"
+#include "usblCommandId.hh"
 
 using namespace gazebo;
 
 std::vector<std::string> im = {"common", "individual"}; // available interrogation modes
 
 // set default sound speed
-TransceiverPlugin::TransceiverPlugin(): m_soundSpeed(1540.4) {}
+TransceiverPlugin::TransceiverPlugin()
+{
+    this->m_soundSpeed = 1540.4;
+    this->m_lastTime = 0.0;
+    this->m_pingFrequency = 1.0;
+    this->m_interrogationMode = "common";
+}
 
 TransceiverPlugin::~TransceiverPlugin(){}
 
 void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
+    // Ensure ROS is initialized for publishers and subscribers
+    if(!ros::isInitialized())
+    {
+        gzerr << "ROS has not been initialized\n";
+        int argc = 0;
+        char** argv = NULL;
+        ros::init(argc, argv, "USBL_transceiver", ros::init_options::NoSigintHandler);
+        return ;
+    }
+
+    // parse SDF parameters
     parseSDF(_sdf);
 
     /*****************************************************************************************************************************/
@@ -57,8 +73,8 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         this->m_commandPubs[transponder] = this->m_rosNode->advertise<usbl_gazebo::USBLCommand>(command_topic, 1);
     }
 
-    std::string transponder_location_cartesion_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location_cartesion";
-    this->m_publishTransponderRelPosCartesion = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_cartesion_topic, 1);
+    std::string transponder_location_cartesian_topic = "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/transponder_location_cartesian";
+    this->m_publishTransponderRelPosCartesian = this->m_rosNode->advertise<geometry_msgs::Vector3>(transponder_location_cartesian_topic, 1);
 
     /*****************************************************************************************************************************/
 
@@ -75,6 +91,7 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
             ros::VoidPtr(), &this->m_rosQueue);
 
     this->m_interrogationModeSub = this->m_rosNode->subscribe(interrogation_mode_sub);
+
 
     // subscriber for command response
     ros::SubscribeOptions command_response =
@@ -97,23 +114,17 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     this->m_channelSwitchSub = this->m_rosNode->subscribe(channel_switch);
 
     // subscriber for testing command response
-    ros::SubscribeOptions command_response_test =
-        ros::SubscribeOptions::create<std_msgs::String>(
-            "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response_test",
-            1,
-            boost::bind(&TransceiverPlugin::commandingResponseTestCallback, this, _1),
-            ros::VoidPtr(), &this->m_rosQueue);
+    // ros::SubscribeOptions command_response_test =
+    //     ros::SubscribeOptions::create<std_msgs::String>(
+    //         "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_" + this->m_transceiverID + "/command_response_test",
+    //         1,
+    //         boost::bind(&TransceiverPlugin::commandingResponseTestCallback, this, _1),
+    //         ros::VoidPtr(), &this->m_rosQueue);
 
-    this->m_commandResponseTestSub = this->m_rosNode->subscribe(command_response_test);
+    // this->m_commandResponseTestSub = this->m_rosNode->subscribe(command_response_test);
 
     /*****************************************************************************************************************************/
-
-    /***************************************************  ROS MISC  **************************************************************/
-    // timer to send ping Command
-    if(this->m_enablePingerScheduler)
-    {
-        this->m_timer = this->m_rosNode->createTimer(ros::Duration(1.0), &TransceiverPlugin::sendPing, this);
-    }
+    this->m_onUpdate = event::Events::ConnectWorldUpdateBegin(std::bind(&TransceiverPlugin::onUpdate, this, std::placeholders::_1));
 
     this->m_rosQueueThread = std::thread(std::bind(&TransceiverPlugin::queueThread, this));
 }
@@ -122,15 +133,7 @@ void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
 {
     /***************************************************  SDF PARAMETERS ********************************************************/
 
-    // Ensure ROS is initialized for publishers and subscribers
-    if(!ros::isInitialized())
-    {
-        gzerr << "ROS has not been initialized\n";
-        int argc = 0;
-        char** argv = NULL;
-        ros::init(argc, argv, "USBL_transceiver", ros::init_options::NoSigintHandler);
-        return ;
-    }
+
 
     /*---------------------------------------------------------------------------------------------------------------------------------*/
     // Grab namespace from SDF
@@ -190,15 +193,11 @@ void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
     }
 
     /*---------------------------------------------------------------------------------------------------------------------------------*/
-    // enable automation of sending pings to transponder
-    if(!_sdf->HasElement("enable_ping_scheduler"))
+    // Get ping frequency
+    if(_sdf->HasElement("ping_freq"))
     {
-        gzerr << "Missing required parameter <enable_ping_scheduler>, plugin will not be initialized." << std::endl;
-        return;
+        this->m_pingFrequency = _sdf->Get<double>("ping_freq");
     }
-
-    this->m_enablePingerScheduler = _sdf->Get<bool>("enable_ping_scheduler");
-    gzmsg << "pinger enable? " << this->m_enablePingerScheduler << std::endl;
 
     /*---------------------------------------------------------------------------------------------------------------------------------*/
     // Get object that transponder attached to
@@ -231,11 +230,6 @@ void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
             this->m_interrogationMode = "common";
         }
     }
-    else
-    {
-        gzmsg << "Interrogation mode is not specified, Common mode is used" << std::endl;
-        this->m_interrogationMode = "common";
-    }
 
     // get the sound speed (optional)
     if(_sdf->HasElement("sound_speed"))
@@ -244,11 +238,21 @@ void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
     }
 }
 
-void TransceiverPlugin::commandingResponseTestCallback(const std_msgs::StringConstPtr &msg)
+void TransceiverPlugin::onUpdate(const common::UpdateInfo&)
 {
-    std::string transponder_id = msg->data;
-    sendCommand(BATTERY_LEVEL, transponder_id);
+    common::Time curr_time = common::Time::GetWallTime();
+    if ((curr_time - this->m_lastTime).Double() > this->m_pingFrequency)
+    {
+        sendPing();
+        this->m_lastTime = curr_time;
+    }
 }
+
+// void TransceiverPlugin::commandingResponseTestCallback(const std_msgs::StringConstPtr &msg)
+// {
+//     std::string transponder_id = msg->data;
+//     sendCommand(BATTERY_LEVEL, transponder_id);
+// }
 
 void TransceiverPlugin::commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg)
 {
@@ -275,7 +279,7 @@ void TransceiverPlugin::sendCommand(int command_id, std::string& transponder_id)
 }
 
 // publish ROS ping topic to get response from transponder depending on the interrogation modes
-void TransceiverPlugin::sendPing(const ros::TimerEvent&)
+void TransceiverPlugin::sendPing()
 {
     std_msgs::String ping_msg;
     ping_msg.data = "ping";
@@ -343,17 +347,18 @@ void TransceiverPlugin::publishPosition(double &bearing, double &range, double &
     location.y = range;
     location.z = elevation;
 
-    geometry_msgs::Vector3 location_cartesion;
-    location_cartesion.x = range * cos(elevation * M_PI/180) * cos(bearing * M_PI/180);
-    location_cartesion.y = range * cos(elevation * M_PI/180) * sin(bearing * M_PI/180);
-    location_cartesion.z = range * sin(elevation * M_PI/180);
+    geometry_msgs::Vector3 location_cartesian;
+    location_cartesian.x = range * cos(elevation * M_PI/180) * cos(-bearing * M_PI/180);
+    location_cartesian.y = range * cos(elevation * M_PI/180) * sin(-bearing * M_PI/180);
+    location_cartesian.z = range * sin(elevation * M_PI/180);
 
 
-    gzmsg << "Spherical Coordinate: \n\tBearing: " << location.x << " degree(s)\n\tRange: " << location.y << " m\n\tElevation: " << location.z << " degree(s)\n";
-    gzmsg << "Cartesion Coordinate: \n\tX: " << location_cartesion.x << " m\n\tY: " << location_cartesion.y << " m\n\tZ: " << location_cartesion.z << " m\n\n";
+    // gzmsg << "Spherical Coordinate: \n\tBearing: " << location.x << " degree(s)\n\tRange: " << location.y << " m\n\tElevation: " << location.z << " degree(s)\n";
+    // gzmsg << "Cartesian Coordinate: \n\tX: " << location_cartesian.x << " m\n\tY: " << location_cartesian.y << " m\n\tZ: " << location_cartesian.z << " m\n\n";
 
     this->m_publishTransponderRelPos.publish(location);
-    this->m_publishTransponderRelPosCartesion.publish(location_cartesion);
+    this->m_publishTransponderRelPosCartesian.publish(location_cartesian);
+
 }
 
 void TransceiverPlugin::calcuateRelativePose(ignition::math::Vector3d position, double &bearing, double &range, double &elevation)
@@ -362,7 +367,7 @@ void TransceiverPlugin::calcuateRelativePose(ignition::math::Vector3d position, 
     auto my_pos = this->m_model->WorldPose();
     auto direction = position - my_pos.Pos();
 
-    bearing = atan2(direction.Y(), direction.X()) * 180 / M_PI;
+    bearing = -atan2(direction.Y(), direction.X()) * 180 / M_PI;
     range = sqrt(direction.X()*direction.X() + direction.Y()*direction.Y() + direction.Z()*direction.Z());
     elevation = asin(direction.Z()/direction.Length()) * 180 / M_PI;
 

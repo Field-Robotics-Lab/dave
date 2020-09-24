@@ -40,6 +40,7 @@ namespace gazebo
             std::string m_transceiverDevice;
             std::string m_transceiverID;
 
+
             // environment variables
             double m_soundSpeed;
             double m_noiseMu;

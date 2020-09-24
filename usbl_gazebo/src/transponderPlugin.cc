@@ -1,4 +1,4 @@
-#include "transponderPlugin.hpp"
+#include "transponderPlugin.hh"
 
 using namespace gazebo;
 
@@ -155,6 +155,7 @@ void TransponderPlugin::parseSDF(sdf::ElementPtr _sdf)
 
 }
 
+
 // currently publish noisy position to gazebo topic
 void TransponderPlugin::sendLocation()
 {
@@ -182,7 +183,7 @@ void TransponderPlugin::iisRosCallback(const std_msgs::StringConstPtr &msg)
     std::string command = msg->data;
     if(!command.compare("ping"))
     {
-        gzmsg << this->m_transponderDevice+ "_" + this->m_transponderID + ": Received iis_ping, responding\n";
+        // gzmsg << this->m_transponderDevice+ "_" + this->m_transponderID + ": Received iis_ping, responding\n";
         sleep(dist / this->m_soundSpeed);
         sendLocation();
     }
