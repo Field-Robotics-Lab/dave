@@ -1,18 +1,35 @@
+/*
+ * Copyright 2020 Naval Postgraduate School 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+*/
+
+#include <sstream>
+#include <vector>
+#include <string>
+
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <ignition/math/Pose3.hh>
 #include <ignition/math/Vector3.hh>
-#include "ros/ros.h"
 #include <gazebo/common/common.hh>
-#include <sstream>
-#include <vector> 
-
+#include "ros/ros.h"
 
 namespace gazebo
 {
   class WorldUuvPlugin : public WorldPlugin
   {
-
     /// \brief Pointer to the Gazebo world.
     private: physics::WorldPtr world;
 
@@ -32,28 +49,28 @@ namespace gazebo
     /// the plug is inserter.
     private: physics::LinkPtr sensorPlate;
 
-    /// \brief Pinter to the prismatic joint formed between the plug and the 
+    /// \brief Pinter to the prismatic joint formed between the plug and the
     /// socket.
     private: physics::JointPtr prismaticJoint;
 
     /// \brief Boolean that indicates weather the prismatic joint is created.
     private: bool joined = false;
-    
+
     /// \brief Boolean that indicates weather the plug and socket are fixed.
     private: bool locked = false;
 
     /// \brief Pointer to the update event connection.
     private: gazebo::event::ConnectionPtr updateConnection;
-    
+
     /// \brief Vector that contains forces (For the purpose of averaging).
     private: std::vector<double> forcesBuffer;
-    
+
     /// \brief Time stamps associated with forces in the above vector.
     private: std::vector<common::Time> timeStamps;
 
     /// \brief Time the plug and socket has been in alignment.
     private: common::Time alignmentTime = 0;
-    
+
     /// \brief Time the plug and the socket has been freed.
     /// Used to put some buffer between unfreezing and another possible mating.
     private: common::Time unfreezeTimeBuffer = 0;
@@ -75,10 +92,10 @@ namespace gazebo
 
     /// \brief Z alignment tolerence.
     private: double unmatingForce;
-    
-    /// \brief Concatenates/trims forcesBuffer and timeStamps vectors to 
+
+    /// \brief Concatenates/trims forcesBuffer and timeStamps vectors to
     /// include only the last trimDuration.
-     /// \param[in] trimDuration Duration over which to trim the vectors.
+    /// \param[in] trimDuration Duration over which to trim the vectors.
     void trimForceVector(double trimDuration);
 
     /// \brief Calculates the average of the forcesBuffer vector.
@@ -118,7 +135,8 @@ namespace gazebo
 
     /// \brief Check if plug and socket have the same altitude.
     /// \return Return true if on same altitude.
-    private: bool checkVerticalAlignment(double alignmentThreshold, bool verbose = false);
+    private: bool checkVerticalAlignment(double alignmentThreshold,
+                                         bool verbose = false);
 
     /// \brief Check if plug and socket have the same orientation and altitude.
     /// \return Return true if same r,p,y and z.
@@ -130,7 +148,7 @@ namespace gazebo
 
     /// \brief Creates the prismatic joint between the socket and plug.
     private: void construct_joint();
-        
+
     /// \brief Distroys the prismatic joint between the socket and the plug.
     private: void remove_joint();
 
@@ -138,12 +156,16 @@ namespace gazebo
     /// \return Average force exerted by contact2 on contact1.
     public: bool averageForceOnLink(std::string contact1, std::string contact2);
 
-    /// \brief Determine of Electrical Plug is pushing against electrical socket.
-    /// \return boolean weather the plug is pushing against the socket.
+    /// \brief Determine if Electrical Plug is pushing against electrical
+    /// socket.
+    /// \return boolean indicating whether the plug is pushing against the
+    /// socket.
     public: bool isPlugPushingSensorPlate(int numberOfDatapointsThresh = 10);
 
-    /// \brief Determine of Electrical Plug is pushing against electrical socket.
-    /// \return boolean weather the plug is pushing against the socket.
+    /// \brief Determine if Electrical Plug is pushing against electrical
+    /// socket.
+    /// \return boolean indicating whether the plug is pushing against the
+    /// socket.
     public: bool isEndEffectorPushingPlug(int numberOfDatapointsThresh = 10);
 
     /// \brief Gets the collision index between two links.
@@ -154,4 +176,4 @@ namespace gazebo
     public: void Update();
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
-} // namespace gazebo
+}
