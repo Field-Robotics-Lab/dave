@@ -77,71 +77,77 @@ void TransponderPlugin::parseSDF(sdf::ElementPtr _sdf)
     /***************************************************  SDF PARAMETERS ********************************************************/
 
     // Ensure ROS is initialized for publishers and subscribers
-    if(!ros::isInitialized())
+    if (!ros::isInitialized())
     {
         gzerr << "ROS has not been inintialized\n";
         int argc = 0;
         char** argv = NULL;
-        ros::init(argc, argv, "transponder", ros::init_options::NoSigintHandler);
+        ros::init(argc, argv, "transponder",
+                  ros::init_options::NoSigintHandler);
         return;
     }
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // Grab namespace from SDF
-    if(!_sdf->HasElement("namespace"))
+    if (!_sdf->HasElement("namespace"))
     {
-        gzerr << "Missing required parameter <namespace>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <namespace>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_namespace = _sdf->Get<std::string>("namespace");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // Obtain transponder device name from SDF
-    if(!_sdf->HasElement("transponder_device"))
+    if (!_sdf->HasElement("transponder_device"))
     {
-        gzerr << "Missing required parameter <transponder_device>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transponder_device>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_transponderDevice = _sdf->Get<std::string>("transponder_device");
     gzmsg << "Transponder device: " << this->m_transponderDevice << std::endl;
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get transponder ID
-    if(!_sdf->HasElement("transponder_ID"))
+    if (!_sdf->HasElement("transponder_ID"))
     {
-        gzerr << "Missing required parameter <transponder_ID>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transponder_ID>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_transponderID = _sdf->Get<std::string>("transponder_ID");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get transceiver ID
-    if(!_sdf->HasElement("transceiver_device"))
+    if (!_sdf->HasElement("transceiver_device"))
     {
-        gzerr << "Missing required parameter <transceiver_device>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transceiver_device>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_transceiverDevice = _sdf->Get<std::string>("transceiver_device");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get transceiver ID
-    if(!_sdf->HasElement("transceiver_ID"))
+    if (!_sdf->HasElement("transceiver_ID"))
     {
-        gzerr << "Missing required parameter <transceiver_ID>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transceiver_ID>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_transceiverID = _sdf->Get<std::string>("transceiver_ID");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get the mean of normal distribution for the noise model
-    if(_sdf->HasElement("mu"))
+    if (_sdf->HasElement("mu"))
     {
         this->m_noiseMu = _sdf->Get<double>("mu");
     }
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get the standard deviation of normal distribution for the noise model
-    if(_sdf->HasElement("sigma"))
+    if (_sdf->HasElement("sigma"))
     {
         this->m_noiseSigma = _sdf->Get<double>("sigma");
     }
@@ -168,7 +174,8 @@ void TransponderPlugin::sendLocation()
     auto curr_pose = this->m_model->WorldPose();
     ignition::math::Vector3<double> position = curr_pose.Pos();
     auto pub_msg = msgs::Vector3d();
-    // std::cout << position.X() << " " << position.Y() << " " << position.Z() << std::endl;
+    // std::cout << position.X() << " " << position.Y() << " "
+    //           << position.Z() << std::endl;
     pub_msg.set_x(position.X() + d(gen));
     pub_msg.set_y(position.Y() + d(gen));
     pub_msg.set_z(position.Z() + d(gen));
@@ -179,9 +186,10 @@ void TransponderPlugin::sendLocation()
 void TransponderPlugin::iisRosCallback(const std_msgs::StringConstPtr &msg)
 {
     auto box = this->m_model->GetWorld()->ModelByName("box");
-    double dist = (this->m_model->WorldPose().Pos() - box->WorldPose().Pos()).Length();
+    double dist = (this->m_model->WorldPose().Pos()
+        - box->WorldPose().Pos()).Length();
     std::string command = msg->data;
-    if(!command.compare("ping"))
+    if (!command.compare("ping"))
     {
         // gzmsg << this->m_transponderDevice+ "_" + this->m_transponderID + ": Received iis_ping, responding\n";
         sleep(dist / this->m_soundSpeed);
@@ -191,18 +199,19 @@ void TransponderPlugin::iisRosCallback(const std_msgs::StringConstPtr &msg)
     {
         gzmsg << "Unknown command, ignore\n";
     }
-
 }
 
 // receives ping from transponder and call Send()
 void TransponderPlugin::cisRosCallback(const std_msgs::StringConstPtr &msg)
 {
     auto box = this->m_model->GetWorld()->ModelByName("box");
-    double dist = (this->m_model->WorldPose().Pos() - box->WorldPose().Pos()).Length();
+    double dist = (this->m_model->WorldPose().Pos()
+                   - box->WorldPose().Pos()).Length();
     std::string command = msg->data;
-    if(!command.compare("ping"))
+    if (!command.compare("ping"))
     {
-        // gzmsg << this->m_transponderDevice+ "_" + this->m_transponderID + ": Received cis_ping, responding\n";
+        // gzmsg << this->m_transponderDevice+ "_"
+        //     + this->m_transponderID + ": Received cis_ping, responding\n";
         sleep(dist / this->m_soundSpeed);
         sendLocation();
     }
@@ -212,15 +221,19 @@ void TransponderPlugin::cisRosCallback(const std_msgs::StringConstPtr &msg)
     }
 }
 
-void TransponderPlugin::commandRosCallback(const usbl_gazebo::USBLCommandConstPtr& msg)
+void TransponderPlugin::commandRosCallback(
+    const usbl_gazebo::USBLCommandConstPtr& msg)
 {
-    // gzmsg << "transponder ID: " << msg->commandID << ", command ID" << msg->transponderID << ", data: " << msg->data << std::endl;
+    // gzmsg << "transponder ID: " << msg->commandID << ", command ID"
+    //       << msg->transponderID << ", data: " << msg->data << std::endl;
 
     // send back command response
     usbl_gazebo::USBLResponse response_msg;
-    response_msg.data = "hi from transponder_" + this->m_transponderID; // just some random message, doesn't mean anything
+    // just some random message, doesn't mean anything
+    response_msg.data = "hi from transponder_" + this->m_transponderID;
     response_msg.responseID = 1;
-    response_msg.transceverID = this->m_transceiverID.back() - '0'; // get numerical value from char
+    // get numerical value from char
+    response_msg.transceverID = this->m_transceiverID.back() - '0';
     this->m_commandResponsePub.publish(response_msg);
 }
 

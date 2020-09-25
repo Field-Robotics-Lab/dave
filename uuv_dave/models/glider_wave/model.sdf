@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="wave_glider">
+    <static>false</static>
+    <link name="wave_glider_float">
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/Wave Glider-Float.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/COLLISION-Wave Glider-float.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+          <inertia>
+              <ixx>10</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>10</iyy>
+              <iyz>0</iyz>
+              <izz>10</izz>
+          </inertia>
+          <mass>50</mass>
+      </inertial>
+    </link>  
+    <link name="wave_glider_sub">
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/Wave Glider-Sub.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/COLLISION-Wave Glider-sub.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <inertial>
+        <pose>0 0 -0.22 -2.15 0 0</pose>
+          <inertia>
+              <ixx>10</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>10</iyy>
+              <iyz>0</iyz>
+              <izz>10</izz>
+          </inertia>
+          <mass>50</mass>
+      </inertial>
+    </link>  
+    <link name="wave_glider_umbilical_joint">
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/Wave Glider-Umbilical-Joint.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+          <pose>0 -0.22 -0.38 0 0 0</pose>
+          <inertia>
+              <ixx>0.1</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.1</iyy>
+              <iyz>0</iyz>
+              <izz>0.1</izz>
+          </inertia>
+          <mass>0.5</mass>
+      </inertial>
+    </link>  
+    <link name="wave_glider_umbilical">
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/Wave Glider-Umbilical.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1.0 1.0 1.0</scale>
+            <uri>model://glider_wave/mesh/COLLISION-Wave Glider-umbilical.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <inertial>
+          <pose>0 -0.22 -1.58 0 0 0</pose>
+          <inertia>
+              <ixx>0.1</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.1</iyy>
+              <iyz>0</iyz>
+              <izz>0.1</izz>
+          </inertia>
+          <mass>0.5</mass>
+      </inertial>
+    </link>  
+    <joint name="float_umbilicaljoint_joint" type="revolute">
+        <pose>0 -0.22 -0.38 0 0 0</pose>
+        <child>wave_glider_umbilical_joint</child>
+        <parent>wave_glider_float</parent>
+        <axis>
+            <limit>
+                <lower>-0.8</lower>
+                <upper>0.8</upper>
+            </limit>
+            <xyz>0 1 0</xyz>
+        </axis>
+    </joint>
+    <joint name="umbilicaljoint_umbilical_joint" type="revolute">
+        <pose>0 -0.22 -0.46 0 0 0</pose>
+        <child>wave_glider_umbilical</child>
+        <parent>wave_glider_umbilical_joint</parent>
+        <axis>
+            <limit>
+                <lower>-0.8</lower>
+                <upper>0.8</upper>
+            </limit>
+            <xyz>1 0 0</xyz>
+        </axis>
+    </joint>
+    <joint name="umbilical_sub_joint" type="revolute">
+        <pose>0 -0.22 -2.15 0 0 0</pose>
+        <child>wave_glider_sub</child>
+        <parent>wave_glider_umbilical</parent>
+        <axis>
+            <limit>
+                <lower>-0.8</lower>
+                <upper>0.8</upper>
+            </limit>
+            <xyz>0 1 0</xyz>
+        </axis>
+    </joint>
+  </model>
+</sdf>

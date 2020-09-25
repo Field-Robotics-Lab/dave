@@ -4,7 +4,8 @@
 
 using namespace gazebo;
 
-std::vector<std::string> im = {"common", "individual"}; // available interrogation modes
+// available interrogation modes
+std::vector<std::string> im = {"common", "individual"};
 
 // set default sound speed
 TransceiverPlugin::TransceiverPlugin()
@@ -15,18 +16,19 @@ TransceiverPlugin::TransceiverPlugin()
     this->m_interrogationMode = "common";
 }
 
-TransceiverPlugin::~TransceiverPlugin(){}
+TransceiverPlugin::~TransceiverPlugin() {}
 
 void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
     // Ensure ROS is initialized for publishers and subscribers
-    if(!ros::isInitialized())
+    if (!ros::isInitialized())
     {
         gzerr << "ROS has not been initialized\n";
         int argc = 0;
         char** argv = NULL;
-        ros::init(argc, argv, "USBL_transceiver", ros::init_options::NoSigintHandler);
-        return ;
+        ros::init(argc, argv, "USBL_transceiver",
+                  ros::init_options::NoSigintHandler);
+        return;
     }
 
     // parse SDF parameters
@@ -137,56 +139,62 @@ void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
 
     /*---------------------------------------------------------------------------------------------------------------------------------*/
     // Grab namespace from SDF
-    if(!_sdf->HasElement("namespace"))
+    if (!_sdf->HasElement("namespace"))
     {
-        gzerr << "Missing required parameter <namespace>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <namespace>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_namespace = _sdf->Get<std::string>("namespace");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // Obtain transceiver device name from SDF
-    if(!_sdf->HasElement("transceiver_device"))
+    if (!_sdf->HasElement("transceiver_device"))
     {
-        gzerr << "Missing required parameter <transceiver_device>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transceiver_device>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
 
     this->m_transceiverDevice = _sdf->Get<std::string>("transceiver_device");
     gzmsg << "Entity: " << this->m_transceiverDevice << std::endl;
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get transceiver device id
-    if(!_sdf->HasElement("transceiver_ID"))
+    if (!_sdf->HasElement("transceiver_ID"))
     {
-        gzerr << "Missing required parameter <transceiver_ID>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transceiver_ID>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
 
     this->m_transceiverID = _sdf->Get<std::string>("transceiver_ID");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get transponder device name
-    if(!_sdf->HasElement("transponder_device"))
+    if (!_sdf->HasElement("transponder_device"))
     {
-        gzerr << "Missing required parameter <transponder_device>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transponder_device>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
     this->m_transponderDevice = _sdf->Get<std::string>("transponder_device");
     gzmsg << "Transponder device: " << this->m_transponderDevice << std::endl;
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     // get commanding transponders
-    if(!_sdf->HasElement("transponder_ID"))
+    if (!_sdf->HasElement("transponder_ID"))
     {
-        gzerr << "Missing required parameter <transponder_ID>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transponder_ID>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
 
-    auto transponders = ignition::common::Split(_sdf->Get<std::string>("transponder_ID"), ',');
+    auto transponders = ignition::common::Split(_sdf->Get<std::string>(
+        "transponder_ID"), ',');
     gzmsg << "Current deployed transponders are: \n";
 
-    for( auto &transponder : transponders)
+    for (auto &transponder : transponders)
     {
         gzmsg << transponder << std::endl;
         this->m_deployedTransponders.push_back(transponder);
@@ -201,32 +209,38 @@ void TransceiverPlugin::parseSDF(sdf::ElementPtr _sdf)
 
     /*---------------------------------------------------------------------------------------------------------------------------------*/
     // Get object that transponder attached to
-    if(!_sdf->HasElement("transponder_attached_object"))
+    if (!_sdf->HasElement("transponder_attached_object"))
     {
-        gzerr << "Missing required parameter <transponder_attached_object>, plugin will not be initialized." << std::endl;
+        gzerr << "Missing required parameter <transponder_attached_object>, "
+              << "plugin will not be initialized." << std::endl;
         return;
     }
-    this->m_transponderAttachedObject = _sdf->Get<std::string>("transponder_attached_object");
+    this->m_transponderAttachedObject = _sdf->Get<std::string>(
+        "transponder_attached_object");
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
     /*  interrogation mode - 2 options
         *  II (individual interrogation) <----->  CRS (common response signal)
-        *  CI (common interrogation)     <----->  IRS (individual response signal) from transponder_01
+        *  CI (common interrogation)     <----->  IRS (individual response
+        *                                         signal) from transponder_01
         *                                    ͱ->  IRS from transponder_02
         *                                    ͱ->  IRS from transponder_03
         *                                            ⋮
         */
-    if(_sdf->HasElement("interrogation_mode"))
+    if (_sdf->HasElement("interrogation_mode"))
     {
-        std::string interrogation_mode = _sdf->Get<std::string>("interrogation_mode");
-        if(std::find(im.begin(), im.end(), interrogation_mode) != im.end())
+        std::string interrogation_mode = _sdf->Get<std::string>(
+            "interrogation_mode");
+        if (std::find(im.begin(), im.end(), interrogation_mode) != im.end())
         {
-            gzmsg << interrogation_mode << " interrogation mode is used" << std::endl;
+            gzmsg << interrogation_mode << " interrogation mode is used"
+                  << std::endl;
             this->m_interrogationMode = interrogation_mode;
         }
         else
         {
-            gzmsg << "Specified interrogation mode is unavailable, Common mode is used" << std::endl;
+            gzmsg << "Specified interrogation mode is unavailable, "
+                  << "Common mode is used" << std::endl;
             this->m_interrogationMode = "common";
         }
     }
@@ -254,9 +268,11 @@ void TransceiverPlugin::onUpdate(const common::UpdateInfo&)
 //     sendCommand(BATTERY_LEVEL, transponder_id);
 // }
 
-void TransceiverPlugin::commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg)
+void TransceiverPlugin::commandingResponseCallback(
+        const usbl_gazebo::USBLResponseConstPtr &msg)
 {
-    gzmsg << "Response_id: " << msg->responseID << ", transponder id: " << msg->transceverID << ", data: " << msg->data << std::endl;
+    gzmsg << "Response_id: " << msg->responseID << ", transponder id: "
+          << msg->transceverID << ", data: " << msg->data << std::endl;
 }
 
 void TransceiverPlugin::sendCommand(int command_id, std::string& transponder_id)
@@ -264,10 +280,10 @@ void TransceiverPlugin::sendCommand(int command_id, std::string& transponder_id)
     usbl_gazebo::USBLCommand command;
     command.commandID = command_id;
     command.transponderID = std::stoi(transponder_id);
-    if(command_id == BATTERY_LEVEL){
+    if (command_id == BATTERY_LEVEL) {
         command.data = "report battery level";
     }
-    else if(command_id == GO_TO)
+    else if (command_id == GO_TO)
     {
         command.data = "go to this location";
     }
@@ -285,16 +301,18 @@ void TransceiverPlugin::sendPing()
     ping_msg.data = "ping";
 
     // need to fake the transmission by applying distance based delay
-    physics::ModelPtr tranponder = this->m_model->GetWorld()->ModelByName(this->m_transponderAttachedObject);
-    double dist = (this->m_model->WorldPose().Pos() - tranponder->WorldPose().Pos()).Length();
+    physics::ModelPtr tranponder = this->m_model->GetWorld()->ModelByName(
+        this->m_transponderAttachedObject);
+    double dist = (this->m_model->WorldPose().Pos()
+        - tranponder->WorldPose().Pos()).Length();
     // gzmsg << "distance to tranponder: " << dist << " m\n";
     sleep(dist/this->m_soundSpeed);
 
-    if(this->m_interrogationMode.compare("common") == 0)
+    if (this->m_interrogationMode.compare("common") == 0)
     {
         this->m_cisPinger.publish(ping_msg);
     }
-    else if(this->m_interrogationMode.compare("individual") == 0)
+    else if (this->m_interrogationMode.compare("individual") == 0)
     {
         this->m_iisPinger[this->m_channel].publish(ping_msg);
     }
@@ -305,42 +323,36 @@ void TransceiverPlugin::sendPing()
 }
 
 // switch channel to ping another transponder or all transponders
-void TransceiverPlugin::channelSwitchCallback(const std_msgs::StringConstPtr &msg)
+void TransceiverPlugin::channelSwitchCallback(
+        const std_msgs::StringConstPtr &msg)
 {
     gzmsg << "Switching to transponder_" << msg->data << " channel\n";
     this->m_channel = msg->data;
 }
 
-
-// callback for interrogation mode switch
-void TransceiverPlugin::interrogationModeRosCallback(const std_msgs::StringConstPtr &msg)
+// Gazebo callback for receiving transponder position, simulating
+// Transceiver's positioning calculation
+void TransceiverPlugin::receiveGezeboCallback(
+        ConstVector3dPtr& transponder_position)
 {
-    std::string mode = msg->data;
-    if(std::find(im.begin(), im.end(), mode) != im.end())
-    {
-        this->m_interrogationMode = mode;
-    }
-    else
-    {
-        gzmsg << "The input mode is not available\n";
-    }
-}
+    // gzmsg << "Transceiver acquires transponders position: "
+    //       << transponder_position->x() << " " << transponder_position->y()
+    //       << " " << transponder_position->z() << std::endl;
 
-// Gazebo callback for receiving transponder position, simulating Transceiver's positioning calculation
-void TransceiverPlugin::receiveGezeboCallback(ConstVector3dPtr& transponder_position)
-{
-    // gzmsg << "Transceiver acquires transponders position: " << transponder_position->x() << " " << transponder_position->y() << " " << transponder_position->z() << std::endl;
+    ignition::math::Vector3d transponder_position_ign
+        = ignition::math::Vector3d(transponder_position->x(),
+        transponder_position->y(), transponder_position->z());
 
-    ignition::math::Vector3d transponder_position_ign = ignition::math::Vector3d(transponder_position->x(), transponder_position->y(), transponder_position->z());
-
-    double bearing=0, range=0, elevation=0;
+    double bearing = 0, range = 0, elevation = 0;
     calcuateRelativePose(transponder_position_ign, bearing, range, elevation);
 
     publishPosition(bearing, range, elevation);
 }
 
-// publish transponder's relative position in spherical coordinate(range, bearing, elevation)
-void TransceiverPlugin::publishPosition(double &bearing, double &range, double &elevation)
+// publish transponder's relative position in spherical
+// coordinate(range, bearing, elevation)
+void TransceiverPlugin::publishPosition(double &bearing, double &range,
+                                        double &elevation)
 {
     geometry_msgs::Vector3 location;
     location.x = bearing;
@@ -361,9 +373,9 @@ void TransceiverPlugin::publishPosition(double &bearing, double &range, double &
 
 }
 
-void TransceiverPlugin::calcuateRelativePose(ignition::math::Vector3d position, double &bearing, double &range, double &elevation)
+void TransceiverPlugin::calcuateRelativePose(ignition::math::Vector3d position,
+        double &bearing, double &range, double &elevation)
 {
-
     auto my_pos = this->m_model->WorldPose();
     auto direction = position - my_pos.Pos();
 

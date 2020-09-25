@@ -5,7 +5,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -36,6 +35,3 @@
 
 # emacs
 *.*~
-
-# vscode
-.vscode/
