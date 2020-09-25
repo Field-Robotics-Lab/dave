@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="default">
+
+    <gui>
+      <camera name="user_camera">
+        <view_controller>ortho</view_controller>
+        <projection_type>orthographic</projection_type>
+        <clip>0.1 5000</clip>
+        <pose>485397.09375 58126.83 8.788642 0 0.523999 1.590999</pose>
+      </camera>
+    </gui>
+
+    <!-- Setting this to origin of EPSG:26987 -->
+    <spherical_coordinates>
+      <latitude_deg>41.0</latitude_deg>
+      <longitude_deg>-70.5</longitude_deg>
+    </spherical_coordinates>
+
+    <physics name="50Hz" default="true" type="ode">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+
+    <light type="directional" name="sun">
+      <pose>50 0 150 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>.1 .1 .1 1</specular>
+      <direction>0.3 0.3 -1</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
+    <!-- Virtual NED frame -->
+    <include>
+      <uri>model://ned_frame</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <plugin name="underwater_current_plugin" filename="libuuv_underwater_current_ros_plugin.so">
+      <namespace>hydrodynamics</namespace>
+      <constant_current>
+        <topic>current_velocity</topic>
+        <velocity>
+          <mean>0</mean>
+          <min>0</min>
+          <max>5</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </velocity>
+
+        <horizontal_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </horizontal_angle>
+
+        <vertical_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </vertical_angle>
+      </constant_current>
+    </plugin>
+
+    <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
+
+    <plugin name="bathy_dave_plugin" filename="libbathy_dave_plugin.so">
+      <projection epsg="26987" />
+      <bathymetry interval_s="0.1">
+        <grid prefix="ncei19" priority="1" epsg="26987" colmax="5" rowmax="5" anchor_lon="-70.699" anchor_lat="41.509" spacing_lon="0.012" spacing_lat="0.010" />
+      </bathymetry>
+    </plugin>
+
+  </world>
+</sdf>

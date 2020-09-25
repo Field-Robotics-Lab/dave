@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find bathy_dave_plugin)/world/bathy_dave.world --verbose -u -e ode -s libdsros_sensors.so" respawn="false" output="screen">
+        <env name="GAZEBO_RESOURCE_PATH" value="$(optenv GAZEBO_RESOURCE_PATH):$(find bathy_dave_plugin)/world/"/>
+        <env name="GAZEBO_MODEL_PATH" value="$(optenv GAZEBO_MODEL_PATH):$(find bathy_dave_plugin)/bathymetry/"/>
+    </node>
+
+    <!-- include robots -->
+    <include file="$(find bathy_dave_plugin)/launch/robots.launch"/>
+
+    <!-- grabbable bar -->
+    <!-- <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar -x 477493 -y 55798 -z 77.0"> --> -->
+    <!-- </node> -->
+
+
+</launch>
