@@ -67,9 +67,10 @@
     <!-- hybrid glider : glider_hybrid_whoi -->
     <include file="$(find uuv_dave)/launch/upload_glider_hybrid_whoi.launch">
         <arg name="namespace" value="glider_hybrid_whoi"/>
-        <arg name="x" value="4"/>
-        <arg name="y" value="4"/>
-        <arg name="z" value="-93"/>
+        <arg name="x" value="10"/>
+        <arg name="y" value="40"/>
+        <arg name="z" value="-50"/>
+	<arg name="pitch" value="0.2"/>
     </include>
 
 </launch>

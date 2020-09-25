@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!--
-    <arg name="namespace" default="glider_slocum"/>
+    <arg name="namespace" default="rexrov"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/> -->
@@ -19,6 +19,7 @@
         <arg name="debug" value="false"/>
         <arg name="verbose" value="true"/>
     </include>
+
 
     <!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
@@ -63,15 +64,32 @@
         </include>
     </group> -->
 
+    <!-- wave glider : glider_waves -->
+    <include file="$(find uuv_dave)/launch/upload_glider_wave.launch">
+        <arg name="namespace" value="glider_wave"/>
+        <arg name="x" value="5"/>
+        <arg name="y" value="5"/>
+        <arg name="z" value="0.2"/>
+    </include>
+    
     <!-- standard glider : glider_slocum -->
     <include file="$(find uuv_dave)/launch/upload_glider_slocum.launch">
         <arg name="namespace" value="glider_slocum"/>
+        <arg name="x" value="-10"/>
+        <arg name="y" value="40"/>
+        <arg name="z" value="-56"/>
+	<arg name="yaw" value="0.7"/>
+	<arg name="pitch" value="0.4"/>
+    </include>
+	
+    
+    <!-- hybrid glider : glider_hybrid_whoi -->
+    <include file="$(find uuv_dave)/launch/upload_glider_hybrid_whoi.launch">
+        <arg name="namespace" value="glider_hybrid_whoi"/>
         <arg name="x" value="10"/>
         <arg name="y" value="40"/>
         <arg name="z" value="-50"/>
-	<arg name="pitch" value="0.4"/>
+	<arg name="pitch" value="0.2"/>
     </include>
 
-    <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find uuv_dave)/rviz/glider_slocum_control.rviz"/>
-    
 </launch>

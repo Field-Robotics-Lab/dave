@@ -64,12 +64,12 @@
         </include>
     </group> -->
 
-    <!-- wave glider : glider_wave_liquidrobotics -->
-    <include file="$(find uuv_dave)/launch/upload_glider_wave_liquidrobotics.launch">
-        <arg name="namespace" value="glider_wave_liquidrobotics"/>
-        <arg name="x" value="0"/>
-        <arg name="y" value="0"/>
-        <arg name="z" value="0.1"/>
+    <!-- wave glider : glider_waves -->
+    <include file="$(find uuv_dave)/launch/upload_glider_wave.launch">
+        <arg name="namespace" value="glider_wave"/>
+        <arg name="x" value="5"/>
+        <arg name="y" value="5"/>
+        <arg name="z" value="0.2"/>
     </include>
 
 </launch>

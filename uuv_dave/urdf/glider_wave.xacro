@@ -19,7 +19,7 @@
   <!-- includes -->
   <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro" />
   <xacro:include filename="$(find uuv_dave)/urdf/sensor_snippets.xacro" />
-  <xacro:include filename="$(find uuv_dave)/urdf/glider_wave_liquidrobotics_snippets.xacro" />
+  <xacro:include filename="$(find uuv_dave)/urdf/glider_wave_snippets.xacro" />
   <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro" />
 
   <!-- Properties -->
@@ -36,25 +36,25 @@
   <xacro:property name="area" value="0.04155" />
   <xacro:property name="length" value="1.5" />
 
-  <xacro:property name="namespace" value="glider_wave_liquidrobotics" />
-  <xacro:property name="visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/Wave Glider-Float.dae" />
-  <xacro:property name="collision_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/COLLISION-Wave Glider-float.dae" />
-  <xacro:property name="sub_visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/Wave Glider-Sub.dae" />
-  <xacro:property name="sub_collision_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/COLLISION-Wave Glider-sub.dae" />
-  <xacro:property name="umbilicaljoint_visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/Wave Glider-Joint.dae" />
-  <xacro:property name="umbilical_visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/Wave Glider-Umbilical.dae" />
-  <xacro:property name="umbilical_collision_mesh_file" value="file://$(find uuv_dave)/models/glider_wave_liquidrobotics/mesh/COLLISION-Wave Glider-umbilical.dae" />
+  <xacro:property name="namespace" value="glider_wave" />
+  <xacro:property name="visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/Wave Glider-Float.dae" />
+  <xacro:property name="collision_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/COLLISION-Wave Glider-float.dae" />
+  <xacro:property name="sub_visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/Wave Glider-Sub.dae" />
+  <xacro:property name="sub_collision_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/COLLISION-Wave Glider-sub.dae" />
+  <xacro:property name="umbilicaljoint_visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/Wave Glider-Joint.dae" />
+  <xacro:property name="umbilical_visual_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/Wave Glider-Umbilical.dae" />
+  <xacro:property name="umbilical_collision_mesh_file" value="file://$(find uuv_dave)/models/glider_wave/mesh/COLLISION-Wave Glider-umbilical.dae" />
 
-  <xacro:macro name="glider_wave_liquidrobotics" params="namespace debug inertial_reference_frame">
+  <xacro:macro name="glider_wave" params="namespace debug inertial_reference_frame">
     <link name="${namespace}/base_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
         <geometry>
           <mesh filename="${visual_mesh_file}" scale="1 1 1" />
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
         <geometry>
           <mesh filename="${collision_mesh_file}" scale="1 1 1" />
         </geometry>
@@ -85,13 +85,13 @@
 
     <link name="${namespace}/umbilical_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
         <geometry>
           <mesh filename="${umbilical_visual_mesh_file}" scale="1 1 1" />
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
         <geometry>
           <mesh filename="${umbilical_collision_mesh_file}" scale="1 1 1" />
         </geometry>
@@ -112,13 +112,13 @@
 
     <link name="${namespace}/sub_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
         <geometry>
           <mesh filename="${sub_visual_mesh_file}" scale="1 1 1" />
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
         <geometry>
           <mesh filename="${sub_collision_mesh_file}" scale="1 1 1" />
         </geometry>
@@ -171,7 +171,7 @@
         </link>
       </plugin> -->
 
-      <!-- <plugin name='glider_wave_liquidrobotics_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+      <!-- <plugin name='glider_wave_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
         <linkName>${namespace}/propeller_link</linkName>
         <jointName>${namespace}/propeller_joint</jointName>
         <thrusterID>0</thrusterID>
@@ -209,6 +209,6 @@
       </plugin> -->
     </gazebo>
 
-    <xacro:include filename="$(find uuv_dave)/urdf/glider_wave_liquidrobotics_sensors.xacro" />
+    <xacro:include filename="$(find uuv_dave)/urdf/glider_wave_sensors.xacro" />
   </xacro:macro>
 </robot>

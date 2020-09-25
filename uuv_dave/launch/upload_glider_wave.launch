@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
   <arg name="debug" default="0"/>
 
@@ -8,13 +9,13 @@
   <arg name="pitch" default="0.0"/>
   <arg name="yaw" default="0.0"/>
 
-  <arg name="namespace" default="glider_wave_liquidrobotics"/>
+  <arg name="namespace" default="glider_wave"/>
   <arg name="use_ned_frame" default="false"/>
 
   <group ns="$(arg namespace)">
     <group if="$(arg use_ned_frame)">
       <param name="robot_description"
-        command="$(find xacro)/xacro '$(find uuv_dave)/urdf/glider_wave_liquidrobotics_default.urdf.xacro' --inorder
+        command="$(find xacro)/xacro '$(find uuv_dave)/urdf/glider_wave_default.urdf.xacro' --inorder
           debug:=$(arg debug)
           namespace:=$(arg namespace)
           inertial_reference_frame:=world_ned" />
@@ -22,7 +23,7 @@
 
     <group unless="$(arg use_ned_frame)">
       <param name="robot_description"
-        command="$(find xacro)/xacro '$(find uuv_dave)/urdf/glider_wave_liquidrobotics_default.urdf.xacro' --inorder
+        command="$(find xacro)/xacro '$(find uuv_dave)/urdf/glider_wave_default.urdf.xacro' --inorder
           debug:=$(arg debug)
           namespace:=$(arg namespace)
           inertial_reference_frame:=world" />
