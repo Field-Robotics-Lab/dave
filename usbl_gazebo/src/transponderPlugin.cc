@@ -9,6 +9,18 @@ TransponderPlugin::~TransponderPlugin(){}
 
 void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
+
+    // Ensure ROS is initialized for publishers and subscribers
+    if (!ros::isInitialized())
+    {
+        gzerr << "ROS has not been inintialized\n";
+        int argc = 0;
+        char** argv = NULL;
+        ros::init(argc, argv, "USBL_transponder",
+                  ros::init_options::NoSigintHandler);
+        return;
+    }
+
     parseSDF(_sdf);
 
     // store this entity model
@@ -75,17 +87,6 @@ void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 void TransponderPlugin::parseSDF(sdf::ElementPtr _sdf)
 {
     /***************************************************  SDF PARAMETERS ********************************************************/
-
-    // Ensure ROS is initialized for publishers and subscribers
-    if (!ros::isInitialized())
-    {
-        gzerr << "ROS has not been inintialized\n";
-        int argc = 0;
-        char** argv = NULL;
-        ros::init(argc, argv, "transponder",
-                  ros::init_options::NoSigintHandler);
-        return;
-    }
 
     /*------------------------------------------------------------------------*/
     // Grab namespace from SDF
