@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Naval Postgraduate School 
+ * Copyright 2020 Naval Postgraduate School
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,20 @@
  *
 */
 
-#include <sstream>
-#include <vector>
-#include <string>
+#ifndef GAZEBO_UUV_MATING_HH_
+#define GAZEBO_UUV_MATING_HH_
 
+#include <ros/ros.h>
+
+#include <sstream>
+#include <string>
+#include <vector>
+
+#include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <ignition/math/Pose3.hh>
 #include <ignition/math/Vector3.hh>
-#include <gazebo/common/common.hh>
-#include "ros/ros.h"
 
 namespace gazebo
 {
@@ -177,3 +181,4 @@ namespace gazebo
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
 }
+#endif
