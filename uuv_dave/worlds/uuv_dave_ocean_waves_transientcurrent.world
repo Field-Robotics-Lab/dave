@@ -79,8 +79,7 @@
       <namespace>hydrodynamics</namespace>
       <depth_dependent_current>
         <topic>current_velocity</topic>
-        <vehicle_depth_topic>vehicle_depth</vehicle_depth_topic>
-        <database>world://ocean_current_vs_depth.csv</database>
+        <database>/home/eric/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv</database> 
 
         <velocity>
           <mean>0</mean>

@@ -1,0 +1,15 @@
+﻿# Information,,
+Information about this data can be written here (in one line without comma),,
+"# Data (North direction velocity [m/s], East direction velocity [rad], Depth [m])",,
+0,3,0
+1,4,10
+2,3,20
+3,2,30
+4,1,40
+5,0,50
+4,1,60
+3,2,70
+2,3,80
+2,2,90
+2,1,100
+2,4,110
