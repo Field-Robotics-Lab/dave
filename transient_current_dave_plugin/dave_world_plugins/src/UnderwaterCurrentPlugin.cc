@@ -210,7 +210,7 @@ void UnderwaterCurrentPlugin::
   std::ifstream csvFile; std::string line;
   csvFile.open(this->databaseFilePath);
   // skip the 3 lines
-  getline(csvFile, line); getline(csvFile, line); getline(csvFile, line); 
+  getline(csvFile, line); getline(csvFile, line); getline(csvFile, line);
   while (getline(csvFile, line))
   {
       if (line.empty())  // skip empty lines:
@@ -222,7 +222,7 @@ void UnderwaterCurrentPlugin::
       std::string::size_type sz;
       std::vector <long double> row;
       while (getline(iss, lineStream, ','))
-      {   
+      {
           row.push_back(stold(lineStream, &sz));  // convert to double
       }
       ignition::math::Vector3d read;
@@ -248,7 +248,7 @@ void UnderwaterCurrentPlugin::
   gzmsg << "Current velocity topic name: " <<
     this->ns + "/" + this->currentVelocityTopic << std::endl;
 
-  // Subscribe vehicle depth topic  
+  // Subscribe vehicle depth topic
   this->vehicleDepthTopic = "vehicle_depth";
   this->subscriber = this->node->Subscribe<msgs::Any>(
     this->vehicleDepthTopic, &UnderwaterCurrentPlugin::SubscribeVehicleDepth,
@@ -340,13 +340,13 @@ void UnderwaterCurrentPlugin::ApplyDatabase()
     eastCurrent = this->database.back().Y();
   }
   else {
-      double rate = 
+      double rate =
         (this->vehicleDepth-this->database[depthIndex-1].Z())
         /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
-      northCurrent = 
+      northCurrent =
         (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate
         + this->database[depthIndex-1].X();
-      eastCurrent = 
+      eastCurrent =
         (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate
         + this->database[depthIndex-1].Y();
   }

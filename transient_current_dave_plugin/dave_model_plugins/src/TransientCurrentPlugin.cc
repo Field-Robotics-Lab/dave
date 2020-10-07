@@ -80,10 +80,10 @@ void TransientCurrentPlugin::Load(
     "Empty vehicle depth topic at model side");
 
   // Advertise the current velocity topic
-  this->publisher = 
+  this->publisher =
   this->node->Advertise<msgs::Any>(this->vehicleDepthTopic);
 
-  gzmsg << "Current vehicle depth topic name: " 
+  gzmsg << "Current vehicle depth topic name: "
     << this->vehicleDepthTopic << std::endl;
 
   // Read the base_link name from the SDF file
@@ -114,7 +114,7 @@ void TransientCurrentPlugin::Update
 void TransientCurrentPlugin::PublishVehicleDepth()
 {
   msgs::Any _vehicleDepth;
-  ignition::math::Pose3d pose = 
+  ignition::math::Pose3d pose =
     this->model->GetLink(this->baseLinkName)->WorldPose();
   _vehicleDepth = msgs::ConvertAny(-pose.Pos().Z());
   this->publisher->Publish(_vehicleDepth);
