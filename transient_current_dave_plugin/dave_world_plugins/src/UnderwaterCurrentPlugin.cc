@@ -339,7 +339,8 @@ void UnderwaterCurrentPlugin::ApplyDatabase()
     northCurrent = this->database.back().X();
     eastCurrent = this->database.back().Y();
   }
-  else {
+  else
+  {
       double rate =
         (this->vehicleDepth-this->database[depthIndex-1].Z())
         /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
