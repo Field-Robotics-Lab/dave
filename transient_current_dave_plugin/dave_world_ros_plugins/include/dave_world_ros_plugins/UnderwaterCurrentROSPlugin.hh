@@ -20,23 +20,23 @@
 #ifndef __UNDERWATER_CURRENT_ROS_PLUGIN_HH__
 #define __UNDERWATER_CURRENT_ROS_PLUGIN_HH__
 
-#include <map>
-#include <string>
-
-// Gazebo plugin
-#include <dave_world_plugins/UnderwaterCurrentPlugin.hh>
-
-#include <boost/scoped_ptr.hpp>
-#include <gazebo/common/Plugin.hh>
-#include <gazebo/physics/World.hh>
-#include <ros/ros.h>
-#include <geometry_msgs/TwistStamped.h>
 #include <dave_world_ros_plugins_msgs/SetCurrentModel.h>
 #include <dave_world_ros_plugins_msgs/GetCurrentModel.h>
 #include <dave_world_ros_plugins_msgs/SetCurrentVelocity.h>
 #include <dave_world_ros_plugins_msgs/SetCurrentDirection.h>
 #include <dave_world_ros_plugins_msgs/SetOriginSphericalCoord.h>
 #include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
+#include <ros/ros.h>
+#include <geometry_msgs/TwistStamped.h>
+#include <boost/scoped_ptr.hpp>
+#include <gazebo/common/Plugin.hh>
+#include <gazebo/physics/World.hh>
+
+#include <map>
+#include <string>
+
+// Gazebo plugin
+#include <dave_world_plugins/UnderwaterCurrentPlugin.hh>
 
 namespace dave_simulator_ros
 {

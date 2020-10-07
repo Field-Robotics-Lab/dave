@@ -22,6 +22,7 @@
 #include <map>
 #include <cmath>
 #include <string>
+#include <vector>
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
@@ -60,7 +61,7 @@ namespace gazebo
     protected: void SubscribeVehicleDepth(AnyPtr &_msg);
 
     /// \brief Subscribe vehicle depth and the pose of its frame
-    protected: void  ApplyDatabase();   
+    protected: void  ApplyDatabase();
 
     /// \brief Update event
     protected: event::ConnectionPtr updateConnection;
@@ -94,7 +95,7 @@ namespace gazebo
     protected: std::string databaseFilePath;
 
     /// \brief Vector for read database
-    protected: std::vector<ignition::math::Vector3d> database; 
+    protected: std::vector<ignition::math::Vector3d> database;
 
     /// \brief Namespace for topics and services
     protected: std::string ns;

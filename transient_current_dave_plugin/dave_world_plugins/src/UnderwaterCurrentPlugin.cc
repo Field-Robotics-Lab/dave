@@ -15,6 +15,8 @@
 
 /// \file UnderwaterCurrentPlugin.cc
 
+#include <math.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -27,8 +29,6 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-
-#include <math.h>
 
 #include <dave_world_plugins/UnderwaterCurrentPlugin.hh>
 
@@ -53,7 +53,8 @@ UnderwaterCurrentPlugin::~UnderwaterCurrentPlugin()
 }
 
 /////////////////////////////////////////////////
-void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
+void UnderwaterCurrentPlugin::
+  Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
 {
   GZ_ASSERT(_world != NULL, "World pointer is invalid");
   GZ_ASSERT(_sdf != NULL, "SDF pointer is invalid");
@@ -208,11 +209,11 @@ void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sd
   // Read database
   std::ifstream csvFile; std::string line;
   csvFile.open(this->databaseFilePath);
-  std::vector <std::string> vec;
-  getline(csvFile, line); getline(csvFile, line); getline(csvFile, line); // skip the 3 lines
-  while (getline(csvFile,line))
+  // skip the 3 lines
+  getline(csvFile, line); getline(csvFile, line); getline(csvFile, line); 
+  while (getline(csvFile, line))
   {
-      if (line.empty()) // skip empty lines:
+      if (line.empty())  // skip empty lines:
       {
           continue;
       }
@@ -222,7 +223,7 @@ void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sd
       std::vector <long double> row;
       while (getline(iss, lineStream, ','))
       {   
-          row.push_back(stold(lineStream,&sz)); // convert to double
+          row.push_back(stold(lineStream, &sz));  // convert to double
       }
       ignition::math::Vector3d read;
       read.X() = row[0]; read.Y() = row[1]; read.Z() = row[2];
@@ -250,7 +251,8 @@ void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sd
   // Subscribe vehicle depth topic  
   this->vehicleDepthTopic = "vehicle_depth";
   this->subscriber = this->node->Subscribe<msgs::Any>(
-    this->vehicleDepthTopic, &UnderwaterCurrentPlugin::SubscribeVehicleDepth, this);
+    this->vehicleDepthTopic, &UnderwaterCurrentPlugin::SubscribeVehicleDepth,
+    this);
 
   // Connect the update event
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -324,7 +326,8 @@ void UnderwaterCurrentPlugin::ApplyDatabase()
 {
   double northCurrent, eastCurrent;
   //--- Interpolate velocity from database ---//
-  // find current depth index from database (X: north-direction, Y: east-direction, Z: depth)
+  // find current depth index from database
+  // (X: north-direction, Y: east-direction, Z: depth)
   int depthIndex = 0;
   for (int i = 1; i <= this->database.size(); i++) {
     if (this->database[i].Z() > this->vehicleDepth) {
@@ -332,16 +335,23 @@ void UnderwaterCurrentPlugin::ApplyDatabase()
     }
   }
   // interpolate
-  if (depthIndex == 0){ // Deeper than database use deepest value
+  if (depthIndex == 0) {  // Deeper than database use deepest value
     northCurrent = this->database.back().X();
     eastCurrent = this->database.back().Y();
-  }else{
-      double rate = (this->vehicleDepth-this->database[depthIndex-1].Z())/(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
-      northCurrent = (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate + this->database[depthIndex-1].X();
-      eastCurrent = (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate + this->database[depthIndex-1].Y();
+  }
+  else {
+      double rate = 
+        (this->vehicleDepth-this->database[depthIndex-1].Z())
+        /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
+      northCurrent = 
+        (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate
+        + this->database[depthIndex-1].X();
+      eastCurrent = 
+        (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate
+        + this->database[depthIndex-1].Y();
   }
   // apply
-  this->currentVelocity = this->currentVelocity 
+  this->currentVelocity = this->currentVelocity
     + ignition::math::Vector3d(northCurrent, eastCurrent, 0.0);
 }
 

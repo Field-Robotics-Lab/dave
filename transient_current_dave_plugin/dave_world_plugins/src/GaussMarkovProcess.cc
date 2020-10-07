@@ -74,7 +74,8 @@ bool GaussMarkovProcess::SetModel(double _mean, double _min, double _max,
 double GaussMarkovProcess::Update(double _time)
 {
   double step = _time - this->lastUpdate;
-  double random =  static_cast<double>(static_cast<double>(rand()) / RAND_MAX)
+  unsigned int randSeed;
+  double random =  static_cast<double>(static_cast<double>(rand_r(&randSeed)) / RAND_MAX)
     - 0.5;
   this->var = (1 - step * this->mu) * this->var + this->noiseAmp * random;
   if (this->var >= this->max)

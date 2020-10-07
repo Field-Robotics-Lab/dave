@@ -18,17 +18,17 @@
 #ifndef __SC_ROS_INTERFACE_PLUGIN_HH__
 #define __SC_ROS_INTERFACE_PLUGIN_HH__
 
+#include <ros/ros.h>
+#include <geometry_msgs/Vector3.h>
+#include <dave_world_ros_plugins_msgs/SetOriginSphericalCoord.h>
+#include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
+#include <dave_world_ros_plugins_msgs/TransformToSphericalCoord.h>
+#include <dave_world_ros_plugins_msgs/TransformFromSphericalCoord.h>
 #include <boost/scoped_ptr.hpp>
 #include <gazebo/gazebo.hh>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/common/SphericalCoordinates.hh>
 #include <gazebo/physics/World.hh>
-#include <ros/ros.h>
-#include <dave_world_ros_plugins_msgs/SetOriginSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/TransformToSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/TransformFromSphericalCoord.h>
-#include <geometry_msgs/Vector3.h>
 
 #include <map>
 #include <string>
@@ -82,4 +82,4 @@ class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
 
 }
 
-#endif // __SC_ROS_INTERFACE_PLUGIN_HH__
+#endif  // __SC_ROS_INTERFACE_PLUGIN_HH__

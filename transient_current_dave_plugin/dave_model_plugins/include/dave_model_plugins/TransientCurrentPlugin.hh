@@ -27,8 +27,6 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
-#include <std_msgs/Float32.h>
-
 namespace gazebo
 {
   /// \brief Class for the underwater current plugin

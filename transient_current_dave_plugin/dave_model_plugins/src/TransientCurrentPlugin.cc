@@ -28,8 +28,6 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
-#include <math.h>
-
 #include <dave_model_plugins/TransientCurrentPlugin.hh>
 
 using namespace gazebo;
@@ -53,7 +51,8 @@ TransientCurrentPlugin::~TransientCurrentPlugin()
 }
 
 /////////////////////////////////////////////////
-void TransientCurrentPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
+void TransientCurrentPlugin::Load(
+  physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
   GZ_ASSERT(_model != NULL, "Model pointer is invalid");
   GZ_ASSERT(_sdf != NULL, "SDF pointer is invalid");
@@ -81,9 +80,11 @@ void TransientCurrentPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf
     "Empty vehicle depth topic at model side");
 
   // Advertise the current velocity topic
-  this->publisher = this->node->Advertise<msgs::Any>(this->vehicleDepthTopic);
+  this->publisher = 
+  this->node->Advertise<msgs::Any>(this->vehicleDepthTopic);
 
-  gzmsg << "Current vehicle depth topic name: " << this->vehicleDepthTopic << std::endl;
+  gzmsg << "Current vehicle depth topic name: " 
+    << this->vehicleDepthTopic << std::endl;
 
   // Read the base_link name from the SDF file
   this->baseLinkName = _sdf->Get<std::string>("base_link_name");
@@ -103,7 +104,8 @@ void TransientCurrentPlugin::Init()
 }
 
 /////////////////////////////////////////////////
-void TransientCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
+void TransientCurrentPlugin::Update
+(const common::UpdateInfo & /** _info */)
 {
   this->PublishVehicleDepth();
 }
@@ -112,8 +114,8 @@ void TransientCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
 void TransientCurrentPlugin::PublishVehicleDepth()
 {
   msgs::Any _vehicleDepth;
-  ignition::math::Pose3d pose = this->model->GetLink(this->baseLinkName)->WorldPose();
+  ignition::math::Pose3d pose = 
+    this->model->GetLink(this->baseLinkName)->WorldPose();
   _vehicleDepth = msgs::ConvertAny(-pose.Pos().Z());
-  // gzmsg << "ModelPublish : " << -pose.Pos().Z() << std::endl;
   this->publisher->Publish(_vehicleDepth);
 }

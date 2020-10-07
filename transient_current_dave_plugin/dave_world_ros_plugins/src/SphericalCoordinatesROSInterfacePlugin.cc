@@ -25,7 +25,8 @@ SphericalCoordinatesROSInterfacePlugin::SphericalCoordinatesROSInterfacePlugin()
 { }
 
 /////////////////////////////////////////////////
-SphericalCoordinatesROSInterfacePlugin::~SphericalCoordinatesROSInterfacePlugin()
+SphericalCoordinatesROSInterfacePlugin::
+~SphericalCoordinatesROSInterfacePlugin()
 {
 #if GAZEBO_MAJOR_VERSION >= 8
   this->rosPublishConnection.reset();
@@ -73,7 +74,8 @@ void SphericalCoordinatesROSInterfacePlugin::Load(
   this->worldServices["transform_from_spherical_coord"] =
     this->rosNode->advertiseService(
       "/gazebo/transform_from_spherical_coordinates",
-      &SphericalCoordinatesROSInterfacePlugin::TransformFromSphericalCoord, this);
+      &SphericalCoordinatesROSInterfacePlugin::TransformFromSphericalCoord,
+      this);
 
 #if GAZEBO_MAJOR_VERSION >= 8
   gzmsg << "Spherical coordinates reference=" << std::endl
