@@ -79,7 +79,8 @@
       <namespace>hydrodynamics</namespace>
       <depth_dependent_current>
         <topic>current_velocity</topic>
-        <database>/home/eric/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv</database> 
+        <topic_stratified>stratified_current_velocity</topic_stratified>
+        <database>/home/glider-sim/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv</database> 
 
         <velocity>
           <mean>0</mean>

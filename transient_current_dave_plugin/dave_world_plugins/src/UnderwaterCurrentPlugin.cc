@@ -89,6 +89,15 @@ void UnderwaterCurrentPlugin::
   GZ_ASSERT(!this->currentVelocityTopic.empty(),
     "Empty ocean current velocity topic");
 
+  if (currentVelocityParams->HasElement("topic_stratified"))
+    this->stratifiedCurrentVelocityTopic =
+      currentVelocityParams->Get<std::string>("topic_stratified");
+  else
+    this->stratifiedCurrentVelocityTopic = "stratified_current_velocity";
+
+  GZ_ASSERT(!this->stratifiedCurrentVelocityTopic.empty(),
+    "Empty stratified ocean current velocity topic");
+
   if (currentVelocityParams->HasElement("velocity"))
   {
     sdf::ElementPtr elem = currentVelocityParams->GetElement("velocity");
@@ -248,6 +257,15 @@ void UnderwaterCurrentPlugin::
   gzmsg << "Current velocity topic name: " <<
     this->ns + "/" + this->currentVelocityTopic << std::endl;
 
+  // Stratified Database only published at ROS plugin. Not here (gazebo)
+  // this->publishers[this->stratifiedCurrentVelocityTopic] =
+  //   this->node->Advertise<
+  //   stratified_current_velocity_msgs::msgs::StratifiedCurrentVelocity>(
+  //   this->ns + "/" + this->stratifiedCurrentVelocityTopic);
+
+  // gzmsg << "Stratified current velocity topic name: " <<
+  //   this->ns + "/" + this->stratifiedCurrentVelocityTopic << std::endl;
+
   // Subscribe vehicle depth topic
   this->vehicleDepthTopic = "vehicle_depth";
   this->subscriber = this->node->Subscribe<msgs::Any>(
@@ -302,6 +320,9 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
   // Update time stamp
   this->lastUpdate = time;
   this->PublishCurrentVelocity();
+  
+  // Stratified Database only published at ROS plugin. Not here (gazebo)
+  // this->PublishStratifiedCurrentVelocity();
 }
 
 /////////////////////////////////////////////////
@@ -312,6 +333,23 @@ void UnderwaterCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
+}
+
+/////////////////////////////////////////////////
+// Stratified Database only published at ROS plugin. Not here (gazebo)
+void UnderwaterCurrentPlugin::PublishStratifiedCurrentVelocity()
+{
+  // stratified_current_velocity_msgs::msgs::StratifiedCurrentVelocity msg;
+  // msgs::Vector3d* _velocity = msg.add_velocity();
+  // msgs::Any* _depth = msg.add_depth();
+  // for (int i = 0; i < this->database.size(); i++) {
+  //   msgs::Set(&_velocity[i], 
+  //         ignition::math::Vector3d(this->database[i].X(),  // northCurrent
+  //                                  this->database[i].Y(),  // eastCurrent
+  //                                  0.0));
+  //   _depth[i] = msgs::ConvertAny(this->database[i].Z());
+  // }
+  // this->publishers[this->stratifiedCurrentVelocityTopic]->Publish(msg);
 }
 
 /////////////////////////////////////////////////

@@ -71,6 +71,11 @@ void UnderwaterCurrentROSPlugin::Load(gazebo::physics::WorldPtr _world,
   this->flowVelocityPub = this->rosNode->advertise<geometry_msgs::TwistStamped>(
     this->currentVelocityTopic, 10);
 
+  // Advertise the stratified ocean current msg
+  this->stratifiedCurrentVelocityPub = this->rosNode->advertise<
+    dave_world_ros_plugins_msgs::StratifiedCurrentVelocity>(
+    this->stratifiedCurrentVelocityTopic, 10);
+
   // Advertise the service to update the current velocity model
   this->worldServices["set_current_velocity_model"] =
     this->rosNode->advertiseService(
@@ -134,6 +139,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
 {
   if (this->lastUpdate - this->lastRosPublishTime >= this->rosPublishPeriod)
   {
+    // Generate and publish current_velocity according to the vehicle depth
     this->lastRosPublishTime = this->lastUpdate;
     geometry_msgs::TwistStamped flowVelMsg;
     flowVelMsg.header.stamp = ros::Time().now();
@@ -144,6 +150,23 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     flowVelMsg.twist.linear.z = this->currentVelocity.Z();
 
     this->flowVelocityPub.publish(flowVelMsg);
+
+    
+    // Generate and publish stratified_current_velocity database
+    dave_world_ros_plugins_msgs::StratifiedCurrentVelocity currentDatabaseMsg;
+    // currentDatabaseMsg.depths.resize(this->database.size());
+    // currentDatabaseMsg.velocityNorth.resize(this->database.size());
+    // currentDatabaseMsg.velocityEast.resize(this->database.size());
+    // currentDatabaseMsg.velocityDown.resize(this->database.size());
+
+    for (int i = 0; i < this->database.size(); i++) {
+      currentDatabaseMsg.velocityNorth.push_back(this->database[i].X());
+      currentDatabaseMsg.velocityEast.push_back(this->database[i].Y());
+      currentDatabaseMsg.velocityDown.push_back(0.0);
+      currentDatabaseMsg.depths.push_back(this->database[i].Z());
+    }
+
+    this->stratifiedCurrentVelocityPub.publish(currentDatabaseMsg);
   }
 }
 

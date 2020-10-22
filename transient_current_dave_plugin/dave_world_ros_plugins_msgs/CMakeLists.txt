@@ -19,6 +19,12 @@ add_service_files(
   TransformFromSphericalCoord.srv
 )
 
+## Generate msgs in the 'msg' folder
+add_message_files(
+  FILES
+  StratifiedCurrentVelocity.msg
+  )
+
 generate_messages(
   DEPENDENCIES
   std_msgs

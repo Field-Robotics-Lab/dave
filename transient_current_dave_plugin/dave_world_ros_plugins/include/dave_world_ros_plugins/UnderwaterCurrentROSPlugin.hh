@@ -26,8 +26,10 @@
 #include <dave_world_ros_plugins_msgs/SetCurrentDirection.h>
 #include <dave_world_ros_plugins_msgs/SetOriginSphericalCoord.h>
 #include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
+#include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
 #include <ros/ros.h>
 #include <geometry_msgs/TwistStamped.h>
+#include <std_msgs/Float32.h>
 #include <boost/scoped_ptr.hpp>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/physics/World.hh>
@@ -117,6 +119,9 @@ namespace dave_simulator_ros
 
     /// \brief Publisher for the flow velocity in the world frame
     private: ros::Publisher flowVelocityPub;
+
+    /// \brief Publisher for the stratified current in the world frame
+    private: ros::Publisher stratifiedCurrentVelocityPub;
 
     /// \brief Period after which we should publish a message via ROS.
     private: gazebo::common::Time rosPublishPeriod;

@@ -29,6 +29,8 @@
 #include <dave_world_plugins/GaussMarkovProcess.hh>
 #include <sdf/sdf.hh>
 
+#include "StratifiedCurrentVelocity.pb.h"
+
 namespace gazebo
 {
   /// \brief Class for the underwater current plugin
@@ -56,6 +58,9 @@ namespace gazebo
 
     /// \brief Publish current velocity and the pose of its frame
     protected: void PublishCurrentVelocity();
+
+    /// \brief Publish stratified oceqan currnet velocity
+    protected: void PublishStratifiedCurrentVelocity();
 
     /// \brief Subscribe vehicle depth and the pose of its frame
     protected: void SubscribeVehicleDepth(AnyPtr &_msg);
@@ -87,6 +92,9 @@ namespace gazebo
 
     /// \brief Current velocity topic
     protected: std::string currentVelocityTopic;
+
+    /// \brief Stratified Ocean current topic
+    protected: std::string stratifiedCurrentVelocityTopic;
 
     /// \brief Vehicle depth topic
     protected: std::string vehicleDepthTopic;
