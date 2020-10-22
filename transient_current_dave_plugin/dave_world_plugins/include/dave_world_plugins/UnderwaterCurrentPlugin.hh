@@ -29,7 +29,7 @@
 #include <dave_world_plugins/GaussMarkovProcess.hh>
 #include <sdf/sdf.hh>
 
-#include "StratifiedCurrentVelocity.pb.h"
+#include <StratifiedCurrentVelocity.pb.h>
 
 namespace gazebo
 {

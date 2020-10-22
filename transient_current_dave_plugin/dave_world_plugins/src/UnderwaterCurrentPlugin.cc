@@ -320,7 +320,7 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
   // Update time stamp
   this->lastUpdate = time;
   this->PublishCurrentVelocity();
-  
+
   // Stratified Database only published at ROS plugin. Not here (gazebo)
   // this->PublishStratifiedCurrentVelocity();
 }
@@ -343,7 +343,7 @@ void UnderwaterCurrentPlugin::PublishStratifiedCurrentVelocity()
   // msgs::Vector3d* _velocity = msg.add_velocity();
   // msgs::Any* _depth = msg.add_depth();
   // for (int i = 0; i < this->database.size(); i++) {
-  //   msgs::Set(&_velocity[i], 
+  //   msgs::Set(&_velocity[i],
   //         ignition::math::Vector3d(this->database[i].X(),  // northCurrent
   //                                  this->database[i].Y(),  // eastCurrent
   //                                  0.0));
