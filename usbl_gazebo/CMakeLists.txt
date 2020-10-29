@@ -2,7 +2,17 @@ cmake_minimum_required(VERSION 3.0.2)
 project(usbl_gazebo)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+# If running on focal, will be using Noetic + Gazebo11, which requires c++17
+execute_process(COMMAND lsb_release -cs
+  OUTPUT_VARIABLE RELEASE_CODENAME
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+if(RELEASE_CODENAME MATCHES "focal")
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+else()
+  add_compile_options(-std=c++11)
+endif()
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
