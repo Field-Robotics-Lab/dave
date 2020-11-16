@@ -30,6 +30,9 @@
 *.out
 *.app
 
+# Compiled python files
+*.pyc
+
 # vim
 *.swp
 
