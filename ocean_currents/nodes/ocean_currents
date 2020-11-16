@@ -1,0 +1,266 @@
+#! /usr/bin/env python
+"""Provide ocean current information for given lat/lon."""
+
+"""
+This software was developed by employees of the Federal Government in the course of their official duties. Pursuant to title 17
+Section 105 of the United States Code, this software is not subject to copyright protection and is in the public domain. The
+Government assumes no responsibility whatsoever for its use by other parties, and the software is provided "AS IS" without warranty or
+guarantee of any kind, express or implied, including, but not limited to, the warranties of merchantability, fitness for a particular
+purpose, and noninfringement. In no event shall the Government be liable for any claim, damages or other liability, whether in an
+action of contract, tort or other dealings in the software. The software is not designed for use in (i) the design, construction,
+operation or maintenance of any nuclear facility; (ii) navigating or operating aircraft or any manned vehicle; or (iii) any
+life-saving, life-support or life-critical medical equipment. The Government has no obligation hereunder to provide maintenance,
+support, updates, enhancements, or modifications.  We would appreciate acknowledgement if the software is used. This software can be
+redistributed and/or modified freely provided that any derivative works bear some notice that they are derived from it, and any
+modified versions bear some notice that they have been modified.
+"""
+
+import datetime
+import math
+import rospy
+from ocean_currents.srv import GetOceanCurrent, GetOceanCurrentResponse
+from sensor_msgs.msg import NavSatFix
+from uuv_world_ros_plugins_msgs.srv import SetCurrentVelocity
+
+from packaging import version
+import netCDF4
+from netCDF4 import Dataset
+
+try:
+    from cftime import num2date, date2num, date2index
+except ImportError:
+    from netCDF4 import num2date, date2num, date2index
+import numpy as np
+import re
+
+from siphon.catalog import TDSCatalog
+
+
+class OceanCurrents(object):  # pylint: disable=too-few-public-methods
+    """Provide ocean current information for given lat/lon."""
+
+    def __init__(self):
+        rospy.init_node("ocean_currents")
+        self.old_velocity = None
+        self.old_angle = None
+        self.catalog = None
+        self.use_maximum_velocity = rospy.get_param("~use_maximum_velocity", False)
+
+        # default to the OSCAR catalog
+        # For more information about this dataset see:
+        # https://podaac-opendap.jpl.nasa.gov/opendap/allData/oscar/preview/L4/oscar_third_deg/docs/oscarthirdguide.pdf
+        self.catalog_url = rospy.get_param(
+            "~catalog_url",
+            "https://podaac-opendap.jpl.nasa.gov/opendap/allData/oscar/preview/L4/oscar_third_deg/",
+        )
+
+        # default to OSCAR time unit
+        self.time_unit = rospy.get_param(
+            "~time_unit", "days since 1992-10-05T00:00:00Z"
+        )
+
+        self.oscar_filename = rospy.get_param("~oscar_filename", "")
+        if self.oscar_filename:
+            rospy.loginfo("Using specified OSCAR file: %s", self.oscar_filename)
+            self.filename = self.oscar_filename
+        else:
+            self.filename = self.catalog_url + self.download_oscar_file()
+
+        self.nc = Dataset(self.filename, "r")
+
+        self.times = self.nc.variables["time"][:]
+        self.lats = self.nc.variables["latitude"][:]
+        self.lons = self.nc.variables["longitude"][:]
+        self.depths = self.nc.variables["depth"][:]
+        self.u = self.nc.variables["u"]
+        self.v = self.nc.variables["v"]
+        self.um = self.nc.variables["um"]
+        self.vm = self.nc.variables["vm"]
+
+        self.sub = rospy.Subscriber("gps_fix", NavSatFix, self.gps_callback)
+        self.srv = rospy.Service(
+            "get_ocean_current", GetOceanCurrent, self.handle_get_ocean_current
+        )
+
+    def download_oscar_file(self):
+        """Download OSCAR file from the online catalog."""
+        self.catalog = TDSCatalog(self.catalog_url + "catalog.xml")
+
+        reference_datetime_str = rospy.get_param("~reference_datetime", "")
+        reference_datetime_format_str = rospy.get_param(
+            "~reference_datetime_format", "%Y-%m-%d"
+        )
+        if reference_datetime_str:
+            self.reference_datetime = datetime.datetime.strptime(
+                reference_datetime_str, reference_datetime_format_str
+            )
+        else:
+            self.reference_datetime = datetime.datetime.now()
+
+        rospy.loginfo("Using reference datetime: %s", self.reference_datetime)
+
+        filename = self.get_oscar_filename_from_date(
+            self.catalog, self.reference_datetime
+        )
+        rospy.loginfo("Using OSCAR file: %s", filename)
+        return filename
+
+    def oscar_filename_to_datetime(self, filename):
+        """Extract the date from an OSCAR dataset filename."""
+        regex = "oscar_vel(\d+)\.nc\.gz"
+        m = re.search(regex, filename)
+        if m:
+            days = int(m.group(1))
+            if version.parse(netCDF4.__version__) >= version.parse("1.5.3"):
+                return num2date(
+                    days,
+                    units=self.time_unit,
+                    only_use_cftime_datetimes=False,
+                    only_use_python_datetimes=True,
+                )
+            else:
+                return num2date(days, units=self.time_unit)
+        else:
+            return None
+
+    def get_oscar_filename_from_date(self, oscar_catalog, date):
+        """Get the closest OSCAR dataset filename for a given date."""
+        keys = oscar_catalog.datasets.keys()
+        ds_times = [self.oscar_filename_to_datetime(key) for key in keys]
+
+        file_date = min(ds_times, key=lambda x: abs(x - date))
+        file_idx = ds_times.index(file_date)
+        oscarDays = int(date2num(file_date, self.time_unit))
+        filename = "oscar_vel" + str(oscarDays) + ".nc.gz"
+        return filename
+
+    @classmethod
+    def fix_longitude(cls, val, lower, upper):
+        """Make sure longitude is within the specified range."""
+        while val < lower:
+            val += 360.0
+        while val > upper:
+            val -= 360.0
+        return val
+
+    @classmethod
+    def get_closest_index(cls, vals, pt):
+        """Find the index of the closest point (in squared distance) to given value."""
+        # find squared distance of every point on grid
+        dist_sq = (vals - pt) ** 2
+        # 1D index of minimum dist_sq element
+        minindex_flattened = dist_sq.argmin()
+        # Get 2D index for latvals and lonvals arrays from 1D index
+        return np.unravel_index(minindex_flattened, vals.shape)
+
+    def get_current_velocities(self, time, latitude, longitude, altitude):
+        """Get the ocean current velocities for given parameters."""
+        ref_time = int(date2num(time, self.time_unit))
+        ref_lat = np.clip(latitude, -80, 80)
+        # Convert raw longitude to OSCAR dataset longitude (20-420)
+        ref_lon = self.fix_longitude(longitude, 20.0, 420.0)
+
+        time_idx = self.get_closest_index(self.times, ref_time)
+        lat_idx = self.get_closest_index(self.lats, ref_lat)
+        lon_idx = self.get_closest_index(self.lons, ref_lon)
+        alt_idx = self.get_closest_index(self.depths, altitude)
+
+        if self.use_maximum_velocity:
+            # meridional
+            vel_north = self.vm[time_idx, alt_idx, lat_idx, lon_idx]
+            # zonal
+            vel_east = self.um[time_idx, alt_idx, lat_idx, lon_idx]
+        else:
+            # meridional
+            vel_north = self.v[time_idx, alt_idx, lat_idx, lon_idx]
+            # zonal
+            vel_east = self.u[time_idx, alt_idx, lat_idx, lon_idx]
+
+        return [vel_north, vel_east]
+
+    def gps_callback(self, msg):
+        """Receive GPS data from ROS and set the ocean current velocity."""
+        time = datetime.datetime.fromtimestamp(msg.header.stamp.to_sec())
+        [vel_north, vel_east] = self.get_current_velocities(
+            time, msg.latitude, msg.longitude, msg.altitude
+        )
+        if np.isnan(vel_north) or np.isnan(vel_east):
+            rospy.logwarn_throttle(
+                5,
+                "North velocity: '%f' or East velocity: '%f' is nan",
+                vel_north,
+                vel_east,
+            )
+            return
+        rospy.loginfo("North vel: %f, east vel: %f", vel_north, vel_east)
+
+        vel = math.sqrt(math.pow(vel_north, 2) + math.pow(vel_east, 2))
+        horiz_angle = math.atan(vel_north / vel_east)
+        vert_angle = 0.0
+
+        rospy.loginfo(
+            "Current velocity: %f, horizontal angle: %f, vertical angle: %f",
+            vel,
+            horiz_angle,
+            vert_angle,
+        )
+
+        if (self.old_velocity is None or not np.isclose(self.old_velocity, vel)) and (
+            self.old_angle is None or not np.isclose(self.old_angle, horiz_angle)
+        ):
+            self.old_velocity = vel
+            self.old_angle = horiz_angle
+            rospy.loginfo(
+                "Velocity or angle different from last, updating environment."
+            )
+
+            try:
+                rospy.wait_for_service("set_current_velocity", 0.01)
+            except rospy.ROSException as exc:
+                rospy.logerr("%s", exc)
+                return
+
+            try:
+                set_current_velocity = rospy.ServiceProxy(
+                    "set_current_velocity", SetCurrentVelocity
+                )
+                set_current_velocity(vel, horiz_angle, vert_angle)
+            except rospy.ServiceException as exc:
+                rospy.logerr("Service call failed: %s", exc)
+
+    def handle_get_ocean_current(self, req):
+        """Handle service request for ocean current velocities."""
+        seconds = req.time.data.to_sec()
+        if seconds == 0:
+            time = datetime.datetime.now()
+        else:
+            time = datetime.datetime.fromtimestamp(seconds)
+        [vel_north, vel_east] = self.get_current_velocities(
+            time,
+            req.geo_pose.position.latitude,
+            req.geo_pose.position.longitude,
+            req.geo_pose.position.altitude,
+        )
+
+        if np.isnan(vel_north) or np.isnan(vel_east):
+            rospy.logwarn_throttle(
+                5,
+                "North velocity: '%f' or East velocity: '%f' is nan",
+                vel_north,
+                vel_east,
+            )
+            return None
+        rospy.loginfo("North vel: %f, east vel: %f", vel_north, vel_east)
+
+        resp = GetOceanCurrentResponse()
+        resp.twist.header.frame_id = "world"
+        resp.twist.header.stamp = rospy.Time.now()
+        resp.twist.twist.linear.x = vel_north
+        resp.twist.twist.linear.y = vel_east
+
+        return resp
+
+
+if __name__ == "__main__":
+    OceanCurrents()
+    rospy.spin()

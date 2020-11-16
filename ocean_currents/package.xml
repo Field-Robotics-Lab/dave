@@ -1,0 +1,30 @@
+<package format="3">
+  <name>ocean_currents</name>
+  <version>0.0.1</version>
+  <description>
+    This package contains nodes that provide ocean current information.
+  </description>
+  <author>Alexander Xydes</author>
+  <author>Thomas Denewiler</author>
+  <maintainer email="alexander.xydes@navy.mil">Alexander Xydes</maintainer>
+  <license>CC0</license>
+  <url></url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+
+  <exec_depend condition="$ROS_PYTHON_VERSION == 2">python-netcdf4</exec_depend>
+  <exec_depend condition="$ROS_PYTHON_VERSION == 3">python3-netcdf4</exec_depend>
+  <exec_depend condition="$ROS_PYTHON_VERSION == 2">python-numpy</exec_depend>
+  <exec_depend condition="$ROS_PYTHON_VERSION == 3">python3-numpy</exec_depend>
+  <exec_depend>python-packaging</exec_depend>
+  <exec_depend>python3-siphon-pip</exec_depend>
+
+  <depend>geographic_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>rospy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>uuv_world_ros_plugins_msgs</depend>
+</package>

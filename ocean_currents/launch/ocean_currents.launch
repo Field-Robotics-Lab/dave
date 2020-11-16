@@ -1,0 +1,10 @@
+<launch>
+  <node pkg="ocean_currents" type="ocean_currents" name="ocean_currents" output="screen">
+    <remap from="gps_fix" to="/rexrov/gps"/>
+    <remap from="set_current_velocity" to="/hydrodynamics/set_current_velocity"/>
+    <!-- <param name="oscar_filename" value="$(find ocean_currents)/launch/oscar_vel10233.nc.gz"/> -->
+    <param name="use_maximum_velocity" value="false"/>
+    <param name="reference_datetime" value="2020-10-10"/>
+    <param name="reference_datetime_format" value="%Y-%m-%d"/>
+  </node>
+</launch>

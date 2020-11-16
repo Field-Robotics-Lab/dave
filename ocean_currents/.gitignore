@@ -1,0 +1,11 @@
+build/
+docs/
+*/cfg/cpp/
+*.cfgc
+*.swp
+*.swo
+*.sqlite
+*.pdf
+*.png
+*.pyc
+*~

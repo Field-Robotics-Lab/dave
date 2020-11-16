@@ -1,0 +1,4 @@
+std_msgs/Time time  # Time of desired current, 0 is for most recent time
+geographic_msgs/GeoPose geo_pose  # Pose where desired currents are located, typically a vehicle location
+---
+geometry_msgs/TwistStamped twist  # Velocity of current
