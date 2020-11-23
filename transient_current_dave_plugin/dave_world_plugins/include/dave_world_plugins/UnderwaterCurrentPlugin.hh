@@ -19,6 +19,8 @@
 #ifndef __UNDERWATER_CURRENT_PLUGIN_HH__
 #define __UNDERWATER_CURRENT_PLUGIN_HH__
 
+#include <StratifiedCurrentVelocity.pb.h>
+
 #include <map>
 #include <cmath>
 #include <string>
@@ -28,8 +30,6 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <dave_world_plugins/GaussMarkovProcess.hh>
 #include <sdf/sdf.hh>
-
-#include <StratifiedCurrentVelocity.pb.h>
 
 namespace gazebo
 {
