@@ -47,7 +47,7 @@ set -- "${POSITIONAL[@]}"
 
 if [ $# -lt 1 ]
 then
-    echo "Usage: $0 [-n --nvidia] <docker image> [<dir with workspace> ...]"
+    echo "Usage: $0 [-w --without-nvidia] <docker image> [<dir with workspace> ...]"
     exit 1
 fi
 
