@@ -38,13 +38,13 @@ cp -rv DAVE/docker/uuvsim uuv_simulator/docker
 cd uuv_simulator
 ```
 ### Machines with an NVIDIA graphics card
-1. Run the build script with the `-n` option.
+1. Run the build script.
 ```bash
-docker/build.bash -n .
+docker/build.bash .
 ```
 
 ### Machines without an NVIDIA graphics card
-1. Run the build script without the `-n` option.
+1. Run the build script with the `-w` option.
 ```bash
-docker/build.bash .
+docker/build.bash -w .
 ```
