@@ -5,7 +5,7 @@ if(NOT "${CMAKE_VERSION}" VERSION_LESS "3.16")
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else()
-    set(LOCAL_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    add_compile_options(-std=c++11)
 endif()
 
 ## Find catkin macros and libraries
@@ -49,16 +49,6 @@ include_directories(
 ## Declare a C++ library
 add_library(transponderPlugin SHARED src/transponderPlugin.cpp)
 add_dependencies(transponderPlugin usbl_gazebo_generate_messages_cpp)
-set_target_properties(transponderPlugin
-  PROPERTIES
-  COMPILE_FLAGS
-  "${LOCAL_CXX_FLAGS}"
-)
 
 add_library(transceiverPlugin SHARED src/transceiverPlugin.cpp)
 add_dependencies(transceiverPlugin usbl_gazebo_generate_messages_cpp)
-set_target_properties(transceiverPlugin
-  PROPERTIES
-  COMPILE_FLAGS
-  "${LOCAL_CXX_FLAGS}"
-)
