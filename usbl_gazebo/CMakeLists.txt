@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(usbl_gazebo)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-# If running on focal, will be using Noetic + Gazebo11, which requires c++17
-execute_process(COMMAND lsb_release -cs
-  OUTPUT_VARIABLE RELEASE_CODENAME
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-if(RELEASE_CODENAME MATCHES "focal")
-  set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(NOT "${CMAKE_VERSION}" VERSION_LESS "3.16")
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else()
-  add_compile_options(-std=c++11)
+    add_compile_options(-std=c++11)
 endif()
 
 ## Find catkin macros and libraries
@@ -54,7 +48,7 @@ include_directories(
 
 ## Declare a C++ library
 add_library(transponderPlugin SHARED src/transponderPlugin.cpp)
-add_library(transceiverPlugin SHARED src/transceiverPlugin.cpp)
-
 add_dependencies(transponderPlugin usbl_gazebo_generate_messages_cpp)
+
+add_library(transceiverPlugin SHARED src/transceiverPlugin.cpp)
 add_dependencies(transceiverPlugin usbl_gazebo_generate_messages_cpp)
