@@ -2,7 +2,7 @@ repositories:
   dave/dave:
     type: git
     url: https://github.com/Field-Robotics-Lab/dave.git
-    version: 043c69d5672cd7e17eecfa3fac29e96e19b92f34
+    version: v1.0.0
 
   dave/gtri_based_sonar:
     type: git
@@ -12,7 +12,7 @@ repositories:
   dave/nps_uw_sensors_gazebo:
     type: git
     url: https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo.git
-    version: 7c8091d22bd49eb86c7882dbd1508475fb0da296
+    version: v1.0.0
 
   uuv_sim/eca_a9:
     type: git
@@ -27,7 +27,7 @@ repositories:
   uuv_sim/uuv_manipulators:
     type: git
     url: https://github.com/uuvsimulator/uuv_manipulators.git
-    version: 9b5facd0ca1520eae665a4884173372a14f0d071
+    version: 0.6.1
 
   uuv_sim/uuv_simulator:
     type: git
