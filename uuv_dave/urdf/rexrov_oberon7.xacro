@@ -80,6 +80,9 @@
         <xacro:rexrov_hydro_model namespace="$(arg namespace)"/>
         <xacro:oberon7_hydro_model namespace="oberon7"/>
       </plugin>
+      <plugin name="dave_transient_current_plugin" filename="libdave_transient_current_plugin.so">
+        <base_link_name>$(arg namespace)/base_link</base_link_name>
+      </plugin>
     </gazebo>
   </xacro:rexrov_base>
 

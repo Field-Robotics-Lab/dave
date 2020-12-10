@@ -35,3 +35,6 @@
 
 # emacs
 *.*~
+
+# vs code
+.vscode
