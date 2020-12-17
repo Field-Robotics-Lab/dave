@@ -43,3 +43,20 @@ This changelog covers the entire dave project which includes a few repositories,
   - Additional demonstrations and tutorials described on [dave wiki page](https://github.com/Field-Robotics-Lab/dave/wiki)
   - [Evaluation of Ocean Current Plugin Capabilities](https://github.com/Field-Robotics-Lab/dave/wiki/Ocean-Current)
 - Github Action for Continuous Integration [dave PR #39](https://github.com/Field-Robotics-Lab/dave/pull/39) and [nps_uw_sensors_gazebo PR 16](https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo/pull/16)
+
+## [3.0.0] - 2020-12-17
+
+### Added
+- Sensor Functionality
+  - Ray-based Multibeam Sonar: [nps_uw_sensors_gazebo PR #25](https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo/pull/25)
+- Documentation, descriptions and tutorials
+  - [Multibeam Forward Looking Sonar](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar)
+  - [Visualize Seabed Gradient with DVL](https://github.com/Field-Robotics-Lab/dave/wiki/DVL-Seabed-Gradient)
+- Environmental Plugins
+  - Stratified Ocean Current: [dave PR #76](https://github.com/Field-Robotics-Lab/dave/pull/76)
+  
+### Update
+- Environmental Plugins
+- Documentation, descriptions and tutorials
+  - [Ocean current plugin](https://github.com/Field-Robotics-Lab/dave/wiki/Ocean-Current)
+
