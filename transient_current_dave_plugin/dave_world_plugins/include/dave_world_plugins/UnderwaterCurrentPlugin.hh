@@ -62,12 +62,6 @@ namespace gazebo
     /// \brief Publish stratified oceqan currnet velocity
     protected: void PublishStratifiedCurrentVelocity();
 
-    /// \brief Subscribe vehicle depth and the pose of its frame
-    protected: void SubscribeVehicleDepth(AnyPtr &_msg);
-
-    /// \brief Subscribe vehicle depth and the pose of its frame
-    protected: void  ApplyDatabase();
-
     /// \brief Update event
     protected: event::ConnectionPtr updateConnection;
 
@@ -122,9 +116,6 @@ namespace gazebo
 
     /// \brief Current linear velocity vector
     protected: ignition::math::Vector3d currentVelocity;
-
-    /// \brief Vehicle depth
-    protected: double vehicleDepth;
   };
 }
 
