@@ -154,9 +154,11 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     // Generate and publish stratified_current_velocity database
     dave_world_ros_plugins_msgs::StratifiedCurrentVelocity currentDatabaseMsg;
     for (int i = 0; i < this->database.size(); i++) {
-      currentDatabaseMsg.velocityNorth.push_back(this->database[i].X());
-      currentDatabaseMsg.velocityEast.push_back(this->database[i].Y());
-      currentDatabaseMsg.velocityDown.push_back(0.0);
+      geometry_msgs::Vector3 velocity;
+      velocity.x = this->database[i].X();
+      velocity.y = this->database[i].Y();
+      velocity.z = this->database[i].Z();
+      currentDatabaseMsg.velocities.push_back(velocity);
       currentDatabaseMsg.depths.push_back(this->database[i].Z());
     }
 
