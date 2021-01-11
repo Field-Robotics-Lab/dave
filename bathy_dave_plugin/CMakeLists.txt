@@ -37,3 +37,9 @@ add_dependencies(bathy_dave_plugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_
 catkin_package(
 LIBRARIES gearth_dave_plugin bathy_dave_plugin
 )
+
+install(TARGETS ${PROJECT_NAME} gearth_dave_plugin
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+)
