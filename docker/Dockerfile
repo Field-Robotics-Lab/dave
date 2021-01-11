@@ -1,5 +1,5 @@
 # Ubuntu 18.04 with nvidia-docker2 beta opengl support.
-ARG BASEIMG=nvidia/opengl:1.0-glvnd-devel-ubuntu18.04
+ARG BASEIMG=nvidia/cudagl:11.1-devel-ubuntu18.04
 FROM $BASEIMG
 
 # Set ROS distribution
