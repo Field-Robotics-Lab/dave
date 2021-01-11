@@ -7,7 +7,7 @@ jobs:
 
     runs-on: ubuntu-18.04
     container: 
-      image: npslearninglab/dave:current
+      image: woensugchoi/nps_uw_sensors_nvidia_cuda:latest
     steps:
       - run: sudo chown -R `whoami`:`whoami` .
       - uses: actions/checkout@v2
@@ -24,6 +24,12 @@ jobs:
         with:
           repository: Field-Robotics-Lab/gtri_based_sonar
           path: gtri_based_sonar
+
+      - name: Checkout UW APL acoustic_msgs
+        uses: actions/checkout@v2
+        with:
+          repository: apl-ocean-engineering/acoustic_msgs 
+          path: acoustic_msgs
 
       - name: Checkout nps underwater sensors 
         uses: actions/checkout@v2
