@@ -4,12 +4,12 @@ repositories:
     url: https://github.com/Field-Robotics-Lab/dave.git
     version: v3.0.0
 
-  dave/frl_msgs:
+  dave/acoustic_msgs:
     type: git
     url: https://github.com/apl-ocean-engineering/acoustic_msgs.git
     version: f2eb86e1a82445006c9c49b3508bd44a0de54fd7
     
-  dave/acoustic_msgs:
+  dave/frl_msgs:
     type: git
     url: https://github.com/Field-Robotics-Lab/frl_msgs.git
     version: e4c93b6f8169d45b103289faf4500c40ab705ac9
