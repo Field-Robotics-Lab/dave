@@ -3,7 +3,7 @@ name: Ubuntu CI
 on: [pull_request]
 
 jobs:
-  test-gazebo9-melodic:
+  test-gazebo9-melodic-nvidiaCuda:
 
     runs-on: ubuntu-18.04
     container: 
