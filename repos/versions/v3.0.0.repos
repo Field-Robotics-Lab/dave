@@ -2,54 +2,54 @@ repositories:
   dave/dave:
     type: git
     url: https://github.com/Field-Robotics-Lab/dave.git
-    version: master
+    version: v3.0.0
 
   dave/acoustic_msgs:
     type: git
     url: https://github.com/apl-ocean-engineering/acoustic_msgs.git
-    version: main
-
+    version: f2eb86e1a82445006c9c49b3508bd44a0de54fd7
+    
   dave/frl_msgs:
     type: git
     url: https://github.com/Field-Robotics-Lab/frl_msgs.git
-    version: master
+    version: e4c93b6f8169d45b103289faf4500c40ab705ac9
 
   dave/gtri_based_sonar:
     type: git
     url: https://github.com/Field-Robotics-Lab/gtri_based_sonar.git
-    version: master
+    version: 5778a8008c52da4abf672046e3c38d15649c5eb3
 
   dave/nps_uw_sensors_gazebo:
     type: git
     url: https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo.git
-    version: master
+    version: v3.0.0
 
   uuv_sim/eca_a9:
     type: git
     url: https://github.com/uuvsimulator/eca_a9.git
-    version: master
+    version: 5c7e357253c0873d1441ae10910949871cfb944a
 
   uuv_sim/rexrov2:
     type: git
     url: https://github.com/uuvsimulator/rexrov2.git
-    version: master
+    version: 1546681610ce0d3a921447bb7d176a74967eea56
 
   uuv_sim/uuv_manipulators:
     type: git
     url: https://github.com/uuvsimulator/uuv_manipulators.git
-    version: master
+    version: 0.6.1
 
   uuv_sim/uuv_simulator:
     type: git
     url: https://github.com/uuvsimulator/uuv_simulator.git
-    version: master
+    version: bfb40cb153684a0703173117b6bbf4258e8e71c5
 
   whoidsl/ds_msgs:
     type: git
     url: https://bitbucket.org/whoidsl/ds_msgs.git
-    version: master
+    version: 4a7d4a5002d17631e67eb01c45b974293fe5f3c2
 
   whoidsl/ds_sim:
     type: git
     url: https://bitbucket.org/whoidsl/ds_sim.git
-    version: master
+    version: b76c3a1fe154ecfbba8454751a78ee30f8c6b2ae
