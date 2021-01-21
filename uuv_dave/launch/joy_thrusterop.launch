@@ -8,9 +8,9 @@
     <param name="dev" value="/dev/input/js$(arg joy_id)"/>
   </node>
 
-  <node pkg="uuv_dave" type="joy_thrusterop.py" name="joy_thusterop"
+  <node pkg="uuv_dave" type="joy_thrusterop.py" name="joy_thrusterop"
 	output="screen">
     <param name="namespace" value="$(arg namespace)"/>
   </node>
-  
+
 </launch>

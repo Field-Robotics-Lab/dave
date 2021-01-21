@@ -8,3 +8,7 @@ catkin_package()
 install(DIRECTORY launch urdf models worlds
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
         PATTERN "*~" EXCLUDE)
+
+catkin_install_python(PROGRAMS nodes/joy_thrusterop.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
