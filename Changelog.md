@@ -60,3 +60,12 @@ This changelog covers the entire dave project which includes a few repositories,
 - Documentation, descriptions and tutorials
   - [Ocean current plugin](https://github.com/Field-Robotics-Lab/dave/wiki/Ocean-Current)
 
+## [3.1.0] - 2021-1-22
+  
+### Update
+- Ray-based Multibeam Sonar is moved to separate repository
+  - Ray-based Multibeam Sonar: [nps_uw_multibeam_sonar](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar)
+- Docker base image : Nvidia/cuda instead of Nvidia/opengl : [dave PR #89](https://github.com/Field-Robotics-Lab/dave/pull/89)
+- Documentation, descriptions and tutorials
+  - [Multibeam Forward Looking Sonar](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar)
+  - [Clone source repositories](https://github.com/Field-Robotics-Lab/dave/wiki/Clone-Dave-Repositories)
