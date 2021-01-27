@@ -1,6 +1,6 @@
 ﻿# Information,,
 Information about this data can be written here (in one line without comma),,
-"# Data (North direction velocity [m/s], East direction velocity [rad], Depth [m])",,
+"# Data (North direction velocity [m/s], East direction velocity [m/s], Depth [m])",,
 0.0,1.5,0
 0.5,2.0,10
 1.0,1.5,20
