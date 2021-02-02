@@ -210,18 +210,23 @@ void UnderwaterCurrentPlugin::
   if (currentVelocityParams->HasElement("database"))
     this->databaseFilePath =
       currentVelocityParams->Get<std::string>("database");
-  else 
+  else
   {
     // To hardcode path:
-    // this->databaseFilePath = "/home/jessica/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv";
-  
+    // this->databaseFilePath = 
+    //   "/home/jessica/uuv_ws/src/dave/uuv_dave/worlds/
+    //   transientOceanCurrentDatabase.csv";
+    //
     // Using boost:
-    // boost::filesystem::path concatPath(boost::filesystem::initial_path().parent_path());
-    // concatPath += "/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv";
+    // boost::filesystem::path 
+    //    concatPath(boost::filesystem::initial_path().parent_path());
+    // concatPath += 
+    //    "/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv";
     // this->databaseFilePath = concatPath.generic_string();
-  
+    //
     // Use ros package path:
-    this->databaseFilePath = ros::package::getPath("uuv_dave") + "/worlds/transientOceanCurrentDatabase.csv";
+    this->databaseFilePath = ros::package::getPath("uuv_dave") + 
+      "/worlds/transientOceanCurrentDatabase.csv";
   }
   GZ_ASSERT(!this->databaseFilePath.empty(),
     "Empty database file path");
