@@ -87,7 +87,7 @@
     </gazebo> -->
 
     <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov_actuators.xacro"/>
-    <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov_sensors.xacro"/>
+    <xacro:include filename="$(find uuv_dave)/urdf/rexrov_sensors.xacro"/>
 
   </xacro:macro>
 </robot>
