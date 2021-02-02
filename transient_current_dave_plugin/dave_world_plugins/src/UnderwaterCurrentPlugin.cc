@@ -213,19 +213,19 @@ void UnderwaterCurrentPlugin::
   else
   {
     // To hardcode path:
-    // this->databaseFilePath = 
+    // this->databaseFilePath =
     //   "/home/jessica/uuv_ws/src/dave/uuv_dave/worlds/
     //   transientOceanCurrentDatabase.csv";
     //
     // Using boost:
-    // boost::filesystem::path 
+    // boost::filesystem::path
     //    concatPath(boost::filesystem::initial_path().parent_path());
-    // concatPath += 
+    // concatPath +=
     //    "/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv";
     // this->databaseFilePath = concatPath.generic_string();
     //
     // Use ros package path:
-    this->databaseFilePath = ros::package::getPath("uuv_dave") + 
+    this->databaseFilePath = ros::package::getPath("uuv_dave") +
       "/worlds/transientOceanCurrentDatabase.csv";
   }
   GZ_ASSERT(!this->databaseFilePath.empty(),
