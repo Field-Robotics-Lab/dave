@@ -80,8 +80,8 @@
       <depth_dependent_current>
         <topic>current_velocity</topic>
         <topic_stratified>stratified_current_velocity</topic_stratified>
-        <database>/home/glider-sim/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv</database> 
-
+        <!-- Database tag can accept full path or filename for .csv within the uuv_dave/worlds folder  -->
+        <database>transientOceanCurrentDatabase.csv</database>
         <velocity>
           <mean>0</mean>
           <min>0</min>
