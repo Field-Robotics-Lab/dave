@@ -25,6 +25,13 @@
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
   <xacro:include filename="$(find uuv_dave)/urdf/oberon7_default.xacro" />
 
+  <!-- This implements the image_sonar_ros_plugin.so implemented in uuv_simulator.
+       See the source code https://github.com/uuvsimulator/uuv_simulator/blob/master/uuv_sensor_plugins/uuv_sensor_ros_plugins/src/gazebo_ros_image_sonar.cpp
+       See description wiki https://github.com/Field-Robotics-Lab/dave/wiki/image_sonar_description
+  -->
+  <!--  Commenting this out b/c the primary multibeam sonar sensor plugin is now here: https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar
+       Keeping the snippet around for posterity -->
+  <!--
   <xacro:uuv_forward_looking_sonar
       namespace="${namespace}"
       suffix="down"
@@ -37,12 +44,12 @@
         width="768"
         height="492">
       <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
-      <!--origin xyz="0.83 0 -0.22" rpy="0 ${0.2*pi} 0" /-->
       <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
       <visual>
       </visual>
     </xacro:uuv_forward_looking_sonar>
-
+  -->
+  
 <!--
   <xacro:uuv_forward_multibeam_p900
       namespace="${namespace}"

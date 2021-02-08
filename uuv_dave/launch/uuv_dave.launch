@@ -97,9 +97,4 @@
           args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar -z -90">
     </node>
 
-    <!-- rqt_image_view for image_raw_sonar -->
-    <node name="rqt_image_view_sonar" pkg="rqt_image_view"
-          type="rqt_image_view" args="/rexrov/depth/image_raw_sonar">
-    </node>
-
 </launch>
