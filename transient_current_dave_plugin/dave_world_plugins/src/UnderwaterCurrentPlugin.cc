@@ -29,8 +29,9 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-
 #include <dave_world_plugins/UnderwaterCurrentPlugin.hh>
+
+#include "ros/package.h"
 
 using namespace gazebo;
 
@@ -201,23 +202,40 @@ void UnderwaterCurrentPlugin::
 
   this->currentVertAngleModel.var = this->currentVertAngleModel.mean;
   gzmsg <<
-    "Current velocity horizontal angle [rad] Gauss-Markov process model:"
+    "Current velocity vertical angle [rad] Gauss-Markov process model:"
     << std::endl;
-  this->currentHorzAngleModel.Print();
+  this->currentVertAngleModel.Print();
 
   // Read the depth dependent ocean current file path from the SDF file
   if (currentVelocityParams->HasElement("database"))
     this->databaseFilePath =
       currentVelocityParams->Get<std::string>("database");
   else
-    this->databaseFilePath = "world://transientOceanCurrentDatabase.csv";
-
+  {
+    // Using boost:
+    // boost::filesystem::path
+    //    concatPath(boost::filesystem::initial_path().parent_path());
+    // concatPath +=
+    //    "/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv";
+    // this->databaseFilePath = concatPath.generic_string();
+    //
+    // Use ros package path:
+    this->databaseFilePath = ros::package::getPath("uuv_dave") +
+      "/worlds/transientOceanCurrentDatabase.csv";
+  }
   GZ_ASSERT(!this->databaseFilePath.empty(),
     "Empty database file path");
 
   // Read database
   std::ifstream csvFile; std::string line;
   csvFile.open(this->databaseFilePath);
+  if (!csvFile)
+  {
+    this->databaseFilePath = ros::package::getPath("uuv_dave") +
+      "/worlds/" + this->databaseFilePath;
+    csvFile.open(this->databaseFilePath);
+  }
+  GZ_ASSERT(csvFile, "Database file does not exist");
   // skip the 3 lines
   getline(csvFile, line); getline(csvFile, line); getline(csvFile, line);
   while (getline(csvFile, line))
