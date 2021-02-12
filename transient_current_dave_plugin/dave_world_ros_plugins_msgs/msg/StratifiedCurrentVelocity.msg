@@ -4,6 +4,4 @@
 float32[] depths
 
 # Velocities
-float32[] velocityNorth
-float32[] velocityEast
-float32[] velocityDown
+geometry_msgs/Vector3[] velocities

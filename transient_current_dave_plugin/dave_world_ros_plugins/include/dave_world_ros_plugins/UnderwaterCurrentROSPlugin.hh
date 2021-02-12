@@ -29,7 +29,7 @@
 #include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
 #include <ros/ros.h>
 #include <geometry_msgs/TwistStamped.h>
-#include <std_msgs/Float32.h>
+#include <geometry_msgs/Vector3.h>
 #include <boost/scoped_ptr.hpp>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/physics/World.hh>

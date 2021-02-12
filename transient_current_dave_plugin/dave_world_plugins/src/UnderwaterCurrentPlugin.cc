@@ -284,11 +284,6 @@ void UnderwaterCurrentPlugin::
   // gzmsg << "Stratified current velocity topic name: " <<
   //   this->ns + "/" + this->stratifiedCurrentVelocityTopic << std::endl;
 
-  // Subscribe vehicle depth topic
-  this->vehicleDepthTopic = "vehicle_depth";
-  this->subscriber = this->node->Subscribe<msgs::Any>(
-    this->vehicleDepthTopic, &UnderwaterCurrentPlugin::SubscribeVehicleDepth,
-    this);
 
   // Connect the update event
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -332,9 +327,6 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
       currentVelMag * sin(horzAngle) * cos(vertAngle),
       currentVelMag * sin(vertAngle));
 
-  // Apply Depth dependent ocean current database
-  this->ApplyDatabase();
-
   // Update time stamp
   this->lastUpdate = time;
   this->PublishCurrentVelocity();
@@ -369,46 +361,3 @@ void UnderwaterCurrentPlugin::PublishStratifiedCurrentVelocity()
   // }
   // this->publishers[this->stratifiedCurrentVelocityTopic]->Publish(msg);
 }
-
-/////////////////////////////////////////////////
-void UnderwaterCurrentPlugin::SubscribeVehicleDepth(AnyPtr &_msg)
-{
-  this->vehicleDepth = _msg->double_value();
-  // gzmsg << "WorldSubscribe : " << this->vehicleDepth << std::endl;
-}
-
-/////////////////////////////////////////////////
-void UnderwaterCurrentPlugin::ApplyDatabase()
-{
-  double northCurrent, eastCurrent;
-  //--- Interpolate velocity from database ---//
-  // find current depth index from database
-  // (X: north-direction, Y: east-direction, Z: depth)
-  int depthIndex = 0;
-  for (int i = 1; i <= this->database.size(); i++) {
-    if (this->database[i].Z() > this->vehicleDepth) {
-      depthIndex = i; break;
-    }
-  }
-  // interpolate
-  if (depthIndex == 0) {  // Deeper than database use deepest value
-    northCurrent = this->database.back().X();
-    eastCurrent = this->database.back().Y();
-  }
-  else
-  {
-      double rate =
-        (this->vehicleDepth-this->database[depthIndex-1].Z())
-        /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
-      northCurrent =
-        (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate
-        + this->database[depthIndex-1].X();
-      eastCurrent =
-        (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate
-        + this->database[depthIndex-1].Y();
-  }
-  // apply
-  this->currentVelocity = this->currentVelocity
-    + ignition::math::Vector3d(northCurrent, eastCurrent, 0.0);
-}
-
