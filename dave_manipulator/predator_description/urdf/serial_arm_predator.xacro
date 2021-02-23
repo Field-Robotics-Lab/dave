@@ -125,14 +125,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/upperarm.dae"/>
+                    <mesh scale="0.7 0.7 0.4" filename="file://$(find predator_description)/meshes/upperarm.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/upperarm.dae"/>
+                    <mesh scale="0.7 0.7 0.4" filename="file://$(find predator_description)/meshes/upperarm.dae"/>
                 </geometry>
             </collision>
         </link>
@@ -197,14 +197,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/knuckle.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/wrist.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/knuckle.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/wrist.dae"/>
                 </geometry>
             </collision>
         </link>
