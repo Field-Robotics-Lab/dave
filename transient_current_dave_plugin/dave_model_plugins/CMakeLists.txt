@@ -8,16 +8,23 @@ add_definitions(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
 	gazebo_dev
-	gazebo_msgs)
+	gazebo_msgs
+  dave_world_plugins
+  dave_world_ros_plugins_msgs)
 find_package(Boost REQUIRED)
 
 catkin_package(
-	INCLUDE_DIRS include
-	LIBRARIES dave_transient_current_plugin
+	INCLUDE_DIRS
+    include
+	LIBRARIES
+    dave_transient_current_plugin
 	CATKIN_DEPENDS
+    roscpp
 		gazebo_msgs
 		gazebo_dev
+    dave_world_plugins
 )
 
 include_directories(
@@ -37,6 +44,7 @@ link_directories(
 add_library(dave_transient_current_plugin
   src/TransientCurrentPlugin.cc)
 target_link_libraries(dave_transient_current_plugin
+  ${PROTOBUF_LIBRARY}
   ${GAZEBO_LIBRARIES}
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES})

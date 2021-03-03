@@ -7,7 +7,7 @@
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
- 
+
     <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world_name)"/>
@@ -64,7 +64,7 @@
     </group>
 
     <!-- rexrov robot with oberon7 arm -->
-    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7_transient_current.launch">
         <arg name="namespace" value="rexrov"/>
         <arg name="x" value="4"/>
         <arg name="y" value="4"/>
@@ -82,7 +82,7 @@
     <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
         <arg name="model_name" value="rexrov"/>
     </include>
-    
+
 
     <!-- joint control for oberon7 -->
     <include file="$(find oberon7_control)/launch/joint_control.launch">

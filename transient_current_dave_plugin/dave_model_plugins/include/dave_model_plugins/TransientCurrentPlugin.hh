@@ -19,17 +19,27 @@
 #ifndef __TRANSIENT_CURRENT_PLUGIN_HH__
 #define __TRANSIENT_CURRENT_PLUGIN_HH__
 
+#include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
+
 #include <map>
 #include <cmath>
 #include <string>
 
+#include <ros/ros.h>
+#include "ros/callback_queue.h"
+#include "ros/subscribe_options.h"
+#include <geometry_msgs/TwistStamped.h>
+#include <geometry_msgs/Vector3.h>
 #include <gazebo/gazebo.hh>
+#include <gazebo/msgs/msgs.hh>
 #include <gazebo/transport/TransportTypes.hh>
+#include <dave_world_plugins/GaussMarkovProcess.hh>
 #include <sdf/sdf.hh>
 
 namespace gazebo
 {
   /// \brief Class for the underwater current plugin
+
   class TransientCurrentPlugin : public ModelPlugin
   {
     /// \brief Class constructor
@@ -49,9 +59,6 @@ namespace gazebo
     /// \param[in] _info Information used in the update event.
     public: void Update(const common::UpdateInfo &_info);
 
-    /// \brief Publish current velocity and the pose of its frame
-    protected: void PublishVehicleDepth();
-
     /// \brief Update event
     protected: event::ConnectionPtr updateConnection;
 
@@ -64,23 +71,85 @@ namespace gazebo
     /// \brief Pointer to sdf
     protected: sdf::ElementPtr sdf;
 
-    /// \brief Vehicle base link name
-    protected: std::string baseLinkName;
+    /// \brief Namespace for topics and services
+    protected: std::string ns;
 
-    /// \brief True if the sea surface is present
-    protected: bool hasSurface;
+    /// \brief Pointer to this ROS node's handle.
+    private: boost::scoped_ptr<ros::NodeHandle> rosNode;
+
+    /// \brief Connects the update event callback
+    protected: virtual void Connect();
 
     /// \brief Pointer to a node for communication
     protected: transport::NodePtr node;
 
-    /// \brief Publishers
-    protected: transport::PublisherPtr publisher;
+    /// \brief Map of publishers
+    protected: std::map<std::string, transport::PublisherPtr>
+      publishers;
 
-    /// \brief Vehicle Depth topic
-    protected: std::string vehicleDepthTopic;
+    /// \brief Current velocity topic
+    protected: std::string currentVelocityTopic;
 
-    /// \brief Namespace for topics and services
-    protected: std::string ns;
+    /// \brief Publisher for the flow velocity in the world frame
+    private: ros::Publisher flowVelocityPub;
+
+    /// \brief transient Ocean current topic
+    protected: std::string transientCurrentVelocityTopic;
+
+    /// \brief Subscriber for the transient ocean current database
+    private: ros::Subscriber databaseSub;
+
+    /// \brief A ROS callbackqueue that helps process messages
+    private: ros::CallbackQueue databaseSubQueue;
+
+    /// \brief A thread the keeps running the rosQueue
+    private: std::thread databaseSubQueueThread;
+
+    /// \brief Period after which we should publish a message via ROS.
+    private: gazebo::common::Time rosPublishPeriod;
+
+    /// \brief Last time we published a message via ROS.
+    private: gazebo::common::Time lastRosPublishTime;
+
+    /// \brief Convey model state from gazebo topic to outside
+    protected: virtual void UpdateDatabase(
+      const dave_world_ros_plugins_msgs::StratifiedCurrentVelocity::ConstPtr &_msg);
+
+    /// \brief ROS helper function that processes messages
+    private: void databaseSubThread();
+
+    /// \brief Last update time stamp
+    protected: common::Time lastUpdate;
+
+    /// \brief Calculate ocean current using database and vehicle state
+    private: void CalculateOceanCurrent();
+
+    /// \brief Current linear velocity vector
+    protected: ignition::math::Vector3d currentVelocity;
+
+    /// \brief Gauss-Markov process instance for the velocity north
+    protected: GaussMarkovProcess currentVelNorthModel;
+
+    /// \brief Gauss-Markov process instance for the velocity east
+    protected: GaussMarkovProcess currentVelEastModel;
+
+    /// \brief Gauss-Markov process instance for the velocity down
+    protected: GaussMarkovProcess currentVelDownModel;
+
+    /// \brief Gauss-Markov noise
+    protected: double noiseAmp_North;
+    protected: double noiseAmp_East;
+    protected: double noiseAmp_Down;
+    protected: double noiseFreq_North;
+    protected: double noiseFreq_East;
+    protected: double noiseFreq_Down;
+
+    /// \brief Publish ocean current
+    private: void PublishCurrentVelocity();
+
+    /// \brief Vector for read database
+    protected: std::vector<ignition::math::Vector3d> database;
+
   };
 }
 

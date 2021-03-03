@@ -51,7 +51,7 @@ catkin_package(
 include_directories(
 	include
   ${catkin_INCLUDE_DIRS}
-	${Boost_INCLUDE_DIRS}  
+	${Boost_INCLUDE_DIRS}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${GAZEBO_MSG_INCLUDE_DIRS}
 )
