@@ -79,9 +79,28 @@
     <!-- The underwater object plugin is given as an input block parameter to
      allow the addition of external models of manipulator units -->
     <gazebo>
+      <plugin name="dave_transient_current_plugin" filename="libdave_transient_current_plugin.so">
+        <flow_velocity_topic>hydrodynamics/current_velocity/$(arg namespace)</flow_velocity_topic>
+        <base_link_name>$(arg namespace)/base_link</base_link_name>
+        <transient_current>
+          <topic_stratified_database>stratified_current_velocity_database</topic_stratified_database>
+          <velocity_north>
+            <noiseAmp>0.3</noiseAmp>
+            <noiseFreq>0.0</noiseFreq>
+          </velocity_north>
+          <velocity_east>
+            <noiseAmp>0.3</noiseAmp>
+            <noiseFreq>0.0</noiseFreq>
+          </velocity_east>
+          <velocity_down>
+            <noiseAmp>0.3</noiseAmp>
+            <noiseFreq>0.0</noiseFreq>
+          </velocity_down>
+        </transient_current>
+      </plugin>
       <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
         <fluid_density>1028.0</fluid_density>
-        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <flow_velocity_topic>hydrodynamics/current_velocity/$(arg namespace)</flow_velocity_topic>
         <debug>$(arg debug)</debug>
         <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
         <xacro:rexrov_hydro_model namespace="$(arg namespace)"/>
