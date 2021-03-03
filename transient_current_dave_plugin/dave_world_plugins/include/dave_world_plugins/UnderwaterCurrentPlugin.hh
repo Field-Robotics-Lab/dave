@@ -116,6 +116,9 @@ namespace gazebo
 
     /// \brief Current linear velocity vector
     protected: ignition::math::Vector3d currentVelocity;
+
+    /// \brief File path for stratified current database
+    protected: std::string db_path;
   };
 }
 

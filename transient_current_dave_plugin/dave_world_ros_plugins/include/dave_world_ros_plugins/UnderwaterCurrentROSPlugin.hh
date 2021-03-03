@@ -28,6 +28,7 @@
 #include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
 #include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Vector3.h>
 #include <boost/scoped_ptr.hpp>
