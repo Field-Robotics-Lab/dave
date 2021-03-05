@@ -21,13 +21,7 @@
 
 #include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
 
-#include <map>
-#include <cmath>
-#include <string>
-
 #include <ros/ros.h>
-#include "ros/callback_queue.h"
-#include "ros/subscribe_options.h"
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Vector3.h>
 #include <gazebo/gazebo.hh>
@@ -35,6 +29,13 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <dave_world_plugins/GaussMarkovProcess.hh>
 #include <sdf/sdf.hh>
+
+#include <map>
+#include <cmath>
+#include <string>
+#include <vector>
+#include "ros/callback_queue.h"
+#include "ros/subscribe_options.h"
 
 namespace gazebo
 {
@@ -113,7 +114,8 @@ namespace gazebo
 
     /// \brief Convey model state from gazebo topic to outside
     protected: virtual void UpdateDatabase(
-      const dave_world_ros_plugins_msgs::StratifiedCurrentVelocity::ConstPtr &_msg);
+      const dave_world_ros_plugins_msgs::
+      StratifiedCurrentVelocity::ConstPtr &_msg);
 
     /// \brief ROS helper function that processes messages
     private: void databaseSubThread();
@@ -149,7 +151,6 @@ namespace gazebo
 
     /// \brief Vector for read database
     protected: std::vector<ignition::math::Vector3d> database;
-
   };
 }
 

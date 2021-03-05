@@ -76,7 +76,8 @@ void TransientCurrentPlugin::Load(
     this->currentVelocityTopic = _sdf->Get<std::string>("flow_velocity_topic");
   else
   {
-    this->currentVelocityTopic = "hydrodynamics/current_velocity/" + this->model->GetName();
+    this->currentVelocityTopic =
+      "hydrodynamics/current_velocity/" + this->model->GetName();
     gzerr << "Empty flow_velocity_topic for transient_current model plugin. "
        << "Default topicName definition is used" << std::endl;
   }
@@ -112,15 +113,18 @@ void TransientCurrentPlugin::Load(
         this->currentVelNorthModel.mu = 0.0;
     if (elem->HasElement("noiseAmp"))
         this->noiseAmp_North = elem->Get<double>("noiseAmp");
-        this->currentVelNorthModel.min = this->currentVelNorthModel.mean - this->noiseAmp_North;
-        this->currentVelNorthModel.max = this->currentVelNorthModel.mean + this->noiseAmp_North;
+    this->currentVelNorthModel.min =
+      this->currentVelNorthModel.mean - this->noiseAmp_North;
+    this->currentVelNorthModel.max =
+      this->currentVelNorthModel.mean + this->noiseAmp_North;
     if (elem->HasElement("noiseFreq"))
         this->noiseFreq_North = elem->Get<double>("noiseFreq");
-        this->currentVelNorthModel.noiseAmp = this->noiseFreq_North;
+    this->currentVelNorthModel.noiseAmp = this->noiseFreq_North;
   }
   this->currentVelNorthModel.var = this->currentVelNorthModel.mean;
   gzmsg << "For vehicle " << this->model->GetName()
-        << " -> Current north-direction velocity [m/s] Gauss-Markov process model:" << std::endl;
+        << " -> Current north-direction velocity [m/s] "
+        << "Gauss-Markov process model:" << std::endl;
   this->currentVelNorthModel.Print();
 
   if (_sdf->HasElement("velocity_east"))
@@ -132,16 +136,18 @@ void TransientCurrentPlugin::Load(
         this->currentVelEastModel.mu = 0.0;
     if (elem->HasElement("noiseAmp"))
         this->noiseAmp_East = elem->Get<double>("noiseAmp");
-        this->currentVelEastModel.min = this->currentVelEastModel.mean - this->noiseAmp_East;
-        this->currentVelEastModel.max = this->currentVelEastModel.mean + this->noiseAmp_East;
+    this->currentVelEastModel.min =
+      this->currentVelEastModel.mean - this->noiseAmp_East;
+    this->currentVelEastModel.max =
+      this->currentVelEastModel.mean + this->noiseAmp_East;
     if (elem->HasElement("noiseFreq"))
         this->noiseFreq_East = elem->Get<double>("noiseFreq");
-        this->currentVelEastModel.noiseAmp = this->noiseFreq_East;
+    this->currentVelEastModel.noiseAmp = this->noiseFreq_East;
   }
   this->currentVelEastModel.var = this->currentVelEastModel.mean;
   gzmsg << "For vehicle " << this->model->GetName()
-        << " -> Current east-direction velocity [m/s] Gauss-Markov process model:"
-    << std::endl;
+        << " -> Current east-direction velocity [m/s] "
+        << "Gauss-Markov process model:" << std::endl;
   this->currentVelEastModel.Print();
 
   if (_sdf->HasElement("velocity_down"))
@@ -153,16 +159,18 @@ void TransientCurrentPlugin::Load(
         this->currentVelDownModel.mu = 0.0;
     if (elem->HasElement("noiseAmp"))
         this->noiseAmp_Down = elem->Get<double>("noiseAmp");
-        this->currentVelDownModel.min = this->currentVelDownModel.mean - this->noiseAmp_Down;
-        this->currentVelDownModel.max = this->currentVelDownModel.mean + this->noiseAmp_Down;
+    this->currentVelDownModel.min =
+      this->currentVelDownModel.mean - this->noiseAmp_Down;
+    this->currentVelDownModel.max =
+      this->currentVelDownModel.mean + this->noiseAmp_Down;
     if (elem->HasElement("noiseFreq"))
         this->noiseFreq_Down = elem->Get<double>("noiseFreq");
-        this->currentVelDownModel.noiseAmp = this->noiseFreq_Down;
+    this->currentVelDownModel.noiseAmp = this->noiseFreq_Down;
   }
   this->currentVelDownModel.var = this->currentVelDownModel.mean;
   gzmsg << "For vehicle " << this->model->GetName()
-        << " -> Current down-direction velocity [m/s] Gauss-Markov process model:"
-    << std::endl;
+        << " -> Current down-direction velocity [m/s]"
+        << "Gauss-Markov process model:" << std::endl;
   this->currentVelDownModel.Print();
 
   // Initialize the time update
@@ -192,8 +200,10 @@ void TransientCurrentPlugin::Load(
   }
 
   // Subscribe stratified ocean current database
-  this->databaseSub = this->rosNode->subscribe<dave_world_ros_plugins_msgs::StratifiedCurrentVelocity>
-  (this->transientCurrentVelocityTopic, 10 ,boost::bind(&TransientCurrentPlugin::UpdateDatabase, this, _1));
+  this->databaseSub = this->rosNode->subscribe
+    <dave_world_ros_plugins_msgs::StratifiedCurrentVelocity>
+    (this->transientCurrentVelocityTopic, 10,
+    boost::bind(&TransientCurrentPlugin::UpdateDatabase, this, _1));
 
   // Connect the update event callback for ROS and ocean current calculation
   this->Connect();
@@ -229,7 +239,7 @@ void TransientCurrentPlugin::Update(const gazebo::common::UpdateInfo &)
 
 /////////////////////////////////////////////////
 void TransientCurrentPlugin::UpdateDatabase(
-   const dave_world_ros_plugins_msgs::StratifiedCurrentVelocity::ConstPtr &_msg)
+  const dave_world_ros_plugins_msgs::StratifiedCurrentVelocity::ConstPtr &_msg)
 {
     this->database.clear();
     for (int i = 0; i < _msg->depths.size(); i++)
@@ -246,10 +256,9 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
 {
   double northCurrent = 0.0;
   double eastCurrent = 0.0;
-  double vehicleDepth = 0.0;
 
   // Update vehicle position
-  vehicleDepth = - this->model->WorldPose().Pos().Z();
+  double vehicleDepth = - this->model->WorldPose().Pos().Z();
 
   if (this->database.size() == 0)
   {
@@ -269,25 +278,23 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
 
     // interpolate
     if (depthIndex == 0) {  // Deeper than database use deepest value
-      northCurrent = this->database[this->database.size()-1].X();
-      eastCurrent = this->database[this->database.size()-1].Y();
+      this->currentVelNorthModel.mean =
+        this->database[this->database.size()-1].X();
+      this->currentVelEastModel.mean =
+        this->database[this->database.size()-1].Y();
     }
     else
     {
       double rate =
         (vehicleDepth-this->database[depthIndex-1].Z())
         /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
-      northCurrent =
+      this->currentVelNorthModel.mean =
         (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate
         + this->database[depthIndex-1].X();
-      eastCurrent =
+      this->currentVelEastModel.mean =
         (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate
         + this->database[depthIndex-1].Y();
     }
-
-    // Update model mean values
-    this->currentVelNorthModel.mean = northCurrent;
-    this->currentVelEastModel.mean = eastCurrent;
     this->currentVelDownModel.mean = 0.0;
 
     // Change min max accordingly
@@ -320,7 +327,8 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     double velocityDown = this->currentVelDownModel.Update(time.Double());
 
     // Update current Velocity
-    this->currentVelocity = ignition::math::Vector3d(velocityNorth, velocityEast, velocityDown);
+    this->currentVelocity =
+      ignition::math::Vector3d(velocityNorth, velocityEast, velocityDown);
 
     // Update time stamp
     this->lastUpdate = time;
