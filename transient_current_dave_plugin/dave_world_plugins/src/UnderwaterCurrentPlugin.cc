@@ -197,7 +197,20 @@ void UnderwaterCurrentPlugin::
     << std::endl;
   this->currentVertAngleModel.Print();
 
-  // Retrieve the transient velocity configuration, if existent
+  // Initialize the time update
+#if GAZEBO_MAJOR_VERSION >= 8
+  this->lastUpdate = this->world->SimTime();
+#else
+  this->lastUpdate = this->world->GetSimTime();
+#endif
+  this->currentVelModel.lastUpdate = this->lastUpdate.Double();
+  this->currentHorzAngleModel.lastUpdate = this->lastUpdate.Double();
+  this->currentVertAngleModel.lastUpdate = this->lastUpdate.Double();
+
+  // ----------------------------------------------------------------- //
+  // -------------------- Transient ocean current -------------------- //
+  // ----------------------------------------------------------------- //
+  // Retrieve the transient ocean current configuration, if existent
   GZ_ASSERT(this->sdf->HasElement("transient_current"),
     "Transient current configuration not available");
   sdf::ElementPtr transientCurrentParams = this->sdf->GetElement(
@@ -230,7 +243,9 @@ void UnderwaterCurrentPlugin::
       "/worlds/transientOceanCurrentDatabase.csv";
   }
   GZ_ASSERT(!this->databaseFilePath.empty(),
-    "Empty database file path");
+    "Empty stratified ocean current database file path");
+
+  gzmsg << this->databaseFilePath << std::endl;
 
   // Read database
   std::ifstream csvFile; std::string line;
@@ -241,7 +256,10 @@ void UnderwaterCurrentPlugin::
       "/worlds/" + this->databaseFilePath;
     csvFile.open(this->databaseFilePath);
   }
-  GZ_ASSERT(csvFile, "Database file does not exist");
+  GZ_ASSERT(csvFile, "Stratified Ocean database file does not exist");
+
+  gzmsg << "Statified Ocean Current Database loaded : " << this->databaseFilePath << std::endl;
+
   // skip the 3 lines
   getline(csvFile, line); getline(csvFile, line); getline(csvFile, line);
   while (getline(csvFile, line))
@@ -262,16 +280,138 @@ void UnderwaterCurrentPlugin::
       read.X() = row[0]; read.Y() = row[1]; read.Z() = row[2];
       this->database.push_back(read);
   }
+  csvFile.close();
 
-  // Initialize the time update
-#if GAZEBO_MAJOR_VERSION >= 8
-  this->lastUpdate = this->world->SimTime();
-#else
-  this->lastUpdate = this->world->GetSimTime();
-#endif
-  this->currentVelModel.lastUpdate = this->lastUpdate.Double();
-  this->currentHorzAngleModel.lastUpdate = this->lastUpdate.Double();
-  this->currentVertAngleModel.lastUpdate = this->lastUpdate.Double();
+
+  // ----------------------------------------------------------------- //
+  // --------------------    Tidal Oscillation    -------------------- //
+  // ----------------------------------------------------------------- //
+  if(this->sdf->HasElement("tidal_oscillation"))
+  {
+    this->tideFlag = true;
+
+    sdf::ElementPtr tidalOscillationParams = this->sdf->GetElement(
+      "tidal_oscillation");
+
+    // Read the tidal oscillation database file path from the SDF file
+    if (tidalOscillationParams->HasElement("databasefilePath"))
+      this->tidalFilePath =
+        tidalOscillationParams->Get<std::string>("databasefilePath");
+    else
+    {
+      this->tidalFilePath = ros::package::getPath("uuv_dave") +
+        "/worlds/ACT1951_predictionMaxSlack_2021-02-24.csv";
+    }
+    GZ_ASSERT(!this->tidalFilePath.empty(),
+      "Empty tidal oscillation database file path");
+
+    // Read database
+    csvFile.open(this->tidalFilePath);
+    if (!csvFile)
+    {
+      this->tidalFilePath = ros::package::getPath("uuv_dave") +
+        "/worlds/" + this->tidalFilePath;
+      csvFile.open(this->tidalFilePath);
+    }
+    GZ_ASSERT(csvFile, "Tidal Oscillation database file does not exist");
+
+    // Read the tidal oscillation direction from the SDF file
+    GZ_ASSERT(tidalOscillationParams->HasElement("mean_direction"),
+      "Tidal mean direction not defined");
+    if (tidalOscillationParams->HasElement("mean_direction"))
+    {
+      sdf::ElementPtr elem = tidalOscillationParams->GetElement("mean_direction");
+      GZ_ASSERT(elem->HasElement("ebb"),
+        "Tidal mean ebb direction not defined");
+      this->ebbDirection = elem->Get<double>("ebb");
+      this->floodDirection = elem->Get<double>("flood");
+      GZ_ASSERT(elem->HasElement("flood"),
+        "Tidal mean flood direction not defined");
+    }
+
+    // Read the world start time (GMT) from the SDF file
+    GZ_ASSERT(tidalOscillationParams->HasElement("world_start_time_GMT"),
+      "World start time (GMT) not defined");
+    if (tidalOscillationParams->HasElement("world_start_time_GMT"))
+    {
+      sdf::ElementPtr elem = tidalOscillationParams->GetElement("world_start_time_GMT");
+      GZ_ASSERT(elem->HasElement("day"),
+        "World start time (day) not defined");
+      this->world_start_time_day = elem->Get<double>("day");
+      GZ_ASSERT(elem->HasElement("month"),
+        "World start time (month) not defined");
+      this->world_start_time_month = elem->Get<double>("month");
+      GZ_ASSERT(elem->HasElement("year"),
+        "World start time (year) not defined");
+      this->world_start_time_year = elem->Get<double>("year");
+      GZ_ASSERT(elem->HasElement("hour"),
+        "World start time (hour) not defined");
+      this->world_start_time_hour = elem->Get<double>("hour");
+      if (elem->HasElement("minute"))
+        this->world_start_time_minute = elem->Get<double>("minute");
+      else
+        this->world_start_time_minute = 0;
+    }
+
+    gzmsg << "Tidal Oscillation  Database loaded : " << this->tidalFilePath << std::endl;
+
+    // skip the first line
+    getline(csvFile, line);
+    while (getline(csvFile, line))
+    {
+        if (line.empty())  // skip empty lines:
+        {
+            continue;
+        }
+        std::istringstream iss(line);
+        std::string lineStream;
+        std::string::size_type sz;
+        std::vector<std::string> row;
+        while (getline(iss, lineStream, ','))
+        {
+          row.push_back(lineStream);
+        }
+        if (strcmp(row[1].c_str()," slack")) // skip 'slack' category
+        {
+          this->dateGMT.push_back(row[0]);
+          this->speedcmsec.push_back(stold(row[2], &sz));
+        }
+    }
+    csvFile.close();
+
+    // Eliminate data with same consecutive type
+    std::vector<int> duplicated;
+    for (int i = 0; i<this->dateGMT.size(); i++)
+    {
+      // delete latter if same sign
+      if (((this->speedcmsec[i] > 0) - (this->speedcmsec[i] < 0))
+          == ((this->speedcmsec[i+1] > 0) - (this->speedcmsec[i+1] < 0)))
+      {
+        duplicated.push_back(i+1);
+      }
+    }
+    int eraseCount = 0;
+    for (int i = 0; i<duplicated.size(); i++)
+    {
+      this->dateGMT.erase(this->dateGMT.begin()+duplicated[i]-eraseCount);
+      this->speedcmsec.erase(this->speedcmsec.begin()+duplicated[i]-eraseCount);
+      eraseCount++;
+    }
+
+    // Debug for tidal oscillation interpolation
+    bool flagTidalInterpolationDebug;
+    if (tidalOscillationParams->HasElement("interpolationDebug"))
+      flagTidalInterpolationDebug =
+        tidalOscillationParams->Get<bool>("interpolationDebug");
+    else
+      flagTidalInterpolationDebug = false;
+    if (flagTidalInterpolationDebug)
+    {
+      this->tide.dateGMT = this->dateGMT;
+      this->tide.speedcmsec = this->speedcmsec;
+      this->tide.Debug();
+    }
+  }
 
   // Advertise the current velocity topic
   this->publishers[this->currentVelocityTopic] =
@@ -305,6 +445,7 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
 #else
   common::Time time = this->world->GetSimTime();
 #endif
+
   // Calculate the flow velocity and the direction using the Gauss-Markov
   // model
 

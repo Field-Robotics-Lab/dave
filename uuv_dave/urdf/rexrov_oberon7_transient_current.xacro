@@ -97,6 +97,7 @@
             <noiseFreq>0.0</noiseFreq>
           </velocity_down>
         </transient_current>
+        <tide_oscillation>true</tide_oscillation>
       </plugin>
       <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
         <fluid_density>1028.0</fluid_density>
