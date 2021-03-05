@@ -17,6 +17,7 @@
 
 #include <math.h>
 
+#include <ros/ros.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
