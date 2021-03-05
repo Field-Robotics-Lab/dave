@@ -295,9 +295,9 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
 
     // interpolate
     if (depthIndex == 0) {  // Deeper than database use deepest value
-      this->currentVelNorthModel.mean =
+      northCurrent =
         this->database[this->database.size()-1].X();
-      this->currentVelEastModel.mean =
+      eastCurrent =
         this->database[this->database.size()-1].Y();
     }
     else
@@ -305,15 +305,42 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
       double rate =
         (vehicleDepth-this->database[depthIndex-1].Z())
         /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
-      this->currentVelNorthModel.mean =
+      northCurrent =
         (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate
         + this->database[depthIndex-1].X();
-      this->currentVelEastModel.mean =
+      eastCurrent =
         (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate
         + this->database[depthIndex-1].Y();
     }
 
     // Update model mean values
+    if(this->tideFlag)
+    {
+      // Update tide oscillation
+    #if GAZEBO_MAJOR_VERSION >= 8
+      common::Time time = this->world->SimTime();
+    #else
+      common::Time time = this->world->GetSimTime();
+    #endif
+      this->tide.dateGMT = this->timeGMT;
+      this->tide.speedcmsec = this->tideVelocities;
+      this->tide.ebbDirection = this->ebbDirection;
+      this->tide.floodDirection = this->floodDirection;
+      this->tide.worldStartTime = this->world_start_time;
+      this->tide.Initiate();
+      std::pair<double, double> currents = this->tide.Update(time.Double(), northCurrent);
+      this->currentVelNorthModel.mean = currents.first;
+      this->currentVelEastModel.mean = currents.second;
+      this->currentVelDownModel.mean = 0.0;
+    }
+    else
+    {
+      this->currentVelNorthModel.mean = northCurrent;
+      this->currentVelEastModel.mean = eastCurrent;
+      this->currentVelDownModel.mean = 0.0;
+    }
+
+    // Tidal oscillation
     if(this->tideFlag)
     {
       // Update tide oscillation
