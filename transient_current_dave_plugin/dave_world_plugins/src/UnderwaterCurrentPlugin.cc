@@ -18,6 +18,7 @@
 #include <math.h>
 
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -31,8 +32,6 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 #include <dave_world_plugins/UnderwaterCurrentPlugin.hh>
-
-#include "ros/package.h"
 
 using namespace gazebo;
 
