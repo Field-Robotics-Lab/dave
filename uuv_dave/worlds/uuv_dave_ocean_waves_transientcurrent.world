@@ -126,8 +126,6 @@
           <hour>15</hour>
           <minute>0</minute>
         </world_start_time_GMT>
-        <!-- save original data (/tmp/raw.txt) and interpolated data (/tmp/interp.txt) -->
-        <interpolationDebug>true</interpolationDebug>
       </tidal_oscillation>
     </plugin>
 

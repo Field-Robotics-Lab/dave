@@ -175,42 +175,4 @@ std::pair<double, double> TidalOscillation::Update(double _time, double _current
 
   return currents;  // in m/s
 }
-
-/////////////////////////////////////////////////
-void TidalOscillation::Debug()
-{
-  gzmsg << "Writing /tmp/raw.txt and /tmp/interp.txt for "
-        << "tidal oscillation interpolation debugging" << std::endl;
-
-  // std::vector<double> h;
-  // std::vector<double> v;
-  // v = this->speedcmsec;
-  // for (int i = 0; i < v.size(); i++) h.push_back(i*1.0);
-  // boost::math::barycentric_rational<double> interp(h.data(), v.data(), v.size());
-
-
-  // if( remove( "/tmp/raw.txt" ) != 0 )
-  //   perror( "Error deleting raw file" );
-  // else
-  //   puts( "File raw successfully deleted" );
-
-  // if( remove( "/tmp/interp.txt" ) != 0 )
-  //   perror( "Error deleting interp file" );
-  // else
-  //   puts( "File interp successfully deleted" );
-
-  // std::ofstream outfile;
-  // outfile.open("/tmp/raw.txt", std::ios_base::app);//std::ios_base::app
-  // for (int i = 0; i < this->speedcmsec.size(); i++){
-  //   outfile << this->speedcmsec[i] << "\n";
-  // }
-  // outfile.close();
-
-  // std::ofstream outfile2;
-  // outfile2.open("/tmp/interp.txt", std::ios_base::app);//std::ios_base::app
-  // for (size_t i = 0; i < this->speedcmsec.size()*10; i++){
-  //   outfile2 << interp(i/10.0) << "\n";
-  // }
-  // outfile2.close();
-}
 }
