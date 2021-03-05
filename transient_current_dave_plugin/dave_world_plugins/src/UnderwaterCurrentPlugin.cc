@@ -397,20 +397,6 @@ void UnderwaterCurrentPlugin::
       this->speedcmsec.erase(this->speedcmsec.begin()+duplicated[i]-eraseCount);
       eraseCount++;
     }
-
-    // Debug for tidal oscillation interpolation
-    bool flagTidalInterpolationDebug;
-    if (tidalOscillationParams->HasElement("interpolationDebug"))
-      flagTidalInterpolationDebug =
-        tidalOscillationParams->Get<bool>("interpolationDebug");
-    else
-      flagTidalInterpolationDebug = false;
-    if (flagTidalInterpolationDebug)
-    {
-      this->tide.dateGMT = this->dateGMT;
-      this->tide.speedcmsec = this->speedcmsec;
-      this->tide.Debug();
-    }
   }
 
   // Advertise the current velocity topic
