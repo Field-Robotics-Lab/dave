@@ -256,7 +256,8 @@ void UnderwaterCurrentPlugin::
   }
   GZ_ASSERT(csvFile, "Stratified Ocean database file does not exist");
 
-  gzmsg << "Statified Ocean Current Database loaded : " << this->databaseFilePath << std::endl;
+  gzmsg << "Statified Ocean Current Database loaded : "
+        << this->databaseFilePath << std::endl;
 
   // skip the 3 lines
   getline(csvFile, line); getline(csvFile, line); getline(csvFile, line);
@@ -284,7 +285,7 @@ void UnderwaterCurrentPlugin::
   // ----------------------------------------------------------------- //
   // --------------------    Tidal Oscillation    -------------------- //
   // ----------------------------------------------------------------- //
-  if(this->sdf->HasElement("tidal_oscillation"))
+  if (this->sdf->HasElement("tidal_oscillation"))
   {
     this->tideFlag = true;
 
@@ -318,7 +319,8 @@ void UnderwaterCurrentPlugin::
       "Tidal mean direction not defined");
     if (tidalOscillationParams->HasElement("mean_direction"))
     {
-      sdf::ElementPtr elem = tidalOscillationParams->GetElement("mean_direction");
+      sdf::ElementPtr elem =
+        tidalOscillationParams->GetElement("mean_direction");
       GZ_ASSERT(elem->HasElement("ebb"),
         "Tidal mean ebb direction not defined");
       this->ebbDirection = elem->Get<double>("ebb");
@@ -332,7 +334,8 @@ void UnderwaterCurrentPlugin::
       "World start time (GMT) not defined");
     if (tidalOscillationParams->HasElement("world_start_time_GMT"))
     {
-      sdf::ElementPtr elem = tidalOscillationParams->GetElement("world_start_time_GMT");
+      sdf::ElementPtr elem =
+        tidalOscillationParams->GetElement("world_start_time_GMT");
       GZ_ASSERT(elem->HasElement("day"),
         "World start time (day) not defined");
       this->world_start_time_day = elem->Get<double>("day");
@@ -351,7 +354,8 @@ void UnderwaterCurrentPlugin::
         this->world_start_time_minute = 0;
     }
 
-    gzmsg << "Tidal Oscillation  Database loaded : " << this->tidalFilePath << std::endl;
+    gzmsg << "Tidal Oscillation  Database loaded : "
+          << this->tidalFilePath << std::endl;
 
     // skip the first line
     getline(csvFile, line);
@@ -369,7 +373,7 @@ void UnderwaterCurrentPlugin::
         {
           row.push_back(lineStream);
         }
-        if (strcmp(row[1].c_str()," slack")) // skip 'slack' category
+        if (strcmp(row[1].c_str(), " slack"))  // skip 'slack' category
         {
           this->dateGMT.push_back(row[0]);
           this->speedcmsec.push_back(stold(row[2], &sz));
@@ -379,7 +383,7 @@ void UnderwaterCurrentPlugin::
 
     // Eliminate data with same consecutive type
     std::vector<int> duplicated;
-    for (int i = 0; i<this->dateGMT.size(); i++)
+    for (int i = 0; i  <this->dateGMT.size(); i++)
     {
       // delete latter if same sign
       if (((this->speedcmsec[i] > 0) - (this->speedcmsec[i] < 0))
@@ -389,7 +393,7 @@ void UnderwaterCurrentPlugin::
       }
     }
     int eraseCount = 0;
-    for (int i = 0; i<duplicated.size(); i++)
+    for (int i = 0; i < duplicated.size(); i++)
     {
       this->dateGMT.erase(this->dateGMT.begin()+duplicated[i]-eraseCount);
       this->speedcmsec.erase(this->speedcmsec.begin()+duplicated[i]-eraseCount);

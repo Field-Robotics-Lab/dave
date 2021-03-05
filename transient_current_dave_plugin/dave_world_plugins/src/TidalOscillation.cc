@@ -19,31 +19,31 @@
 
 #include <fstream>
 
-namespace std{
+namespace std {
 
-static int cumdays[] = {0, 0,31,59,90,120,151,181,212,243,273,304,334};
-double calcdatenum(int year, int mon, int day, int hour, int imin, int sec, int mil)
+static int cumdays[] = {0, 0, 31, 59, 90, 120, 151,
+                        181, 212, 243, 273, 304, 334};
+double calcdatenum(int year, int mon, int day,
+                  int hour, int imin, int sec, int mil)
 {
-	int tmp1, tmp2, tmp3;
-	double	tmp4, tmp5;
-	double dNum;
+  int tmp1, tmp2, tmp3;
+  double tmp4, tmp5;
+  double dNum;
 
-	/* Calculate the serial date number:*/
-	tmp1 = 365 * year  + cumdays[mon] + day;
-	tmp2 = year / 4 - year / 100 + year / 400;
-	tmp3 = (year % 4 != 0) - (year % 100 != 0) + (year % 400 != 0);
-	tmp4 = (double) (tmp1+tmp2+tmp3);
-	tmp5 = (hour * 3600000 + imin * 60000 + sec * 1000 + mil) / 86400000.0;
+  /* Calculate the serial date number:*/
+  tmp1 = 365 * year + cumdays[mon] + day;
+  tmp2 = year / 4 - year / 100 + year / 400;
+  tmp3 = (year % 4 != 0) - (year % 100 != 0) + (year % 400 != 0);
+  tmp4 = static_cast<double>(tmp1+tmp2+tmp3);
+  tmp5 = (hour * 3600000 + imin * 60000 + sec * 1000 + mil) / 86400000.0;
 
-	dNum = tmp4 + tmp5;
+  dNum = tmp4 + tmp5;
 
-	if (mon > 2) {
-		if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
-			dNum += 1.0;
-		}
-	}
+  if (mon > 2)
+    if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0))
+      dNum += 1.0;
 
-	return(dNum);
+  return(dNum);
 }
 }
 
@@ -101,9 +101,9 @@ double TidalOscillation::TranslateDate(std::string _datetime)
   {
     daymonthyear.push_back(lineStream);
   }
-  year = std::stoi (daymonthyear[0], &sz);
-  month = std::stoi (daymonthyear[1], &sz);
-  day = std::stoi (daymonthyear[2], &sz);
+  year = std::stoi(daymonthyear[0], &sz);
+  month = std::stoi(daymonthyear[1], &sz);
+  day = std::stoi(daymonthyear[2], &sz);
 
   // Divide time into hour and minute
   std::istringstream iss3(dayandtime[1]);
@@ -112,8 +112,8 @@ double TidalOscillation::TranslateDate(std::string _datetime)
   {
     hourminute.push_back(lineStream);
   }
-  hour = std::stoi (hourminute[0], &sz);
-  minute = std::stoi (hourminute[1], &sz);
+  hour = std::stoi(hourminute[0], &sz);
+  minute = std::stoi(hourminute[1], &sz);
 
   // Calculate datenum
   datenumReturn = std::calcdatenum(
@@ -123,18 +123,20 @@ double TidalOscillation::TranslateDate(std::string _datetime)
 }
 
 /////////////////////////////////////////////////
-std::pair<double, double> TidalOscillation::Update(double _time, double _currentDepthRatio)
+std::pair<double, double> TidalOscillation::Update(double _time,
+                                                  double _currentDepthRatio)
 {
   std::pair<double, double> currents;
   currents.first = 0.5;
   currents.second = 0.5;
 
   // Calculate current time
-  double simTimePassed = (0 * 3600000 + 0 * 60000 + _time * 1000 + 0) / 86400000.0;
+  double simTimePassed =
+    (0 * 3600000 + 0 * 60000 + _time * 1000 + 0) / 86400000.0;
   double currentTime = worldStartTime_num + simTimePassed;
 
   // Search current time index
-  int currentI;
+  int currentI = 0;
   for (size_t i = 0; i < this->datenum.size(); i++)
   {
     if (this->datenum[i] > currentTime)
@@ -145,7 +147,8 @@ std::pair<double, double> TidalOscillation::Update(double _time, double _current
   }
 
   // Interpolate from database (linear)
-  // boost::math::barycentric_rational<double> interp(datenum.data(), speedcmsec.data(), datenum.size());
+  // boost::math::barycentric_rational<double>
+  //   interp(datenum.data(), speedcmsec.data(), datenum.size());
   double currentSpeedcmsec =
     (this->speedcmsec[currentI] - this->speedcmsec[currentI-1])
     /(this->datenum[currentI] - this->datenum[currentI-1])
@@ -156,17 +159,21 @@ std::pair<double, double> TidalOscillation::Update(double _time, double _current
   {
     currentType = true;
     // north current velocity
-    currents.first = cos(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+    currents.first =
+      cos(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
     // east current velocity
-    currents.second = sin(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+    currents.second =
+      sin(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
   }
   else  // ebb
   {
     currentType = false;
     // north current velocity
-    currents.first = cos(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+    currents.first =
+      cos(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
     // east current velocity
-    currents.second = sin(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+    currents.second =
+      sin(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
   }
 
   // Apply stratified current ratio
