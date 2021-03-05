@@ -123,7 +123,7 @@ double TidalOscillation::TranslateDate(std::string _datetime)
 }
 
 /////////////////////////////////////////////////
-std::pair<double, double> TidalOscillation::Update(double _time, double _currentAmp)
+std::pair<double, double> TidalOscillation::Update(double _time, double _currentDepthRatio)
 {
   std::pair<double, double> currents;
   currents.first = 0.5;
@@ -168,6 +168,10 @@ std::pair<double, double> TidalOscillation::Update(double _time, double _current
     // east current velocity
     currents.second = sin(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
   }
+
+  // Apply stratified current ratio
+  currents.first = currents.first*_currentDepthRatio;
+  currents.second = currents.second*_currentDepthRatio;
 
   return currents;  // in m/s
 }
