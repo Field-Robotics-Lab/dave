@@ -133,10 +133,43 @@ std::pair<double, double> TidalOscillation::Update(double _time, double _current
   double simTimePassed = (0 * 3600000 + 0 * 60000 + _time * 1000 + 0) / 86400000.0;
   double currentTime = worldStartTime_num + simTimePassed;
 
-  // Interpolate
-  // boost::math::barycentric_rational<double> interp(datenum.data(), speedcmsec.data(), datenum.size());
+  // Search current time index
+  int currentI;
+  for (size_t i = 0; i < this->datenum.size(); i++)
+  {
+    if (this->datenum[i] > currentTime)
+    {
+      currentI = i;
+      break;
+    }
+  }
 
-  return currents;
+  // Interpolate from database (linear)
+  // boost::math::barycentric_rational<double> interp(datenum.data(), speedcmsec.data(), datenum.size());
+  double currentSpeedcmsec =
+    (this->speedcmsec[currentI] - this->speedcmsec[currentI-1])
+    /(this->datenum[currentI] - this->datenum[currentI-1])
+    *(currentTime - this->datenum[currentI-1]) + this->speedcmsec[currentI-1];
+
+  // Calculate current
+  if (currentSpeedcmsec > 0)  // flood
+  {
+    currentType = true;
+    // north current velocity
+    currents.first = cos(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+    // east current velocity
+    currents.second = sin(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+  }
+  else  // ebb
+  {
+    currentType = false;
+    // north current velocity
+    currents.first = cos(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+    // east current velocity
+    currents.second = sin(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+  }
+
+  return currents;  // in m/s
 }
 
 /////////////////////////////////////////////////
