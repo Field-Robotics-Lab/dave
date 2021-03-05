@@ -29,6 +29,7 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <dave_world_plugins/GaussMarkovProcess.hh>
+#include <dave_world_plugins/TidalOscillation.hh>
 #include <sdf/sdf.hh>
 
 namespace gazebo
@@ -93,8 +94,11 @@ namespace gazebo
     /// \brief Vehicle depth topic
     protected: std::string vehicleDepthTopic;
 
-    /// \brief Database file path for csv file
+    /// \brief Ocean Current Database file path for csv file
     protected: std::string databaseFilePath;
+
+    /// \brief Tidal Oscillation Database file path for txt file
+    protected: std::string tidalFilePath;
 
     /// \brief Vector for read database
     protected: std::vector<ignition::math::Vector3d> database;
@@ -110,6 +114,31 @@ namespace gazebo
 
     /// \brief Gauss-Markov process instance for vertical angle model
     protected: GaussMarkovProcess currentVertAngleModel;
+
+    /// \brief Vector of dateGMT for tidal oscillation
+    protected: std::vector<std::string> dateGMT;
+
+    /// \brief Vector of speedcmsec for tidal oscillation
+    protected: std::vector<double> speedcmsec;
+
+    /// \brief Tidal oscillation mean ebb direction
+    protected: double ebbDirection;
+
+    /// \brief Tidal oscillation mean flood direction
+    protected: double floodDirection;
+
+    /// \brief Tidal oscillation world start time (GMT)
+    protected: int world_start_time_day;
+    protected: int world_start_time_month;
+    protected: int world_start_time_year;
+    protected: int world_start_time_hour;
+    protected: int world_start_time_minute;
+
+    /// \brief Tidal Oscillation flag
+    protected: bool tideFlag;
+
+    /// \brief Tidal Oscillation interpolation model
+    protected: TidalOscillation tide;
 
     /// \brief Last update time stamp
     protected: common::Time lastUpdate;
