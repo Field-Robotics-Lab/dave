@@ -154,6 +154,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     // Generate and publish stratified_current_velocity database
     dave_world_ros_plugins_msgs::StratifiedCurrentVelocity currentDatabaseMsg;
     for (int i = 0; i < this->database.size(); i++) {
+      // Stratified current database
       geometry_msgs::Vector3 velocity;
       velocity.x = this->database[i].X();
       velocity.y = this->database[i].Y();
@@ -161,6 +162,24 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
       currentDatabaseMsg.velocities.push_back(velocity);
       currentDatabaseMsg.depths.push_back(this->database[i].Z());
     }
+    for (int i = 0; i < this->dateGMT.size(); i++) {
+      // Tidal oscillation database
+      currentDatabaseMsg.timeGMT.push_back(this->dateGMT[i]);
+      currentDatabaseMsg.tideVelocities.push_back(this->speedcmsec[i]);
+    }
+    currentDatabaseMsg.ebbDirection = this->ebbDirection;
+    currentDatabaseMsg.floodDirection = this->floodDirection;
+    std::string world_start_time;
+    world_start_time.append(std::to_string(this->world_start_time_year));
+    world_start_time.append("-");
+    world_start_time.append(std::to_string(this->world_start_time_month));
+    world_start_time.append("-");
+    world_start_time.append(std::to_string(this->world_start_time_day));
+    world_start_time.append(" ");
+    world_start_time.append(std::to_string(this->world_start_time_hour));
+    world_start_time.append(":");
+    world_start_time.append(std::to_string(this->world_start_time_minute));
+    currentDatabaseMsg.worldStartTime = world_start_time;
 
     this->stratifiedCurrentVelocityPub.publish(currentDatabaseMsg);
   }
