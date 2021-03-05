@@ -40,9 +40,6 @@ namespace gazebo
     /// \brief Prepare the data for interpolation
     public: void Initiate();
 
-    /// \brief Write raw and interpolated data for debugging
-    public: void Debug();
-
     /// \brief Translate datetime string to datenum
     public: double TranslateDate(std::string _datetime);
 
@@ -65,7 +62,7 @@ namespace gazebo
 
     /// \brief Update function for a new time stamp
     /// \param _time Current time stamp
-    public: std::pair<double, double> Update(double _time, double _currentAmp);
+    public: std::pair<double, double> Update(double _time, double _currentDepthRatio);
 
     /// \brief save current state (Flood: true, Ebb: false)
     public: bool currentType;
