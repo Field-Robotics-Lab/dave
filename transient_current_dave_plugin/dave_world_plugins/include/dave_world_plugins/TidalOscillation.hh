@@ -23,8 +23,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include <utility>
+#include <string>
+#include <vector>
 
-#include <boost/math/interpolators/barycentric_rational.hpp>
+// #include <boost/math/interpolators/barycentric_rational.hpp>
 
 namespace gazebo
 {
@@ -62,11 +65,11 @@ namespace gazebo
 
     /// \brief Update function for a new time stamp
     /// \param _time Current time stamp
-    public: std::pair<double, double> Update(double _time, double _currentDepthRatio);
+    public: std::pair<double, double>
+      Update(double _time, double _currentDepthRatio);
 
     /// \brief save current state (Flood: true, Ebb: false)
     public: bool currentType;
-
   };
 }
 

@@ -173,7 +173,6 @@ namespace gazebo
 
     /// \brief Tidal oscillation world start time (GMT)
     protected: std::string world_start_time;
-
   };
 }
 

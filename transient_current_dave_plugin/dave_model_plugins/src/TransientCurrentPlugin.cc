@@ -200,7 +200,8 @@ void TransientCurrentPlugin::Load(
   }
 
   // Tidal Oscillation
-  if(this->sdf->HasElement("tide_oscillation") && this->sdf->Get<bool>("tide_oscillation") == true)
+  if (this->sdf->HasElement("tide_oscillation")
+    && this->sdf->Get<bool>("tide_oscillation") == true)
     this->tideFlag = true;
 
   // Subscribe stratified ocean current database
@@ -253,7 +254,7 @@ void TransientCurrentPlugin::UpdateDatabase(
                                     _msg->depths[i]);
       this->database.push_back(data);
     }
-    if(this->tideFlag)
+    if (this->tideFlag)
     {
       this->timeGMT.clear();
       this->tideVelocities.clear();
@@ -317,7 +318,7 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     this->currentVelDownModel.mean = 0.0;
 
     // Tidal oscillation
-    if(this->tideFlag)
+    if (this->tideFlag)
     {
       // Update tide oscillation
     #if GAZEBO_MAJOR_VERSION >= 8
@@ -331,7 +332,8 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
       this->tide.floodDirection = this->floodDirection;
       this->tide.worldStartTime = this->world_start_time;
       this->tide.Initiate();
-      std::pair<double, double> currents = this->tide.Update(time.Double(), northCurrent);
+      std::pair<double, double> currents =
+        this->tide.Update(time.Double(), northCurrent);
       this->currentVelNorthModel.mean = currents.first;
       this->currentVelEastModel.mean = currents.second;
       this->currentVelDownModel.mean = 0.0;
