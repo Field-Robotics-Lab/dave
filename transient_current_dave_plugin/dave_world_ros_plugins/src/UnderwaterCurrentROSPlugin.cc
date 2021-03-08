@@ -162,11 +162,31 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
       currentDatabaseMsg.velocities.push_back(velocity);
       currentDatabaseMsg.depths.push_back(this->database[i].Z());
     }
-    for (int i = 0; i < this->dateGMT.size(); i++) {
-      // Tidal oscillation database
-      currentDatabaseMsg.timeGMT.push_back(this->dateGMT[i]);
-      currentDatabaseMsg.tideVelocities.push_back(this->speedcmsec[i]);
+
+    if(this->tidalHarmonicFlag)
+    {
+      // Tidal harmonic constituents
+      currentDatabaseMsg.M2amp = this->M2_amp;
+      currentDatabaseMsg.M2phase = this->M2_phase;
+      currentDatabaseMsg.M2speed = this->M2_speed;
+      currentDatabaseMsg.S2amp = this->S2_amp;
+      currentDatabaseMsg.S2phase = this->S2_phase;
+      currentDatabaseMsg.S2speed = this->S2_speed;
+      currentDatabaseMsg.N2amp = this->N2_amp;
+      currentDatabaseMsg.N2phase = this->N2_phase;
+      currentDatabaseMsg.N2speed = this->N2_speed;
+      currentDatabaseMsg.tideConstituents = true;
     }
+    else
+    {
+      for (int i = 0; i < this->dateGMT.size(); i++) {
+        // Tidal oscillation database
+        currentDatabaseMsg.timeGMT.push_back(this->dateGMT[i]);
+        currentDatabaseMsg.tideVelocities.push_back(this->speedcmsec[i]);
+      }
+      currentDatabaseMsg.tideConstituents = false;
+    }
+
     currentDatabaseMsg.ebbDirection = this->ebbDirection;
     currentDatabaseMsg.floodDirection = this->floodDirection;
     std::string world_start_time;

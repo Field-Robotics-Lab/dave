@@ -41,7 +41,7 @@ namespace gazebo
     public: void Reset();
 
     /// \brief Prepare the data for interpolation
-    public: void Initiate();
+    public: void Initiate(bool _harmonicConstituents);
 
     /// \brief Translate datetime string to datenum
     public: double TranslateDate(std::string _datetime);
@@ -54,6 +54,20 @@ namespace gazebo
 
     /// \brief Input Datenum data
     public: std::vector<double> datenum;
+
+    /// \brief Bool for method type
+    public: bool harmonicConstituent;
+
+    /// \brief Tidal current harmonic constituents
+    public: double M2_amp;
+    public: double M2_phase;
+    public: double M2_speed;
+    public: double S2_amp;
+    public: double S2_phase;
+    public: double S2_speed;
+    public: double N2_amp;
+    public: double N2_phase;
+    public: double N2_speed;
 
     /// \brief Input Tidal direction
     public: double ebbDirection;

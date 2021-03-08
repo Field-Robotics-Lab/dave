@@ -121,6 +121,18 @@ namespace gazebo
     /// \brief Vector of speedcmsec for tidal oscillation
     protected: std::vector<double> speedcmsec;
 
+    /// \brief Tidal current harmonic constituents
+    protected: bool tidalHarmonicFlag;
+    protected: double M2_amp;
+    protected: double M2_phase;
+    protected: double M2_speed;
+    protected: double S2_amp;
+    protected: double S2_phase;
+    protected: double S2_speed;
+    protected: double N2_amp;
+    protected: double N2_phase;
+    protected: double N2_speed;
+
     /// \brief Tidal oscillation mean ebb direction
     protected: double ebbDirection;
 

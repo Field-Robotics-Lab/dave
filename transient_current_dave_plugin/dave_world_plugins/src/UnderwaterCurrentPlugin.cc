@@ -290,31 +290,33 @@ void UnderwaterCurrentPlugin::
   if (this->sdf->HasElement("tidal_oscillation"))
   {
     this->tideFlag = true;
+    this->tidalHarmonicFlag = false;
 
-    sdf::ElementPtr tidalOscillationParams = this->sdf->GetElement(
-      "tidal_oscillation");
+    sdf::ElementPtr tidalOscillationParams
+      = this->sdf->GetElement("tidal_oscillation");
+    sdf::ElementPtr tidalHarmonicParams;
 
-    // Read the tidal oscillation database file path from the SDF file
+    // Read the tidal oscillation parameter from the SDF file
     if (tidalOscillationParams->HasElement("databasefilePath"))
+    {
       this->tidalFilePath =
         tidalOscillationParams->Get<std::string>("databasefilePath");
+      gzmsg << "Tidal current database configuration found" << std::endl;
+    }
     else
     {
-      this->tidalFilePath = ros::package::getPath("uuv_dave") +
-        "/worlds/ACT1951_predictionMaxSlack_2021-02-24.csv";
+      if (tidalOscillationParams->HasElement("harmonic_constituents"))
+      {
+        tidalHarmonicParams =
+          tidalOscillationParams->GetElement("harmonic_constituents");
+        gzmsg << "Tidal harmonic constituents "
+              << "configuration found" << std::endl;
+        tidalHarmonicFlag = true;
+      }
+      else
+        this->tidalFilePath = ros::package::getPath("uuv_dave") +
+          "/worlds/ACT1951_predictionMaxSlack_2021-02-24.csv";
     }
-    GZ_ASSERT(!this->tidalFilePath.empty(),
-      "Empty tidal oscillation database file path");
-
-    // Read database
-    csvFile.open(this->tidalFilePath);
-    if (!csvFile)
-    {
-      this->tidalFilePath = ros::package::getPath("uuv_dave") +
-        "/worlds/" + this->tidalFilePath;
-      csvFile.open(this->tidalFilePath);
-    }
-    GZ_ASSERT(csvFile, "Tidal Oscillation database file does not exist");
 
     // Read the tidal oscillation direction from the SDF file
     GZ_ASSERT(tidalOscillationParams->HasElement("mean_direction"),
@@ -356,52 +358,96 @@ void UnderwaterCurrentPlugin::
         this->world_start_time_minute = 0;
     }
 
-    gzmsg << "Tidal Oscillation  Database loaded : "
-          << this->tidalFilePath << std::endl;
-
-    // skip the first line
-    getline(csvFile, line);
-    while (getline(csvFile, line))
+    if(tidalHarmonicFlag)
     {
-        if (line.empty())  // skip empty lines:
-        {
-            continue;
-        }
-        std::istringstream iss(line);
-        std::string lineStream;
-        std::string::size_type sz;
-        std::vector<std::string> row;
-        while (getline(iss, lineStream, ','))
-        {
-          row.push_back(lineStream);
-        }
-        if (strcmp(row[1].c_str(), " slack"))  // skip 'slack' category
-        {
-          this->dateGMT.push_back(row[0]);
-          this->speedcmsec.push_back(stold(row[2], &sz));
-        }
+      // Read harmonic constituents
+      GZ_ASSERT(tidalHarmonicParams->HasElement("M2"),
+        "Harcomnic constituents M2 not found");
+      sdf::ElementPtr M2Params = tidalHarmonicParams->GetElement("M2");
+      this->M2_amp = M2Params->Get<double>("amp");
+      this->M2_phase = M2Params->Get<double>("phase");
+      this->M2_speed = M2Params->Get<double>("speed");
+      GZ_ASSERT(tidalHarmonicParams->HasElement("S2"),
+        "Harcomnic constituents S2 not found");
+      sdf::ElementPtr S2Params = tidalHarmonicParams->GetElement("S2");
+      this->S2_amp = S2Params->Get<double>("amp");
+      this->S2_phase = S2Params->Get<double>("phase");
+      this->S2_speed = S2Params->Get<double>("speed");
+      GZ_ASSERT(tidalHarmonicParams->HasElement("N2"),
+        "Harcomnic constituents N2 not found");
+      sdf::ElementPtr N2Params = tidalHarmonicParams->GetElement("N2");
+      this->N2_amp = N2Params->Get<double>("amp");
+      this->N2_phase = N2Params->Get<double>("phase");
+      this->N2_speed = N2Params->Get<double>("speed");
+      gzmsg << "Tidal harmonic constituents loaded : " << std::endl;
+      gzmsg << "M2 amp: " << this->M2_amp << " phase: " << this->M2_phase
+            << " speed: " << this->M2_speed << std::endl;
+      gzmsg << "S2 amp: " << this->S2_amp << " phase: " << this->S2_phase
+            << " speed: " << this->S2_speed << std::endl;
+      gzmsg << "N2 amp: " << this->N2_amp << " phase: " << this->N2_phase
+            << " speed: " << this->N2_speed << std::endl;
     }
-    csvFile.close();
-
-    // Eliminate data with same consecutive type
-    std::vector<int> duplicated;
-    for (int i = 0; i  <this->dateGMT.size(); i++)
+    else
     {
-      // delete latter if same sign
-      if (((this->speedcmsec[i] > 0) - (this->speedcmsec[i] < 0))
-          == ((this->speedcmsec[i+1] > 0) - (this->speedcmsec[i+1] < 0)))
+      // Read database
+      csvFile.open(this->tidalFilePath);
+      if (!csvFile)
       {
-        duplicated.push_back(i+1);
+        this->tidalFilePath = ros::package::getPath("uuv_dave") +
+          "/worlds/" + this->tidalFilePath;
+        csvFile.open(this->tidalFilePath);
       }
+      GZ_ASSERT(csvFile, "Tidal Oscillation database file does not exist");
+
+      gzmsg << "Tidal Oscillation  Database loaded : "
+            << this->tidalFilePath << std::endl;
+
+      // skip the first line
+      getline(csvFile, line);
+      while (getline(csvFile, line))
+      {
+          if (line.empty())  // skip empty lines:
+          {
+              continue;
+          }
+          std::istringstream iss(line);
+          std::string lineStream;
+          std::string::size_type sz;
+          std::vector<std::string> row;
+          while (getline(iss, lineStream, ','))
+          {
+            row.push_back(lineStream);
+          }
+          if (strcmp(row[1].c_str(), " slack"))  // skip 'slack' category
+          {
+            this->dateGMT.push_back(row[0]);
+            this->speedcmsec.push_back(stold(row[2], &sz));
+          }
+      }
+      csvFile.close();
+
+      // Eliminate data with same consecutive type
+      std::vector<int> duplicated;
+      for (int i = 0; i  <this->dateGMT.size(); i++)
+      {
+        // delete latter if same sign
+        if (((this->speedcmsec[i] > 0) - (this->speedcmsec[i] < 0))
+            == ((this->speedcmsec[i+1] > 0) - (this->speedcmsec[i+1] < 0)))
+        {
+          duplicated.push_back(i+1);
+        }
+      }
+      int eraseCount = 0;
+      for (int i = 0; i < duplicated.size(); i++)
+      {
+        this->dateGMT.erase(this->dateGMT.begin()+duplicated[i]-eraseCount);
+        this->speedcmsec.erase(this->speedcmsec.begin()+duplicated[i]-eraseCount);
+        eraseCount++;
+      }
+
     }
-    int eraseCount = 0;
-    for (int i = 0; i < duplicated.size(); i++)
-    {
-      this->dateGMT.erase(this->dateGMT.begin()+duplicated[i]-eraseCount);
-      this->speedcmsec.erase(this->speedcmsec.begin()+duplicated[i]-eraseCount);
-      eraseCount++;
-    }
-  }
+  } // end of tidal oscillation configuration
+
 
   // Advertise the current velocity topic
   this->publishers[this->currentVelocityTopic] =

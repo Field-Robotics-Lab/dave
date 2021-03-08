@@ -258,10 +258,27 @@ void TransientCurrentPlugin::UpdateDatabase(
     {
       this->timeGMT.clear();
       this->tideVelocities.clear();
-      for (int i = 0; i < _msg->timeGMT.size(); i++)
+      if (_msg->tideConstituents == true)
       {
-        this->timeGMT.push_back(_msg->timeGMT[i]);
-        this->tideVelocities.push_back(_msg->tideVelocities[i]);
+        this->M2_amp = _msg->M2amp;
+        this->M2_phase = _msg->M2phase;
+        this->M2_speed = _msg->M2speed;
+        this->S2_amp = _msg->S2amp;
+        this->S2_phase = _msg->S2phase;
+        this->S2_speed = _msg->S2speed;
+        this->N2_amp = _msg->N2amp;
+        this->N2_phase = _msg->N2phase;
+        this->N2_speed = _msg->N2speed;
+        this->tide_Constituents = true;
+      }
+      else
+      {
+        for (int i = 0; i < _msg->timeGMT.size(); i++)
+        {
+          this->timeGMT.push_back(_msg->timeGMT[i]);
+          this->tideVelocities.push_back(_msg->tideVelocities[i]);
+        }
+        this->tide_Constituents = false;
       }
       this->ebbDirection = _msg->ebbDirection;
       this->floodDirection = _msg->floodDirection;
@@ -326,12 +343,27 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     #else
       common::Time time = this->world->GetSimTime();
     #endif
-      this->tide.dateGMT = this->timeGMT;
-      this->tide.speedcmsec = this->tideVelocities;
+      if (this->tide_Constituents)
+      {
+        this->tide.M2_amp = this->M2_amp;
+        this->tide.M2_phase = this->M2_phase;
+        this->tide.M2_speed = this->M2_speed;
+        this->tide.S2_amp = this->S2_amp;
+        this->tide.S2_phase = this->S2_phase;
+        this->tide.S2_speed = this->S2_speed;
+        this->tide.N2_amp = this->N2_amp;
+        this->tide.N2_phase = this->N2_phase;
+        this->tide.N2_speed = this->N2_speed;
+      }
+      else
+      {
+        this->tide.dateGMT = this->timeGMT;
+        this->tide.speedcmsec = this->tideVelocities;
+      }
       this->tide.ebbDirection = this->ebbDirection;
       this->tide.floodDirection = this->floodDirection;
       this->tide.worldStartTime = this->world_start_time;
-      this->tide.Initiate();
+      this->tide.Initiate(this->tide_Constituents);
       std::pair<double, double> currents =
         this->tide.Update(time.Double(), northCurrent);
       this->currentVelNorthModel.mean = currents.first;
