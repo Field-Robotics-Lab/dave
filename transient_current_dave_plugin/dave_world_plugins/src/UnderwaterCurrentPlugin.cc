@@ -358,7 +358,7 @@ void UnderwaterCurrentPlugin::
         this->world_start_time_minute = 0;
     }
 
-    if(tidalHarmonicFlag)
+    if (tidalHarmonicFlag)
     {
       // Read harmonic constituents
       GZ_ASSERT(tidalHarmonicParams->HasElement("M2"),
@@ -440,14 +440,14 @@ void UnderwaterCurrentPlugin::
       int eraseCount = 0;
       for (int i = 0; i < duplicated.size(); i++)
       {
-        this->dateGMT.erase(this->dateGMT.begin()+duplicated[i]-eraseCount);
-        this->speedcmsec.erase(this->speedcmsec.begin()+duplicated[i]-eraseCount);
+        this->dateGMT.erase(
+          this->dateGMT.begin()+duplicated[i]-eraseCount);
+        this->speedcmsec.erase(
+          this->speedcmsec.begin()+duplicated[i]-eraseCount);
         eraseCount++;
       }
-
     }
-  } // end of tidal oscillation configuration
-
+  }  // end of tidal oscillation configuration
 
   // Advertise the current velocity topic
   this->publishers[this->currentVelocityTopic] =

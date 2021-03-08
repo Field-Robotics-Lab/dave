@@ -163,7 +163,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
       currentDatabaseMsg.depths.push_back(this->database[i].Z());
     }
 
-    if(this->tidalHarmonicFlag)
+    if (this->tidalHarmonicFlag)
     {
       // Tidal harmonic constituents
       currentDatabaseMsg.M2amp = this->M2_amp;
