@@ -146,7 +146,7 @@ std::pair<double, double> TidalOscillation::Update(double _time,
   {
     // Harmonic Constituents calculated in meters and GMT
     // speed [deg/hour], phase [degrees], amplitude [meters]
-    double h_0;  // mean height of water level above the datum
+    double h_0 = 0.0;  // mean height of water level above the datum
     // Approx tidal current with 90 deg shift to height of the tide
     double h_M2 = M2_amp * cos((M2_speed/180.0*M_PI/3600)
                               * (currentTime*86400000.0/1000.0)
