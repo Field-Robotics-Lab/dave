@@ -62,20 +62,26 @@ void TidalOscillation::Reset()
 
 
 /////////////////////////////////////////////////
-void TidalOscillation::Initiate()
+void TidalOscillation::Initiate(bool _harmonicConstituent)
 {
-  int nData = this->speedcmsec.size();
-  // Calculate datenum
-  for (size_t i = 0; i < nData; i++)
+  if (_harmonicConstituent)
+    this->harmonicConstituent = true;
+  else
   {
-    this->datenum.push_back(TranslateDate(this->dateGMT[i]));
+    int nData = this->speedcmsec.size();
+    // Calculate datenum
+    for (size_t i = 0; i < nData; i++)
+    {
+      this->datenum.push_back(TranslateDate(this->dateGMT[i]));
+    }
+    this->harmonicConstituent = false;
   }
   this->worldStartTime_num = TranslateDate(this->worldStartTime);
 
   // Make sure worldStarTime is in the range of database
-  // GZ_ASSERT((this->worldStartTime_num < this->datenum[0]
-  //     || this->worldStartTime_num > this->datenum[this->datenum.size()]),
-  //     "World Star Time (GMT) is not in the range of the database");
+  // GZ_ASSERT((this->worldStartTime_num > this->datenum[0]
+  //     || this->worldStartTime_num < this->datenum[this->datenum.size()]),
+  //     "World Start Time (GMT) is not in the range of the database");
 }
 
 /////////////////////////////////////////////////
@@ -129,51 +135,75 @@ std::pair<double, double> TidalOscillation::Update(double _time,
   std::pair<double, double> currents;
   currents.first = 0.5;
   currents.second = 0.5;
+  double currentVelocity;
 
   // Calculate current time
   double simTimePassed =
     (0 * 3600000 + 0 * 60000 + _time * 1000 + 0) / 86400000.0;
   double currentTime = worldStartTime_num + simTimePassed;
 
-  // Search current time index
-  int currentI = 0;
-  for (size_t i = 0; i < this->datenum.size(); i++)
+  if (this->harmonicConstituent)
   {
-    if (this->datenum[i] > currentTime)
+    // Harmonic Constituents calculated in meters and GMT
+    // speed [deg/hour], phase [degrees], amplitude [meters]
+    double h_0;  // mean height of water level above the datum
+    // Approx tidal current with 90 deg shift to height of the tide
+    double h_M2 = M2_amp * cos((M2_speed/180.0*M_PI/3600)
+                              * (currentTime*86400000.0/1000.0)
+                              + (M2_phase/180*M_PI) - (M_PI/2.0));
+    double h_S2 = S2_amp * cos((S2_speed/180.0*M_PI/3600)
+                              * (currentTime*86400000.0/1000.0)
+                              + (S2_phase/180*M_PI) - (M_PI/2.0));
+    double h_N2 = N2_amp * cos((N2_speed/180.0*M_PI/3600)
+                              * (currentTime*86400000.0/1000.0)
+                              + (N2_phase/180*M_PI) - (M_PI/2.0));
+    currentVelocity = h_0 + (h_M2 + h_S2 + h_N2);
+  }
+  else
+  {
+    // Search current time index from database
+    int currentI = 0;
+    for (size_t i = 0; i < this->datenum.size(); i++)
     {
-      currentI = i;
-      break;
+      if (this->datenum[i] > currentTime)
+      {
+        currentI = i;
+        break;
+      }
     }
+
+    // Interpolate from database (linear)
+    // boost::math::barycentric_rational<double>
+    //   interp(datenum.data(), speedcmsec.data(), datenum.size());
+    currentVelocity =
+      (this->speedcmsec[currentI] - this->speedcmsec[currentI-1])
+      /(this->datenum[currentI] - this->datenum[currentI-1])
+      *(currentTime - this->datenum[currentI-1]) + this->speedcmsec[currentI-1];
+
+    // Change units to m/s
+    currentVelocity = currentVelocity/100.0;
   }
 
-  // Interpolate from database (linear)
-  // boost::math::barycentric_rational<double>
-  //   interp(datenum.data(), speedcmsec.data(), datenum.size());
-  double currentSpeedcmsec =
-    (this->speedcmsec[currentI] - this->speedcmsec[currentI-1])
-    /(this->datenum[currentI] - this->datenum[currentI-1])
-    *(currentTime - this->datenum[currentI-1]) + this->speedcmsec[currentI-1];
-
   // Calculate current
-  if (currentSpeedcmsec > 0)  // flood
+  if (currentVelocity > 0)  // flood
   {
     currentType = true;
     // north current velocity
     currents.first =
-      cos(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+      cos(this->floodDirection/180.0*M_PI)*currentVelocity;
     // east current velocity
     currents.second =
-      sin(this->floodDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+      sin(this->floodDirection/180.0*M_PI)*currentVelocity;
   }
   else  // ebb
   {
     currentType = false;
     // north current velocity
     currents.first =
-      cos(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+      cos(this->ebbDirection/180.0*M_PI)*currentVelocity;
     // east current velocity
     currents.second =
-      sin(this->ebbDirection/180.0*M_PI)*currentSpeedcmsec/100.0;
+      sin(this->ebbDirection/180.0*M_PI)*currentVelocity;
   }
 
   // Apply stratified current ratio
