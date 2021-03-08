@@ -22,6 +22,7 @@ UnderwaterCurrentROSPlugin::UnderwaterCurrentROSPlugin()
 {
   this->rosPublishPeriod = gazebo::common::Time(0.05);
   this->lastRosPublishTime = gazebo::common::Time(0.0);
+  this->db_path = ros::package::getPath("uuv_dave");
 }
 
 /////////////////////////////////////////////////

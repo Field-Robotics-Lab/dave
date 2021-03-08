@@ -226,7 +226,7 @@ void UnderwaterCurrentPlugin::
     // this->databaseFilePath = concatPath.generic_string();
     //
     // Use ros package path:
-    this->databaseFilePath = ros::package::getPath("uuv_dave") +
+    this->databaseFilePath = this->db_path +
       "/worlds/transientOceanCurrentDatabase.csv";
   }
   GZ_ASSERT(!this->databaseFilePath.empty(),
@@ -237,7 +237,7 @@ void UnderwaterCurrentPlugin::
   csvFile.open(this->databaseFilePath);
   if (!csvFile)
   {
-    this->databaseFilePath = ros::package::getPath("uuv_dave") +
+    this->databaseFilePath = this->db_path +
       "/worlds/" + this->databaseFilePath;
     csvFile.open(this->databaseFilePath);
   }
