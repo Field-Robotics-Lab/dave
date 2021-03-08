@@ -76,15 +76,25 @@
     </light>
   </library_lights>
   <library_effects>
-    <effect id="Predator_001-effect">
+    <effect id="Predator-effect">
       <profile_COMMON>
+        <newparam sid="Predator_png_002-surface">
+          <surface type="2D">
+            <init_from>Predator_png_002</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Predator_png_002-sampler">
+          <sampler2D>
+            <source>Predator_png_002-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
+              <texture texture="Predator_png_002-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -94,10 +104,14 @@
       </profile_COMMON>
     </effect>
   </library_effects>
-  <library_images/>
+  <library_images>
+    <image id="Predator_png_002" name="Predator_png_002">
+      <init_from>predator.png</init_from>
+    </image>
+  </library_images>
   <library_materials>
-    <material id="Predator_001-material" name="Predator.001">
-      <instance_effect url="#Predator_001-effect"/>
+    <material id="Predator-material" name="Predator">
+      <instance_effect url="#Predator-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -135,7 +149,7 @@
         <vertices id="root-base-bigarm_002-mesh-vertices">
           <input semantic="POSITION" source="#root-base-bigarm_002-mesh-positions"/>
         </vertices>
-        <triangles material="Predator_001-material" count="340">
+        <triangles material="Predator-material" count="340">
           <input semantic="VERTEX" source="#root-base-bigarm_002-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#root-base-bigarm_002-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#root-base-bigarm_002-mesh-map-0" offset="2" set="0"/>
@@ -151,8 +165,8 @@
         <instance_geometry url="#root-base-bigarm_002-mesh" name="root-base-bigarm">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Predator_001-material" target="#Predator_001-material">
-                <bind_vertex_input semantic="root-base-bigarm_001-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
+              <instance_material symbol="Predator-material" target="#Predator-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>
           </bind_material>

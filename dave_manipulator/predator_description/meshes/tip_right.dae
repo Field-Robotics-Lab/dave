@@ -3,23 +3,33 @@
   <asset>
     <contributor>
       <author>Blender User</author>
-      <authoring_tool>Blender 2.83.5 commit date:2020-08-19, commit time:06:07, hash:c2b144df395f</authoring_tool>
+      <authoring_tool>Blender 2.83.3 commit date:2020-07-22, commit time:06:01, hash:353e5bd7493e</authoring_tool>
     </contributor>
-    <created>2020-08-26T18:34:09</created>
-    <modified>2020-08-26T18:34:09</modified>
+    <created>2020-08-07T11:21:28</created>
+    <modified>2020-08-07T11:21:28</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_effects>
-    <effect id="Predator_006-effect">
+    <effect id="Predator-effect">
       <profile_COMMON>
+        <newparam sid="Predator_png_002-surface">
+          <surface type="2D">
+            <init_from>Predator_png_002</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="Predator_png_002-sampler">
+          <sampler2D>
+            <source>Predator_png_002-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
+              <texture texture="Predator_png_002-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -29,17 +39,21 @@
       </profile_COMMON>
     </effect>
   </library_effects>
-  <library_images/>
+  <library_images>
+    <image id="Predator_png_002" name="Predator_png_002">
+      <init_from>predator.png</init_from>
+    </image>
+  </library_images>
   <library_materials>
-    <material id="Predator_006-material" name="Predator.006">
-      <instance_effect url="#Predator_006-effect"/>
+    <material id="Predator-material" name="Predator">
+      <instance_effect url="#Predator-effect"/>
     </material>
   </library_materials>
   <library_geometries>
     <geometry id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh" name="root-base-bigarm-smallarm-knuckle-clawright-tip">
       <mesh>
         <source id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-positions">
-          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-positions-array" count="24">-0.001813948 -0.01584064 -0.05757474 -0.001813948 0.01584064 -0.05757474 -0.01007181 -0.01584064 -0.05757474 -0.01007181 0.01584064 -0.05757474 0.007928431 -0.01584064 0 0.007928431 0.01584064 0 -0.01007181 0.01584064 0 -0.01007181 -0.01584064 0</float_array>
+          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-positions-array" count="24">-0.001814007 -0.0158407 -0.0575748 -0.001814007 0.0158407 -0.0575748 -0.01007181 -0.0158407 -0.0575748 -0.01007181 0.0158407 -0.0575748 0.007928431 -0.0158407 0 0.007928431 0.0158407 0 -0.01007181 0.0158407 0 -0.01007181 -0.0158407 0</float_array>
           <technique_common>
             <accessor source="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -49,7 +63,7 @@
           </technique_common>
         </source>
         <source id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-normals">
-          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-normals-array" count="18">0 0 1 0 0 -1 0 -1 0 -1 0 0 0 1 0 0.9859837 0 -0.1668418</float_array>
+          <float_array id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-normals-array" count="18">0 0 1 0 0 -1 0 -1 0 -1 0 0 0 1 0 0.9859835 0 -0.1668433</float_array>
           <technique_common>
             <accessor source="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float"/>
@@ -70,7 +84,7 @@
         <vertices id="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-vertices">
           <input semantic="POSITION" source="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-positions"/>
         </vertices>
-        <triangles material="Predator_006-material" count="12">
+        <triangles material="Predator-material" count="12">
           <input semantic="VERTEX" source="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-map-0" offset="2" set="0"/>
@@ -86,8 +100,8 @@
         <instance_geometry url="#root-base-bigarm-smallarm-knuckle-clawright-tip-mesh" name="root-base-bigarm-smallarm-knuckle-clawright-tip">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Predator_006-material" target="#Predator_006-material">
-                <bind_vertex_input semantic="root-base-bigarm-smallarm-knuckle-clawright-tip-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
+              <instance_material symbol="Predator-material" target="#Predator-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>
           </bind_material>

@@ -197,14 +197,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/knuckle.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/wrist.dae"/>
                 </geometry>
             </visual>
 
             <collision>
                 <origin xyz="0 0 0" rpy="1.57079632679 1.57079632679 -1.57079632679"/>
                 <geometry>
-                    <mesh filename="file://$(find predator_description)/meshes/knuckle.dae"/>
+                    <mesh filename="file://$(find predator_description)/meshes/wrist.dae"/>
                 </geometry>
             </collision>
         </link>
