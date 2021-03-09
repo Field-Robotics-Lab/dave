@@ -158,7 +158,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
       geometry_msgs::Vector3 velocity;
       velocity.x = this->database[i].X();
       velocity.y = this->database[i].Y();
-      velocity.z = this->database[i].Z();
+      velocity.z = 0.0;
       currentDatabaseMsg.velocities.push_back(velocity);
       currentDatabaseMsg.depths.push_back(this->database[i].Z());
     }

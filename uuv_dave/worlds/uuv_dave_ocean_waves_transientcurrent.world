@@ -56,7 +56,7 @@
       <direction>-0.3 -0.3 -1</direction>
       <cast_shadows>false</cast_shadows>
     </light>
-    
+
     <!-- Virtual NED frame -->
     <include>
       <uri>model://ned_frame</uri>
@@ -77,11 +77,8 @@
 
     <plugin name="underwater_current_plugin" filename="libdave_underwater_current_ros_plugin.so">
       <namespace>hydrodynamics</namespace>
-      <depth_dependent_current>
+      <constant_current>
         <topic>current_velocity</topic>
-        <topic_stratified>stratified_current_velocity</topic_stratified>
-        <!-- Database tag can accept full path or filename for .csv within the uuv_dave/worlds folder  -->
-        <database>transientOceanCurrentDatabase.csv</database>
         <velocity>
           <mean>0</mean>
           <min>0</min>
@@ -105,7 +102,13 @@
           <mu>0.0</mu>
           <noiseAmp>0.0</noiseAmp>
         </vertical_angle>
-      </depth_dependent_current>
+      </constant_current>
+
+      <transient_current>
+        <topic_stratified_database>stratified_current_velocity_database</topic_stratified_database>
+        <!-- Database tag can accept full path or filename for .csv within the uuv_dave/worlds folder  -->
+        <databasefilePath>transientOceanCurrentDatabase.csv</databasefilePath>
+      </transient_current>
     </plugin>
 
     <plugin name="sc_interface" filename="libdave_sc_ros_interface_plugin.so"/>

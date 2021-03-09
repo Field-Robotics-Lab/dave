@@ -73,10 +73,10 @@ void UnderwaterCurrentPlugin::
   this->node->Init(this->world->GetName());
 #endif
   // Retrieve the velocity configuration, if existent
-  GZ_ASSERT(this->sdf->HasElement("depth_dependent_current"),
+  GZ_ASSERT(this->sdf->HasElement("constant_current"),
     "Current configuration not available");
   sdf::ElementPtr currentVelocityParams = this->sdf->GetElement(
-    "depth_dependent_current");
+    "constant_current");
 
   // Read the topic names from the SDF file
   if (currentVelocityParams->HasElement("topic"))
@@ -87,15 +87,6 @@ void UnderwaterCurrentPlugin::
 
   GZ_ASSERT(!this->currentVelocityTopic.empty(),
     "Empty ocean current velocity topic");
-
-  if (currentVelocityParams->HasElement("topic_stratified"))
-    this->stratifiedCurrentVelocityTopic =
-      currentVelocityParams->Get<std::string>("topic_stratified");
-  else
-    this->stratifiedCurrentVelocityTopic = "stratified_current_velocity";
-
-  GZ_ASSERT(!this->stratifiedCurrentVelocityTopic.empty(),
-    "Empty stratified ocean current velocity topic");
 
   if (currentVelocityParams->HasElement("velocity"))
   {
@@ -204,10 +195,25 @@ void UnderwaterCurrentPlugin::
     << std::endl;
   this->currentVertAngleModel.Print();
 
+  // Retrieve the transient velocity configuration, if existent
+  GZ_ASSERT(this->sdf->HasElement("transient_current"),
+    "Transient current configuration not available");
+  sdf::ElementPtr transientCurrentParams = this->sdf->GetElement(
+    "transient_current");
+
+  if (transientCurrentParams->HasElement("topic_stratified_database"))
+    this->stratifiedCurrentVelocityTopic =
+      transientCurrentParams->Get<std::string>("topic_stratified_database");
+  else
+    this->stratifiedCurrentVelocityTopic = "stratified_current_velocity";
+
+  GZ_ASSERT(!this->stratifiedCurrentVelocityTopic.empty(),
+    "Empty stratified ocean current velocity topic");
+
   // Read the depth dependent ocean current file path from the SDF file
-  if (currentVelocityParams->HasElement("database"))
+  if (transientCurrentParams->HasElement("databasefilePath"))
     this->databaseFilePath =
-      currentVelocityParams->Get<std::string>("database");
+      transientCurrentParams->Get<std::string>("databasefilePath");
   else
   {
     // Using boost:
@@ -273,16 +279,6 @@ void UnderwaterCurrentPlugin::
   gzmsg << "Current velocity topic name: " <<
     this->ns + "/" + this->currentVelocityTopic << std::endl;
 
-  // Stratified Database only published at ROS plugin. Not here (gazebo)
-  // this->publishers[this->stratifiedCurrentVelocityTopic] =
-  //   this->node->Advertise<
-  //   stratified_current_velocity_msgs::msgs::StratifiedCurrentVelocity>(
-  //   this->ns + "/" + this->stratifiedCurrentVelocityTopic);
-
-  // gzmsg << "Stratified current velocity topic name: " <<
-  //   this->ns + "/" + this->stratifiedCurrentVelocityTopic << std::endl;
-
-
   // Connect the update event
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
     boost::bind(&UnderwaterCurrentPlugin::Update,
@@ -328,9 +324,6 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
   // Update time stamp
   this->lastUpdate = time;
   this->PublishCurrentVelocity();
-
-  // Stratified Database only published at ROS plugin. Not here (gazebo)
-  // this->PublishStratifiedCurrentVelocity();
 }
 
 /////////////////////////////////////////////////
@@ -341,21 +334,4 @@ void UnderwaterCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
-}
-
-/////////////////////////////////////////////////
-// Stratified Database only published at ROS plugin. Not here (gazebo)
-void UnderwaterCurrentPlugin::PublishStratifiedCurrentVelocity()
-{
-  // stratified_current_velocity_msgs::msgs::StratifiedCurrentVelocity msg;
-  // msgs::Vector3d* _velocity = msg.add_velocity();
-  // msgs::Any* _depth = msg.add_depth();
-  // for (int i = 0; i < this->database.size(); i++) {
-  //   msgs::Set(&_velocity[i],
-  //         ignition::math::Vector3d(this->database[i].X(),  // northCurrent
-  //                                  this->database[i].Y(),  // eastCurrent
-  //                                  0.0));
-  //   _depth[i] = msgs::ConvertAny(this->database[i].Z());
-  // }
-  // this->publishers[this->stratifiedCurrentVelocityTopic]->Publish(msg);
 }
