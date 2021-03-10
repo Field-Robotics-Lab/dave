@@ -123,6 +123,9 @@ namespace gazebo
     /// \brief Last update time stamp
     protected: common::Time lastUpdate;
 
+    /// \brief Last depth index
+    protected: int lastDepthIndex;
+
     /// \brief Calculate ocean current using database and vehicle state
     private: void CalculateOceanCurrent();
 
