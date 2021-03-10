@@ -209,6 +209,8 @@ void TransientCurrentPlugin::Load(
   this->Connect();
 
   gzmsg << "Transient current model plugin loaded!" << std::endl;
+
+  this->lastDepthIndex = 0;
 }
 
 /////////////////////////////////////////////////
@@ -270,10 +272,20 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     // find current depth index from database
     // (X: north-direction, Y: east-direction, Z: depth)
     int depthIndex = 0;
-    for (int i = 1; i <= this->database.size(); i++) {
+    for (int i = 1; i < this->database.size(); i++) {
       if (this->database[i].Z() > vehicleDepth) {
         depthIndex = i; break;
       }
+    }
+
+    // If sudden change found, use the one before
+    if (this->lastDepthIndex == 0)
+      this->lastDepthIndex = depthIndex;
+    else
+    {
+      if (abs(depthIndex - this->lastDepthIndex) > 2)
+        depthIndex = this->lastDepthIndex;
+      this->lastDepthIndex = depthIndex;
     }
 
     // interpolate
