@@ -70,10 +70,9 @@ void TidalOscillation::Initiate(bool _harmonicConstituent)
   {
     int nData = this->speedcmsec.size();
     // Calculate datenum
-    for (size_t i = 0; i < nData; i++)
-    {
-      this->datenum.push_back(TranslateDate(this->dateGMT[i]));
-    }
+    if (this->dateGMT.size() != this->datenum.size())
+      for (size_t i = 0; i < nData; i++)
+        this->datenum.push_back(TranslateDate(this->dateGMT[i]));
     this->harmonicConstituent = false;
   }
   this->worldStartTime_num = TranslateDate(this->worldStartTime);
