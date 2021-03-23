@@ -1,0 +1,126 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='nortek_dvl1000_300'>
+    <link name='dvl1000_base_link'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>1.3</mass>
+        <inertia>
+          <ixx>0.00376036</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00376036</iyy>
+          <iyz>0</iyz>
+          <izz>0.00211185</izz>
+        </inertia>
+      </inertial>
+      <velocity_decay/>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <sensor name='dvl1000_sensor' type='dsros_dvl'>
+        <always_on>1</always_on>
+        <update_rate>8</update_rate>
+        <plugin name='dvl1000_sensor_controller' filename='libdsros_ros_dvl.so'>
+          <robotNamespace>dvl1000</robotNamespace>
+          <topicName>dvl</topicName>
+          <rangesTopicName>ranges</rangesTopicName>
+          <frameName>dvl1000_link</frameName>
+          <pointcloudFrame>dvl1000_base_link</pointcloudFrame>
+          <updateRateHZ>8.0</updateRateHZ>
+          <gaussianNoiseBeamVel>0.005</gaussianNoiseBeamVel>
+          <gaussianNoiseBeamWtrVel>0.015</gaussianNoiseBeamWtrVel>
+          <gaussianNoiseBeamRange>0.1</gaussianNoiseBeamRange>
+          <minRange>0.2</minRange>
+          <maxRange>75.0</maxRange>
+          <maxRangeDiff>10</maxRangeDiff>
+          <beamAngleDeg>25.0</beamAngleDeg>
+          <beamWidthDeg>3.0</beamWidthDeg>
+          <beamAzimuthDeg1>-135</beamAzimuthDeg1>
+          <beamAzimuthDeg2>135</beamAzimuthDeg2>
+          <beamAzimuthDeg3>45</beamAzimuthDeg3>
+          <beamAzimuthDeg4>-45</beamAzimuthDeg4>
+          <enableWaterTrack>1</enableWaterTrack>
+          <waterTrackBins>10</waterTrackBins>
+          <currentProfileCoordMode>0</currentProfileCoordMode>
+          <pos_z_down>1</pos_z_down>
+          <collide_bitmask>0x0001</collide_bitmask>
+        </plugin>
+        <pose>0 0 0 3.14159 0 0</pose>
+      </sensor>
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+      <visual name='dvl1000_base_link_visual'>
+        <pose>0 0 0 0 0 3.14159</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <!-- Mesh is actually for a Nortek DVL1000-4000m for now -->
+            <uri>model://nortek_dvl1000_300/meshes/DVL1000-300m.dae</uri>
+          </mesh>
+        </geometry>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='dvl1000_base_link_collision'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose>0 0 0 3.14159 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.057</radius>
+            <length>0.158</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+            <torsional>
+              <coefficient>1</coefficient>
+              <patch_radius>0</patch_radius>
+              <surface_radius>0</surface_radius>
+              <use_patch_radius>1</use_patch_radius>
+              <ode>
+                <slip>0</slip>
+              </ode>
+            </torsional>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>1e+06</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+            <collide_bitmask>1</collide_bitmask>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+13</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+            <bullet>
+              <split_impulse>1</split_impulse>
+              <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+13</kp>
+              <kd>1</kd>
+            </bullet>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>
