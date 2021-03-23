@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!-- Teledyne Workhorse Navigator Doppler Velocity Logger (DVL) utilizing the
+     WHOI DSL Gazebo environment DVL plugin -->
+<sdf version="1.6">
+  <model name="teledyne_whn_dsl">
+    <link name="whn_base_link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>15.8</mass>
+        <inertia>
+          <ixx>0.1287917645</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.1287917645</iyy>
+          <iyz>0</iyz>
+          <izz>0.100162204</izz>
+        </inertia>
+      </inertial>
+      <velocity_decay/>
+      <gravity>0</gravity>
+      <sensor name="dvl_sensor" type="dsros_dvl">
+        <always_on>1</always_on>
+        <update_rate>7.0</update_rate>
+        <plugin name="dvl_sensor_controller" filename="libdsros_ros_dvl.so">
+          <robotNamespace>dvl</robotNamespace>
+          <topicName>dvl</topicName>
+          <rangesTopicName>ranges</rangesTopicName>
+          <frameName>dvl_base_link</frameName>
+          <pointcloudFrame>dvl_base_link</pointcloudFrame>
+          <updateRateHZ>7.0</updateRateHZ>
+          <gaussianNoiseBeamVel>0.005</gaussianNoiseBeamVel>
+          <gaussianNoiseBeamWtrVel>0.0075</gaussianNoiseBeamWtrVel>
+          <gaussianNoiseBeamRange>0.1</gaussianNoiseBeamRange>
+          <minRange>0.7</minRange>
+          <maxRange>90.0</maxRange>
+          <maxRangeDiff>10</maxRangeDiff>
+          <beamAngleDeg>30.0</beamAngleDeg>
+          <beamWidthDeg>4.0</beamWidthDeg>
+          <beamAzimuthDeg1>-135</beamAzimuthDeg1>
+          <beamAzimuthDeg2>135</beamAzimuthDeg2>
+          <beamAzimuthDeg3>45</beamAzimuthDeg3>
+          <beamAzimuthDeg4>-45</beamAzimuthDeg4>
+          <enableWaterTrack>1</enableWaterTrack>
+          <waterTrackBins>10</waterTrackBins>
+          <currentProfileCoordMode>0</currentProfileCoordMode>
+          <pos_z_down>false</pos_z_down>
+          <collide_bitmask>0x0001</collide_bitmask>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+      <visual name="whn_base_link_visual">
+        <pose>0 0 0 0 3.141592653589793 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://teledyne_whn_dsl/meshes/WorkhorseNavigator.dae</uri>
+          </mesh>
+        </geometry>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name="whn_base_link_collision">
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.1126</radius>
+            <length>0.2445</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>
