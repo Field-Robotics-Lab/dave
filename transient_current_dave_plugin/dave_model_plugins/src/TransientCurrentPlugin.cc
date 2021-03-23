@@ -273,16 +273,27 @@ void TransientCurrentPlugin::UpdateDatabase(
       }
       else
       {
-        for (int i = 0; i < _msg->timeGMT.size(); i++)
+        std::array<int, 5> tmpDateVals;
+        for (int i = 0; i < _msg->timeGMTYear.size(); i++)
         {
-          this->timeGMT.push_back(_msg->timeGMT[i]);
+          tmpDateVals[0] = _msg->timeGMTYear[i];
+          tmpDateVals[1] = _msg->timeGMTMonth[i];
+          tmpDateVals[2] = _msg->timeGMTDay[i];
+          tmpDateVals[3] = _msg->timeGMTHour[i];
+          tmpDateVals[4] = _msg->timeGMTMinute[i];
+
+          this->timeGMT.push_back(tmpDateVals);
           this->tideVelocities.push_back(_msg->tideVelocities[i]);
         }
         this->tide_Constituents = false;
       }
       this->ebbDirection = _msg->ebbDirection;
       this->floodDirection = _msg->floodDirection;
-      this->world_start_time = _msg->worldStartTime;
+      this->world_start_time[0] = _msg->worldStartTimeYear;
+      this->world_start_time[1] = _msg->worldStartTimeMonth;
+      this->world_start_time[2] = _msg->worldStartTimeDay;
+      this->world_start_time[3] = _msg->worldStartTimeHour;
+      this->world_start_time[4] = _msg->worldStartTimeMinute;
     }
 }
 

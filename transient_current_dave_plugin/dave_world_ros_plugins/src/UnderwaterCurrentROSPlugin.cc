@@ -182,7 +182,12 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     {
       for (int i = 0; i < this->dateGMT.size(); i++) {
         // Tidal oscillation database
-        currentDatabaseMsg.timeGMT.push_back(this->dateGMT[i]);
+        currentDatabaseMsg.timeGMTYear.push_back(this->dateGMT[i][0]);
+        currentDatabaseMsg.timeGMTMonth.push_back(this->dateGMT[i][1]);
+        currentDatabaseMsg.timeGMTDay.push_back(this->dateGMT[i][2]);
+        currentDatabaseMsg.timeGMTHour.push_back(this->dateGMT[i][3]);
+        currentDatabaseMsg.timeGMTMinute.push_back(this->dateGMT[i][4]);
+
         currentDatabaseMsg.tideVelocities.push_back(this->speedcmsec[i]);
       }
       currentDatabaseMsg.tideConstituents = false;
@@ -190,17 +195,13 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
 
     currentDatabaseMsg.ebbDirection = this->ebbDirection;
     currentDatabaseMsg.floodDirection = this->floodDirection;
-    std::string world_start_time;
-    world_start_time.append(std::to_string(this->world_start_time_year));
-    world_start_time.append("-");
-    world_start_time.append(std::to_string(this->world_start_time_month));
-    world_start_time.append("-");
-    world_start_time.append(std::to_string(this->world_start_time_day));
-    world_start_time.append(" ");
-    world_start_time.append(std::to_string(this->world_start_time_hour));
-    world_start_time.append(":");
-    world_start_time.append(std::to_string(this->world_start_time_minute));
-    currentDatabaseMsg.worldStartTime = world_start_time;
+    
+    currentDatabaseMsg.worldStartTimeYear = this->world_start_time_year;
+    currentDatabaseMsg.worldStartTimeMonth = this->world_start_time_month;
+    currentDatabaseMsg.worldStartTimeDay = this->world_start_time_day;
+    currentDatabaseMsg.worldStartTimeHour = this->world_start_time_hour;
+    currentDatabaseMsg.worldStartTimeMinute = this->world_start_time_minute;
+
 
     this->stratifiedCurrentVelocityPub.publish(currentDatabaseMsg);
   }

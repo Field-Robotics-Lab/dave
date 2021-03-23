@@ -160,7 +160,7 @@ namespace gazebo
     protected: bool tideFlag;
 
     /// \brief Vector to read timeGMT
-    protected: std::vector<std::string> timeGMT;
+    protected: std::vector<std::array<int, 5>> timeGMT;
 
     /// \brief Vector to read tideVelocities
     protected: std::vector<double> tideVelocities;
@@ -184,7 +184,7 @@ namespace gazebo
     protected: double floodDirection;
 
     /// \brief Tidal oscillation world start time (GMT)
-    protected: std::string world_start_time;
+    protected: std::array<int, 5> world_start_time;
   };
 }
 

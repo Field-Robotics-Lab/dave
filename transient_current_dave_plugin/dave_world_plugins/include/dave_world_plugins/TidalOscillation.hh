@@ -44,10 +44,10 @@ namespace gazebo
     public: void Initiate(bool _harmonicConstituents);
 
     /// \brief Translate datetime string to datenum
-    public: double TranslateDate(std::string _datetime);
+    public: double TranslateDate(std::array<int, 5> _datetime);
 
     /// \brief Input Datenum data
-    public: std::vector<std::string> dateGMT;
+    public: std::vector<std::array<int, 5>> dateGMT;
 
     /// \brief Input Tidal data
     public: std::vector<double> speedcmsec;
@@ -74,7 +74,7 @@ namespace gazebo
     public: double floodDirection;
 
     /// \brief Input world start time
-    public: std::string worldStartTime;
+    public: std::array<int, 5> worldStartTime;
     public: double worldStartTime_num;
 
     /// \brief Update function for a new time stamp

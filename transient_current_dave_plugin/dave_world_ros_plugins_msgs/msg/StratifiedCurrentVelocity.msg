@@ -7,7 +7,11 @@ float32[] depths
 geometry_msgs/Vector3[] velocities
 
 # Tide time (GMT)
-string[] timeGMT
+int16[] timeGMTYear
+int16[] timeGMTMonth
+int16[] timeGMTDay
+int16[] timeGMTHour
+int16[] timeGMTMinute
 
 # Tide velocities
 float32[] tideVelocities
@@ -29,4 +33,8 @@ float32 ebbDirection
 float32 floodDirection
 
 # World start time (GMT)
-string worldStartTime
+int16 worldStartTimeYear
+int16 worldStartTimeMonth
+int16 worldStartTimeDay
+int16 worldStartTimeHour
+int16 worldStartTimeMinute

@@ -84,45 +84,14 @@ void TidalOscillation::Initiate(bool _harmonicConstituent)
 }
 
 /////////////////////////////////////////////////
-double TidalOscillation::TranslateDate(std::string _datetime)
+double TidalOscillation::TranslateDate(std::array<int, 5> _datetime)
 {
   double datenumReturn;
-  int year, month, day, hour, minute;
-
-  // Divide to day and time
-  std::istringstream iss(_datetime);
-  std::string lineStream;
-  std::string::size_type sz;
-  std::vector<std::string> dayandtime;
-  while (getline(iss, lineStream, ' '))
-  {
-    dayandtime.push_back(lineStream);
-  }
-
-  // Divide day into year, month, day
-  std::istringstream iss2(dayandtime[0]);
-  std::vector<std::string> daymonthyear;
-  while (getline(iss2, lineStream, '-'))
-  {
-    daymonthyear.push_back(lineStream);
-  }
-  year = std::stoi(daymonthyear[0], &sz);
-  month = std::stoi(daymonthyear[1], &sz);
-  day = std::stoi(daymonthyear[2], &sz);
-
-  // Divide time into hour and minute
-  std::istringstream iss3(dayandtime[1]);
-  std::vector<std::string> hourminute;
-  while (getline(iss3, lineStream, ':'))
-  {
-    hourminute.push_back(lineStream);
-  }
-  hour = std::stoi(hourminute[0], &sz);
-  minute = std::stoi(hourminute[1], &sz);
 
   // Calculate datenum
   datenumReturn = std::calcdatenum(
-      year, month, day, hour, minute, 0, 0);
+      _datetime[0], _datetime[1], _datetime[2], 
+      _datetime[3], _datetime[4], 0, 0);
 
   return datenumReturn;
 }

@@ -116,7 +116,7 @@ namespace gazebo
     protected: GaussMarkovProcess currentVertAngleModel;
 
     /// \brief Vector of dateGMT for tidal oscillation
-    protected: std::vector<std::string> dateGMT;
+    protected: std::vector<std::array<int, 5>> dateGMT;
 
     /// \brief Vector of speedcmsec for tidal oscillation
     protected: std::vector<double> speedcmsec;

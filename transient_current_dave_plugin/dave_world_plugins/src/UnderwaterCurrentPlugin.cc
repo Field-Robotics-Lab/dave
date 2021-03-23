@@ -414,13 +414,20 @@ void UnderwaterCurrentPlugin::
           std::string lineStream;
           std::string::size_type sz;
           std::vector<std::string> row;
+          std::array<int, 5> tmpDateArray;
           while (getline(iss, lineStream, ','))
           {
             row.push_back(lineStream);
           }
           if (strcmp(row[1].c_str(), " slack"))  // skip 'slack' category
           {
-            this->dateGMT.push_back(row[0]);
+            tmpDateArray[0] = std::stoi(row[0].substr(0, 4));
+            tmpDateArray[1] = std::stoi(row[0].substr(5, 7));
+            tmpDateArray[2] = std::stoi(row[0].substr(8, 10));
+            tmpDateArray[3] = std::stoi(row[0].substr(11, 13));
+            tmpDateArray[4] = std::stoi(row[0].substr(14, 16));
+            this->dateGMT.push_back(tmpDateArray);
+            
             this->speedcmsec.push_back(stold(row[2], &sz));
           }
       }
