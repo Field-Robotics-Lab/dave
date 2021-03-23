@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dave_sensor_models</name>
+  <version>3.1.1</version>
+  <description>The dave_sensor_models package</description>
+
+  <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>gazebo_ros</depend>
+  <depend>uuv_sensor_ros_plugins</depend>
+  <depend>ds_sim</depend>
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros gazebo_media_path="${prefix}"/>
+  </export>
+</package>
