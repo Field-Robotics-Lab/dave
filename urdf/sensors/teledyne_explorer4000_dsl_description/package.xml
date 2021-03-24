@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>teledyne_explorer4000_dsl_description</name>
+  <version>3.1.1</version>
+  <description>The teledyne_explorer4000_dsl_description package containing Xacro templates associated with the Teledyne Explorer 4000 DVL using the WHOI DSL Gazebo environment DVL plugin</description>
+
+  <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>gazebo_ros</depend>
+  <depend>ds_sim</depend>
+  <depend>xacro</depend>
+</package>

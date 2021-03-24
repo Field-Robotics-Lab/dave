@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nortek_dvl500_6000">
+
+  <xacro:include filename="$(find nortek_dvl500_6000_dsl_description)/urdf/nortek_dvl500_6000.xacro"/>
+
+  <link name="dvl500_6000_base_link"/>
+
+  <link name="dvl500_6000_sensor_link">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+  </link>
+
+  <joint name="dvl500_6000_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="dvl500_6000_base_link"/>
+    <child link="dvl500_6000_sensor_link"/>
+  </joint>
+
+  <!-- Attach the DVL to link -->
+  <xacro:nortek_dvl500_6000_macro
+    name="dvl500_6000" namespace="dvl500_6000" xyz="0 0 0"
+    dvl_topic="dvl" ranges_topic="ranges"
+    robot_link="dvl500_6000_sensor_link" joint_xyz="0 0 0"/>
+
+  <gazebo reference="dvl500_6000_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl500_6000_sensor_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+</robot>
