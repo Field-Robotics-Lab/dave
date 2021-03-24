@@ -199,6 +199,11 @@ void TransientCurrentPlugin::Load(
     }
   }
 
+  // Tidal Oscillation
+  if (this->sdf->HasElement("tide_oscillation")
+    && this->sdf->Get<bool>("tide_oscillation") == true)
+    this->tideFlag = true;
+
   // Subscribe stratified ocean current database
   this->databaseSub = this->rosNode->subscribe
     <dave_world_ros_plugins_msgs::StratifiedCurrentVelocity>
@@ -251,6 +256,47 @@ void TransientCurrentPlugin::UpdateDatabase(
                                     _msg->depths[i]);
       this->database.push_back(data);
     }
+    if (this->tideFlag)
+    {
+      this->timeGMT.clear();
+      this->tideVelocities.clear();
+      if (_msg->tideConstituents == true)
+      {
+        this->M2_amp = _msg->M2amp;
+        this->M2_phase = _msg->M2phase;
+        this->M2_speed = _msg->M2speed;
+        this->S2_amp = _msg->S2amp;
+        this->S2_phase = _msg->S2phase;
+        this->S2_speed = _msg->S2speed;
+        this->N2_amp = _msg->N2amp;
+        this->N2_phase = _msg->N2phase;
+        this->N2_speed = _msg->N2speed;
+        this->tide_Constituents = true;
+      }
+      else
+      {
+        std::array<int, 5> tmpDateVals;
+        for (int i = 0; i < _msg->timeGMTYear.size(); i++)
+        {
+          tmpDateVals[0] = _msg->timeGMTYear[i];
+          tmpDateVals[1] = _msg->timeGMTMonth[i];
+          tmpDateVals[2] = _msg->timeGMTDay[i];
+          tmpDateVals[3] = _msg->timeGMTHour[i];
+          tmpDateVals[4] = _msg->timeGMTMinute[i];
+
+          this->timeGMT.push_back(tmpDateVals);
+          this->tideVelocities.push_back(_msg->tideVelocities[i]);
+        }
+        this->tide_Constituents = false;
+      }
+      this->ebbDirection = _msg->ebbDirection;
+      this->floodDirection = _msg->floodDirection;
+      this->world_start_time[0] = _msg->worldStartTimeYear;
+      this->world_start_time[1] = _msg->worldStartTimeMonth;
+      this->world_start_time[2] = _msg->worldStartTimeDay;
+      this->world_start_time[3] = _msg->worldStartTimeHour;
+      this->world_start_time[4] = _msg->worldStartTimeMinute;
+    }
 }
 
 /////////////////////////////////////////////////
@@ -290,9 +336,9 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
 
     // interpolate
     if (depthIndex == 0) {  // Deeper than database use deepest value
-      this->currentVelNorthModel.mean =
+      northCurrent =
         this->database[this->database.size()-1].X();
-      this->currentVelEastModel.mean =
+      eastCurrent =
         this->database[this->database.size()-1].Y();
     }
     else
@@ -300,14 +346,59 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
       double rate =
         (vehicleDepth-this->database[depthIndex-1].Z())
         /(this->database[depthIndex].Z()-this->database[depthIndex-1].Z());
-      this->currentVelNorthModel.mean =
+      northCurrent =
         (this->database[depthIndex].X()-this->database[depthIndex-1].X())*rate
         + this->database[depthIndex-1].X();
-      this->currentVelEastModel.mean =
+      eastCurrent =
         (this->database[depthIndex].Y()-this->database[depthIndex-1].Y())*rate
         + this->database[depthIndex-1].Y();
     }
+    this->currentVelNorthModel.mean = northCurrent;
+    this->currentVelEastModel.mean = eastCurrent;
     this->currentVelDownModel.mean = 0.0;
+
+    // Tidal oscillation
+    if (this->tideFlag)
+    {
+      // Update tide oscillation
+    #if GAZEBO_MAJOR_VERSION >= 8
+      common::Time time = this->world->SimTime();
+    #else
+      common::Time time = this->world->GetSimTime();
+    #endif
+      if (this->tide_Constituents)
+      {
+        this->tide.M2_amp = this->M2_amp;
+        this->tide.M2_phase = this->M2_phase;
+        this->tide.M2_speed = this->M2_speed;
+        this->tide.S2_amp = this->S2_amp;
+        this->tide.S2_phase = this->S2_phase;
+        this->tide.S2_speed = this->S2_speed;
+        this->tide.N2_amp = this->N2_amp;
+        this->tide.N2_phase = this->N2_phase;
+        this->tide.N2_speed = this->N2_speed;
+      }
+      else
+      {
+        this->tide.dateGMT = this->timeGMT;
+        this->tide.speedcmsec = this->tideVelocities;
+      }
+      this->tide.ebbDirection = this->ebbDirection;
+      this->tide.floodDirection = this->floodDirection;
+      this->tide.worldStartTime = this->world_start_time;
+      this->tide.Initiate(this->tide_Constituents);
+      std::pair<double, double> currents =
+        this->tide.Update(time.Double(), northCurrent);
+      this->currentVelNorthModel.mean = currents.first;
+      this->currentVelEastModel.mean = currents.second;
+      this->currentVelDownModel.mean = 0.0;
+    }
+    else
+    {
+      this->currentVelNorthModel.mean = northCurrent;
+      this->currentVelEastModel.mean = eastCurrent;
+      this->currentVelDownModel.mean = 0.0;
+    }
 
     // Change min max accordingly
     currentVelNorthModel.max = currentVelNorthModel.mean + this->noiseAmp_North;

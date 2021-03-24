@@ -28,6 +28,7 @@
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <dave_world_plugins/GaussMarkovProcess.hh>
+#include <dave_world_plugins/TidalOscillation.hh>
 #include <sdf/sdf.hh>
 
 #include <map>
@@ -152,8 +153,41 @@ namespace gazebo
     /// \brief Publish ocean current
     private: void PublishCurrentVelocity();
 
-    /// \brief Vector for read database
+    /// \brief Vector to read database
     protected: std::vector<ignition::math::Vector3d> database;
+
+    /// \brief Tidal Oscillation interpolation model
+    protected: TidalOscillation tide;
+
+    /// \brief Tidal Oscillation flag
+    protected: bool tideFlag;
+
+    /// \brief Vector to read timeGMT
+    protected: std::vector<std::array<int, 5>> timeGMT;
+
+    /// \brief Vector to read tideVelocities
+    protected: std::vector<double> tideVelocities;
+
+    /// \brief Tidal current harmonic constituents
+    protected: bool tide_Constituents;
+    protected: double M2_amp;
+    protected: double M2_phase;
+    protected: double M2_speed;
+    protected: double S2_amp;
+    protected: double S2_phase;
+    protected: double S2_speed;
+    protected: double N2_amp;
+    protected: double N2_phase;
+    protected: double N2_speed;
+
+    /// \brief Tidal oscillation mean ebb direction
+    protected: double ebbDirection;
+
+    /// \brief Tidal oscillation mean flood direction
+    protected: double floodDirection;
+
+    /// \brief Tidal oscillation world start time (GMT)
+    protected: std::array<int, 5> world_start_time;
   };
 }
 

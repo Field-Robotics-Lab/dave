@@ -66,7 +66,8 @@ target_link_libraries(stratified_current_velocity_msgs ${PROTOBUF_LIBRARY})
 
 add_library(dave_underwater_current_plugin
   src/UnderwaterCurrentPlugin.cc
-  src/GaussMarkovProcess.cc)
+  src/GaussMarkovProcess.cc
+  src/TidalOscillation.cc)
 
 target_link_libraries(dave_underwater_current_plugin
   stratified_current_velocity_msgs

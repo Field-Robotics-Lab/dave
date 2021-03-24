@@ -155,6 +155,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     // Generate and publish stratified_current_velocity database
     dave_world_ros_plugins_msgs::StratifiedCurrentVelocity currentDatabaseMsg;
     for (int i = 0; i < this->database.size(); i++) {
+      // Stratified current database
       geometry_msgs::Vector3 velocity;
       velocity.x = this->database[i].X();
       velocity.y = this->database[i].Y();
@@ -162,6 +163,45 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
       currentDatabaseMsg.velocities.push_back(velocity);
       currentDatabaseMsg.depths.push_back(this->database[i].Z());
     }
+
+    if (this->tidalHarmonicFlag)
+    {
+      // Tidal harmonic constituents
+      currentDatabaseMsg.M2amp = this->M2_amp;
+      currentDatabaseMsg.M2phase = this->M2_phase;
+      currentDatabaseMsg.M2speed = this->M2_speed;
+      currentDatabaseMsg.S2amp = this->S2_amp;
+      currentDatabaseMsg.S2phase = this->S2_phase;
+      currentDatabaseMsg.S2speed = this->S2_speed;
+      currentDatabaseMsg.N2amp = this->N2_amp;
+      currentDatabaseMsg.N2phase = this->N2_phase;
+      currentDatabaseMsg.N2speed = this->N2_speed;
+      currentDatabaseMsg.tideConstituents = true;
+    }
+    else
+    {
+      for (int i = 0; i < this->dateGMT.size(); i++) {
+        // Tidal oscillation database
+        currentDatabaseMsg.timeGMTYear.push_back(this->dateGMT[i][0]);
+        currentDatabaseMsg.timeGMTMonth.push_back(this->dateGMT[i][1]);
+        currentDatabaseMsg.timeGMTDay.push_back(this->dateGMT[i][2]);
+        currentDatabaseMsg.timeGMTHour.push_back(this->dateGMT[i][3]);
+        currentDatabaseMsg.timeGMTMinute.push_back(this->dateGMT[i][4]);
+
+        currentDatabaseMsg.tideVelocities.push_back(this->speedcmsec[i]);
+      }
+      currentDatabaseMsg.tideConstituents = false;
+    }
+
+    currentDatabaseMsg.ebbDirection = this->ebbDirection;
+    currentDatabaseMsg.floodDirection = this->floodDirection;
+
+    currentDatabaseMsg.worldStartTimeYear = this->world_start_time_year;
+    currentDatabaseMsg.worldStartTimeMonth = this->world_start_time_month;
+    currentDatabaseMsg.worldStartTimeDay = this->world_start_time_day;
+    currentDatabaseMsg.worldStartTimeHour = this->world_start_time_hour;
+    currentDatabaseMsg.worldStartTimeMinute = this->world_start_time_minute;
+
 
     this->stratifiedCurrentVelocityPub.publish(currentDatabaseMsg);
   }
