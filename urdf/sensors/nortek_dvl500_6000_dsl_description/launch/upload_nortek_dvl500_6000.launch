@@ -1,0 +1,3 @@
+<launch>
+  <param name="nortek_dvl500_6000" command="$(find xacro)/xacro $(find nortek_dvl500_6000_dsl_description)/urdf/nortek_dvl500_6000_standalone.xacro" />
+</launch>

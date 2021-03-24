@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Generates a link element with Teledyne WHN 600 physical & visual characteristics -->
+  <xacro:macro name="teledyne_whn_link" params="name xyz scale">
+    <link name="${name}_link">
+      <inertial>
+        <mass value="15.8"/>
+        <origin xyz="0 0 0" rpy="${pi} 0 0"/>
+        <inertia ixx="0.1287917645" ixy="0" ixz="0" iyy="0.1287917645" iyz="0" izz="0.100162204"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://teledyne_whn_dsl_description/meshes/WorkhorseNavigator.dae" scale="${scale}"/>
+        </geometry>
+        <origin xyz="${xyz}" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.2445" radius="0.1126"/>
+        </geometry>
+        <origin xyz="${xyz}" rpy="0 0 0"/>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- Generates a sensor element with Teledyne WHN 600 parameters -->
+  <xacro:macro name="teledyne_whn_sensor"
+               params="name robot_link sensor_link xyz namespace dvl_topic ranges_topic">
+    <gazebo reference="${sensor_link}">
+      <sensor name="${name}_sensor" type="dsros_dvl">
+        <always_on>1</always_on>
+        <update_rate>7.0</update_rate>
+        <pose frame="">${xyz} 0 0 0</pose>
+
+        <!-- This plugin MUST be included, because SDF sucks -->
+        <plugin name="${name}_sensor_controller" filename="libdsros_ros_dvl.so">
+          <robotNamespace>${namespace}</robotNamespace>
+          <topicName>${dvl_topic}</topicName>
+          <rangesTopicName>${ranges_topic}</rangesTopicName>
+          <frameName>${name}_link</frameName>
+          <pointcloudFrame>${robot_link}</pointcloudFrame>
+
+          <!--  WHN 600 parameters (from vendor data sheet) -->
+          <updateRateHZ>7.0</updateRateHZ>
+          <gaussianNoiseBeamVel>0.005</gaussianNoiseBeamVel>
+          <gaussianNoiseBeamWtrVel>0.0075</gaussianNoiseBeamWtrVel>
+          <gaussianNoiseBeamRange>0.1</gaussianNoiseBeamRange>
+          <minRange>0.7</minRange>
+          <maxRange>90.0</maxRange>
+          <maxRangeDiff>10</maxRangeDiff>
+          <beamAngleDeg>30.0</beamAngleDeg>
+          <beamWidthDeg>4.0</beamWidthDeg>
+          <beamAzimuthDeg1>-135</beamAzimuthDeg1>
+          <beamAzimuthDeg2>135</beamAzimuthDeg2>
+          <beamAzimuthDeg3>45</beamAzimuthDeg3>
+          <beamAzimuthDeg4>-45</beamAzimuthDeg4>
+          <enableWaterTrack>1</enableWaterTrack>
+          <waterTrackBins>10</waterTrackBins>
+          <currentProfileCoordMode>0</currentProfileCoordMode>
+          <pos_z_down>true</pos_z_down>
+          <collide_bitmask>0x0001</collide_bitmask>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="teledyne_whn_joint"
+               params="name robot_link joint_xyz">
+    <joint name="${name}_joint" type="fixed">
+      <origin xyz="${joint_xyz}" rpy="${pi} 0 0"/>
+      <parent link="${robot_link}"/>
+      <child link="${name}_link"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="teledyne_beam_visual_link"
+               params="link_number">
+    <link name="ray_link_${link_number}">
+      <inertial>
+        <mass value="0.00001"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.00000000017" ixy="0" ixz="0" iyy="0.00000000017" iyz="0" izz="0.00000000017"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="teledyne_beam_visual_joint"
+               params="robot_link link_number rpy">
+    <joint name="ray_joint_${link_number}" type="fixed">
+      <origin xyz="0 0 0" rpy="${rpy}"/>
+      <parent link="${robot_link}"/>
+      <child link="ray_link_${link_number}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="teledyne_beam_visual_ray"
+               params="ray_visual link_number">
+    <gazebo reference="ray_link_${link_number}">
+      <sensor type="ray" name="dvl_sonar_ray_${link_number}">
+        <pose>0 0 0 0 0 0</pose>
+        <update_rate>7</update_rate>
+        <visualize>${ray_visual}</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>3</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.03</min_angle>
+              <max_angle>0.03</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.7</min>
+            <max>90</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+
+  <!-- Top level macro for generating the link, sensor, joint combo 
+       The macro will create the link, joint, and sensor for the DVL.
+       The DVL can be attached anywhere on the robot (joint_xyz parameter)
+       but sensor orientation will always be forward and down relative to
+       the robot link (robot_link parameter). -->
+
+  <xacro:macro name="teledyne_whn_macro"
+               params="name xyz namespace dvl_topic ranges_topic robot_link joint_xyz scale ray_visual">
+    <xacro:teledyne_whn_link name="${name}" xyz="${xyz}" scale="${scale}"/>
+    <xacro:teledyne_whn_joint name="${name}" robot_link="${robot_link}" joint_xyz="${joint_xyz}"/>
+    <xacro:teledyne_whn_sensor name="${name}"
+                               robot_link="${robot_link}" sensor_link="${name}_link"
+                               xyz="${xyz}" namespace="${namespace}"
+                               dvl_topic="${dvl_topic}" ranges_topic="${ranges_topic}"/>
+
+    <!-- Clean this up with loop -->
+    <!-- https://answers.gazebosim.org//question/6883/creating-n-links-using-a-for-loop-in-xacro/ -->
+    <xacro:teledyne_beam_visual_link link_number="1"/>
+    <xacro:teledyne_beam_visual_joint robot_link="${robot_link}"
+                                      link_number="1"
+                                      rpy="0 1.05079632679 0"/>
+    <xacro:teledyne_beam_visual_ray ray_visual="${ray_visual}"
+                                    link_number="1"/>
+
+    <xacro:teledyne_beam_visual_link link_number="2"/>
+    <xacro:teledyne_beam_visual_joint robot_link="${robot_link}"
+                                      link_number="2"
+                                      rpy="0 2.09079632679 0"/>
+    <xacro:teledyne_beam_visual_ray ray_visual="${ray_visual}"
+                                    link_number="2"/>
+
+    <xacro:teledyne_beam_visual_link link_number="3"/>
+    <xacro:teledyne_beam_visual_joint robot_link="${robot_link}"
+                                      link_number="3"
+                                      rpy="0 1.05079632679 1.57079632679"/>
+    <xacro:teledyne_beam_visual_ray ray_visual="${ray_visual}"
+                                    link_number="3"/>
+
+    <xacro:teledyne_beam_visual_link link_number="4"/>
+    <xacro:teledyne_beam_visual_joint robot_link="${robot_link}"
+                                      link_number="4"
+                                      rpy="0 1.05079632679 -1.57079632679"/>
+    <xacro:teledyne_beam_visual_ray ray_visual="${ray_visual}"
+                                    link_number="4"/>
+
+  </xacro:macro>
+
+</robot>
+

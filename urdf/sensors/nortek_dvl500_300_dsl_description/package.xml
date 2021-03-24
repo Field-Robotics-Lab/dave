@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>nortek_dvl500_300_dsl_description</name>
+  <version>3.1.1</version>
+  <description>The nortek_dvl500_300_dsl_description package containing Xacro templates associated with the Nortek DVL500-300 DVL using the WHOI DSL Gazebo environment DVL plugin</description>
+
+  <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>gazebo_ros</depend>
+  <depend>ds_sim</depend>
+  <depend>xacro</depend>
+</package>

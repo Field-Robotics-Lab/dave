@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!--
+Xacro file for generating a URDF version of the Nortek DVL500-300m DVL
+that implements the WHOI Deep Submergence Environment simulation Gazebo
+and ROS plugins.  The templates can be used to generate the sonar link
+(including visualization, collision, and inertial information) and the
+sensor element for incorporation into other UUV models.
+
+Code modified from the original ds_sim package under
+the terms of the copyright below.
+-->
+<!--
+Copyright 2018 Woods Hole Oceanographic Institution
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Generates a link element with Nortek DVL500-300m physical & visual characteristics -->
+  <xacro:macro name="nortek_dvl500_300_link" params="name xyz">
+    <link name="${name}_link">
+      <inertial>
+        <mass value="3.5"/>
+        <origin xyz="0 0 0" rpy="${pi} 0 0"/>
+        <inertia ixx="0.019587166666667" ixy="0" ixz="0" iyy="0.019587166666667" iyz="0" izz="0.01513575"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <!-- Replace mesh with correct one once it's available -->
+          <mesh filename="package://nortek_dvl500_300_dsl_description/meshes/DVL500-300m.dae"/>
+        </geometry>
+        <origin xyz="${xyz}" rpy="0 ${pi} 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <!-- Replace cylinder with collision mesh once it's available -->
+          <cylinder length="0.203" radius="0.093"/>
+        </geometry>
+        <origin xyz="${xyz}" rpy="0 0 0"/>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- Generates a sensor element with Nortek DVL500-300m parameters -->
+  <xacro:macro name="nortek_dvl500_300_sensor"
+               params="name robot_link sensor_link xyz namespace dvl_topic ranges_topic">
+    <gazebo reference="${sensor_link}">
+      <sensor name="${name}_sensor" type="dsros_dvl">
+        <always_on>1</always_on>
+        <update_rate>8.0</update_rate>
+        <pose frame="">${xyz} 0 0 0</pose>
+
+        <!-- This plugin MUST be included, because SDF sucks -->
+        <plugin name="${name}_sensor_controller" filename="libdsros_ros_dvl.so">
+          <robotNamespace>${namespace}</robotNamespace>
+          <topicName>${dvl_topic}</topicName>
+          <rangesTopicName>${ranges_topic}</rangesTopicName>
+          <frameName>${name}_link</frameName>
+          <pointcloudFrame>${robot_link}</pointcloudFrame>
+
+          <!--  DVL500-300m parameters (from vendor data sheet) -->
+          <updateRateHZ>8.0</updateRateHZ>
+          <gaussianNoiseBeamVel>0.005</gaussianNoiseBeamVel>
+          <gaussianNoiseBeamWtrVel>0.015</gaussianNoiseBeamWtrVel>
+          <gaussianNoiseBeamRange>0.1</gaussianNoiseBeamRange>
+          <minRange>0.3</minRange>
+          <maxRange>200.0</maxRange>
+          <maxRangeDiff>10</maxRangeDiff>
+          <beamAngleDeg>25.0</beamAngleDeg>
+          <beamWidthDeg>3.0</beamWidthDeg>
+          <beamAzimuthDeg1>-135</beamAzimuthDeg1>
+          <beamAzimuthDeg2>135</beamAzimuthDeg2>
+          <beamAzimuthDeg3>45</beamAzimuthDeg3>
+          <beamAzimuthDeg4>-45</beamAzimuthDeg4>
+          <enableWaterTrack>1</enableWaterTrack>
+          <waterTrackBins>10</waterTrackBins>
+          <currentProfileCoordMode>0</currentProfileCoordMode>
+          <pos_z_down>true</pos_z_down>
+          <collide_bitmask>0x0001</collide_bitmask>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="nortek_dvl500_300_joint"
+               params="name robot_link joint_xyz">
+    <joint name="${name}_joint" type="fixed">
+      <origin xyz="${joint_xyz}" rpy="${pi} 0 0"/>
+      <parent link="${robot_link}"/>
+      <child link="${name}_link"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Top level macro for generating the link, sensor, joint combo 
+       The macro will create the link, joint, and sensor for the DVL.
+       The DVL can be attached anywhere on the robot (joint_xyz parameter)
+       but sensor orientation will always be forward and down relative to
+       the robot link (robot_link parameter). -->
+  <xacro:macro name="nortek_dvl500_300_macro"
+               params="name xyz namespace dvl_topic ranges_topic robot_link joint_xyz">
+    <xacro:nortek_dvl500_300_link name="${name}" xyz="${xyz}" />
+    <xacro:nortek_dvl500_300_joint name="${name}" robot_link="${robot_link}" joint_xyz="${joint_xyz}"/>
+    <xacro:nortek_dvl500_300_sensor name="${name}"
+                                    robot_link="${robot_link}" sensor_link="${name}_link"
+                                    xyz="${xyz}" namespace="${namespace}"
+                                    dvl_topic="${dvl_topic}" ranges_topic="${ranges_topic}"/>
+  </xacro:macro>
+
+</robot>
+
