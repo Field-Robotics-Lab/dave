@@ -195,7 +195,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
 
     currentDatabaseMsg.ebbDirection = this->ebbDirection;
     currentDatabaseMsg.floodDirection = this->floodDirection;
-    
+
     currentDatabaseMsg.worldStartTimeYear = this->world_start_time_year;
     currentDatabaseMsg.worldStartTimeMonth = this->world_start_time_month;
     currentDatabaseMsg.worldStartTimeDay = this->world_start_time_day;

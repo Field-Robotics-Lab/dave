@@ -71,8 +71,10 @@ void TidalOscillation::Initiate(bool _harmonicConstituent)
     int nData = this->speedcmsec.size();
     // Calculate datenum
     if (this->dateGMT.size() != this->datenum.size())
+    {
       for (size_t i = 0; i < nData; i++)
         this->datenum.push_back(TranslateDate(this->dateGMT[i]));
+    }
     this->harmonicConstituent = false;
   }
   this->worldStartTime_num = TranslateDate(this->worldStartTime);
@@ -90,7 +92,7 @@ double TidalOscillation::TranslateDate(std::array<int, 5> _datetime)
 
   // Calculate datenum
   datenumReturn = std::calcdatenum(
-      _datetime[0], _datetime[1], _datetime[2], 
+      _datetime[0], _datetime[1], _datetime[2],
       _datetime[3], _datetime[4], 0, 0);
 
   return datenumReturn;

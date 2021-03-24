@@ -427,7 +427,7 @@ void UnderwaterCurrentPlugin::
             tmpDateArray[3] = std::stoi(row[0].substr(11, 13));
             tmpDateArray[4] = std::stoi(row[0].substr(14, 16));
             this->dateGMT.push_back(tmpDateArray);
-            
+
             this->speedcmsec.push_back(stold(row[2], &sz));
           }
       }
