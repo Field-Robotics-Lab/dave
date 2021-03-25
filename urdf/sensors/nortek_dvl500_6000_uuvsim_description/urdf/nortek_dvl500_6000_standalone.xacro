@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nortek_dvl500_6000">
+
+  <xacro:include filename="$(find nortek_dvl500_6000_uuvsim_description)/urdf/nortek_dvl500_6000.xacro"/>
+
+  <link name="dvl500_6000_base_link"/>
+
+  <link name="dvl500_6000_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.000000017" ixy="0" ixz="0" 
+               iyy="0.000000017" iyz="0" izz="0.000000017"/>
+    </inertial>
+  </link>
+
+  <joint name="dvl500_6000_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="dvl500_6000_base_link"/>
+    <child link="dvl500_6000_link"/>
+  </joint>
+
+  <xacro:nortek_dvl500_6000_enu_macro namespace="dvl500_6000" parent_link="dvl500_6000_base_link">
+    <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+  </xacro:nortek_dvl500_6000_enu_macro>
+
+  <!-- Turn gravity (off) for now so that the (unpowered) robot doesn't sink like
+       a rock.  Can remove this once the neutral buoyancy issue (#4) is resolved -->
+  <gazebo reference="dvl500_6000/dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl500_6000/dvl_sonar1_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl500_6000/dvl_sonar2_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl500_6000/dvl_sonar3_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl500_6000_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="dvl500_6000/dvl_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+</robot>

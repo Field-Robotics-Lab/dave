@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="teledyne_whn">
+
+  <xacro:include filename="$(find teledyne_whn_uuvsim_description)/urdf/teledyne_whn.xacro"/>
+
+  <link name="whn_base_link"/>
+
+  <link name="whn_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.000000017" ixy="0" ixz="0" 
+               iyy="0.000000017" iyz="0" izz="0.000000017"/>
+    </inertial>
+  </link>
+
+  <joint name="whn_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="whn_base_link"/>
+    <child link="whn_link"/>
+  </joint>
+
+  <xacro:teledyne_whn_enu_macro namespace="whn" parent_link="whn_base_link">
+    <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+  </xacro:teledyne_whn_enu_macro>
+
+  <!-- Turn gravity (off) for now so that the (unpowered) robot doesn't sink like
+       a rock.  Can remove this once the neutral buoyancy issue (#4) is resolved -->
+  <gazebo reference="whn/dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="whn/dvl_sonar1_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="whn/dvl_sonar2_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="whn/dvl_sonar3_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="whn_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="whn/dvl_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+</robot>

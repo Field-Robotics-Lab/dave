@@ -1,0 +1,4 @@
+<launch>
+  <param name="sonardyne_syrinx600" command="$(find xacro)/xacro $(find sonardyne_syrinx600_uuvsim_description)/urdf/sonardyne_syrinx600_standalone.xacro" />
+</launch>
+

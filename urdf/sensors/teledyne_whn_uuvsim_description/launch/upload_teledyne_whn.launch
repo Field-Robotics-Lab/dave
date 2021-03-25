@@ -1,0 +1,4 @@
+<launch>
+  <param name="teledyne_whn" command="$(find xacro)/xacro $(find teledyne_whn_uuvsim_description)/urdf/teledyne_whn_standalone.xacro" />
+</launch>
+
