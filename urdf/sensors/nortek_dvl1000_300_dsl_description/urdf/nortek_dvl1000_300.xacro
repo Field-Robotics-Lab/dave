@@ -50,7 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
       </inertial>
       <visual>
         <geometry>
-<!--          <mesh filename="$(find nps_uw_sensors_gazebo)/models/whoi_nortek_dvl1000_300/meshes/DVL1000-300m.dae"/> -->
           <mesh filename="package://nortek_dvl1000_300_dsl_description/meshes/DVL1000-300m.dae"/>
         </geometry>
         <origin xyz="${xyz}" rpy="0 ${pi} 0"/>

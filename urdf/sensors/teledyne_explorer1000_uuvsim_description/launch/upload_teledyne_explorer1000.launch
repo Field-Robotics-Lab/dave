@@ -1,0 +1,4 @@
+<launch>
+  <param name="teledyne_explorer1000" command="$(find xacro)/xacro $(find teledyne_explorer1000_uuvsim_description)/urdf/teledyne_explorer1000_standalone.xacro" />
+</launch>
+
