@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(smilodon_description)
+cmake_minimum_required(VERSION 3.1.1)
+project(caracara_description)
 
 find_package(catkin REQUIRED)
 

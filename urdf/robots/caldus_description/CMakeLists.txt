@@ -1,6 +1,5 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(caracara_description)
-
+cmake_minimum_required(VERSION 3.1.1)
+project(caldus_description)
 
 find_package(catkin REQUIRED)
 

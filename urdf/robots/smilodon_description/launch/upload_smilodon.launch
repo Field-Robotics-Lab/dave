@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="namespace" default="smilodon"/>
+  <arg name="debug" default="false"/>
+     <param name="/$(arg namespace)/smilodon"
+            command="$(find xacro)/xacro '$(find smilodon_description)/urdf/smilodon.xacro'
+		             debug:=$(arg debug)
+                     namespace:=$(arg namespace)
+                     inertial_reference_frame:=world" />
+</launch>
+

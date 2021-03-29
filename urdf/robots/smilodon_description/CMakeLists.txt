@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(caldus_description)
+cmake_minimum_required(VERSION 3.1.1)
+project(smilodon_description)
 
 find_package(catkin REQUIRED)
 
