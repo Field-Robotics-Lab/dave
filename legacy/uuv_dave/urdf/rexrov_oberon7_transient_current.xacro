@@ -79,7 +79,7 @@
     <!-- The underwater object plugin is given as an input block parameter to
      allow the addition of external models of manipulator units -->
     <gazebo>
-      <plugin name="dave_transient_current_plugin" filename="libdave_transient_current_plugin.so">
+      <plugin name="dave_transient_current_plugin" filename="libdave_ocean_current_model_plugin.so">
         <flow_velocity_topic>hydrodynamics/current_velocity/$(arg namespace)</flow_velocity_topic>
         <base_link_name>$(arg namespace)/base_link</base_link_name>
         <transient_current>

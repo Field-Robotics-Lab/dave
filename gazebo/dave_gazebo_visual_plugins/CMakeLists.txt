@@ -15,13 +15,10 @@ find_package(Boost REQUIRED COMPONENTS system)
 set(DAVE_GAZEBO_VISUAL_PLUGINS_LIST "")
 
 catkin_package(
-  INCLUDE_DIRS
-    include
   LIBRARIES
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/include
-                    ${Boost_INCLUDE_DIR}
+include_directories(${Boost_INCLUDE_DIR}
                     ${catkin_INCLUDE_DIRS}
                     ${GAZEBO_INCLUDE_DIRS}
                     ${GAZEBO_MSG_INCLUDE_DIRS}

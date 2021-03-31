@@ -13,9 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file TidalOscillation.cc
+/// \file tidal_oscillation.cc
 
-#include <dave_world_plugins/TidalOscillation.hh>
+#include <tidal_oscillation.h>
 
 #include <fstream>
 

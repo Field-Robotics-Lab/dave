@@ -10,15 +10,53 @@ endif()
 
 find_package(catkin REQUIRED COMPONENTS
     gazebo_dev
-    roscpp)
+    roscpp
+    gazebo_msgs
+    geometry_msgs
+    dave_gazebo_world_plugins
+    message_generation
+    std_msgs
+)
 find_package(Boost REQUIRED COMPONENTS system)
 
 set(DAVE_GAZEBO_ROS_PLUGINS_LIST "")
 
+# ocean current msg and services
+add_service_files(
+  FILES
+  SetCurrentModel.srv
+  GetCurrentModel.srv
+  SetCurrentVelocity.srv
+  SetCurrentDirection.srv
+  SetOriginSphericalCoord.srv
+  GetOriginSphericalCoord.srv
+  TransformToSphericalCoord.srv
+  TransformFromSphericalCoord.srv
+)
+add_message_files(
+  FILES
+  StratifiedCurrentVelocity.msg
+)
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+)
+
 catkin_package(
-  INCLUDE_DIRS
-    include
+  INCLUDE_DIRS include
   LIBRARIES
+    dave_ocean_current_plugin
+    dave_sc_coordinates_interface
+  CATKIN_DEPENDS
+    roscpp
+    gazebo_msgs
+    geometry_msgs
+    dave_gazebo_world_plugins
+    gazebo_dev
+    std_msgs
+    geometry_msgs
+    message_runtime
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/include
@@ -33,6 +71,32 @@ link_directories(${catkin_LIBRARY_DIRS}
                  ${GAXEBO_LIBRARY_DIRS}
 #                ...
 )
+
+# ocean current plugin
+add_library(dave_ocean_current_plugin
+   SHARED
+   src/ocean_current_plugin.cpp
+)
+add_dependencies(dave_ocean_current_plugin
+ ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(dave_ocean_current_plugin
+   ${catkin_LIBRARIES}
+)
+list(APPEND DAVE_GAZEBO_ROS_PLUGINS_LIST dave_ocean_current_plugin)
+
+# spherical coordinate interfafce
+add_library(dave_sc_coordinates_interface
+   SHARED
+   src/spherical_coordinates_interface.cpp
+)
+add_dependencies(dave_sc_coordinates_interface
+ ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(dave_sc_coordinates_interface
+   ${catkin_LIBRARIES}
+)
+list(APPEND DAVE_GAZEBO_ROS_PLUGINS_LIST dave_sc_coordinates_interface)
 
 # Plugin compile directions
 

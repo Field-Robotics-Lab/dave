@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file TransientCurrentPlugin.cc
+/// \file ocean_current.cc
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
@@ -28,7 +28,7 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
-#include <dave_model_plugins/TransientCurrentPlugin.hh>
+#include <ocean_current_model_plugin.h>
 
 #include "ros/package.h"
 
@@ -206,7 +206,7 @@ void TransientCurrentPlugin::Load(
 
   // Subscribe stratified ocean current database
   this->databaseSub = this->rosNode->subscribe
-    <dave_world_ros_plugins_msgs::StratifiedCurrentVelocity>
+    <dave_gazebo_ros_plugins::StratifiedCurrentVelocity>
     (this->transientCurrentVelocityTopic, 10,
     boost::bind(&TransientCurrentPlugin::UpdateDatabase, this, _1));
 
@@ -246,7 +246,7 @@ void TransientCurrentPlugin::Update(const gazebo::common::UpdateInfo &)
 
 /////////////////////////////////////////////////
 void TransientCurrentPlugin::UpdateDatabase(
-  const dave_world_ros_plugins_msgs::StratifiedCurrentVelocity::ConstPtr &_msg)
+  const dave_gazebo_ros_plugins::StratifiedCurrentVelocity::ConstPtr &_msg)
 {
     this->database.clear();
     for (int i = 0; i < _msg->depths.size(); i++)

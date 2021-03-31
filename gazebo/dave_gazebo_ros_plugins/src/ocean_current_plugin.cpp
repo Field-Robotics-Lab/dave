@@ -13,7 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <dave_world_ros_plugins/UnderwaterCurrentROSPlugin.hh>
+/// \file ocean_current_plugin.cpp
+
+#include <ocean_current_plugin.h>
 
 namespace dave_simulator_ros
 {
@@ -74,7 +76,7 @@ void UnderwaterCurrentROSPlugin::Load(gazebo::physics::WorldPtr _world,
 
   // Advertise the stratified ocean current msg
   this->stratifiedCurrentVelocityPub = this->rosNode->advertise<
-    dave_world_ros_plugins_msgs::StratifiedCurrentVelocity>(
+    dave_gazebo_ros_plugins::StratifiedCurrentVelocity>(
     this->stratifiedCurrentVelocityTopic, 10);
 
   // Advertise the service to update the current velocity model
@@ -153,7 +155,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     this->flowVelocityPub.publish(flowVelMsg);
 
     // Generate and publish stratified_current_velocity database
-    dave_world_ros_plugins_msgs::StratifiedCurrentVelocity currentDatabaseMsg;
+    dave_gazebo_ros_plugins::StratifiedCurrentVelocity currentDatabaseMsg;
     for (int i = 0; i < this->database.size(); i++) {
       // Stratified current database
       geometry_msgs::Vector3 velocity;
@@ -209,8 +211,8 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::UpdateHorzAngle(
-    dave_world_ros_plugins_msgs::SetCurrentDirection::Request& _req,
-    dave_world_ros_plugins_msgs::SetCurrentDirection::Response& _res)
+    dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
+    dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res)
 {
   _res.success = this->currentHorzAngleModel.SetMean(_req.angle);
 
@@ -219,8 +221,8 @@ bool UnderwaterCurrentROSPlugin::UpdateHorzAngle(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::UpdateVertAngle(
-    dave_world_ros_plugins_msgs::SetCurrentDirection::Request& _req,
-    dave_world_ros_plugins_msgs::SetCurrentDirection::Response& _res)
+    dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
+    dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res)
 {
   _res.success = this->currentVertAngleModel.SetMean(_req.angle);
   return true;
@@ -228,8 +230,8 @@ bool UnderwaterCurrentROSPlugin::UpdateVertAngle(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::UpdateCurrentVelocity(
-    dave_world_ros_plugins_msgs::SetCurrentVelocity::Request& _req,
-    dave_world_ros_plugins_msgs::SetCurrentVelocity::Response& _res)
+    dave_gazebo_ros_plugins::SetCurrentVelocity::Request& _req,
+    dave_gazebo_ros_plugins::SetCurrentVelocity::Response& _res)
 {
   if (this->currentVelModel.SetMean(_req.velocity) &&
       this->currentHorzAngleModel.SetMean(_req.horizontal_angle) &&
@@ -254,8 +256,8 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentVelocity(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::GetCurrentVelocityModel(
-    dave_world_ros_plugins_msgs::GetCurrentModel::Request& _req,
-    dave_world_ros_plugins_msgs::GetCurrentModel::Response& _res)
+    dave_gazebo_ros_plugins::GetCurrentModel::Request& _req,
+    dave_gazebo_ros_plugins::GetCurrentModel::Response& _res)
 {
   _res.mean = this->currentVelModel.mean;
   _res.min = this->currentVelModel.min;
@@ -267,8 +269,8 @@ bool UnderwaterCurrentROSPlugin::GetCurrentVelocityModel(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::GetCurrentHorzAngleModel(
-    dave_world_ros_plugins_msgs::GetCurrentModel::Request& _req,
-    dave_world_ros_plugins_msgs::GetCurrentModel::Response& _res)
+    dave_gazebo_ros_plugins::GetCurrentModel::Request& _req,
+    dave_gazebo_ros_plugins::GetCurrentModel::Response& _res)
 {
   _res.mean = this->currentHorzAngleModel.mean;
   _res.min = this->currentHorzAngleModel.min;
@@ -280,8 +282,8 @@ bool UnderwaterCurrentROSPlugin::GetCurrentHorzAngleModel(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::GetCurrentVertAngleModel(
-    dave_world_ros_plugins_msgs::GetCurrentModel::Request& _req,
-    dave_world_ros_plugins_msgs::GetCurrentModel::Response& _res)
+    dave_gazebo_ros_plugins::GetCurrentModel::Request& _req,
+    dave_gazebo_ros_plugins::GetCurrentModel::Response& _res)
 {
   _res.mean = this->currentVertAngleModel.mean;
   _res.min = this->currentVertAngleModel.min;
@@ -294,8 +296,8 @@ bool UnderwaterCurrentROSPlugin::GetCurrentVertAngleModel(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::UpdateCurrentVelocityModel(
-    dave_world_ros_plugins_msgs::SetCurrentModel::Request& _req,
-    dave_world_ros_plugins_msgs::SetCurrentModel::Response& _res)
+    dave_gazebo_ros_plugins::SetCurrentModel::Request& _req,
+    dave_gazebo_ros_plugins::SetCurrentModel::Response& _res)
 {
   _res.success = this->currentVelModel.SetModel(
     std::max(0.0, _req.mean),
@@ -312,8 +314,8 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentVelocityModel(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::UpdateCurrentHorzAngleModel(
-    dave_world_ros_plugins_msgs::SetCurrentModel::Request& _req,
-    dave_world_ros_plugins_msgs::SetCurrentModel::Response& _res)
+    dave_gazebo_ros_plugins::SetCurrentModel::Request& _req,
+    dave_gazebo_ros_plugins::SetCurrentModel::Response& _res)
 {
   _res.success = this->currentHorzAngleModel.SetModel(_req.mean, _req.min,
     _req.max, _req.mu, _req.noise);
@@ -326,8 +328,8 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentHorzAngleModel(
 
 /////////////////////////////////////////////////
 bool UnderwaterCurrentROSPlugin::UpdateCurrentVertAngleModel(
-    dave_world_ros_plugins_msgs::SetCurrentModel::Request& _req,
-    dave_world_ros_plugins_msgs::SetCurrentModel::Response& _res)
+    dave_gazebo_ros_plugins::SetCurrentModel::Request& _req,
+    dave_gazebo_ros_plugins::SetCurrentModel::Response& _res)
 {
   _res.success = this->currentVertAngleModel.SetModel(_req.mean, _req.min,
     _req.max, _req.mu, _req.noise);

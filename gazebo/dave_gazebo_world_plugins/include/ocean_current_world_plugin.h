@@ -13,14 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file UnderwaterCurrentPlugin.hh
+/// \file ocean_current_world_plugin.h
 /// \brief Plugin that for the underwater world
 
-#ifndef __UNDERWATER_CURRENT_PLUGIN_HH__
-#define __UNDERWATER_CURRENT_PLUGIN_HH__
+#ifndef __OCEAN_CURRENT_WORLD_PLUGIN_H__
+#define __OCEAN_CURRENT_WORLD_PLUGIN_H__
 
-#include <StratifiedCurrentVelocity.pb.h>
+#include <ocean_current_velocity.pb.h>
 
+#include <ros/ros.h>
+#include <ros/package.h>
 #include <map>
 #include <cmath>
 #include <string>
@@ -28,8 +30,8 @@
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
-#include <dave_world_plugins/GaussMarkovProcess.hh>
-#include <dave_world_plugins/TidalOscillation.hh>
+#include <gauss_markov_process.h>
+#include <tidal_oscillation.h>
 #include <sdf/sdf.hh>
 
 namespace gazebo
@@ -163,4 +165,4 @@ namespace gazebo
   };
 }
 
-#endif  // __UNDERWATER_CURRENT_PLUGIN_HH__
+#endif  // __OCEAN_CURRENT_WORLD_PLUGIN_H__
