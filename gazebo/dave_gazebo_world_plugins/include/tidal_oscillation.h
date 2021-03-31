@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file TidalOscillation.hh
+/// \file tidal_oscillation.h
 /// \brief Interpolation of NOAA data for Tidal Oscillation feature
 
-#ifndef __TIDAL_OSCILLATION_HH__
-#define __TIDAL_OSCILLATION_HH__
+#ifndef __TIDAL_OSCILLATION_H__
+#define __TIDAL_OSCILLATION_H__
 
 #include <gazebo/gazebo.hh>
 #include <cstdlib>
@@ -87,4 +87,4 @@ namespace gazebo
   };
 }
 
-#endif  // __TIDAL_OSCILLATION_HH__
+#endif  // __TIDAL_OSCILLATION_H__

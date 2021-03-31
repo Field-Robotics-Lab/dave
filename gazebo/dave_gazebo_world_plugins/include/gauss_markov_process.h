@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file GaussMarkovProcess.hh
+/// \file gauss_markov_process.h
 /// \brief Implementation of a Gauss-Markov process model
 
-#ifndef __GAUSS_MARKOV_PROCESS_HH__
-#define __GAUSS_MARKOV_PROCESS_HH__
+#ifndef __GAUSS_MARKOV_PROCESS_H__
+#define __GAUSS_MARKOV_PROCESS_H__
 
 #include <gazebo/gazebo.hh>
 #include <cstdlib>
@@ -83,4 +83,4 @@ namespace gazebo
   };
 }
 
-#endif  // __GAUSS_MARKOV_PROCESS_HH__
+#endif  // __GAUSS_MARKOV_PROCESS_H__

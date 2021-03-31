@@ -9,7 +9,10 @@ else()
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
-    gazebo_dev)
+    gazebo_dev
+    dave_gazebo_world_plugins
+    dave_gazebo_ros_plugins
+)
 find_package(Boost REQUIRED COMPONENTS system)
 
 set(DAVE_GAZEBO_MODEL_PLUGINS_LIST "")
@@ -17,7 +20,14 @@ set(DAVE_GAZEBO_MODEL_PLUGINS_LIST "")
 catkin_package(
   INCLUDE_DIRS
     include
-  LIBRARIES
+    LIBRARIES
+      dave_transient_current_plugin
+    CATKIN_DEPENDS
+      roscpp
+      gazebo_msgs
+      gazebo_dev
+      dave_gazebo_world_plugins
+      dave_gazebo_ros_plugins
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/include
@@ -30,10 +40,23 @@ include_directories(${PROJECT_SOURCE_DIR}/include
 
 link_directories(${catkin_LIBRARY_DIRS}
                  ${GAZEBO_LIBRARY_DIRS}
+                 ${CMAKE_CURRENT_BINARY_DIR}/msgs
 #                ...
 )
 
-# Plugin compile directions
+# ocean current model plugin
+add_library(dave_ocean_current_model_plugin
+   SHARED
+   src/ocean_current_model_plugin.cc
+)
+add_dependencies(dave_ocean_current_model_plugin
+ ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(dave_ocean_current_model_plugin
+   ${catkin_LIBRARIES}
+   ${PROTOBUF_LIBRARY}
+)
+list(APPEND DAVE_GAZEBO_MODEL_PLUGINS_LIST dave_ocean_current_model_plugin)
 
 #add_library(plugin_name
 #    SHARED

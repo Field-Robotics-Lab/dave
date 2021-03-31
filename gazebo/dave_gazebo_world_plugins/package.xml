@@ -17,6 +17,9 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>protobuf</exec_depend>
 
+  <depend>gazebo_dev</depend>
+  <depend>gazebo_msgs</depend>
+
   <export>
     <!-- Other tools can request additional information be placed here -->
   </export>

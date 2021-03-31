@@ -13,17 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file SphericalCoordinatesROSInterfacePlugin.hh
+/// \file spherical_coordinates_interface.h
 
-#ifndef __SC_ROS_INTERFACE_PLUGIN_HH__
-#define __SC_ROS_INTERFACE_PLUGIN_HH__
+#ifndef __SPHERICAL_COORDINATES_INTERFACE_H__
+#define __SPHERICAL_COORDINATES_INTERFACE_H__
 
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3.h>
-#include <dave_world_ros_plugins_msgs/SetOriginSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/TransformToSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/TransformFromSphericalCoord.h>
+#include <dave_gazebo_ros_plugins/SetOriginSphericalCoord.h>
+#include <dave_gazebo_ros_plugins/GetOriginSphericalCoord.h>
+#include <dave_gazebo_ros_plugins/TransformToSphericalCoord.h>
+#include <dave_gazebo_ros_plugins/TransformFromSphericalCoord.h>
 #include <boost/scoped_ptr.hpp>
 #include <gazebo/gazebo.hh>
 #include <gazebo/common/Plugin.hh>
@@ -49,23 +49,23 @@ class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
 
   /// \brief Service call that returns the origin in WGS84 standard
   public: bool GetOriginSphericalCoord(
-      dave_world_ros_plugins_msgs::GetOriginSphericalCoord::Request& _req,
-      dave_world_ros_plugins_msgs::GetOriginSphericalCoord::Response& _res);
+      dave_gazebo_ros_plugins::GetOriginSphericalCoord::Request& _req,
+      dave_gazebo_ros_plugins::GetOriginSphericalCoord::Response& _res);
 
   /// \brief Service call that returns the origin in WGS84 standard
   public: bool SetOriginSphericalCoord(
-      dave_world_ros_plugins_msgs::SetOriginSphericalCoord::Request& _req,
-      dave_world_ros_plugins_msgs::SetOriginSphericalCoord::Response& _res);
+      dave_gazebo_ros_plugins::SetOriginSphericalCoord::Request& _req,
+      dave_gazebo_ros_plugins::SetOriginSphericalCoord::Response& _res);
 
   /// \brief Service call to transform from Cartesian to spherical coordinates
   public: bool TransformToSphericalCoord(
-      dave_world_ros_plugins_msgs::TransformToSphericalCoord::Request& _req,
-      dave_world_ros_plugins_msgs::TransformToSphericalCoord::Response& _res);
+      dave_gazebo_ros_plugins::TransformToSphericalCoord::Request& _req,
+      dave_gazebo_ros_plugins::TransformToSphericalCoord::Response& _res);
 
   /// \brief Service call to transform from spherical to Cartesian coordinates
   public: bool TransformFromSphericalCoord(
-      dave_world_ros_plugins_msgs::TransformFromSphericalCoord::Request& _req,
-      dave_world_ros_plugins_msgs::TransformFromSphericalCoord::Response& _res);
+      dave_gazebo_ros_plugins::TransformFromSphericalCoord::Request& _req,
+      dave_gazebo_ros_plugins::TransformFromSphericalCoord::Response& _res);
 
   /// \brief Pointer to this ROS node's handle.
   protected: boost::scoped_ptr<ros::NodeHandle> rosNode;
@@ -82,4 +82,4 @@ class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
 
 }
 
-#endif  // __SC_ROS_INTERFACE_PLUGIN_HH__
+#endif  // __SPHERICAL_COORDINATES_INTERFACE_H__

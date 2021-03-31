@@ -16,12 +16,12 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(gazebo REQUIRED)
 find_package(cmake_modules REQUIRED)
 link_directories(${GAZEBO_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIR} 
+include_directories(${Boost_INCLUDE_DIR}
                     ${catkin_INCLUDE_DIRS}
                     ${GAZEBO_INCLUDE_DIRS}
                     ${GAXEBO_MSG_INCLUDE_DIRS}
 )
-include_directories("include")
+# include_directories("include")
 
 set(SENSORS_SRCS
 #    src/sensor_name.cc       include/sensor_name.hpp
@@ -37,7 +37,7 @@ target_link_libraries(dave_sensors ${GAZEBO_LIBRARIES})
 # Compile instructions for specific sensors (if required)
 
 catkin_package(
-  INCLUDE_DIRS include
+  # INCLUDE_DIRS include
   #LIBRARIES locally defined dependencies
   CATKIN_DEPENDS roscpp gazebo_ros
   DEPENDS

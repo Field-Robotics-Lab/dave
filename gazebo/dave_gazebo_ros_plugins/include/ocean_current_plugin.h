@@ -13,20 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file UnderwaterCurrentROSPlugin.hh
+/// \file ocean_current_plugin.hh
 /// \brief Publishes the ocean current velocity in ROS messages and creates a
 /// service to alter the flow model in runtime
 
-#ifndef __UNDERWATER_CURRENT_ROS_PLUGIN_HH__
-#define __UNDERWATER_CURRENT_ROS_PLUGIN_HH__
+#ifndef __OCEAN_CURRENT_PLUGIN_H__
+#define __OCEAN_CURRENT_PLUGIN_H__
 
-#include <dave_world_ros_plugins_msgs/SetCurrentModel.h>
-#include <dave_world_ros_plugins_msgs/GetCurrentModel.h>
-#include <dave_world_ros_plugins_msgs/SetCurrentVelocity.h>
-#include <dave_world_ros_plugins_msgs/SetCurrentDirection.h>
-#include <dave_world_ros_plugins_msgs/SetOriginSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/GetOriginSphericalCoord.h>
-#include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
+#include <dave_gazebo_ros_plugins/SetCurrentModel.h>
+#include <dave_gazebo_ros_plugins/GetCurrentModel.h>
+#include <dave_gazebo_ros_plugins/SetCurrentVelocity.h>
+#include <dave_gazebo_ros_plugins/SetCurrentDirection.h>
+#include <dave_gazebo_ros_plugins/SetOriginSphericalCoord.h>
+#include <dave_gazebo_ros_plugins/GetOriginSphericalCoord.h>
+#include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <geometry_msgs/TwistStamped.h>
@@ -39,7 +39,7 @@
 #include <string>
 
 // Gazebo plugin
-#include <dave_world_plugins/UnderwaterCurrentPlugin.hh>
+#include <ocean_current_world_plugin.h>
 
 namespace dave_simulator_ros
 {
@@ -58,53 +58,53 @@ namespace dave_simulator_ros
     /// \brief Service call to update the parameters for the velocity
     /// Gauss-Markov process model
     public: bool UpdateCurrentVelocityModel(
-        dave_world_ros_plugins_msgs::SetCurrentModel::Request& _req,
-        dave_world_ros_plugins_msgs::SetCurrentModel::Response& _res);
+        dave_gazebo_ros_plugins::SetCurrentModel::Request& _req,
+        dave_gazebo_ros_plugins::SetCurrentModel::Response& _res);
 
     /// \brief Service call to update the parameters for the horizontal angle
     /// Gauss-Markov process model
     public: bool UpdateCurrentHorzAngleModel(
-        dave_world_ros_plugins_msgs::SetCurrentModel::Request& _req,
-        dave_world_ros_plugins_msgs::SetCurrentModel::Response& _res);
+        dave_gazebo_ros_plugins::SetCurrentModel::Request& _req,
+        dave_gazebo_ros_plugins::SetCurrentModel::Response& _res);
 
     /// \brief Service call to update the parameters for the vertical angle
     /// Gauss-Markov process model
     public: bool UpdateCurrentVertAngleModel(
-        dave_world_ros_plugins_msgs::SetCurrentModel::Request& _req,
-        dave_world_ros_plugins_msgs::SetCurrentModel::Response& _res);
+        dave_gazebo_ros_plugins::SetCurrentModel::Request& _req,
+        dave_gazebo_ros_plugins::SetCurrentModel::Response& _res);
 
     /// \brief Service call to read the parameters for the velocity
     /// Gauss-Markov process model
     public: bool GetCurrentVelocityModel(
-        dave_world_ros_plugins_msgs::GetCurrentModel::Request& _req,
-        dave_world_ros_plugins_msgs::GetCurrentModel::Response& _res);
+        dave_gazebo_ros_plugins::GetCurrentModel::Request& _req,
+        dave_gazebo_ros_plugins::GetCurrentModel::Response& _res);
 
     /// \brief Service call to read the parameters for the horizontal angle
     /// Gauss-Markov process model
     public: bool GetCurrentHorzAngleModel(
-        dave_world_ros_plugins_msgs::GetCurrentModel::Request& _req,
-        dave_world_ros_plugins_msgs::GetCurrentModel::Response& _res);
+        dave_gazebo_ros_plugins::GetCurrentModel::Request& _req,
+        dave_gazebo_ros_plugins::GetCurrentModel::Response& _res);
 
     /// \brief Service call to read the parameters for the vertical angle
     /// Gauss-Markov process model
     public: bool GetCurrentVertAngleModel(
-        dave_world_ros_plugins_msgs::GetCurrentModel::Request& _req,
-        dave_world_ros_plugins_msgs::GetCurrentModel::Response& _res);
+        dave_gazebo_ros_plugins::GetCurrentModel::Request& _req,
+        dave_gazebo_ros_plugins::GetCurrentModel::Response& _res);
 
     /// \brief Service call to update the mean value of the flow velocity
     public: bool UpdateCurrentVelocity(
-        dave_world_ros_plugins_msgs::SetCurrentVelocity::Request& _req,
-        dave_world_ros_plugins_msgs::SetCurrentVelocity::Response& _res);
+        dave_gazebo_ros_plugins::SetCurrentVelocity::Request& _req,
+        dave_gazebo_ros_plugins::SetCurrentVelocity::Response& _res);
 
     /// \brief Service call to update the mean value of the horizontal angle
     public: bool UpdateHorzAngle(
-        dave_world_ros_plugins_msgs::SetCurrentDirection::Request& _req,
-        dave_world_ros_plugins_msgs::SetCurrentDirection::Response& _res);
+        dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
+        dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res);
 
     /// \brief Service call to update the mean value of the vertical angle
     public: bool UpdateVertAngle(
-        dave_world_ros_plugins_msgs::SetCurrentDirection::Request& _req,
-        dave_world_ros_plugins_msgs::SetCurrentDirection::Response& _res);
+        dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
+        dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res);
 
     /// \brief Publishes ROS topics
     private: void OnUpdateCurrentVel();
@@ -132,4 +132,4 @@ namespace dave_simulator_ros
   };
 }
 
-#endif  // __UNDERWATER_CURRENT_ROS_PLUGIN_HH__
+#endif  // __OCEAN_CURRENT_PLUGIN_H__

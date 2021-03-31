@@ -16,10 +16,12 @@
 /// \file TransientCurrentPlugin.hh
 /// \brief Plugin for the transient current plugin to publish vehicle depth
 
-#ifndef __TRANSIENT_CURRENT_PLUGIN_HH__
-#define __TRANSIENT_CURRENT_PLUGIN_HH__
+#ifndef __OCEAN_CURRENT_MODEL_PLUGIN_H__
+#define __OCEAN_CURRENT_MODEL_PLUGIN_H__
 
-#include <dave_world_ros_plugins_msgs/StratifiedCurrentVelocity.h>
+#include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
+#include <gauss_markov_process.h>
+#include <tidal_oscillation.h>
 
 #include <ros/ros.h>
 #include <geometry_msgs/TwistStamped.h>
@@ -27,8 +29,6 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/transport/TransportTypes.hh>
-#include <dave_world_plugins/GaussMarkovProcess.hh>
-#include <dave_world_plugins/TidalOscillation.hh>
 #include <sdf/sdf.hh>
 
 #include <map>
@@ -115,7 +115,7 @@ namespace gazebo
 
     /// \brief Convey model state from gazebo topic to outside
     protected: virtual void UpdateDatabase(
-      const dave_world_ros_plugins_msgs::
+      const dave_gazebo_ros_plugins::
       StratifiedCurrentVelocity::ConstPtr &_msg);
 
     /// \brief ROS helper function that processes messages
@@ -191,4 +191,4 @@ namespace gazebo
   };
 }
 
-#endif  // __TRANSIENT_CURRENT_PLUGIN_HH__
+#endif  // __OCEAN_CURRENT_MODEL_PLUGIN_H__
