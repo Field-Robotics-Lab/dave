@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="joy_id" default="0"/>
+  <arg name="namespace" default="smilodon"/>
+
+  <node pkg="joy" type="joy_node" name="joystick">
+    <param name="autorepeat_rate" value="10"/>
+    <param name="dev" value="/dev/input/js$(arg joy_id)"/>
+  </node>
+
+  <node pkg="dave_nodes" type="joy_thrusterop.py" name="joy_thrusterop"
+	output="screen">
+    <param name="namespace" value="$(arg namespace)"/>
+  </node>
+
+</launch>
