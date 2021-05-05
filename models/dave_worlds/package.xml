@@ -10,4 +10,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>gazebo_ros</depend>
+  <depend>uuv_sensor_ros_plugins</depend>
+  <depend>ds_sim</depend>
 </package>
