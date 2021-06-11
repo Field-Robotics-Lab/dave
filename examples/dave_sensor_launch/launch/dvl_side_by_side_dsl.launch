@@ -3,7 +3,7 @@
   <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
  
-  <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
+  <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="extra_gazebo_args" value="-s libdsros_sensors.so"/>
     <arg name="paused" value="$(arg paused)"/>

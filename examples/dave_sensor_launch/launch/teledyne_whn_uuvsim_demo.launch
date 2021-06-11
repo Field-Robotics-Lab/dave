@@ -2,9 +2,9 @@
 <launch>
   <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
-  <arg name="world_name" default="$(find dave_worlds)/worlds/uuv_dave_ocean_waves.world"/>
+  <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
 
-  <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
+  <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/>
     <arg name="paused" value="$(arg paused)"/>
