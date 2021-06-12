@@ -21,9 +21,9 @@
   <xacro:arg name="namespace" default="rexrov"/>
   <xacro:arg name="inertial_reference_frame" default="world"/>
   <!-- Include the ROV macro file -->
-  <xacro:include filename="$(find uuv_dave)/urdf/rexrov_base.xacro"/>
+  <xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
-  <xacro:include filename="$(find uuv_dave)/urdf/oberon7_default.xacro" />
+  <xacro:include filename="$(find dave_oberon7_description)/urdf/oberon7_default.xacro" />
 
   <!-- This implements the image_sonar_ros_plugin.so implemented in uuv_simulator.
        See the source code https://github.com/uuvsimulator/uuv_simulator/blob/master/uuv_sensor_plugins/uuv_sensor_ros_plugins/src/gazebo_ros_image_sonar.cpp

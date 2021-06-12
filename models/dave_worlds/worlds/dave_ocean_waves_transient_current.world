@@ -106,14 +106,14 @@
 
       <transient_current>
         <topic_stratified_database>stratified_current_velocity_database</topic_stratified_database>
-        <!-- Database tag can accept full path or filename for .csv within the uuv_dave/worlds folder  -->
+        <!-- Database tag can accept full path or filename for .csv within the dave_worlds/worlds folder  -->
         <databasefilePath>transientOceanCurrentDatabase.csv</databasefilePath>
       </transient_current>
 
       <!-- transient current database CSV file (North direction value) is used as a depth variation -->
       <tidal_oscillation>
         <!-- Method 1: databse file https://tidesandcurrents.noaa.gov/noaacurrents/Annual?id=ACT1951_1 -->
-        <!-- Database tag can accept full path or filename for .csv within the uuv_dave/worlds folder  -->
+        <!-- Database tag can accept full path or filename for .csv within the dave_worlds/worlds folder  -->
         <databasefilePath>ACT1951_1_Annual_2021.csv</databasefilePath>
 
         <!-- Method 2: harmonic constituents from -->

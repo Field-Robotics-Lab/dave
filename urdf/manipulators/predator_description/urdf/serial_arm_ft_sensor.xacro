@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Force Feedback Macro -->
+    <xacro:macro name="joint_ft_sensor" params="joint_name namespace">
+      <!-- Enable the Joint Feedback -->
+      <gazebo reference="${namespace}/${joint_name}">
+        <provideFeedback>true</provideFeedback>
+      </gazebo>
+      <!-- The ft_sensor plugin -->
+      <gazebo>
+        <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>30.0</updateRate>
+          <topicName>ft_sensor_${joint_name}</topicName>
+          <jointName>${namespace}/${joint_name}</jointName>
+          <gaussianNoise>0.0</gaussianNoise>
+        </plugin>
+      </gazebo>
+    </xacro:macro>
+</robot>

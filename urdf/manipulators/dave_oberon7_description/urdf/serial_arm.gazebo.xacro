@@ -16,7 +16,7 @@
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find uuv_dave)/urdf/serial_arm_ft_sensor.xacro" />
+  <xacro:include filename="$(find dave_oberon7_description)/urdf/serial_arm_ft_sensor.xacro" />
   <xacro:macro name="oberon7_gazebo_macro" params="namespace">
     <gazebo reference="${namespace}/base">
       <selfCollide>false</selfCollide>
@@ -94,7 +94,7 @@
 
 
     <!-- Gripper FT sensors -->
-    <xacro:joint_ft_sensor joint_name="wrist_joint" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="wrist" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="finger_left_joint" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="finger_tip_left_joint" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="finger_right_joint" namespace="${namespace}"/>
@@ -104,6 +104,7 @@
     <xacro:joint_ft_sensor joint_name="azimuth" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="shoulder" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="elbow" namespace="${namespace}"/>
+    <xacro:joint_ft_sensor joint_name="roll" namespace="${namespace}"/>
     <xacro:joint_ft_sensor joint_name="pitch" namespace="${namespace}"/>
 
 
