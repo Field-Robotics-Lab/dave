@@ -2,14 +2,14 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find uuv_dave)/worlds/occluded_bottom_ocean_waves.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves_occluded_bottom.world"/>
     <arg name="namespace" default="rexrov"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
     <arg name="joy_id" default="0"/>
  
-    <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
+    <!-- use Gazebo's empty_world.launch with dave_ocean_waves_occluded_bottom.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world_name)"/>
         <arg name="paused" value="$(arg paused)"/>
@@ -17,7 +17,7 @@
         <arg name="gui" value="$(arg gui)"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
-        <arg name="verbose" value="true"/>
+        <arg name="verbose" value="false"/>
     </include>
 
 
@@ -65,7 +65,7 @@
     </group>
 
     <!-- rexrov robot with oberon7 arm -->
-    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+    <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
         <arg name="x" value="4"/>
         <arg name="y" value="4"/>
@@ -94,7 +94,7 @@
 
     <!-- grabbable bar -->
     <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar -z -90">
+          args="-file $(find dave_object_models)/models/grab_bar/model.sdf -sdf -model grab_bar -z -90">
     </node>
 
     <!-- rqt_image_view for image_raw_sonar -->
