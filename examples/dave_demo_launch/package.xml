@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dave_demo_launch</name>
+  <version>3.1.1</version>
+  <description>The dave_demo_launch package contains launch files for DAVE project demos</description>
+  <maintainer email="dtdavi1@nps.edu">dtd</maintainer>
+  <license>Apache2</license>
+  <author email="dtdavi1@nps.edu">dtd</author> -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

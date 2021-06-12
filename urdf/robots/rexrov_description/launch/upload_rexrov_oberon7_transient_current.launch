@@ -16,7 +16,7 @@
   <group ns="$(arg namespace)">
     <group if="$(arg use_ned_frame)">
       <param name="robot_description"
-        command="$(find xacro)/xacro '$(find uuv_dave)/urdf/rexrov_oberon7_transient_current.xacro' --inorder
+        command="$(find xacro)/xacro '$(find rexrov_description)/urdf/rexrov_oberon7_transient_current.xacro' --inorder
           debug:=$(arg debug)
           namespace:=$(arg namespace)
           inertial_reference_frame:=world_ned" />
@@ -24,7 +24,7 @@
 
     <group unless="$(arg use_ned_frame)">
       <param name="robot_description"
-        command="$(find xacro)/xacro '$(find uuv_dave)/urdf/rexrov_oberon7_transient_current.xacro' --inorder
+        command="$(find xacro)/xacro '$(find rexrov_description)/urdf/rexrov_oberon7_transient_current.xacro' --inorder
           debug:=$(arg debug)
           namespace:=$(arg namespace)
           inertial_reference_frame:=world" />

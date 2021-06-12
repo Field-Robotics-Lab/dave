@@ -22,7 +22,7 @@
   <xacro:arg name="inertial_reference_frame" default="world"/>
 
   <!-- Includes -->
-  <!--xacro:include filename="$(find uuv_dave)/urdf/sensor_snippets.xacro"/>-->
+  <!--xacro:include filename="$(find dave_snippets)/urdf/sensor_snippets.xacro"/>-->
   <!---->
 
  <!-- base_link according to ROS conventions: x forward, z up -->
