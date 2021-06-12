@@ -40,4 +40,5 @@ install(DIRECTORY launch
 # for Python scripts
 catkin_install_python(PROGRAMS
   src/simple_box_motion.py
+  src/joy_thrusterop.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
