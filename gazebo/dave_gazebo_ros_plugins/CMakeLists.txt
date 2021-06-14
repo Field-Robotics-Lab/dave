@@ -85,6 +85,19 @@ target_link_libraries(dave_ocean_current_plugin
 )
 list(APPEND DAVE_GAZEBO_ROS_PLUGINS_LIST dave_ocean_current_plugin)
 
+# pulse lidar plugin
+add_library(dave_pulse_lidar_plugin
+   SHARED
+   src/pulse_lidar_plugin.cpp
+)
+add_dependencies(dave_pulse_lidar_plugin
+ ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(dave_pulse_lidar_plugin
+   ${catkin_LIBRARIES}
+)
+list(APPEND DAVE_GAZEBO_ROS_PLUGINS_LIST dave_pulse_lidar_plugin)
+
 # spherical coordinate interfafce
 add_library(dave_sc_coordinates_interface
    SHARED
