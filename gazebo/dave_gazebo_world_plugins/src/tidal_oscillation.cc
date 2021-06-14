@@ -160,20 +160,20 @@ std::pair<double, double> TidalOscillation::Update(double _time,
     currentType = true;
     // north current velocity
     currents.first =
-      cos(this->floodDirection/180.0*M_PI)*currentVelocity;
+      -cos(this->floodDirection/180.0*M_PI)*currentVelocity;
     // east current velocity
     currents.second =
-      sin(this->floodDirection/180.0*M_PI)*currentVelocity;
+      -sin(this->floodDirection/180.0*M_PI)*currentVelocity;
   }
   else  // ebb
   {
     currentType = false;
     // north current velocity
     currents.first =
-      cos(this->ebbDirection/180.0*M_PI)*currentVelocity;
+      -cos(this->ebbDirection/180.0*M_PI)*currentVelocity;
     // east current velocity
     currents.second =
-      sin(this->ebbDirection/180.0*M_PI)*currentVelocity;
+      -sin(this->ebbDirection/180.0*M_PI)*currentVelocity;
   }
 
   // Apply stratified current ratio

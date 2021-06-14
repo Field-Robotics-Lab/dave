@@ -239,8 +239,6 @@ namespace gazebo
               {
                 bathy->last_update = now;
 
-                gzdbg << "Update bathy!" << std::endl;
-
                 // Get the geographic coordinates.
                 // Use our geographic transformation, not gazebo's since our
                 // projection could be different.
@@ -375,8 +373,8 @@ namespace gazebo
             double latc = this->bathy_grids[nn]->anchor_lat +
               row * this->bathy_grids[nn]->spacing_lat;
 
-            gzdbg << "lonc/col: " << lonc << "/" << col << " latc/row: "
-                  << latc << "/" << row << std::endl;
+            // gzdbg << "lonc/col: " << lonc << "/" << col << " latc/row: "
+            //       << latc << "/" << row << std::endl;
 
             // Generate the bounding box string (assumed format).
             std::ostringstream bboxstr;
@@ -430,8 +428,8 @@ namespace gazebo
             double latc = this->bathy_grids[nn]->anchor_lat +
               row * this->bathy_grids[nn]->spacing_lat;
 
-            gzdbg << "lonc/col: " << lonc << "/" << col << " latc/row: "
-                  << latc << "/" << row << std::endl;
+            // gzdbg << "lonc/col: " << lonc << "/" << col << " latc/row: "
+            //       << latc << "/" << row << std::endl;
 
             // Generate the bounding box string (assumed format).
             std::ostringstream bboxstr;
@@ -446,9 +444,19 @@ namespace gazebo
 
             // @@@@ right messages are coming out but model not being deleted.
             // It was in the original version of this.
-            this->world->RemoveModel(modelnamestr);
-            gzdbg << "Removed model: " << modelnamestr << std::endl;
+            // this->world->RemoveModel(modelnamestr);
+            delayRemoveList.push_back(modelnamestr);
+            // gzdbg << "Model registered for removal: " << modelnamestr << std::endl;
           }
+        }
+
+        // Perform delayed removal
+        if (delayRemoveList.size() > 1)
+        {
+          std::string modelnamestr = delayRemoveList.front();
+          delayRemoveList.erase(delayRemoveList.begin());
+          this->world->RemoveModel(modelnamestr);
+          gzdbg << "Removed model: " << modelnamestr << std::endl;
         }
       }
     }  // OnUpdate
@@ -458,6 +466,8 @@ namespace gazebo
     private: gazebo::physics::WorldPtr world;
 
     private: sdf::ElementPtr sdf;
+
+    private: std::vector<std::string> delayRemoveList;
 
     // spatial reference system
     private: OGRSpatialReference srs;

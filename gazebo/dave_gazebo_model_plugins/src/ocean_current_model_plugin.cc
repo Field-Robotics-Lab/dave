@@ -103,86 +103,6 @@ void TransientCurrentPlugin::Load(
   this->publishers[this->currentVelocityTopic] =
     this->node->Advertise<msgs::Vector3d>(this->currentVelocityTopic);
 
-  // Read Gauss-Markov parameters
-  if (_sdf->HasElement("velocity_north"))
-  {
-    sdf::ElementPtr elem = _sdf->GetElement("velocity_north");
-    if (elem->HasElement("mean"))
-        this->currentVelNorthModel.mean = 0.0;
-    if (elem->HasElement("mu"))
-        this->currentVelNorthModel.mu = 0.0;
-    if (elem->HasElement("noiseAmp"))
-        this->noiseAmp_North = elem->Get<double>("noiseAmp");
-    this->currentVelNorthModel.min =
-      this->currentVelNorthModel.mean - this->noiseAmp_North;
-    this->currentVelNorthModel.max =
-      this->currentVelNorthModel.mean + this->noiseAmp_North;
-    if (elem->HasElement("noiseFreq"))
-        this->noiseFreq_North = elem->Get<double>("noiseFreq");
-    this->currentVelNorthModel.noiseAmp = this->noiseFreq_North;
-  }
-  this->currentVelNorthModel.var = this->currentVelNorthModel.mean;
-  gzmsg << "For vehicle " << this->model->GetName()
-        << " -> Current north-direction velocity [m/s] "
-        << "Gauss-Markov process model:" << std::endl;
-  this->currentVelNorthModel.Print();
-
-  if (_sdf->HasElement("velocity_east"))
-  {
-    sdf::ElementPtr elem = _sdf->GetElement("velocity_east");
-    if (elem->HasElement("mean"))
-        this->currentVelEastModel.mean = 0.0;
-    if (elem->HasElement("mu"))
-        this->currentVelEastModel.mu = 0.0;
-    if (elem->HasElement("noiseAmp"))
-        this->noiseAmp_East = elem->Get<double>("noiseAmp");
-    this->currentVelEastModel.min =
-      this->currentVelEastModel.mean - this->noiseAmp_East;
-    this->currentVelEastModel.max =
-      this->currentVelEastModel.mean + this->noiseAmp_East;
-    if (elem->HasElement("noiseFreq"))
-        this->noiseFreq_East = elem->Get<double>("noiseFreq");
-    this->currentVelEastModel.noiseAmp = this->noiseFreq_East;
-  }
-  this->currentVelEastModel.var = this->currentVelEastModel.mean;
-  gzmsg << "For vehicle " << this->model->GetName()
-        << " -> Current east-direction velocity [m/s] "
-        << "Gauss-Markov process model:" << std::endl;
-  this->currentVelEastModel.Print();
-
-  if (_sdf->HasElement("velocity_down"))
-  {
-    sdf::ElementPtr elem = _sdf->GetElement("velocity_down");
-    if (elem->HasElement("mean"))
-        this->currentVelDownModel.mean = 0.0;
-    if (elem->HasElement("mu"))
-        this->currentVelDownModel.mu = 0.0;
-    if (elem->HasElement("noiseAmp"))
-        this->noiseAmp_Down = elem->Get<double>("noiseAmp");
-    this->currentVelDownModel.min =
-      this->currentVelDownModel.mean - this->noiseAmp_Down;
-    this->currentVelDownModel.max =
-      this->currentVelDownModel.mean + this->noiseAmp_Down;
-    if (elem->HasElement("noiseFreq"))
-        this->noiseFreq_Down = elem->Get<double>("noiseFreq");
-    this->currentVelDownModel.noiseAmp = this->noiseFreq_Down;
-  }
-  this->currentVelDownModel.var = this->currentVelDownModel.mean;
-  gzmsg << "For vehicle " << this->model->GetName()
-        << " -> Current down-direction velocity [m/s]"
-        << "Gauss-Markov process model:" << std::endl;
-  this->currentVelDownModel.Print();
-
-  // Initialize the time update
-  #if GAZEBO_MAJOR_VERSION >= 8
-    this->lastUpdate = this->world->SimTime();
-  #else
-    this->lastUpdate = this->world->GetSimTime();
-  #endif
-  this->currentVelNorthModel.lastUpdate = this->lastUpdate.Double();
-  this->currentVelEastModel.lastUpdate = this->lastUpdate.Double();
-  this->currentVelDownModel.lastUpdate = this->lastUpdate.Double();
-
   // Read topic name of stratified ocean current from SDF
   if (_sdf->HasElement("transient_current"))
   {
@@ -197,12 +117,94 @@ void TransientCurrentPlugin::Load(
       this->transientCurrentVelocityTopic =
         "/hydrodynamics/stratified_current_velocity";
     }
+
+    // Read Gauss-Markov parameters
+    if (currentVelocityParams->HasElement("velocity_north"))
+    {
+      sdf::ElementPtr elem = currentVelocityParams->GetElement("velocity_north");
+      if (elem->HasElement("mean"))
+          this->currentVelNorthModel.mean = 0.0;
+      if (elem->HasElement("mu"))
+          this->currentVelNorthModel.mu = 0.0;
+      if (elem->HasElement("noiseAmp"))
+          this->noiseAmp_North = elem->Get<double>("noiseAmp");
+      this->currentVelNorthModel.min =
+        this->currentVelNorthModel.mean - this->noiseAmp_North;
+      this->currentVelNorthModel.max =
+        this->currentVelNorthModel.mean + this->noiseAmp_North;
+      if (elem->HasElement("noiseFreq"))
+          this->noiseFreq_North = elem->Get<double>("noiseFreq");
+      this->currentVelNorthModel.noiseAmp = this->noiseFreq_North;
+    }
+    this->currentVelNorthModel.var = this->currentVelNorthModel.mean;
+    gzmsg << "For vehicle " << this->model->GetName()
+          << " -> Current north-direction velocity [m/s] "
+          << "Gauss-Markov process model:" << std::endl;
+    this->currentVelNorthModel.Print();
+
+    if (currentVelocityParams->HasElement("velocity_east"))
+    {
+      sdf::ElementPtr elem = currentVelocityParams->GetElement("velocity_east");
+      if (elem->HasElement("mean"))
+          this->currentVelEastModel.mean = 0.0;
+      if (elem->HasElement("mu"))
+          this->currentVelEastModel.mu = 0.0;
+      if (elem->HasElement("noiseAmp"))
+          this->noiseAmp_East = elem->Get<double>("noiseAmp");
+      this->currentVelEastModel.min =
+        this->currentVelEastModel.mean - this->noiseAmp_East;
+      this->currentVelEastModel.max =
+        this->currentVelEastModel.mean + this->noiseAmp_East;
+      if (elem->HasElement("noiseFreq"))
+          this->noiseFreq_East = elem->Get<double>("noiseFreq");
+      this->currentVelEastModel.noiseAmp = this->noiseFreq_East;
+    }
+    this->currentVelEastModel.var = this->currentVelEastModel.mean;
+    gzmsg << "For vehicle " << this->model->GetName()
+          << " -> Current east-direction velocity [m/s] "
+          << "Gauss-Markov process model:" << std::endl;
+    this->currentVelEastModel.Print();
+
+    if (currentVelocityParams->HasElement("velocity_down"))
+    {
+      sdf::ElementPtr elem = currentVelocityParams->GetElement("velocity_down");
+      if (elem->HasElement("mean"))
+          this->currentVelDownModel.mean = 0.0;
+      if (elem->HasElement("mu"))
+          this->currentVelDownModel.mu = 0.0;
+      if (elem->HasElement("noiseAmp"))
+          this->noiseAmp_Down = elem->Get<double>("noiseAmp");
+      this->currentVelDownModel.min =
+        this->currentVelDownModel.mean - this->noiseAmp_Down;
+      this->currentVelDownModel.max =
+        this->currentVelDownModel.mean + this->noiseAmp_Down;
+      if (elem->HasElement("noiseFreq"))
+          this->noiseFreq_Down = elem->Get<double>("noiseFreq");
+      this->currentVelDownModel.noiseAmp = this->noiseFreq_Down;
+    }
+    this->currentVelDownModel.var = this->currentVelDownModel.mean;
+    gzmsg << "For vehicle " << this->model->GetName()
+          << " -> Current down-direction velocity [m/s]"
+          << "Gauss-Markov process model:" << std::endl;
+    this->currentVelDownModel.Print();
+
+    // Initialize the time update
+    #if GAZEBO_MAJOR_VERSION >= 8
+      this->lastUpdate = this->world->SimTime();
+    #else
+      this->lastUpdate = this->world->GetSimTime();
+    #endif
+    this->currentVelNorthModel.lastUpdate = this->lastUpdate.Double();
+    this->currentVelEastModel.lastUpdate = this->lastUpdate.Double();
+    this->currentVelDownModel.lastUpdate = this->lastUpdate.Double();
   }
 
   // Tidal Oscillation
   if (this->sdf->HasElement("tide_oscillation")
     && this->sdf->Get<bool>("tide_oscillation") == true)
     this->tideFlag = true;
+  else
+    this->tideFlag = false;
 
   // Subscribe stratified ocean current database
   this->databaseSub = this->rosNode->subscribe
