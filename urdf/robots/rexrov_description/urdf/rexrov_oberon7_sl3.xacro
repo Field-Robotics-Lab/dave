@@ -24,7 +24,7 @@
   <xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
   <xacro:include filename="$(find dave_oberon7_description)/urdf/oberon7_default.xacro" />
-  <xacro:include filename="$(find 3dad_sl3_description)/urdf/sl3_lidar.xacro"/>
+  <xacro:include filename="$(find lidar_3dad_sl3_description)/urdf/sl3_lidar.xacro"/>
 
   <xacro:uuv_forward_looking_sonar
       namespace="${namespace}"

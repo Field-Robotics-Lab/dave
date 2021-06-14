@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(3dad_sl3_description)
+project(lidar_3dad_sl3_description)
 
 find_package(catkin REQUIRED
   gazebo_ros

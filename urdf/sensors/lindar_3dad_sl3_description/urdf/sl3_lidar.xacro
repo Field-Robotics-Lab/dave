@@ -31,15 +31,15 @@
     </collision>
   </xacro:macro>
 
-  <!-- Generates an Underwater Lidar model and attaches it to a parent link 
+  <!-- Generates an Underwater Lidar model and attaches it to a parent link
        Sensor parameters align with those in the 3D at Depth SL3 datasheet -->
   <xacro:macro name="sl3_macro" params="namespace parent_link *origin pan tilt inertial_reference_frame">
     <xacro:sl3_lidar_plugin_macro
       namespace="${namespace}"
       suffix=""
-      parent_link="${parent_link}" 
+      parent_link="${parent_link}"
       reference_frame="${inertial_reference_frame}"
-      pan="${pan}" 
+      pan="${pan}"
       tilt="${tilt}" >
       <xacro:insert_block name="origin"/>
     </xacro:sl3_lidar_plugin_macro>
@@ -66,7 +66,7 @@
    <gazebo reference="${namespace}/uwl${suffix}_sensor_link">
      <sensor name="sl3_lidar_sensor" type="gpu_ray">
        <pose>0 0 0 0 0 0</pose>
-       <update_rate>${update_rate}</update_rate>      
+       <update_rate>${update_rate}</update_rate>
        <visualize>true</visualize>
        <always_on>true</always_on>
 
@@ -108,7 +108,7 @@
          <range>
            <!-- Minimum distance of the beam in meters-->
            <min>1</min>
-           <!-- Maximum distance of the beam in meters. 
+           <!-- Maximum distance of the beam in meters.
                 Should be between 2 and 45 meters, depending on visibility. -->
            <max>20</max>
            <!-- Linear resolution of each lidar ray. This _may_ refer to depth resolution. -->
@@ -120,8 +120,8 @@
            <mean>0.0</mean>
            <stddev>0.05</stddev>
          </noise>
-       </ray>      
-     </sensor>   
+       </ray>
+     </sensor>
    </gazebo>
   </xacro:macro>
 
@@ -138,7 +138,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://3dad_sl3_description/meshes/3dad_sl3.dae"/>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/3dad_sl3.dae"/>
         </geometry>
         <origin xyz="0 0 0.163" rpy="0 0 0"/>
       </visual>
@@ -158,7 +158,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://3dad_sl3_description/meshes/sl3_lidar_mount_tray.dae"/>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/sl3_lidar_mount_tray.dae"/>
         </geometry>
         <origin xyz="0 0.034 0.163" rpy="0 0 0"/>
       </visual>
@@ -179,7 +179,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://3dad_sl3_description/meshes/sl3_lidar_mount_swivel.dae"/>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/sl3_lidar_mount_swivel.dae"/>
         </geometry>
         <origin xyz="0 0.034 0.255" rpy="0 0 0"/>
       </visual>
@@ -199,7 +199,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://3dad_sl3_description/meshes/sl3_lidar_mount_base.dae"/>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/sl3_lidar_mount_base.dae"/>
         </geometry>
         <origin xyz="0 0.034 0.375" rpy="0 0 0"/>
       </visual>
@@ -246,7 +246,7 @@
 
     <gazebo>
        <plugin name="pulse_lidar_control" filename="libgazebo_ros_pulse_lidar_plugin.so" >
-        <robot_namespace>${namespace}</robot_namespace> 
+        <robot_namespace>${namespace}</robot_namespace>
          <pan_position>${pan}</pan_position>
          <tilt_position>${tilt}</tilt_position>
        </plugin>
