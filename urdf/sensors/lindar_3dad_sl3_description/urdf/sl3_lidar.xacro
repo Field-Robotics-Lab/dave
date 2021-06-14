@@ -245,8 +245,8 @@
     </xacro:sl3_lidar_sensor>
 
     <gazebo>
-       <plugin name="pulse_lidar_control" filename="libgazebo_ros_pulse_lidar_plugin.so" >
-        <robot_namespace>${namespace}</robot_namespace>
+       <plugin name="pulse_lidar_control" filename="libdave_pulse_lidar_plugin.so" >
+        <robot_namespace>${namespace}</robot_namespace> 
          <pan_position>${pan}</pan_position>
          <tilt_position>${tilt}</tilt_position>
        </plugin>
