@@ -5,15 +5,15 @@
   <description>The dave_sensor_launch package</description>
   <maintainer email="dtdavi1@nps.edu">dtd</maintainer>
   <license>Apache2</license>
-  <author email="dtdavi1@nps.edu">dtd</author> -->
+  <author email="dtdavi1@nps.edu">dtd</author>
   <buildtool_depend>catkin</buildtool_depend>
   <depend>caldus_description</depend>
   <depend>caracara_description</depend>
   <depend>smilodon_description</depend>
-  <depend>teledyne_whn_description_dsl</depend>
-  <depend>teledyne_whn_description_uuvsim</depend>
-  <depend>teledyne_explorer4000_description_dsl</depend>
-  <depend>teledyne_explorer4000_description_uuvsim</depend>
+  <depend>teledyne_whn_dsl_description</depend>
+  <depend>teledyne_whn_uuvsim_description</depend>
+  <depend>teledyne_explorer4000_dsl_description</depend>
+  <depend>teledyne_explorer4000_uuvsim_description</depend>
   <depend>nortek_dvl1000_4000_dsl_description</depend>
   <depend>nortek_dvl1000_4000_uuvsim_description</depend>
   <depend>uuv_assistants</depend>
