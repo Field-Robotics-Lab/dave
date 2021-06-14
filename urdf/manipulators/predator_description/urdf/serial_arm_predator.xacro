@@ -18,7 +18,7 @@
     <!-- Import arm parameters -->
     <xacro:include filename="$(find predator_description)/urdf/parameters/serial_arm_predator.xacro" />
     <!-- Transmission Macro -->
-    <!-- <xacro:macro name="simple_transmission" params="joint">
+    <xacro:macro name="simple_transmission" params="joint">
         <transmission name="${joint}_trans">
             <type>transmission_interface/SimpleTransmission</type>
             <joint name="${joint}">
@@ -29,11 +29,11 @@
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
         </transmission>
-    </xacro:macro> -->
+    </xacro:macro>
 
 
     <!-- Transmission Macro -->
-    <xacro:macro name="simple_transmission" params="joint">
+    <!-- <xacro:macro name="simple_transmission" params="joint">
       <transmission name="${joint}_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="${joint}">
@@ -44,7 +44,7 @@
           <mechanicalReduction>1</mechanicalReduction>
         </actuator>
       </transmission>
-    </xacro:macro>
+    </xacro:macro> -->
 
 
 
