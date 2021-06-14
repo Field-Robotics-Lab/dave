@@ -12,7 +12,8 @@
   <depend>smilodon_description</depend>
   <depend>teledyne_whn_description</depend>
   <depend>teledyne_explorer4000_description</depend>
-  <depend>nortek_dvl1000_4000_description</depend>
+  <depend>nortek_dvl1000_4000_dsl_description</depend>
+  <depend>nortek_dvl1000_4000_uuvsim_description</depend>
   <depend>uuv_assistants</depend>
   <depend>uuv_descriptions</depend>
   <depend>uuv_gazebo_plugins</depend>
