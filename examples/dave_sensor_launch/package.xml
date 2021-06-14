@@ -14,8 +14,8 @@
   <depend>teledyne_whn_description_uuvsim</depend>
   <depend>teledyne_explorer4000_description_dsl</depend>
   <depend>teledyne_explorer4000_description_uuvsim</depend>
-  <depend>teledyne_nortek_dvl1000_4000_description_dsl</depend>
-  <depend>teledyne_nortek_dvl1000_4000_description_uuvsim</depend>
+  <depend>nortek_dvl1000_4000_description_dsl</depend>
+  <depend>nortek_dvl1000_4000_description_uuvsim</depend>
   <depend>uuv_assistants</depend>
   <depend>uuv_descriptions</depend>
   <depend>uuv_gazebo_plugins</depend>
