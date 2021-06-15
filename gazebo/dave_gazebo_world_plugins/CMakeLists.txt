@@ -8,6 +8,8 @@ else()
     add_compile_options(-std=c++11)
 endif()
 
+find_package(GDAL REQUIRED)
+
 find_package(catkin REQUIRED COMPONENTS
     gazebo_dev
     gazebo_msgs
@@ -56,6 +58,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include
                     ${GAZEBO_INCLUDE_DIRS}
                     ${GAZEBO_MSG_INCLUDE_DIRS}
                     ${CMAKE_CURRENT_BINARY_DIR}
+                    /usr/local/lib/
 #                   ...
 )
 
@@ -89,6 +92,16 @@ target_link_libraries(dave_ocean_current_world_plugin
    ${GAZEBO_LIBRARIES}
 )
 list(APPEND DAVE_GAZEBO_WORLD_PLUGINS_LIST dave_ocean_current_world_plugin)
+
+# bathymetry world plugin
+add_library(dave_bathymetry_world_plugin src/bathymetry_world_plugin.cc)
+target_link_libraries(dave_bathymetry_world_plugin
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  ${GDAL_LIBRARY}
+  )
+add_dependencies(dave_bathymetry_world_plugin ${catkin_EXPORTED_TARGETS})
+list(APPEND DAVE_GAZEBO_WORLD_PLUGINS_LIST dave_bathymetry_world_plugin)
 
 
 # Plugin compile directions

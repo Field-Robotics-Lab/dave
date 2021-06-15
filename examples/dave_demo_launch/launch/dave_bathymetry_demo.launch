@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find dave_worlds)/worlds/dave_bathymetry_demo.world --verbose -u -e ode -s libdsros_sensors.so" respawn="false" output="screen">
+        <env name="GAZEBO_RESOURCE_PATH" value="$(optenv GAZEBO_RESOURCE_PATH):$(find dave_worlds)/media/"/>
+        <env name="GAZEBO_MODEL_PATH" value="$(optenv GAZEBO_MODEL_PATH):$(find dave_worlds)/bathymetry/"/>
+    </node>
+
+    <!-- include robots -->
+    <include file="$(find dave_robot_launch)/launch/rexrov_oberon7_bathymetry.launch"/>
+
+</launch>

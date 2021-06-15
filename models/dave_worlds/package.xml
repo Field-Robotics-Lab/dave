@@ -12,4 +12,10 @@
   <depend>gazebo_ros</depend>
   <depend>uuv_sensor_ros_plugins</depend>
   <depend>ds_sim</depend>
+
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/bathymetry"/>
+    <gazebo_ros gazebo_media_path="${prefix}/media"/>
+  </export>
+
 </package>
