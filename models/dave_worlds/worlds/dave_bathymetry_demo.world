@@ -69,9 +69,10 @@
 
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
-    <plugin name="bathy_dave_plugin" filename="libbathy_dave_plugin.so">
+    <plugin name="dave_bathymetry_plugin" filename="libdave_bathymetry_world_plugin.so">
       <projection epsg="26987" />
-      <bathymetry interval_s="0.1">
+      <!-- <bathymetry interval_s="0.1"> -->
+      <bathymetry>
         <grid prefix="ncei19" priority="1" epsg="26987" colmax="5" rowmax="5" anchor_lon="-70.699" anchor_lat="41.509" spacing_lon="0.012" spacing_lat="0.010" />
       </bathymetry>
     </plugin>

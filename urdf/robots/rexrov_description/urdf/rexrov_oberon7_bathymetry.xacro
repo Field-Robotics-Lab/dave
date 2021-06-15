@@ -21,48 +21,9 @@
   <xacro:arg name="namespace" default="rexrov"/>
   <xacro:arg name="inertial_reference_frame" default="world"/>
   <!-- Include the ROV macro file -->
-  <xacro:include filename="$(find uuv_dave)/urdf/rexrov_base.xacro"/>
+  <xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
   <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
-  <xacro:include filename="$(find uuv_dave)/urdf/oberon7_default.xacro" />
-
-  <!-- <xacro:uuv_forward_looking_sonar
-      namespace="${namespace}"
-      suffix="down"
-      parent_link="${namespace}/base_link"
-      topic="forward_sonar"
-      mass="0.015"
-      update_rate="40"
-      samples="100"
-        fov="1.54719755"
-        width="768"
-        height="492">
-      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
-      <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
-      <visual>
-      </visual>
-    </xacro:uuv_forward_looking_sonar> -->
-
-<!--
-  <xacro:uuv_forward_multibeam_p900
-      namespace="${namespace}"
-      parent_link="${namespace}/base_link">
-      <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
-    </xacro:uuv_forward_multibeam_p900>
--->
-
-<!--
-  <xacro:uuv_fl_multibeam_generic
-      namespace="${namespace}"
-      parent_link="${namespace}/base_link">
-      <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
-    </xacro:uuv_fl_multibeam_generic>
--->
-
-<!-- creates beam lines in Gazebo view
-  <xacro:uuv_forward_multibeam_sonar_m450_130 namespace="$(arg namespace)" parent_link="$(arg namespace)/base_link">
-    <origin xyz="1.4 0 0.65" rpy="0 0 0"/>
-  </xacro:uuv_forward_multibeam_sonar_m450_130>
--->
+  <xacro:include filename="$(find dave_oberon7_description)/urdf/oberon7_default.xacro" />
 
   <!-- Create the ROV -->
   <xacro:rexrov_base
@@ -91,10 +52,11 @@
         <robotNamespace>/$(arg namespace)</robotNamespace>
         <robotParam>/$(arg namespace)/robot_description</robotParam>
 
+        <!-- Bathymetry update rate -->
         <bathymetry>
           <interval_s>10.0</interval_s>
         </bathymetry>
-        
+
       </plugin>
   </gazebo>
 

@@ -13,3 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   uuv_sensor_ros_plugins
   ds_sim)
 
+catkin_package()
+
+install(DIRECTORY bathymetry media worlds
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+        PATTERN "*~" EXCLUDE)
+
