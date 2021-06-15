@@ -54,7 +54,7 @@
 
         <!-- Bathymetry update rate -->
         <bathymetry>
-          <interval_s>10.0</interval_s>
+          <interval_s>1.0</interval_s>
         </bathymetry>
 
       </plugin>

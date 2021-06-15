@@ -6,7 +6,19 @@
         <env name="GAZEBO_MODEL_PATH" value="$(optenv GAZEBO_MODEL_PATH):$(find dave_worlds)/bathymetry/"/>
     </node>
 
-    <!-- include robots -->
-    <include file="$(find dave_robot_launch)/launch/rexrov_oberon7_bathymetry.launch"/>
+    <!-- rexrov robot -->
+    <!-- <group ns="rexrov"> -->
+        <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_bathymetry.launch">
+            <arg name="robot_name" value="rexrov"/>
+            <arg name="init_pose" value="-x 485395.93 -y 58144.25 -z -1 -Y 3.14" />
+        </include>
+    <!-- </group> -->
+
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <arg name="velocity_control" default="true"/>
+    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
+    </include>
 
 </launch>
