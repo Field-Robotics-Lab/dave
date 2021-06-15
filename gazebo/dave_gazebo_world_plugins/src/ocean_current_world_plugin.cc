@@ -237,9 +237,11 @@ void UnderwaterCurrentPlugin::
     // this->databaseFilePath = concatPath.generic_string();
     //
     // Use ros package path:
-    this->databaseFilePath = this->db_path +
+
+    this->databaseFilePath = ros::package::getPath("dave_worlds") +
       "/worlds/transientOceanCurrentDatabase.csv";
   }
+
   GZ_ASSERT(!this->databaseFilePath.empty(),
     "Empty stratified ocean current database file path");
 
@@ -250,7 +252,7 @@ void UnderwaterCurrentPlugin::
   csvFile.open(this->databaseFilePath);
   if (!csvFile)
   {
-    this->databaseFilePath = this->db_path +
+    this->databaseFilePath = ros::package::getPath("dave_worlds") +
       "/worlds/" + this->databaseFilePath;
     csvFile.open(this->databaseFilePath);
   }
@@ -391,7 +393,7 @@ void UnderwaterCurrentPlugin::
       csvFile.open(this->tidalFilePath);
       if (!csvFile)
       {
-        this->tidalFilePath = ros::package::getPath("uuv_dave") +
+        this->tidalFilePath = ros::package::getPath("dave_worlds") +
           "/worlds/" + this->tidalFilePath;
         csvFile.open(this->tidalFilePath);
       }
