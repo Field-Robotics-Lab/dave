@@ -29,7 +29,7 @@
         wrist:
           controller:
             type: effort_controllers/JointEffortController
-            joint: $(arg arm_name)/wrist
+            joint: $(arg arm_name)/wrist_joint
             pid: {p: 500, i: 30, d: 10}
   </rosparam>
 
@@ -45,7 +45,7 @@
                 /$(arg uuv_name)/$(arg arm_name)/shoulder/controller
                 /$(arg uuv_name)/$(arg arm_name)/elbow/controller
                 /$(arg uuv_name)/$(arg arm_name)/pitch/controller
-                /$(arg uuv_name)/$(arg arm_name)/wrist/controller"/>
+                /$(arg uuv_name)/$(arg arm_name)/wrist_joint/controller"/>
 
   </group>
 </launch>

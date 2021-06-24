@@ -80,10 +80,10 @@
               p: 300
               i: 10
               d: 20
-          wrist:
+          wrist_joint:
             joint_input_axis: $(arg axis_yaw)
             axis_gain: 0.01
-            topic: /$(arg uuv_name)/$(arg arm_name)/wrist/controller/command
+            topic: /$(arg uuv_name)/$(arg arm_name)/wrist_joint/controller/command
             controller:
               p: 200
               i: 10
