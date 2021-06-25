@@ -26,7 +26,7 @@
             type: effort_controllers/JointEffortController
             joint: $(arg arm_name)/pitch
             pid: {p: 1000, i: 50, d: 10}
-        wrist:
+        wrist_joint:
           controller:
             type: effort_controllers/JointEffortController
             joint: $(arg arm_name)/wrist_joint

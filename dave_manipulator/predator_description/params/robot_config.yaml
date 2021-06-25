@@ -10,4 +10,4 @@ default_configs:
     shoulder: 1.5
     elbow:  -1.5
     pitch: 1.57
-    wrist: 0
+    wrist_joint: 0
