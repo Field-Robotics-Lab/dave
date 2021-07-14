@@ -32,8 +32,8 @@
         <rosparam subst_value="true">
             meshes:
                 heightmap:
-                    mesh: package://uuv_gazebo_worlds/models/sand_heightmap/meshes/heightmap.dae
-                    model: sand_heightmap
+                    mesh: package://uuv_gazebo_worlds/models/occluded_sand_heightmap/meshes/heightmap.dae
+                    model: occluded_sand_heightmap
                 seafloor:
                     plane: [2000, 2000, 0.1]
                     pose:
