@@ -19,7 +19,7 @@
   <!-- Attach the DVL to link -->
   <xacro:teledyne_whn_macro
     name="whn" namespace="whn" xyz="0 0 0"
-    dvl_topic="dvl" ranges_topic="ranges"
+    dvl_topic="dvl" ranges_topic="dvl_ranges"
     robot_link="whn_sensor_link" joint_xyz="0 0 0"/>
 
   <gazebo reference="whn_link">

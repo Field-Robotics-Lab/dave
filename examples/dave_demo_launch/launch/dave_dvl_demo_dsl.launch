@@ -74,8 +74,11 @@
   <!-- A joint state publisher plugin already is started with the model,
        no need to use the default joint state publisher. -->
   <!-- Robot state publisher subscribes to the custom joint state publisher -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false">
+    <remap from="robot_description" to="/$(arg namespace)/caldus" />
+  </node>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
     <remap from="robot_description" to="/$(arg namespace)/caldus"/>
   </node>
-
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find teledyne_whn_dsl_description)/rviz/whoi_teledyne_dvl.rviz" />
 </launch>

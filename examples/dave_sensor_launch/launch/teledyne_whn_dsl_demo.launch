@@ -18,7 +18,7 @@
 
   <include file="$(find teledyne_whn_dsl_description)/launch/upload_teledyne_whn.launch"/>
   <node name="spawn_whn" pkg="gazebo_ros" type="spawn_model"
-        args="-urdf -param teledyne_whn -model teledyne_whn -z -25" respawn="false" output="screen" />
+        args="-urdf -param teledyne_whn -model teledyne_whn -z -10" respawn="false" output="screen" />
 
   <!-- Load and spawn the model, starts the joint & state publishers, make the model move -->
   <param name="model_name" type="str" value="teledyne_whn"/>
