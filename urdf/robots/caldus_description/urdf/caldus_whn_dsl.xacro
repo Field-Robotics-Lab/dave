@@ -25,8 +25,12 @@
   <xacro:include filename="$(find caldus_description)/urdf/caldus.xacro"/>
 
   <!-- Use the DVL macro to add the Nortek DVL1000-4000 DVL -->
-  <xacro:include filename="$(find nortek_dvl1000_4000_uuvsim_description)/urdf/nortek_dvl1000_4000.xacro"/>
-  <xacro:nortek_dvl1000_4000_enu_macro namespace="$(arg namespace)" parent_link="$(arg namespace)/base_link">
-    <origin xyz="1 0 -0.9" rpy="0 ${0.5*pi} 0"/>
-  </xacro:nortek_dvl1000_4000_enu_macro>
+  <xacro:include filename="$(find teledyne_whn_dsl_description)/urdf/teledyne_whn.xacro"/>
+  <xacro:teledyne_whn_macro
+    name="whn" namespace="$(arg namespace)" xyz="0 0 0"
+    dvl_topic="dvl" ranges_topic="ranges"
+    robot_link="$(arg namespace)/base_link" joint_xyz="1 0 -0.95"/>
+<!--  <xacro:nortek_dvl1000_4000_macro name="whn" namespace="$(arg namespace)"
+    xyz="0 0 0" dvl_topic="dvl" ranges_topic="ranges" 
+    robot_link="$(arg namespace)/base_link" joint_xyz="1 0 -0.9"/> -->
 </robot>

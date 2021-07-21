@@ -66,14 +66,6 @@
     </light>
 
     <light type="directional" name="sun_diffuse_2">
-      <pose>100 50 20 0 0 0</pose>
-      <diffuse>0.6 0.6 0.6 1</diffuse>
-      <specular>0 0 0 1</specular>
-      <direction>-0.3 -0.3 -1</direction>
-      <cast_shadows>false</cast_shadows>
-    </light>
-
-    <light type="directional" name="sun_diffuse_3">
       <pose>-150 -130 50 0 0 0</pose>
       <diffuse>0.6 0.6 0.6 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>

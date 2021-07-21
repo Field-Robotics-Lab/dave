@@ -61,7 +61,7 @@
                   position: [0, 1000, -50]
     </rosparam>
   </node>
-  <include file="$(find caldus_description)/launch/upload_caldus_dvl1000_4000_uuvsim.launch"/>
+  <include file="$(find caldus_description)/launch/upload_caldus_whn_uuvsim.launch"/>
   <include file="$(find dave_nodes)/launch/joy_thrusterop.launch">
     <arg name="joy_id" value="$(arg joy_id)"/>
     <arg name="namespace" value="$(arg namespace)"/>

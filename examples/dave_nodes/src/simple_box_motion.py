@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
-#---------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 # Instantiates a ROS node that sets velocities for a model in the gazebo
 # scene.  The velocity is set relative to the a specified base link to drive
 # in an octagonal pattern (forward, forward left, left,# backwards left,
 # backwards, backwards right, right, roward right) at a fixed linear speed
-# (1 meter/second).  Descents and climbs at 0.25 meters per second are
-# included in some legs resulting in a slow descent over time.  Each leg is
-# allowed to run for 10 seconds.  The motion is intended to test or
-# demonstrate the DVL plugin water and bottom tracking, in particular, the
+# (1 meter/second).  Descents and climbs at at between 0.1 and 0.4 meters per
+# second are included in some legs resulting in a slow descent over time.
+# Each leg is allowed to run for 10 seconds.  The motion is intended to test
+# or demonstrate the DVL plugin water and bottom tracking, in particular, the
 # inclusion of ocean current in the water tracking solution.
-#---------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 import rospy
 import gazebo_msgs.msg as gm
