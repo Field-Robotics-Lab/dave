@@ -29,7 +29,7 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-#include <ocean_current_world_plugin.h>
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 using namespace gazebo;
 

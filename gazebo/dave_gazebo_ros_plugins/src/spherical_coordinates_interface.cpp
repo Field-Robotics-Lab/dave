@@ -15,7 +15,7 @@
 
 /// \file spherical_coordinates_interface.cpp
 
-#include <spherical_coordinates_interface.h>
+#include <dave_gazebo_ros_plugins/spherical_coordinates_interface.h>
 
 namespace gazebo
 {

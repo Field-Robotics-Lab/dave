@@ -15,7 +15,7 @@
 
 /// \file gauss_markov_process.cc
 
-#include <gauss_markov_process.h>
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
 
 namespace gazebo
 {
