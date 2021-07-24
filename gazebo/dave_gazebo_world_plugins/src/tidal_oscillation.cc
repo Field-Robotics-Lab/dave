@@ -15,7 +15,7 @@
 
 /// \file tidal_oscillation.cc
 
-#include <tidal_oscillation.h>
+#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 
 #include <fstream>
 

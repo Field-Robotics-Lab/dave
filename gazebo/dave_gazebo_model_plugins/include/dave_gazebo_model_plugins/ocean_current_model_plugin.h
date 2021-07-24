@@ -20,8 +20,8 @@
 #define __OCEAN_CURRENT_MODEL_PLUGIN_H__
 
 #include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
-#include <gauss_markov_process.h>
-#include <tidal_oscillation.h>
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
+#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 
 #include <ros/ros.h>
 #include <geometry_msgs/TwistStamped.h>

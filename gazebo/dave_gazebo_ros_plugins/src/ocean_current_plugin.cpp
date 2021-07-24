@@ -15,7 +15,7 @@
 
 /// \file ocean_current_plugin.cpp
 
-#include <ocean_current_plugin.h>
+#include <dave_gazebo_ros_plugins/ocean_current_plugin.h>
 
 namespace dave_simulator_ros
 {
