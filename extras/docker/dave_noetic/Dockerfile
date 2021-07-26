@@ -19,7 +19,6 @@ RUN apt update \
         ruby \
         software-properties-common \
         sudo \
-        vim \
         wget \
  && apt clean
 
@@ -63,6 +62,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-${DIST}-hector-gazebo-plugins \
     ros-${DIST}-joint-state-publisher \
     ros-${DIST}-joint-state-controller \
+    ros-${DIST}-pcl-ros \
     ros-${DIST}-position-controllers \
     ros-${DIST}-effort-controllers \		
     ros-${DIST}-joy \
@@ -77,6 +77,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-${DIST}-rqt \
     ros-${DIST}-rqt-common-plugins \
     ros-${DIST}-geographic-msgs \
+
     && rm -rf /var/lib/apt/lists/*
 
 # Any Dave specific dependencies go here...
+
+
+# Optional: Dev. tools, applications, etc.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
