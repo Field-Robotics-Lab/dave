@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+
+    <!-- Initial USV location and attitude-->
+    <arg name="x" default="0" />
+    <arg name="y" default="0" />
+    <arg name="z" default="-1" />
+    <arg name="P" default="0" />
+    <arg name="R" default="0" />
+    <arg name="Y" default="0" />
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- Edit the name of the world file (example_underwater.world) when using this template -->
+        <arg name="world_name" value="$(find dave_worlds)/worlds/dave_graded_seabed.world"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+    </include>
+
+    <!-- Load and spawn the model, starts the joint & state publishers, make the model move -->
+    <include file="$(find teledyne_whn_uuvsim_description)/launch/upload_teledyne_whn.launch" />
+    <node name="spawn_whn" pkg="gazebo_ros" type="spawn_model"
+          args="-urdf -param teledyne_whn -model teledyne_whn 
+                -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"
+                respawn="false" output="screen" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false">
+      <remap from="robot_description" to="teledyne_whn" />
+    </node>
+    <node name="twist_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py">
+    </node>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+      <remap from="robot_description" to="teledyne_whn" />
+    </node>
+    <node name="dvl_state_and_gradient" pkg="dave_nodes" type="dvl_state_and_gradient_uuvsim.py">
+    </node>
+    <node name="plot_gradient" pkg="dave_nodes" type="dvl_gradient_plot.py">
+    </node>
+</launch>
