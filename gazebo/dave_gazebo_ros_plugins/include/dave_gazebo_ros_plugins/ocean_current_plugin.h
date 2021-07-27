@@ -39,7 +39,7 @@
 #include <string>
 
 // Gazebo plugin
-#include <ocean_current_world_plugin.h>
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 namespace dave_simulator_ros
 {

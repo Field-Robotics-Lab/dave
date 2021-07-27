@@ -30,8 +30,8 @@
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
-#include <gauss_markov_process.h>
-#include <tidal_oscillation.h>
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
+#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 #include <sdf/sdf.hh>
 
 namespace gazebo
