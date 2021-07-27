@@ -1,65 +1,33 @@
 repositories:
-  dave/dave:
+  dave:
     type: git
-    url: https://github.com/Field-Robotics-Lab/dave.git
+    url: git@github.com:Field-Robotics-Lab/dave.git
     version: master
-
-  dave/acoustic_msgs:
+  ds_msgs:
     type: git
-    url: https://github.com/apl-ocean-engineering/acoustic_msgs.git
+    url: git@bitbucket.org:whoidsl/ds_msgs.git
+    version: master
+  ds_sim:
+    type: git
+    url: git@bitbucket.org:whoidsl/ds_sim.git
+    version: master
+  eca_a9:
+    type: git
+    url: git@github.com:uuvsimulator/eca_a9.git
+    version: master
+  hydrographic_msgs:
+    type: git
+    url: git@github.com:apl-ocean-engineering/hydrographic_msgs.git
     version: main
-
-  dave/frl_msgs:
+  rexrov2:
     type: git
-    url: https://github.com/Field-Robotics-Lab/frl_msgs.git
+    url: git@github.com:uuvsimulator/rexrov2.git
     version: master
-
-  dave/gtri_based_sonar:
+  uuv_manipulators:
     type: git
-    url: https://github.com/Field-Robotics-Lab/gtri_based_sonar.git
+    url: git@github.com:field-robotics-lab/uuv_manipulators
     version: master
-
-  dave/nps_uw_sensors_gazebo:
+  uuv_simulator:
     type: git
-    url: https://github.com/Field-Robotics-Lab/nps_uw_sensors_gazebo.git
-    version: master
-
-  dave/nps_uw_multibeam_sonar:
-    type: git
-    url: https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar.git
-    version: master
-
-  dave/glider_hybrid_whoi:
-    type: git
-    url: https://github.com/Field-Robotics-Lab/glider_hybrid_whoi.git
-    version: master
-
-  uuv_sim/eca_a9:
-    type: git
-    url: https://github.com/uuvsimulator/eca_a9.git
-    version: master
-
-  uuv_sim/rexrov2:
-    type: git
-    url: https://github.com/uuvsimulator/rexrov2.git
-    version: master
-
-  uuv_sim/uuv_manipulators:
-    type: git
-    url: https://github.com/uuvsimulator/uuv_manipulators.git
-    version: master
-
-  uuv_sim/uuv_simulator:
-    type: git
-    url: https://github.com/uuvsimulator/uuv_simulator.git
-    version: master
-
-  whoidsl/ds_msgs:
-    type: git
-    url: https://bitbucket.org/whoidsl/ds_msgs.git
-    version: master
-
-  whoidsl/ds_sim:
-    type: git
-    url: https://bitbucket.org/whoidsl/ds_sim.git
+    url: git@github.com:field-robotics-lab/uuv_simulator
     version: master
