@@ -1,23 +1,27 @@
 repositories:
-  dave:
-    type: git
-    url: https://github.com/Field-Robotics-Lab/dave.git
-    version: master
   acoustic_msgs:
     type: git
     url: https://github.com/apl-ocean-engineering/acoustic_msgs.git
     version: main
-  glider_hybrid_whoi:
+  dave:
     type: git
-    url: https://github.com/Field-Robotics-Lab/glider_hybrid_whoi.git
+    url: git@github.com:Field-Robotics-Lab/dave.git
+    version: bsb/update_2_fix_dockerfile
+  ds_msgs:
+    type: git
+    url: https://bitbucket.org/whoidsl/ds_msgs.git
     version: master
-  frl_msgs:
+  ds_sim:
     type: git
-    url: git@github.com:Field-Robotics-Lab/frl_msgs.git
+    url: https://bitbucket.org/whoidsl/ds_sim.git
     version: master
   eca_a9:
     type: git
     url: https://github.com/uuvsimulator/eca_a9.git
+    version: master
+  frl_msgs:
+    type: git
+    url: git@github.com:Field-Robotics-Lab/frl_msgs.git
     version: master
   rexrov2:
     type: git
@@ -29,13 +33,5 @@ repositories:
     version: master
   uuv_simulator:
     type: git
-    url: https://github.com/uuvsimulator/uuv_simulator.git
-    version: master
-  ds_msgs:
-    type: git
-    url: https://bitbucket.org/whoidsl/ds_msgs.git
-    version: master
-  ds_sim:
-    type: git
-    url: https://bitbucket.org/whoidsl/ds_sim.git
+    url: git@github.com:Field-Robotics-Lab/uuv_simulator.git
     version: master
