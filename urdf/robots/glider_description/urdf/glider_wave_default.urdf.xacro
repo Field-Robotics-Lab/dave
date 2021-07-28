@@ -16,10 +16,10 @@
   <xacro:arg name="namespace" default="glider_wave"/>
   <xacro:arg name="inertial_reference_frame" default="world"/>
   <!-- Include the UUV macro file -->
-  <xacro:include filename="$(find uuv_dave)/urdf/glider_wave.xacro"/>
+  <xacro:include filename="$(find glider_description)/urdf/glider_wave.xacro"/>
   <!-- Create the glider_wave_ -->
-  <xacro:glider_wave 
-    namespace="$(arg namespace)" 
+  <xacro:glider_wave
+    namespace="$(arg namespace)"
     debug="$(arg debug)"
     inertial_reference_frame="$(arg inertial_reference_frame)"/>
 

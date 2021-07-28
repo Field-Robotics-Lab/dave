@@ -18,8 +18,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <!-- includes -->
   <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro" />
-  <xacro:include filename="$(find uuv_dave)/urdf/sensor_snippets.xacro"/>
-  <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/>  
+  <xacro:include filename="$(find dave_snippets)/urdf/sensor_snippets.xacro"/>
+  <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/>
 
   <!-- Properties -->
   <xacro:property name="mass" value="50.0" />
@@ -34,10 +34,10 @@
   <xacro:property name="length" value="1.5" />
 
   <xacro:property name="namespace" value="glider_slocum"/>
-  <xacro:property name="visual_mesh_file" value="file://$(find uuv_dave)/models/glider_slocum/mesh/Slocum-Glider.dae" />
-  <xacro:property name="collision_mesh_file" value="file://$(find uuv_dave)/models/glider_slocum/mesh/COLLISION-Slocum-Glider.dae" />
-  <!--<xacro:property name="prop_mesh_file" value="file://$(find uuv_dave)/models/glider_slocum/mesh/Slocum-Glider-Propeller.dae" />-->
-  <!-- <xacro:property name="rudder_mesh_file" value="file://$(find uuv_dave)/models/glider_slocum/mesh/Slocum-Glider-TopRudder.dae" /> -->
+  <xacro:property name="visual_mesh_file" value="file://$(find glider_description)/models/glider_slocum/mesh/Slocum-Glider.dae" />
+  <xacro:property name="collision_mesh_file" value="file://$(find glider_description)/models/glider_slocum/mesh/COLLISION-Slocum-Glider.dae" />
+  <!--<xacro:property name="prop_mesh_file" value="file://$(find glider_description)/models/glider_slocum/mesh/Slocum-Glider-Propeller.dae" />-->
+  <!-- <xacro:property name="rudder_mesh_file" value="file://$(find glider_description)/models/glider_slocum/mesh/Slocum-Glider-TopRudder.dae" /> -->
 
   <xacro:macro name="glider_slocum" params="namespace debug inertial_reference_frame">
     <link name="${namespace}/base_link">
@@ -91,10 +91,10 @@
             </linear_damping_forward_speed>
           </hydrodynamic_model>
         </link>
-      </plugin>    
+      </plugin>
     </gazebo>
 
-    <!-- Include the battery modules -->    
+    <!-- Include the battery modules -->
     <xacro:basic_linear_battery_macro
       namespace="${namespace}"
       parent_link="${namespace}/base_link"
@@ -109,8 +109,8 @@
       update_rate="2.0"/>
 
     <!-- Include sensor modules -->
-    <xacro:include filename="$(find uuv_dave)/urdf/glider_slocum_sensors.xacro"/>
+    <xacro:include filename="$(find glider_description)/urdf/glider_slocum_sensors.xacro"/>
   </xacro:macro>
- 
+
 
 </robot>

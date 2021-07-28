@@ -11,18 +11,19 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<robot name="glider_slocum" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="glider_hybrid_whoi" xmlns:xacro="http://www.ros.org/wiki/xacro" >
   <xacro:arg name="debug" default="0"/>
-  <xacro:arg name="namespace" default="glider_slocum"/>
+  <xacro:arg name="namespace" default="glider_hybrid_whoi"/>
   <xacro:arg name="inertial_reference_frame" default="world"/>
   <!-- Include the UUV macro file -->
-  <xacro:include filename="$(find uuv_dave)/urdf/glider_slocum.xacro"/>
-  <!-- Create the glider_slocum -->
-  <xacro:glider_slocum 
-    namespace="$(arg namespace)" 
+  <xacro:include filename="$(find glider_description)/urdf/glider_hybrid_whoi.xacro"/>
+  <!-- Create the glider_hybrid_whoi -->
+  <xacro:glider_hybrid_whoi
+    namespace="$(arg namespace)"
     debug="$(arg debug)"
     inertial_reference_frame="$(arg inertial_reference_frame)"/>
 
   <!-- Joint state publisher plugin -->
   <xacro:default_joint_state_publisher namespace="$(arg namespace)" update_rate="50"/>
+
 </robot>
