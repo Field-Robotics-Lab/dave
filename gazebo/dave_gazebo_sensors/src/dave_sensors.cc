@@ -20,26 +20,25 @@
 
 namespace gazebo {
 class RegisterDaveRosSensorsPlugin : public SystemPlugin {
+  //////////////////////////////////////////////
+  // \brief Destructor
+  public: virtual ~RegisterDaveRosSensorsPlugin() {
+  }
 
-    //////////////////////////////////////////////
-    // \brief Destructor
-    public: virtual ~RegisterDaveRosSensorsPlugin() {
-    }
 
+  //////////////////////////////////////////////
+  // \brief Called after the plugin has been constructed
+  public: void Load(int _argc, char** _argv) {
+      gzdbg <<"Loading DAVE Sensors!" <<std::endl;
+//    RegisterDaveSensorName();
 
-    //////////////////////////////////////////////
-    // \brief Called after the plugin has been constructed
-    public: void Load(int _argc, char** _argv) {
-        gzdbg <<"Loading DAVE Sensors!" <<std::endl;
-//      RegisterDaveSensorName();
- 
-        std::vector<std::string> types;
-        gazebo::sensors::SensorFactory::GetSensorTypes(types);
+      std::vector<std::string> types;
+      gazebo::sensors::SensorFactory::GetSensorTypes(types);
 
-        for (const std::string& t : types) {
-            gzdbg << "Sensor type: \"" << t <<"\"" << std::endl;
-        }
-    }
+      for (const std::string& t : types) {
+          gzdbg << "Sensor type: \"" << t <<"\"" << std::endl;
+      }
+  }
 };
 
 // Register this plugin with the simulator
