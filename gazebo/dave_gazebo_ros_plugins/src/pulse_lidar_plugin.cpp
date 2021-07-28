@@ -16,6 +16,7 @@
 */
 
 #include <pulse_lidar_plugin.h>
+#include <string>
 
 namespace gazebo
 {
