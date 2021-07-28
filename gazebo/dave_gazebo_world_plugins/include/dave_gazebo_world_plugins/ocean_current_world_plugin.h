@@ -23,6 +23,9 @@
 
 #include <ros/ros.h>
 #include <ros/package.h>
+#include <gauss_markov_process.h>
+#include <tidal_oscillation.h>
+
 #include <map>
 #include <cmath>
 #include <string>
