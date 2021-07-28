@@ -23,13 +23,14 @@
 
 #include <ros/ros.h>
 #include <ros/package.h>
+#include <gauss_markov_process.h>
+#include <tidal_oscillation.h>
+
 #include <map>
 #include <cmath>
 #include <string>
 #include <vector>
 
-#include <gauss_markov_process.h>
-#include <tidal_oscillation.h>
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>

@@ -20,6 +20,9 @@
 #ifndef __OCEAN_CURRENT_PLUGIN_H__
 #define __OCEAN_CURRENT_PLUGIN_H__
 
+// Gazebo plugin
+#include <ocean_current_world_plugin.h>
+
 #include <dave_gazebo_ros_plugins/SetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/GetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/SetCurrentVelocity.h>
@@ -31,15 +34,13 @@
 #include <ros/package.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Vector3.h>
+
 #include <boost/scoped_ptr.hpp>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/physics/World.hh>
 
 #include <map>
 #include <string>
-
-// Gazebo plugin
-#include <ocean_current_world_plugin.h>
 
 namespace dave_simulator_ros
 {

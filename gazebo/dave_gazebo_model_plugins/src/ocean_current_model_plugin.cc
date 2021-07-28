@@ -15,6 +15,8 @@
 
 /// \file ocean_current.cc
 
+#include <ocean_current_model_plugin.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -27,8 +29,6 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-
-#include <ocean_current_model_plugin.h>
 
 #include "ros/package.h"
 
