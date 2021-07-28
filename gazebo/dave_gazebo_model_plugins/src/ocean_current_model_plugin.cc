@@ -121,7 +121,7 @@ void TransientCurrentPlugin::Load(
     // Read Gauss-Markov parameters
     if (currentVelocityParams->HasElement("velocity_north"))
     {
-      sdf::ElementPtr elem = 
+      sdf::ElementPtr elem =
         currentVelocityParams->GetElement("velocity_north");
       if (elem->HasElement("mean"))
           this->currentVelNorthModel.mean = 0.0;

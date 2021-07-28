@@ -446,7 +446,7 @@ namespace gazebo
             // It was in the original version of this.
             // this->world->RemoveModel(modelnamestr);
             delayRemoveList.push_back(modelnamestr);
-            // gzdbg << "Model registered for removal: " 
+            // gzdbg << "Model registered for removal: "
             //       << modelnamestr << std::endl;
           }
         }

@@ -106,5 +106,5 @@ namespace gazebo
   };
 }
 
-#endif // __PULSE_LIDAR_PLUGIN_H__
+#endif  // __PULSE_LIDAR_PLUGIN_H__
 
