@@ -5,11 +5,11 @@ repositories:
     version: master
   ds_msgs:
     type: git
-    url: git@bitbucket.org:whoidsl/ds_msgs.git
+    url: git@github.com:Field-Robotics-Lab/ds_msgs.git
     version: master
   ds_sim:
     type: git
-    url: git@bitbucket.org:whoidsl/ds_sim.git
+    url: git@github.com:Field-Robotics-Lab/ds_sim.git
     version: master
   eca_a9:
     type: git
