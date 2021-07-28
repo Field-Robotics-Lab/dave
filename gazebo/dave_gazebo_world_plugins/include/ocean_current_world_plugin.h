@@ -16,8 +16,8 @@
 /// \file ocean_current_world_plugin.h
 /// \brief Plugin that for the underwater world
 
-#ifndef __OCEAN_CURRENT_WORLD_PLUGIN_H__
-#define __OCEAN_CURRENT_WORLD_PLUGIN_H__
+#ifndef GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
+#define GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
 
 #include <ocean_current_velocity.pb.h>
 
@@ -31,7 +31,7 @@
 #include <string>
 #include <vector>
 
-#include <gazebo/gazebo.hh>
+#include <gazebo/gazebo.hh>GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
@@ -166,4 +166,5 @@ namespace gazebo
   };
 }
 
-#endif  // __OCEAN_CURRENT_WORLD_PLUGIN_H__
+#endif
+// GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
