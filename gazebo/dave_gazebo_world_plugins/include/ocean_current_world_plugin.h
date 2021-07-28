@@ -28,10 +28,10 @@
 #include <string>
 #include <vector>
 
-#include <gazebo/gazebo.hh>
-#include <gazebo/transport/TransportTypes.hh>
 #include <gauss_markov_process.h>
 #include <tidal_oscillation.h>
+#include <gazebo/gazebo.hh>
+#include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
 namespace gazebo
