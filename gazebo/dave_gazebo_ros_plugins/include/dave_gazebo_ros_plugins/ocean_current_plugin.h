@@ -17,8 +17,8 @@
 /// \brief Publishes the ocean current velocity in ROS messages and creates a
 /// service to alter the flow model in runtime
 
-#ifndef __OCEAN_CURRENT_PLUGIN_H__
-#define __OCEAN_CURRENT_PLUGIN_H__
+#ifndef GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_OCEAN_CURRENT_PLUGIN_H_
+#define GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_OCEAN_CURRENT_PLUGIN_H_
 
 // Gazebo plugin
 #include <ocean_current_world_plugin.h>
@@ -136,4 +136,5 @@ namespace dave_simulator_ros
   };
 }
 
-#endif  // __OCEAN_CURRENT_PLUGIN_H__
+#endif
+// GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_OCEAN_CURRENT_PLUGIN_H_

@@ -15,8 +15,8 @@
 
 /// \file spherical_coordinates_interface.h
 
-#ifndef __SPHERICAL_COORDINATES_INTERFACE_H__
-#define __SPHERICAL_COORDINATES_INTERFACE_H__
+#ifndef GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_SPHERICAL_COORDINATES_INTERFACE_H_
+#define GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_SPHERICAL_COORDINATES_INTERFACE_H_
 
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3.h>
@@ -82,4 +82,5 @@ class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
 
 }
 
-#endif  // __SPHERICAL_COORDINATES_INTERFACE_H__
+#endif
+// GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_SPHERICAL_COORDINATES_INTERFACE_H_
