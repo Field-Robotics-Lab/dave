@@ -154,5 +154,5 @@ if [ $xmlout -eq 1 ]; then
   (echo $CPPLINT_FILES | xargs python tools/cpplint.py 2>&1) \
     | python tools/cpplint_to_cppcheckxml.py 2> $xmldir/cpplint.xml
 elif [ $QUICK_CHECK -eq 0 ]; then
-  echo $CPPLINT_FILES | xargs python tools/cpplint.py --root=///W/dave 2>&1
+  echo $CPPLINT_FILES | xargs python tools/cpplint.py --root=___W/dave 2>&1
 fi
