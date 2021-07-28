@@ -94,9 +94,4 @@
           args="-file $(find dave_object_models)/models/grab_bar/model.sdf -sdf -model grab_bar -z -90">
     </node>
 
-    <!-- rqt_image_view for image_raw_sonar -->
-    <node name="rqt_image_view_sonar" pkg="rqt_image_view"
-          type="rqt_image_view" args="/rexrov/depth/image_raw_sonar">
-    </node>
-
 </launch>
