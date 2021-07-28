@@ -304,9 +304,6 @@ void TransientCurrentPlugin::UpdateDatabase(
 /////////////////////////////////////////////////
 void TransientCurrentPlugin::CalculateOceanCurrent()
 {
-  double northCurrent = 0.0;
-  double eastCurrent = 0.0;
-
   // Update vehicle position
   double vehicleDepth = - this->model->WorldPose().Pos().Z();
 
@@ -316,6 +313,9 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
   }
   else
   {
+    double northCurrent = 0.0;
+    double eastCurrent = 0.0;
+
     //--- Interpolate velocity from database ---//
     // find current depth index from database
     // (X: north-direction, Y: east-direction, Z: depth)
