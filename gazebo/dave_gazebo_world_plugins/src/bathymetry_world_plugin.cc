@@ -102,7 +102,6 @@ namespace gazebo
 
           bg->epsg = gridSDF->Get<int>("epsg");
           bg->srs.importFromEPSG(bg->epsg);
-          OGRSpatialReference tsrs;
 
           // lat/lon
           tsrs.importFromEPSG(4326);
@@ -223,10 +222,10 @@ namespace gazebo
       // share one, so instead just populate the indeces_to_add/del lists.
       for (auto &mm : this->models)
       {
-        gazebo::physics::ModelPtr ii = std::get<0>(mm);
-        if (ii->GetSDF()->HasElement("plugin"))
+        gazebo::physics::ModelPtr model = std::get<0>(mm);
+        if (model->GetSDF()->HasElement("plugin"))
         {
-          sdf::ElementPtr pluginSDF = ii->GetSDF()->GetElement("plugin");
+          sdf::ElementPtr pluginSDF = model->GetSDF()->GetElement("plugin");
           while (pluginSDF)
           {
             if (pluginSDF->HasElement("bathymetry"))
@@ -242,7 +241,7 @@ namespace gazebo
                 // Get the geographic coordinates.
                 // Use our geographic transformation, not gazebo's since our
                 // projection could be different.
-                ignition::math::Pose3d pose = ii->WorldPose();
+                ignition::math::Pose3d pose = model->WorldPose();
 
                 // native projection (source coordinates)
                 double sNorthing = pose.Pos().Y();
@@ -279,7 +278,7 @@ namespace gazebo
                     {
                       gzdbg << "No bathymetry found in priority "
                             << bg->priority << " data for robot "
-                            << ii->GetName();
+                            << model->GetName();
 
                       continue;
                     }
