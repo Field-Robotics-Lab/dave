@@ -32,7 +32,7 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
-using namespace gazebo;
+using namespace gazebo {
 
 GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
 
@@ -521,4 +521,5 @@ void UnderwaterCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
+}
 }
