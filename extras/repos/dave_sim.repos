@@ -3,6 +3,10 @@ repositories:
     type: git
     url: git@github.com:Field-Robotics-Lab/dave.git
     version: master
+  dockwater:
+    type: git
+    url: git@github.com:Field-Robotics-Lab/dockwater.git
+    version: main
   ds_msgs:
     type: git
     url: git@github.com:Field-Robotics-Lab/ds_msgs.git
