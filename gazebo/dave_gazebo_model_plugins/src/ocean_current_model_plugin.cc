@@ -34,7 +34,7 @@
 
 #include "ros/package.h"
 
-using namespace gazebo;
+using namespace gazebo {
 
 GZ_REGISTER_MODEL_PLUGIN(TransientCurrentPlugin)
 
@@ -465,4 +465,5 @@ void TransientCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
+}
 }
