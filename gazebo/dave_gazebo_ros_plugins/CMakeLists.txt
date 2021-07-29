@@ -33,10 +33,12 @@ add_service_files(
   TransformToSphericalCoord.srv
   TransformFromSphericalCoord.srv
 )
+
 add_message_files(
   FILES
   StratifiedCurrentVelocity.msg
 )
+
 generate_messages(
   DEPENDENCIES
   std_msgs
