@@ -65,6 +65,6 @@ jobs:
         shell: bash
         run: |
           cd /tmp/uuv_ws;
-          source /opt/ros/melodic/setup.bash;
+          source /opt/ros/noetic/setup.bash;
           catkin_make -j1;
           catkin_make run_tests -j1;
