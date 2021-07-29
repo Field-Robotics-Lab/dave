@@ -20,9 +20,6 @@
 #ifndef OCEAN_CURRENT_PLUGIN_H_ // NOLINT
 #define OCEAN_CURRENT_PLUGIN_H_
 
-// Gazebo plugin
-#include <ocean_current_world_plugin.h>
-
 #include <dave_gazebo_ros_plugins/SetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/GetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/SetCurrentVelocity.h>
