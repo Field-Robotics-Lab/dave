@@ -6,7 +6,7 @@ jobs:
   Test-Focal-Noetic-Gazebo11:
 
     runs-on: ubuntu-20.04
-    container: 
+    container:
       image: woensugchoi/dave:latest
     steps:
       - run: sudo chown -R `whoami`:`whoami` .
@@ -15,11 +15,11 @@ jobs:
         run: |
           sudo apt update;
           sudo apt-get -y install cppcheck protobuf-compiler;
-  
+
       - name: Static code checking
         run: sh tools/code_check.sh
 
-      - name: Checkout ds_msgs 
+      - name: Checkout ds_msgs
         uses: actions/checkout@v2
         with:
           repository: Field-Robotics-Lab/ds_msgs
@@ -37,25 +37,19 @@ jobs:
           repository: uuvsimulator/eca_a9
           path: eca_a9
 
-      - name: Checkout UW APL hydrographic_msgs
-        uses: actions/checkout@v2
-        with:
-          repository: apl-ocean-engineering/hydrographic_msgs 
-          path: hydrographic_msgs
-
       - name: Checkout rexrov2
         uses: actions/checkout@v2
         with:
           repository: uuvsimulator/rexrov2
           path: rexrov2
 
-      - name: Checkout uuv manipulators 
+      - name: Checkout uuv manipulators
         uses: actions/checkout@v2
         with:
           repository: Field-Robotics-Lab/uuv_manipulators
           path: uuv_manipulators
 
-      - name: Checkout uuv simulator 
+      - name: Checkout uuv simulator
         uses: actions/checkout@v2
         with:
           repository: Field-Robotics-Lab/uuv_simulator
