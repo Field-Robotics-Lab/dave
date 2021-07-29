@@ -35,8 +35,6 @@
 
 namespace gazebo {
 
-GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
-
 /////////////////////////////////////////////////
 UnderwaterCurrentPlugin::UnderwaterCurrentPlugin()
 {
@@ -523,4 +521,6 @@ void UnderwaterCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
 }
+
+GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
 }
