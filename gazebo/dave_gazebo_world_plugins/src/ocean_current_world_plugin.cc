@@ -32,7 +32,7 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
-using namespace gazebo {
+namespace namespace gazebo {
 
 GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
 

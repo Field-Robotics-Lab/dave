@@ -32,7 +32,7 @@
 
 #include "ros/package.h"
 
-using namespace gazebo {
+namespace namespace gazebo {
 
 GZ_REGISTER_MODEL_PLUGIN(TransientCurrentPlugin)
 
