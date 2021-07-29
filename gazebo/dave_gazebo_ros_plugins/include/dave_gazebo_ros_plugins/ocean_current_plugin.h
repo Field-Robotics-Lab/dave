@@ -35,7 +35,7 @@
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Vector3.h>
 
-#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/physics/World.hh>
 
@@ -117,7 +117,7 @@ namespace dave_simulator_ros
     private: std::map<std::string, ros::ServiceServer> worldServices;
 
     /// \brief Pointer to this ROS node's handle.
-    private: boost::scoped_ptr<ros::NodeHandle> rosNode;
+    private: boost::shared_ptr<ros::NodeHandle> rosNode;
 
     /// \brief Connection for callbacks on update world.
     private: gazebo::event::ConnectionPtr rosPublishConnection;
