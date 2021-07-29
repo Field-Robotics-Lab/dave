@@ -16,8 +16,8 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Float64.h>
 
-#include "usbl_gazebo/USBLResponse.h"
-#include "usbl_gazebo/USBLCommand.h"
+#include "dave_gazebo_model_plugins/UsblResponse.h"
+#include "dave_gazebo_model_plugins/UsblCommand.h"
 
 namespace gazebo
 {
@@ -32,7 +32,7 @@ namespace gazebo
       void temperatureRosCallback(const std_msgs::Float64ConstPtr &msg);
       void iisRosCallback(const std_msgs::StringConstPtr &msg);
       void cisRosCallback(const std_msgs::StringConstPtr &msg);
-      void commandRosCallback(const usbl_gazebo::USBLCommandConstPtr& msg);
+      void commandRosCallback(const dave_gazebo_model_plugins::UsblCommandConstPtr& msg);
       void queueThread();
 
     private:

@@ -23,8 +23,8 @@ set(DAVE_GAZEBO_MODEL_PLUGINS_LIST "")
 
 add_message_files(
   FILES
-  USBLCommand.msg
-  USBLResponse.msg
+  UsblCommand.msg
+  UsblResponse.msg
 )
 
 generate_messages(
@@ -118,8 +118,8 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
 )
 
 ## Declare a C++ libraries for USBL
-add_library(transponderPlugin SHARED src/transponderPlugin.cpp)
+add_library(transponderPlugin SHARED src/usbl_transponder_plugin.cc)
 add_dependencies(transponderPlugin dave_gazebo_model_plugins_generate_messages_cpp)
 
-add_library(transceiverPlugin SHARED src/transceiverPlugin.cpp)
+add_library(transceiverPlugin SHARED src/usbl_transceiver_plugin)
 add_dependencies(transceiverPlugin dave_gazebo_model_plugins_generate_messages_cpp)

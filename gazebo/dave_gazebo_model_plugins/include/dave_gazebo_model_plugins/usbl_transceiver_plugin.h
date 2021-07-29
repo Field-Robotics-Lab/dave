@@ -24,8 +24,8 @@
 #include <std_msgs/Int8.h>
 #include <geometry_msgs/Vector3.h>
 
-#include "usbl_gazebo/USBLCommand.h"
-#include "usbl_gazebo/USBLResponse.h"
+#include "dave_gazebo_model_plugins/UsblCommand.h"
+#include "dave_gazebo_model_plugins/UsblResponse.h"
 
 namespace gazebo
 {
@@ -36,7 +36,7 @@ namespace gazebo
       ~TransceiverPlugin();
       void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
       void commandingResponseTestCallback(const std_msgs::StringConstPtr &msg);
-      void commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg);
+      void commandingResponseCallback(const dave_gazebo_model_plugins::UsblResponseConstPtr &msg);
       void sendCommand(int command_id, std::string& transponder_id);
       void sendPing(const ros::TimerEvent&);
       void channelSwitchCallback(const std_msgs::StringConstPtr &msg);
