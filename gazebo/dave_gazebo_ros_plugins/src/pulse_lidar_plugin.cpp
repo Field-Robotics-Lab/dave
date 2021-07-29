@@ -17,6 +17,8 @@
 
 #include <dave_gazebo_ros_plugins/pulse_lidar_plugin.h>
 
+#include <string>
+
 namespace gazebo
 {
 /// \brief The load function is called by Gazebo when the plugin is

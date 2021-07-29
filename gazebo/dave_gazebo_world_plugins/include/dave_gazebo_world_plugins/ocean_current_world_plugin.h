@@ -19,6 +19,9 @@
 #ifndef OCEAN_CURRENT_WORLD_PLUGIN_H_ // NOLINT
 #define OCEAN_CURRENT_WORLD_PLUGIN_H_
 
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
+#include <dave_gazebo_world_plugins/tidal_oscillation.h>
+
 #include <ocean_current_velocity.pb.h>
 
 #include <ros/ros.h>
@@ -31,8 +34,6 @@
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
-#include <dave_gazebo_world_plugins/gauss_markov_process.h>
-#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 #include <sdf/sdf.hh>
 
 namespace gazebo

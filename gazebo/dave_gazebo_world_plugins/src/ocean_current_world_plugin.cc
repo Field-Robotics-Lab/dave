@@ -16,6 +16,7 @@
 /// \file ocean_current_world_plugin.cc
 
 // #include <math.h>
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
@@ -29,7 +30,6 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 namespace gazebo {
 

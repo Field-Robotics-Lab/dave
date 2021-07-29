@@ -20,6 +20,7 @@
 #ifndef OCEAN_CURRENT_PLUGIN_H_ // NOLINT
 #define OCEAN_CURRENT_PLUGIN_H_
 
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 #include <dave_gazebo_ros_plugins/SetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/GetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/SetCurrentVelocity.h>
@@ -39,8 +40,6 @@
 #include <map>
 #include <string>
 
-// Gazebo plugin
-#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 namespace dave_simulator_ros
 {
