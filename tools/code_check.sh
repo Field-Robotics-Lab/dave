@@ -134,7 +134,7 @@ elif [ $QUICK_CHECK -eq 1 ]; then
     # Undo changes to suppression file
     sed -i -e "s@$tmp2@$f@" $SUPPRESS
 
-    python $hg_root/tools/cpplint.py $tmp2 2>&1 \
+    python3 $hg_root/tools/cpplint.py $tmp2 2>&1 \
       | sed -e "s@$tmp2@$f@g" -e "s@$tmp2base@$prefix@g" \
       | grep -v 'Total errors found: 0'
 
@@ -151,8 +151,8 @@ fi
 
 # cpplint
 if [ $xmlout -eq 1 ]; then
-  (echo $CPPLINT_FILES | xargs python tools/cpplint.py 2>&1) \
+  (echo $CPPLINT_FILES | xargs python3 tools/cpplint.py 2>&1) \
     | python tools/cpplint_to_cppcheckxml.py 2> $xmldir/cpplint.xml
 elif [ $QUICK_CHECK -eq 0 ]; then
-  echo $CPPLINT_FILES | xargs python tools/cpplint.py 2>&1
+  echo $CPPLINT_FILES | xargs python3 tools/cpplint.py 2>&1
 fi
