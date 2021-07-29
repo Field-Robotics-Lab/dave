@@ -16,9 +16,9 @@
 
 #include <string>
 #include <vector>
-#include "transceiverPlugin.hpp"
 
-#include "usblCommandId.hpp"
+#include "dave_gazebo_model_plugins/usbl_transceiver_plugin.h"
+#include "dave_gazebo_model_plugins/usbl_command_id.h"
 
 using namespace gazebo;
 
@@ -40,7 +40,7 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         gzerr << "ROS has not been initialized\n";
         int argc = 0;
         char** argv = NULL;
-        ros::init(argc, argv, "USBL_transceiver",
+        ros::init(argc, argv, "Usbl_transceiver",
                   ros::init_options::NoSigintHandler);
         return;
     }
@@ -218,7 +218,7 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         this->m_iisPinger[transponder] = this->m_rosNode->advertise<
             std_msgs::String>(ping_topic, 1);
         this->m_commandPubs[transponder] = this->m_rosNode->advertise<
-            usbl_gazebo::USBLCommand>(command_topic, 1);
+            dave_gazebo_model_plugins::UsblCommand>(command_topic, 1);
     }
 
     std::string transponder_location_cartesion_topic = "/"
@@ -260,7 +260,7 @@ void TransceiverPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     // subscriber for command response
     ros::SubscribeOptions command_response =
-        ros::SubscribeOptions::create<usbl_gazebo::USBLResponse>(
+        ros::SubscribeOptions::create<dave_gazebo_model_plugins::UsblResponse>(
             "/" + this->m_namespace + "/" + this->m_transceiverDevice + "_"
             + this->m_transceiverID + "/command_response",
             1,
@@ -316,7 +316,7 @@ void TransceiverPlugin::commandingResponseTestCallback(
 }
 
 void TransceiverPlugin::commandingResponseCallback(
-        const usbl_gazebo::USBLResponseConstPtr &msg)
+        const dave_gazebo_model_plugins::UsblResponseConstPtr &msg)
 {
     gzmsg << "Response_id: " << msg->responseID << ", transponder id: "
           << msg->transceverID << ", data: " << msg->data << std::endl;
@@ -324,7 +324,7 @@ void TransceiverPlugin::commandingResponseCallback(
 
 void TransceiverPlugin::sendCommand(int command_id, std::string& transponder_id)
 {
-    usbl_gazebo::USBLCommand command;
+    dave_gazebo_model_plugins::UsblCommand command;
     command.commandID = command_id;
     command.transponderID = std::stoi(transponder_id);
     if (command_id == BATTERY_LEVEL) {
