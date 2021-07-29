@@ -15,7 +15,6 @@
 
 /// \file ocean_current.cc
 
-#include <ocean_current_model_plugin.h>
 #include <dave_gazebo_model_plugins/ocean_current_model_plugin.h>
 
 #include <boost/algorithm/string.hpp>
