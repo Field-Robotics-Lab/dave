@@ -35,6 +35,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <thread>
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
