@@ -61,7 +61,7 @@ then
   CPPLINT_FILES="$CHECK_FILES"
   QUICK_TMP=`mktemp -t asdfXXXXXXXXXX`
 else
-  CHECK_DIRS=""
+  CHECK_DIRS="."
   if [ $CPPCHECK_LT_157 -eq 1 ]; then
     # cppcheck is older than 1.57, so don't check header files (issue #907)
     CPPCHECK_FILES=`find $CHECK_DIRS -name "*.cc" -o -name "*.cpp"`
@@ -154,5 +154,6 @@ if [ $xmlout -eq 1 ]; then
   (echo $CPPLINT_FILES | xargs python tools/cpplint.py 2>&1) \
     | python tools/cpplint_to_cppcheckxml.py 2> $xmldir/cpplint.xml
 elif [ $QUICK_CHECK -eq 0 ]; then
-  echo $CPPLINT_FILES | xargs python3 tools/cpplint.py --root=dave 2>&1
+  echo $CPPLINT_FILES
+  echo $CPPLINT_FILES | xargs python3 tools/cpplint.py 2>&1
 fi
