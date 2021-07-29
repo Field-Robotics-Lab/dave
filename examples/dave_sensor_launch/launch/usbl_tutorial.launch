@@ -6,7 +6,7 @@
   <arg name="debug" default="false"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find usbl_gazebo)/worlds/tutorial.world"/>
+    <arg name="world_name" value="$(find dave_worlds)/worlds/usbl_tutorial.world"/>
     <arg name="extra_gazebo_args" value=""/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="true"/>
