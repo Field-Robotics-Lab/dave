@@ -19,35 +19,29 @@ jobs:
       - name: Static code checking
         run: sh tools/code_check.sh
 
-      - name: Checkout gtri based sonar
+      - name: Checkout ds_msgs 
         uses: actions/checkout@v2
         with:
-          repository: Field-Robotics-Lab/gtri_based_sonar
-          path: gtri_based_sonar
+          repository: Field-Robotics-Lab/ds_msgs
+          path: ds_msgs
 
-      - name: Checkout UW APL acoustic_msgs
+      - name: Checkout ds_sim
         uses: actions/checkout@v2
         with:
-          repository: apl-ocean-engineering/acoustic_msgs 
-          path: acoustic_msgs
+          repository: Field-Robotics-Lab/ds_sim
+          path: ds_sim
 
-      - name: Checkout nps underwater sensors 
+      - name: Checkout eca a9
         uses: actions/checkout@v2
         with:
-          repository: Field-Robotics-Lab/nps_uw_sensors_gazebo
-          path: nps_uw_sensors_gazebo
+          repository: uuvsimulator/eca_a9
+          path: eca_a9
 
-      - name: Checkout nps messages
+      - name: Checkout UW APL hydrographic_msgs
         uses: actions/checkout@v2
         with:
-          repository: Field-Robotics-Lab/frl_msgs
-          path: frl_msgs
-
-      - name: Checkout uuv simulator 
-        uses: actions/checkout@v2
-        with:
-          repository: uuvsimulator/uuv_simulator
-          path: uuv_simulator
+          repository: apl-ocean-engineering/hydrographic_msgs 
+          path: hydrographic_msgs
 
       - name: Checkout rexrov2
         uses: actions/checkout@v2
@@ -58,14 +52,14 @@ jobs:
       - name: Checkout uuv manipulators 
         uses: actions/checkout@v2
         with:
-          repository: uuvsimulator/uuv_manipulators
+          repository: Field-Robotics-Lab/uuv_manipulators
           path: uuv_manipulators
 
-      - name: Checkout eca a9
+      - name: Checkout uuv simulator 
         uses: actions/checkout@v2
         with:
-          repository: uuvsimulator/eca_a9
-          path: eca_a9
+          repository: Field-Robotics-Lab/uuv_simulator
+          path: uuv_simulator
 
       - name: Set up workspace
         run: |
