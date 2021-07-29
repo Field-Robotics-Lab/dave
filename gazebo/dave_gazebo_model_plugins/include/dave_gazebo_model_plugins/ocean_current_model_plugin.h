@@ -15,6 +15,7 @@
 
 /// \file TransientCurrentPlugin.hh
 /// \brief Plugin for the transient current plugin to publish vehicle depth
+/// unnecessary comment
 
 #ifndef GAZEBO_DAVE_GAZEBO_MODEL_PLUGINS_INCLUDE_OCEAN_CURRENT_MODEL_PLUGIN_H_
 #define GAZEBO_DAVE_GAZEBO_MODEL_PLUGINS_INCLUDE_OCEAN_CURRENT_MODEL_PLUGIN_H_
