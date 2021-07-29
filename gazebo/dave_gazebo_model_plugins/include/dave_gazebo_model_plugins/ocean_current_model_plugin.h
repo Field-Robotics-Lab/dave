@@ -16,8 +16,8 @@
 /// \file TransientCurrentPlugin.hh
 /// \brief Plugin for the transient current plugin to publish vehicle depth
 
-#ifndef __OCEAN_CURRENT_MODEL_PLUGIN_H__
-#define __OCEAN_CURRENT_MODEL_PLUGIN_H__
+#ifndef OCEAN_CURRENT_MODEL_PLUGIN_H_ // NOLINT
+#define OCEAN_CURRENT_MODEL_PLUGIN_H_
 
 #include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
 #include <dave_gazebo_world_plugins/gauss_markov_process.h>
@@ -77,7 +77,7 @@ namespace gazebo
     protected: std::string ns;
 
     /// \brief Pointer to this ROS node's handle.
-    private: boost::scoped_ptr<ros::NodeHandle> rosNode;
+    private: boost::shared_ptr<ros::NodeHandle> rosNode;
 
     /// \brief Connects the update event callback
     protected: virtual void Connect();
@@ -191,4 +191,4 @@ namespace gazebo
   };
 }
 
-#endif  // __OCEAN_CURRENT_MODEL_PLUGIN_H__
+#endif  // OCEAN_CURRENT_MODEL_PLUGIN_H_

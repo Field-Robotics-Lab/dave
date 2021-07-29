@@ -17,8 +17,11 @@
 /// \brief Publishes the ocean current velocity in ROS messages and creates a
 /// service to alter the flow model in runtime
 
-#ifndef __OCEAN_CURRENT_PLUGIN_H__
-#define __OCEAN_CURRENT_PLUGIN_H__
+#ifndef OCEAN_CURRENT_PLUGIN_H_ // NOLINT
+#define OCEAN_CURRENT_PLUGIN_H_
+
+// Gazebo plugin
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 #include <dave_gazebo_ros_plugins/SetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/GetCurrentModel.h>
@@ -31,15 +34,13 @@
 #include <ros/package.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Vector3.h>
-#include <boost/scoped_ptr.hpp>
+
+#include <boost/shared_ptr.hpp>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/physics/World.hh>
 
 #include <map>
 #include <string>
-
-// Gazebo plugin
-#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 namespace dave_simulator_ros
 {
@@ -113,7 +114,7 @@ namespace dave_simulator_ros
     private: std::map<std::string, ros::ServiceServer> worldServices;
 
     /// \brief Pointer to this ROS node's handle.
-    private: boost::scoped_ptr<ros::NodeHandle> rosNode;
+    private: boost::shared_ptr<ros::NodeHandle> rosNode;
 
     /// \brief Connection for callbacks on update world.
     private: gazebo::event::ConnectionPtr rosPublishConnection;
@@ -132,4 +133,4 @@ namespace dave_simulator_ros
   };
 }
 
-#endif  // __OCEAN_CURRENT_PLUGIN_H__
+#endif  // OCEAN_CURRENT_PLUGIN_H_

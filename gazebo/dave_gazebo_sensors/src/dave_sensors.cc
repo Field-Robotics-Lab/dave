@@ -1,3 +1,18 @@
+// Copyright (c) 2016 The dave Simulator Authors.
+// All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 /*
  *
  * dave_sensors.cc
@@ -20,26 +35,25 @@
 
 namespace gazebo {
 class RegisterDaveRosSensorsPlugin : public SystemPlugin {
+  //////////////////////////////////////////////
+  // \brief Destructor
+  public: virtual ~RegisterDaveRosSensorsPlugin() {
+  }
 
-    //////////////////////////////////////////////
-    // \brief Destructor
-    public: virtual ~RegisterDaveRosSensorsPlugin() {
-    }
 
+  //////////////////////////////////////////////
+  // \brief Called after the plugin has been constructed
+  public: void Load(int _argc, char** _argv) {
+      gzdbg <<"Loading DAVE Sensors!" <<std::endl;
+//    RegisterDaveSensorName();
 
-    //////////////////////////////////////////////
-    // \brief Called after the plugin has been constructed
-    public: void Load(int _argc, char** _argv) {
-        gzdbg <<"Loading DAVE Sensors!" <<std::endl;
-//      RegisterDaveSensorName();
- 
-        std::vector<std::string> types;
-        gazebo::sensors::SensorFactory::GetSensorTypes(types);
+      std::vector<std::string> types;
+      gazebo::sensors::SensorFactory::GetSensorTypes(types);
 
-        for (const std::string& t : types) {
-            gzdbg << "Sensor type: \"" << t <<"\"" << std::endl;
-        }
-    }
+      for (const std::string& t : types) {
+          gzdbg << "Sensor type: \"" << t <<"\"" << std::endl;
+      }
+  }
 };
 
 // Register this plugin with the simulator

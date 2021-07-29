@@ -17,6 +17,8 @@
 
 // #include <math.h>
 
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -29,11 +31,8 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
-using namespace gazebo;
-
-GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
+namespace gazebo {
 
 /////////////////////////////////////////////////
 UnderwaterCurrentPlugin::UnderwaterCurrentPlugin()
@@ -520,4 +519,7 @@ void UnderwaterCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
+}
+
+GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
 }

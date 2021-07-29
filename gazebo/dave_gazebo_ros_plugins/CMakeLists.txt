@@ -33,10 +33,12 @@ add_service_files(
   TransformToSphericalCoord.srv
   TransformFromSphericalCoord.srv
 )
+
 add_message_files(
   FILES
   StratifiedCurrentVelocity.msg
 )
+
 generate_messages(
   DEPENDENCIES
   std_msgs
@@ -78,6 +80,7 @@ add_library(dave_ocean_current_plugin
    src/ocean_current_plugin.cpp
 )
 add_dependencies(dave_ocean_current_plugin
+ ${${PROJECT_NAME}_EXPORTED_TARGETS}
  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(dave_ocean_current_plugin
@@ -104,6 +107,7 @@ add_library(dave_sc_coordinates_interface
    src/spherical_coordinates_interface.cpp
 )
 add_dependencies(dave_sc_coordinates_interface
+ ${${PROJECT_NAME}_EXPORTED_TARGETS}
  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(dave_sc_coordinates_interface
@@ -141,5 +145,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN "*~" EXCLUDE
+)
+
+install(DIRECTORY include/
+   DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
+   FILES_MATCHING PATTERN ".h"
 )
 

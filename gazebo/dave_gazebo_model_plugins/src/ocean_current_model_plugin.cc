@@ -15,6 +15,8 @@
 
 /// \file ocean_current.cc
 
+#include <dave_gazebo_model_plugins/ocean_current_model_plugin.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
@@ -28,13 +30,9 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 
-#include <dave_gazebo_model_plugins/ocean_current_model_plugin.h>
-
 #include "ros/package.h"
 
-using namespace gazebo;
-
-GZ_REGISTER_MODEL_PLUGIN(TransientCurrentPlugin)
+namespace gazebo {
 
 /////////////////////////////////////////////////
 TransientCurrentPlugin::TransientCurrentPlugin()
@@ -121,7 +119,8 @@ void TransientCurrentPlugin::Load(
     // Read Gauss-Markov parameters
     if (currentVelocityParams->HasElement("velocity_north"))
     {
-      sdf::ElementPtr elem = currentVelocityParams->GetElement("velocity_north");
+      sdf::ElementPtr elem =
+        currentVelocityParams->GetElement("velocity_north");
       if (elem->HasElement("mean"))
           this->currentVelNorthModel.mean = 0.0;
       if (elem->HasElement("mu"))
@@ -304,9 +303,6 @@ void TransientCurrentPlugin::UpdateDatabase(
 /////////////////////////////////////////////////
 void TransientCurrentPlugin::CalculateOceanCurrent()
 {
-  double northCurrent = 0.0;
-  double eastCurrent = 0.0;
-
   // Update vehicle position
   double vehicleDepth = - this->model->WorldPose().Pos().Z();
 
@@ -316,6 +312,9 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
   }
   else
   {
+    double northCurrent = 0.0;
+    double eastCurrent = 0.0;
+
     //--- Interpolate velocity from database ---//
     // find current depth index from database
     // (X: north-direction, Y: east-direction, Z: depth)
@@ -462,4 +461,7 @@ void TransientCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
+}
+
+GZ_REGISTER_MODEL_PLUGIN(TransientCurrentPlugin)
 }

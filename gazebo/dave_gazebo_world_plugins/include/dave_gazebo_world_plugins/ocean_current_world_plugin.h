@@ -16,13 +16,16 @@
 /// \file ocean_current_world_plugin.h
 /// \brief Plugin that for the underwater world
 
-#ifndef __OCEAN_CURRENT_WORLD_PLUGIN_H__
-#define __OCEAN_CURRENT_WORLD_PLUGIN_H__
+#ifndef OCEAN_CURRENT_WORLD_PLUGIN_H_ // NOLINT
+#define OCEAN_CURRENT_WORLD_PLUGIN_H_
 
 #include <ocean_current_velocity.pb.h>
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
+#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 
 #include <ros/ros.h>
 #include <ros/package.h>
+
 #include <map>
 #include <cmath>
 #include <string>
@@ -30,8 +33,6 @@
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
-#include <dave_gazebo_world_plugins/gauss_markov_process.h>
-#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 #include <sdf/sdf.hh>
 
 namespace gazebo
@@ -165,4 +166,4 @@ namespace gazebo
   };
 }
 
-#endif  // __OCEAN_CURRENT_WORLD_PLUGIN_H__
+#endif  // OCEAN_CURRENT_WORLD_PLUGIN_H_
