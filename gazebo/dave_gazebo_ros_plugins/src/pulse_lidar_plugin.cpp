@@ -15,7 +15,6 @@
  *
 */
 
-#include <pulse_lidar_plugin.h>
 #include <dave_gazebo_ros_plugins/pulse_lidar_plugin.h>
 #include <string>
 
