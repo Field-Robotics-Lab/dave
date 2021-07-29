@@ -3,11 +3,11 @@ name: Ubuntu CI
 on: [pull_request]
 
 jobs:
-  test-gazebo9-melodic-nvidiaCuda:
+  Test-Dave-Ubuntu20.04-Noetic-Gazebo11:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: 
-      image: woensugchoi/nps_uw_sensors_nvidia_cuda:latest
+      image: woensugchoi/dave:latest
     steps:
       - run: sudo chown -R `whoami`:`whoami` .
       - uses: actions/checkout@v2
