@@ -20,6 +20,8 @@
 #define GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
 
 #include <ocean_current_velocity.pb.h>
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
+#include <dave_gazebo_world_plugins/tidal_oscillation.h>
 
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -31,7 +33,7 @@
 #include <string>
 #include <vector>
 
-#include <gazebo/gazebo.hh>GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
+#include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
 

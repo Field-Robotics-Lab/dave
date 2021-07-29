@@ -18,6 +18,7 @@
 // #include <math.h>
 
 #include <ocean_current_world_plugin.h>
+#include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
