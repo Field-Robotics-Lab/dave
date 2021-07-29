@@ -16,8 +16,8 @@
 /// \file TransientCurrentPlugin.hh
 /// \brief Plugin for the transient current plugin to publish vehicle depth
 
-#ifndef GAZEBO_DAVE_GAZEBO_MODEL_PLUGINS_INCLUDE_OCEAN_CURRENT_MODEL_PLUGIN_H_
-#define GAZEBO_DAVE_GAZEBO_MODEL_PLUGINS_INCLUDE_OCEAN_CURRENT_MODEL_PLUGIN_H_
+#ifndef OCEAN_CURRENT_MODEL_PLUGIN_H_ // NOLINT
+#define OCEAN_CURRENT_MODEL_PLUGIN_H_
 
 #include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
 #include <dave_gazebo_world_plugins/gauss_markov_process.h>
@@ -191,5 +191,4 @@ namespace gazebo
   };
 }
 
-#endif
-// GAZEBO_DAVE_GAZEBO_MODEL_PLUGINS_INCLUDE_OCEAN_CURRENT_MODEL_PLUGIN_H_
+#endif  // OCEAN_CURRENT_MODEL_PLUGIN_H_

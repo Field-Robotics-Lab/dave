@@ -16,8 +16,8 @@
 /// \file ocean_current_world_plugin.h
 /// \brief Plugin that for the underwater world
 
-#ifndef GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
-#define GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
+#ifndef OCEAN_CURRENT_WORLD_PLUGIN_H_ // NOLINT
+#define OCEAN_CURRENT_WORLD_PLUGIN_H_
 
 #include <ocean_current_velocity.pb.h>
 
@@ -168,5 +168,4 @@ namespace gazebo
   };
 }
 
-#endif
-// GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_OCEAN_CURRENT_WORLD_PLUGIN_H_
+#endif  // OCEAN_CURRENT_WORLD_PLUGIN_H_

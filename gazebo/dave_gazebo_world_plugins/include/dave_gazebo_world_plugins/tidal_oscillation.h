@@ -16,8 +16,8 @@
 /// \file tidal_oscillation.h
 /// \brief Interpolation of NOAA data for Tidal Oscillation feature
 
-#ifndef GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_TIDAL_OSCILLATION_H_
-#define GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_TIDAL_OSCILLATION_H_
+#ifndef TIDAL_OSCILLATION_H_ // NOLINT
+#define TIDAL_OSCILLATION_H_
 
 #include <gazebo/gazebo.hh>
 #include <cstdlib>
@@ -87,5 +87,4 @@ namespace gazebo
   };
 }
 
-#endif
-// GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_TIDAL_OSCILLATION_H_
+#endif  // TIDAL_OSCILLATION_H_

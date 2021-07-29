@@ -14,8 +14,8 @@
  * limitations under the License.
  *
 */
-#ifndef GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_PULSE_LIDAR_PLUGIN_H_
-#define GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_PULSE_LIDAR_PLUGIN_H_
+#ifndef PULSE_LIDAR_PLUGIN_H_ // NOLINT
+#define PULSE_LIDAR_PLUGIN_H_
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
@@ -106,5 +106,4 @@ namespace gazebo
   };
 }
 
-#endif
-// GAZEBO_DAVE_GAZEBO_ROS_PLUGINS_INCLUDE_PULSE_LIDAR_PLUGIN_H_
+#endif  // PULSE_LIDAR_PLUGIN_H_

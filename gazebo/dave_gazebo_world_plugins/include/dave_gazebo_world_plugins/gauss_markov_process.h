@@ -16,8 +16,8 @@
 /// \file gauss_markov_process.h
 /// \brief Implementation of a Gauss-Markov process model
 
-#ifndef GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_GAUSS_MARKOV_PROCESS_H_
-#define GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_GAUSS_MARKOV_PROCESS_H_
+#ifndef GAUSS_MARKOV_PROCESS_H_ // NOLINT
+#define GAUSS_MARKOV_PROCESS_H_
 
 #include <gazebo/gazebo.hh>
 #include <cstdlib>
@@ -83,5 +83,4 @@ namespace gazebo
   };
 }
 
-#endif
-// GAZEBO_DAVE_GAZEBO_WORLD_PLUGINS_INCLUDE_GAUSS_MARKOV_PROCESS_H_
+#endif  // GAUSS_MARKOV_PROCESS_H_
