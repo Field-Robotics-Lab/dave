@@ -33,7 +33,7 @@
 #include <sdf/sdf.hh>
 #include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
 
-namespace namespace gazebo {
+namespace gazebo {
 
 GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
 
