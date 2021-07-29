@@ -24,7 +24,7 @@
 #include <dave_gazebo_ros_plugins/GetOriginSphericalCoord.h>
 #include <dave_gazebo_ros_plugins/TransformToSphericalCoord.h>
 #include <dave_gazebo_ros_plugins/TransformFromSphericalCoord.h>
-#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <gazebo/gazebo.hh>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/common/SphericalCoordinates.hh>
@@ -68,7 +68,7 @@ class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
       dave_gazebo_ros_plugins::TransformFromSphericalCoord::Response& _res);
 
   /// \brief Pointer to this ROS node's handle.
-  protected: boost::scoped_ptr<ros::NodeHandle> rosNode;
+  protected: boost::shared_ptr<ros::NodeHandle> rosNode;
 
   /// \brief Connection for callbacks on update world.
   protected: event::ConnectionPtr rosPublishConnection;

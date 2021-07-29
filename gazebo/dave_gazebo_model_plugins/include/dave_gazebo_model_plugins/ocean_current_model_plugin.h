@@ -77,7 +77,7 @@ namespace gazebo
     protected: std::string ns;
 
     /// \brief Pointer to this ROS node's handle.
-    private: boost::scoped_ptr<ros::NodeHandle> rosNode;
+    private: boost::shared_ptr<ros::NodeHandle> rosNode;
 
     /// \brief Connects the update event callback
     protected: virtual void Connect();
