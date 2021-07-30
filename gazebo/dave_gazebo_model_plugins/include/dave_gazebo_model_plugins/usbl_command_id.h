@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef DAVE_USBLCOMMANDLD_HPP_
+#ifndef DAVE_USBLCOMMANDLD_HPP_ // NOLINT
 #define DAVE_USBLCOMMANDLD_HPP_
 
 typedef enum {
