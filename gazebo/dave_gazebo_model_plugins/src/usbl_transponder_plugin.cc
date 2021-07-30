@@ -15,7 +15,7 @@
 */
 
 #include <string>
-#include "transponderPlugin.hpp"
+#include "dave_gazebo_model_plugins/usbl_transponder_plugin.h"
 
 using namespace gazebo;
 
@@ -126,7 +126,7 @@ void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         + this->m_transceiverDevice + "_" + this->m_transceiverID
         + "/command_response");
     this->m_commandResponsePub = this->m_rosNode->advertise<
-        usbl_gazebo::USBLResponse>(commandResponseTopic, 1);
+        dave_gazebo_model_plugins::UsblResponse>(commandResponseTopic, 1);
 
     /*********************************************************************/
 
@@ -165,7 +165,7 @@ void TransponderPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     this->m_temperatureSub = this->m_rosNode->subscribe(temperature_sub);
 
     ros::SubscribeOptions command_sub =
-        ros::SubscribeOptions::create<usbl_gazebo::USBLCommand>(
+        ros::SubscribeOptions::create<dave_gazebo_model_plugins::UsblCommand>(
             "/" + this->m_namespace + "/" + this->m_transponderDevice
             + "_" + this->m_transponderID + "/command_request",
             1,
@@ -258,13 +258,13 @@ void TransponderPlugin::cisRosCallback(const std_msgs::StringConstPtr &msg)
 }
 
 void TransponderPlugin::commandRosCallback(
-    const usbl_gazebo::USBLCommandConstPtr& msg)
+    const dave_gazebo_model_plugins::UsblCommandConstPtr& msg)
 {
     // gzmsg << "transponder ID: " << msg->commandID << ", command ID"
     //       << msg->transponderID << ", data: " << msg->data << std::endl;
 
     // send back command response
-    usbl_gazebo::USBLResponse response_msg;
+    dave_gazebo_model_plugins::UsblResponse response_msg;
     // just some random message, doesn't mean anything
     response_msg.data = "hi from transponder_" + this->m_transponderID;
     response_msg.responseID = 1;

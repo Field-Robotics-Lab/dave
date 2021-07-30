@@ -9,13 +9,28 @@ else()
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
-    gazebo_dev
-    dave_gazebo_world_plugins
-    dave_gazebo_ros_plugins
+  roscpp
+  gazebo_ros
+  std_msgs
+  message_generation
+  gazebo_dev
+  dave_gazebo_world_plugins
+  dave_gazebo_ros_plugins
 )
 find_package(Boost REQUIRED COMPONENTS system)
 
 set(DAVE_GAZEBO_MODEL_PLUGINS_LIST "")
+
+add_message_files(
+  FILES
+  UsblCommand.msg
+  UsblResponse.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  )
 
 catkin_package(
   INCLUDE_DIRS
@@ -26,9 +41,12 @@ catkin_package(
       roscpp
       gazebo_msgs
       gazebo_dev
+      gazebo_ros
+      message_runtime
       dave_gazebo_world_plugins
       dave_gazebo_ros_plugins
 )
+
 
 include_directories(${PROJECT_SOURCE_DIR}/include
                     ${Boost_INCLUDE_DIR}
@@ -99,3 +117,9 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
   PATTERN "*~" EXCLUDE
 )
 
+## Declare a C++ libraries for USBL
+add_library(transponderPlugin SHARED src/usbl_transponder_plugin.cc)
+add_dependencies(transponderPlugin dave_gazebo_model_plugins_generate_messages_cpp)
+
+add_library(transceiverPlugin SHARED src/usbl_transceiver_plugin)
+add_dependencies(transceiverPlugin dave_gazebo_model_plugins_generate_messages_cpp)
