@@ -3,11 +3,11 @@ name: Ubuntu CI
 on: [pull_request]
 
 jobs:
-  test-gazebo9-melodic-nvidiaCuda:
+  Test-Focal-Noetic-Gazebo11:
 
-    runs-on: ubuntu-18.04
-    container: 
-      image: woensugchoi/nps_uw_sensors_nvidia_cuda:latest
+    runs-on: ubuntu-20.04
+    container:
+      image: woensugchoi/dave:latest
     steps:
       - run: sudo chown -R `whoami`:`whoami` .
       - uses: actions/checkout@v2
@@ -15,39 +15,27 @@ jobs:
         run: |
           sudo apt update;
           sudo apt-get -y install cppcheck protobuf-compiler;
-  
+
       - name: Static code checking
         run: sh tools/code_check.sh
 
-      - name: Checkout gtri based sonar
+      - name: Checkout ds_msgs
         uses: actions/checkout@v2
         with:
-          repository: Field-Robotics-Lab/gtri_based_sonar
-          path: gtri_based_sonar
+          repository: Field-Robotics-Lab/ds_msgs
+          path: ds_msgs
 
-      - name: Checkout UW APL acoustic_msgs
+      - name: Checkout ds_sim
         uses: actions/checkout@v2
         with:
-          repository: apl-ocean-engineering/acoustic_msgs 
-          path: acoustic_msgs
+          repository: Field-Robotics-Lab/ds_sim
+          path: ds_sim
 
-      - name: Checkout nps underwater sensors 
+      - name: Checkout eca a9
         uses: actions/checkout@v2
         with:
-          repository: Field-Robotics-Lab/nps_uw_sensors_gazebo
-          path: nps_uw_sensors_gazebo
-
-      - name: Checkout nps messages
-        uses: actions/checkout@v2
-        with:
-          repository: Field-Robotics-Lab/frl_msgs
-          path: frl_msgs
-
-      - name: Checkout uuv simulator 
-        uses: actions/checkout@v2
-        with:
-          repository: uuvsimulator/uuv_simulator
-          path: uuv_simulator
+          repository: uuvsimulator/eca_a9
+          path: eca_a9
 
       - name: Checkout rexrov2
         uses: actions/checkout@v2
@@ -55,17 +43,17 @@ jobs:
           repository: uuvsimulator/rexrov2
           path: rexrov2
 
-      - name: Checkout uuv manipulators 
+      - name: Checkout uuv manipulators
         uses: actions/checkout@v2
         with:
-          repository: uuvsimulator/uuv_manipulators
+          repository: Field-Robotics-Lab/uuv_manipulators
           path: uuv_manipulators
 
-      - name: Checkout eca a9
+      - name: Checkout uuv simulator
         uses: actions/checkout@v2
         with:
-          repository: uuvsimulator/eca_a9
-          path: eca_a9
+          repository: Field-Robotics-Lab/uuv_simulator
+          path: uuv_simulator
 
       - name: Set up workspace
         run: |
@@ -77,6 +65,6 @@ jobs:
         shell: bash
         run: |
           cd /tmp/uuv_ws;
-          source /opt/ros/melodic/setup.bash;
+          source /opt/ros/noetic/setup.bash;
           catkin_make -j1;
           catkin_make run_tests -j1;

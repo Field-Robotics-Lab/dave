@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="teledyne_explorer1000">
+
+  <xacro:include filename="$(find teledyne_explorer1000_dsl_description)/urdf/teledyne_explorer1000.xacro"/>
+
+  <link name="explorer1000_base_link"/>
+
+  <link name="explorer1000_sensor_link">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+  </link>
+
+  <joint name="explorer1000_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="explorer1000_base_link"/>
+    <child link="explorer1000_sensor_link"/>
+  </joint>
+
+  <!-- Attach the DVL to link -->
+  <xacro:teledyne_explorer1000_macro
+    name="explorer1000" namespace="explorer1000" xyz="0 0 0"
+    dvl_topic="dvl" ranges_topic="ranges"
+    robot_link="explorer1000_sensor_link" joint_xyz="0 0 0"/>
+
+  <gazebo reference="explorer1000_sensor_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="explorer1000_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+</robot>

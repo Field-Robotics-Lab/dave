@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_ocean_waves_simple.world"/>
+    <arg name="joy_id" default="0"/>
+
+ 
+    <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+    </include>
+
+    <!-- use ned frame north east down -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+
+    <!-- springy plate -->
+    <node name="spawn_springy_plate" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find dave_object_models)/models/springy_plate/model.sdf -sdf -model springy_plate">
+    </node>
+
+    <!-- rexrov robot with oberon7 arm -->
+    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+        <arg name="namespace" value="rexrov"/>
+        <arg name="x" value="2.5"/>
+        <arg name="y" value="0"/>
+        <arg name="z" value="-88.6"/>
+        <arg name="yaw" value="-3.14159"/>
+    </include>
+
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+
+    <!-- joint control for oberon7 -->
+    <include file="$(find oberon7_control)/launch/joint_control.launch">
+        <arg name="uuv_name" value="rexrov"/>
+    </include>
+    
+
+</launch>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+ 
+  <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="extra_gazebo_args" value="-s libdsros_sensors.so"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="verbose" value="false"/>
+  </include>
+
+  <!-- Load and spawn the models, starts the joint & state publishers, make the model move -->
+  <include file="$(find nortek_dvl1000_4000_dsl_description)/launch/upload_nortek_dvl1000_4000.launch"/>
+  <include file="$(find teledyne_explorer4000_dsl_description)/launch/upload_teledyne_explorer4000.launch"/>
+  <include file="$(find teledyne_whn_dsl_description)/launch/upload_teledyne_whn.launch"/>
+  <node name="spawn_dvl1000_4000" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param nortek_dvl1000_4000 -model nortek_dvl1000_4000 -y 0 -z 1" respawn="false" output="screen" />
+  <node name="spawn_explorer4000" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param teledyne_explorer4000 -model teledyne_explorer4000 -y 1 -z 1" respawn="false" output="screen" />
+  <node name="spawn_whn" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param teledyne_whn -model teledyne_whn -y -1 -z 1" respawn="false" output="screen" /> -->
+</launch>

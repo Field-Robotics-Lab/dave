@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<launch>
+    <!--
+    <arg name="namespace" default="rexrov"/>
+    <arg name="set_timeout" default="false"/>
+    <arg name="timeout" default="0.0"/>
+    <arg name="velocity_control" default="true"/> -->
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/> 
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+ 
+    <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+    </include>
+
+
+    <!-- use ned frame north east down -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+
+    <!-- world models -->
+    <node name="publish_world_models"
+        pkg="uuv_assistants"
+        type="publish_world_models.py"
+        output="screen">
+        <rosparam subst_value="true">
+            meshes:
+                heightmap:
+                    mesh: package://uuv_gazebo_worlds/models/sand_heightmap/meshes/heightmap.dae
+                    model: sand_heightmap
+                seafloor:
+                    plane: [2000, 2000, 0.1]
+                    pose:
+                        position: [0, 0, -100]
+                north:
+                    plane: [0.1, 2000, 100]
+                    pose:
+                        position: [1000, 0, -50]
+                south:
+                    plane: [0.1, 2000, 100]
+                    pose:
+                        position: [-1000, 0, -50]
+                west:
+                    plane: [2000, 0.1, 100]
+                    pose:
+                        position: [0, -1000, -50]
+                east:
+                    plane: [2000, 0.1, 100]
+                    pose:
+                        position: [0, 1000, -50]
+        </rosparam>
+    </node>
+
+    <!-- timeout -->
+    <!-- <group if="$(arg set_timeout)">
+        <include file="$(find uuv_assistants)/launch/set_simulation_timer.launch">
+            <arg name="timeout" value="$(arg timeout)"/>
+        </include>
+    </group> -->
+
+    <!-- wave glider : glider_waves -->
+    <include file="$(find glider_description)/launch/upload_glider_wave.launch">
+        <arg name="namespace" value="glider_wave"/>
+        <arg name="x" value="5"/>
+        <arg name="y" value="5"/>
+        <arg name="z" value="0.2"/>
+    </include>
+    
+    <!-- standard glider : glider_slocum -->
+    <include file="$(find glider_description)/launch/upload_glider_slocum.launch">
+        <arg name="namespace" value="glider_slocum"/>
+        <arg name="x" value="-10"/>
+        <arg name="y" value="40"/>
+        <arg name="z" value="-56"/>
+	<arg name="yaw" value="0.7"/>
+	<arg name="pitch" value="0.4"/>
+    </include>
+	
+    
+    <!-- hybrid glider : glider_hybrid_whoi -->
+    <include file="$(find glider_description)/launch/upload_glider_hybrid_whoi.launch">
+        <arg name="namespace" value="glider_hybrid_whoi"/>
+        <arg name="x" value="10"/>
+        <arg name="y" value="40"/>
+        <arg name="z" value="-50"/>
+	<arg name="pitch" value="0.2"/>
+    </include>
+
+</launch>

@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2016 The UUV Simulator Authors.
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- includes -->
+  <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro" />
+  <xacro:include filename="$(find dave_snippets)/urdf/sensor_snippets.xacro"/>
+  <xacro:include filename="$(find glider_description)/urdf/glider_hybrid_whoi_snippets.xacro"/>
+  <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/>
+
+  <!-- Properties -->
+  <xacro:property name="mass" value="80.0" />
+  <xacro:property name="length" value="1.5" />
+  <xacro:property name="diameter" value="0.22" />
+  <xacro:property name="radius" value="${diameter*0.5}" />
+  <xacro:property name="volume" value="0.06799987704121499" />
+  <xacro:property name="cob" value="0 0 0.06" />
+  <xacro:property name="rho" value="1027.0" />
+
+  <xacro:property name="area" value="0.04155" />
+  <xacro:property name="length" value="1.5" />
+
+  <xacro:property name="namespace" value="glider_hybrid_whoi"/>
+  <xacro:property name="visual_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_body.dae" />
+  <xacro:property name="collision_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_collision.dae" />
+  <xacro:property name="left_prop_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_left_propeller.dae" />
+  <xacro:property name="right_prop_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_right_propeller.dae" />
+
+  <xacro:macro name="glider_hybrid_whoi" params="namespace debug inertial_reference_frame">
+    <link name="${namespace}/base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 -1.5708" />
+        <geometry>
+          <mesh filename="${visual_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 -1.5708" />
+        <geometry>
+          <mesh filename="${collision_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${mass}"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="30.0" ixy="0" ixz="0" iyy="0.6" iyz="0" izz="5.0" />
+      </inertial>
+    </link>
+    <link name="${namespace}/left_propeller_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0 " />
+        <geometry>
+          <mesh filename="${left_prop_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+    </link>
+    <joint name="${namespace}/left_propeller_joint" type="continuous">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/left_propeller_link"/>
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${namespace}/right_propeller_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${right_prop_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+    </link>
+    <joint name="${namespace}/right_propeller_joint" type="continuous">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/right_propeller_link"/>
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name='${namespace}/battery_link2'>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <battery name='${namespace}/battery'>
+        <voltage>4.2</voltage>
+      </battery>
+    </link>
+    <joint name='${namespace}/battery_joint2' type='fixed'>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/battery_link2"/>
+    </joint>
+
+    <!-- Set up hydrodynamic plugin -->
+    <!-- TODO: vehicle properties and add buoyancy engine and sliding mass plugins -->
+    <gazebo>
+      <plugin name="${namespace}_uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+        <fluid_density>${rho}</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>${debug}</debug>
+        <link name="${namespace}/base_link">
+          <volume>${volume}</volume>
+          <center_of_buoyancy>${cob}</center_of_buoyancy>
+          <neutrally_buoyant>0</neutrally_buoyant>
+          <hydrodynamic_model>
+            <type>fossen</type>
+            <added_mass>
+              4   0   0   0   0   0
+              0   95  0   0   0   0
+              0   0   75  0   0   0
+              0   0   0   0.4 0   0
+              0   0   0   0   27  0
+              0   0   0   0   0   32
+            </added_mass>
+
+            <linear_damping_forward_speed>
+              -8      0       0       0       0       0
+              0       -162    0       0       0       150
+              0       0       -108    0       -100    0
+              0       0       0       -13     0       0
+              0       0       37      0       -20     0
+              0       -34     0       0       0       -32
+            </linear_damping_forward_speed>
+          </hydrodynamic_model>
+        </link>
+      </plugin>
+      <!-- <plugin name='glider_hybrid_whoi_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>${namespace}/propeller_link</linkName>
+        <jointName>${namespace}/propeller_joint</jointName>
+        <thrusterID>0</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.1</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>4.9e-05</rotorConstant>
+        </conversion>
+        <robotNamespace>/</robotNamespace>
+      </plugin> -->
+  <!--    <plugin name='fin0_model' filename='libuuv_fin_ros_plugin.so'>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.1</timeConstant>
+        </dynamics>
+        <liftdrag>
+          <type>TwoLines</type>
+          <area>0.04155</area>
+          <fluid_density>1027.0</fluid_density>
+          <a0>0.0</a0>
+          <alpha_stall>0.174533</alpha_stall>
+          <cla>13.98</cla>
+          <cla_stall>0.0</cla_stall>
+          <cda>0.0</cda>
+          <cda_stall/>
+        </liftdrag>
+        <current_velocity_topic>hydrodynamics/current_velocity</current_velocity_topic>
+        <fin_id>0</fin_id>
+        <link_name>fin0</link_name>
+        <joint_name>fin0_joint</joint_name>
+        <robotNamespace>/</robotNamespace>
+      </plugin> -->
+    </gazebo>
+
+    <!-- TODO: Correct propeller origins and parameters -->
+    <xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="0" mesh_filename="${left_prop_mesh_file}" dyn_time_constant="0.1" rotor_constant="0.000049">
+      <origin xyz="0 0 0" rpy="0 0 -1.5708" />
+    </xacro:thruster_module_first_order_basic_fcn_macro>
+
+    <xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="1" mesh_filename="${right_prop_mesh_file}" dyn_time_constant="0.1" rotor_constant="0.000049">
+      <origin xyz="0 0 0" rpy="0 0 -1.5708" />
+    </xacro:thruster_module_first_order_basic_fcn_macro>
+
+    <!-- TODO: Parametrize the battery unit -->
+    <xacro:basic_linear_battery_macro namespace="${namespace}" parent_link="${namespace}/base_link" prefix="" open_circuit_voltage_constant_coef="3.7" open_circuit_voltage_linear_coef="-3.1424" initial_charge="1.1665" capacity="0.5" resistance="0.002" smooth_current_tau="1.9499" voltage="4.2" update_rate="2.0" />
+
+    <xacro:include filename="$(find glider_description)/urdf/glider_hybrid_whoi_sensors.xacro" />
+  </xacro:macro>
+</robot>

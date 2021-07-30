@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2016 The UUV Simulator Authors.
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- includes -->
+  <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro" />
+  <xacro:include filename="$(find dave_snippets)/urdf/sensor_snippets.xacro" />
+  <xacro:include filename="$(find glider_description)/urdf/glider_wave_snippets.xacro" />
+  <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro" />
+
+  <!-- Properties -->
+  <xacro:property name="float_mass" value="50.0" />
+  <xacro:property name="sub_mass" value="60.0" />
+  <xacro:property name="umbilical_mass" value="5.0" />
+  <xacro:property name="length" value="1.5" />
+  <xacro:property name="diameter" value="0.22" />
+  <xacro:property name="radius" value="${diameter*0.5}" />
+  <xacro:property name="volume" value="0.06799987704121499" />
+  <xacro:property name="cob" value="0 0 0.06" />
+  <xacro:property name="rho" value="1027.0" />
+
+  <xacro:property name="area" value="0.04155" />
+  <xacro:property name="length" value="1.5" />
+
+  <xacro:property name="namespace" value="glider_wave" />
+  <xacro:property name="visual_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/Wave Glider-Float.dae" />
+  <xacro:property name="collision_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/COLLISION-Wave Glider-float.dae" />
+  <xacro:property name="sub_visual_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/Wave Glider-Sub.dae" />
+  <xacro:property name="sub_collision_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/COLLISION-Wave Glider-sub.dae" />
+  <xacro:property name="umbilicaljoint_visual_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/Wave Glider-Joint.dae" />
+  <xacro:property name="umbilical_visual_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/Wave Glider-Umbilical.dae" />
+  <xacro:property name="umbilical_collision_mesh_file" value="file://$(find dave_robot_models)/models/glider_wave/mesh/COLLISION-Wave Glider-umbilical.dae" />
+
+  <xacro:macro name="glider_wave" params="namespace debug inertial_reference_frame">
+    <link name="${namespace}/base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
+        <geometry>
+          <mesh filename="${visual_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
+        <geometry>
+          <mesh filename="${collision_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${float_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="30.0" ixy="0" ixz="0" iyy="0.6" iyz="0" izz="5.0" />
+      </inertial>
+    </link>
+
+    <!-- <link name="${namespace}/umbilicaljoint_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${umbilicaljoint_visual_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+    </link>
+    <joint name="${namespace}/umbilicaljoint_joint" type="revolute">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="${namespace}/base_link" />
+      <child link="${namespace}/umbilicaljoint_link" />
+      <axis xyz="0 1 0" />
+      <limit effort="0.0001" velocity="0.0001" upper="0.8" lower="-0.8" />
+    </joint> -->
+
+
+    <link name="${namespace}/umbilical_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
+        <geometry>
+          <mesh filename="${umbilical_visual_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
+        <geometry>
+          <mesh filename="${umbilical_collision_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${umbilical_mass}" />
+        <origin xyz="0 0 0.08" rpy="0 0 0" />
+        <inertia ixx="30.0" ixy="0" ixz="0" iyy="0.6" iyz="0" izz="5.0" />
+      </inertial>
+    </link>
+    <joint name="${namespace}/umbilical_joint" type="revolute">
+      <origin xyz="0 0 0.10" rpy="0 0 0" />
+      <parent link="${namespace}/base_link" />
+      <child link="${namespace}/umbilical_link" />
+      <axis xyz="1 0 0" />
+      <limit effort="0.0001" velocity="0.0001" upper="0.8" lower="-0.8" />
+    </joint>
+
+    <link name="${namespace}/sub_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
+        <geometry>
+          <mesh filename="${sub_visual_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 1.570" />
+        <geometry>
+          <mesh filename="${sub_collision_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${sub_mass}" />
+        <origin xyz="0 0 -0.15" rpy="0 0 0" />
+        <inertia ixx="30.0" ixy="0" ixz="0" iyy="0.6" iyz="0" izz="5.0" />
+      </inertial>
+    </link>
+    <joint name="${namespace}/sub_joint" type="revolute">
+      <origin xyz="0 0 0.05" rpy="0 0 0" />
+      <parent link="${namespace}/umbilical_link" />
+      <child link="${namespace}/sub_link" />
+      <axis xyz="1 0 0" />
+      <limit effort="0.0001" velocity="0.0001" upper="0.8" lower="-0.8" />
+    </joint>
+
+    <!-- Set up hydrodynamic plugin -->
+    <!-- TODO: vehicle properties and add buoyancy engine and sliding mass plugins -->
+    <gazebo>
+      <!-- <plugin name="${namespace}_uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+        <fluid_density>${rho}</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>${debug}</debug>
+        <link name="${namespace}/sub_link">
+          <volume>${volume}</volume>
+          <center_of_buoyancy>${cob}</center_of_buoyancy>
+          <neutrally_buoyant>0</neutrally_buoyant>
+          <hydrodynamic_model>
+            <type>fossen</type>
+            <added_mass>
+              4   0   0   0   0   0
+              0   95  0   0   0   0
+              0   0   75  0   0   0
+              0   0   0   0.4 0   0
+              0   0   0   0   27  0
+              0   0   0   0   0   32
+            </added_mass>
+
+            <linear_damping_forward_speed>
+              -8      0       0       0       0       0
+              0       -162    0       0       0       150
+              0       0       -108    0       -100    0
+              0       0       0       -13     0       0
+              0       0       37      0       -20     0
+              0       -34     0       0       0       -32
+            </linear_damping_forward_speed>
+          </hydrodynamic_model>
+        </link>
+      </plugin> -->
+
+      <!-- <plugin name='glider_wave_thruster_model' filename='libuuv_thruster_ros_plugin.so'>
+        <linkName>${namespace}/propeller_link</linkName>
+        <jointName>${namespace}/propeller_joint</jointName>
+        <thrusterID>0</thrusterID>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.1</timeConstant>
+        </dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>4.9e-05</rotorConstant>
+        </conversion>
+        <robotNamespace>/</robotNamespace>
+      </plugin> -->
+      <!--    <plugin name='fin0_model' filename='libuuv_fin_ros_plugin.so'>
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.1</timeConstant>
+        </dynamics>
+        <liftdrag>
+          <type>TwoLines</type>
+          <area>0.04155</area>
+          <fluid_density>1027.0</fluid_density>
+          <a0>0.0</a0>
+          <alpha_stall>0.174533</alpha_stall>
+          <cla>13.98</cla>
+          <cla_stall>0.0</cla_stall>
+          <cda>0.0</cda>
+          <cda_stall/>
+        </liftdrag>
+        <current_velocity_topic>hydrodynamics/current_velocity</current_velocity_topic>
+        <fin_id>0</fin_id>
+        <link_name>fin0</link_name>
+        <joint_name>fin0_joint</joint_name>
+        <robotNamespace>/</robotNamespace>
+      </plugin> -->
+    </gazebo>
+
+    <xacro:include filename="$(find glider_description)/urdf/glider_wave_sensors.xacro" />
+  </xacro:macro>
+</robot>

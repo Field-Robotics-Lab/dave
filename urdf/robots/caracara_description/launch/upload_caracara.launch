@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="namespace" default="caracara"/>
+  <arg name="debug" default="false"/>
+     <param name="/$(arg namespace)/caracara"
+            command="$(find xacro)/xacro '$(find caracara_description)/urdf/caracara.xacro'
+		             debug:=$(arg debug)
+                     namespace:=$(arg namespace)
+                     inertial_reference_frame:=world" />
+</launch>
+

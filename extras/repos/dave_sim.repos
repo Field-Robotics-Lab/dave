@@ -1,0 +1,33 @@
+repositories:
+  dave:
+    type: git
+    url: git@github.com:Field-Robotics-Lab/dave.git
+    version: master
+  dockwater:
+    type: git
+    url: git@github.com:Field-Robotics-Lab/dockwater.git
+    version: main
+  ds_msgs:
+    type: git
+    url: git@github.com:Field-Robotics-Lab/ds_msgs.git
+    version: master
+  ds_sim:
+    type: git
+    url: git@github.com:Field-Robotics-Lab/ds_sim.git
+    version: master
+  eca_a9:
+    type: git
+    url: git@github.com:uuvsimulator/eca_a9.git
+    version: master
+  rexrov2:
+    type: git
+    url: git@github.com:uuvsimulator/rexrov2.git
+    version: master
+  uuv_manipulators:
+    type: git
+    url: git@github.com:field-robotics-lab/uuv_manipulators
+    version: master
+  uuv_simulator:
+    type: git
+    url: git@github.com:field-robotics-lab/uuv_simulator
+    version: master

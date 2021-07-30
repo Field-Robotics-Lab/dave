@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
+
+  <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="verbose" value="false"/>
+  </include>
+
+  <include file="$(find teledyne_whn_uuvsim_description)/launch/upload_teledyne_whn.launch"/>
+  <node name="spawn_whn" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param teledyne_whn -model teledyne_whn -z -25" respawn="false" output="screen" />
+
+  <!-- Load and spawn the model, starts the joint & state publishers, make the model move -->
+  <param name="model_name" type="str" value="teledyne_whn"/>
+  <param name="base_link_name" type="str" value="whn_base_link"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false">
+    <remap from="robot_description" to="teledyne_whn" />
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <remap from="robot_description" to="teledyne_whn" />
+  </node>
+  <node name="apply_velocity" pkg="dave_nodes" type="simple_box_motion.py" respawn="false" output="screen"/>
+</launch>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sonardyne_syrinx600">
+
+  <xacro:include filename="$(find sonardyne_syrinx600_dsl_description)/urdf/sonardyne_syrinx600.xacro"/>
+
+  <link name="syrinx600_base_link"/>
+
+  <link name="syrinx600_sensor_link">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+  </link>
+
+  <joint name="syrinx600_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="syrinx600_base_link"/>
+    <child link="syrinx600_sensor_link"/>
+  </joint>
+
+  <!-- Attach the DVL to link -->
+  <xacro:sonardyne_syrinx600_macro
+    name="syrinx600" namespace="syrinx600" xyz="0 0 0"
+    dvl_topic="dvl" ranges_topic="ranges"
+    robot_link="syrinx600_sensor_link" joint_xyz="0 0 0"/>
+
+  <gazebo reference="syrinx600_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="syrinx600_sensor_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+</robot>

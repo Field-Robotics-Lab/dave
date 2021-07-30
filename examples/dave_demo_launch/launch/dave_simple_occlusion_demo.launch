@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves_occluded_bottom.world"/>
+    <arg name="namespace" default="rexrov"/>
+    <arg name="set_timeout" default="false"/>
+    <arg name="timeout" default="0.0"/>
+    <arg name="velocity_control" default="true"/>
+    <arg name="joy_id" default="0"/>
+ 
+    <!-- use Gazebo's empty_world.launch with dave_ocean_waves_occluded_bottom.world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="false"/>
+    </include>
+
+
+    <!-- use ned frame north east down -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+
+    <!-- world models -->
+    <node name="publish_world_models"
+        pkg="uuv_assistants"
+        type="publish_world_models.py"
+        output="screen">
+        <rosparam subst_value="true">
+            meshes:
+                heightmap:
+                    mesh: package://uuv_gazebo_worlds/models/occluded_sand_heightmap/meshes/heightmap.dae
+                    model: occluded_sand_heightmap
+                seafloor:
+                    plane: [2000, 2000, 0.1]
+                    pose:
+                        position: [0, 0, -100]
+                north:
+                    plane: [0.1, 2000, 100]
+                    pose:
+                        position: [1000, 0, -50]
+                south:
+                    plane: [0.1, 2000, 100]
+                    pose:
+                        position: [-1000, 0, -50]
+                west:
+                    plane: [2000, 0.1, 100]
+                    pose:
+                        position: [0, -1000, -50]
+                east:
+                    plane: [2000, 0.1, 100]
+                    pose:
+                        position: [0, 1000, -50]
+        </rosparam>
+    </node>
+
+    <!-- timeout -->
+    <group if="$(arg set_timeout)">
+        <include file="$(find uuv_assistants)/launch/set_simulation_timer.launch">
+            <arg name="timeout" value="$(arg timeout)"/>
+        </include>
+    </group>
+
+    <!-- rexrov robot with oberon7 arm -->
+    <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
+        <arg name="namespace" value="rexrov"/>
+        <arg name="x" value="4"/>
+        <arg name="y" value="4"/>
+        <arg name="z" value="-93"/>
+        <arg name="yaw" value="-1.8"/>
+    </include>
+
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="$(arg namespace)" />
+        <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+
+    <!-- joystick control for rexrov and oberon7, no velocity control-->
+    <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
+        <arg name="model_name" value="rexrov"/>
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+    
+
+    <!-- joint control for oberon7 -->
+    <include file="$(find oberon7_control)/launch/joint_control.launch">
+        <arg name="uuv_name" value="$(arg namespace)"/>
+    </include>
+
+    <!-- grabbable bar -->
+    <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find dave_object_models)/models/grab_bar/model.sdf -sdf -model grab_bar -z -90">
+    </node>
+
+    <!-- rqt_image_view for image_raw_sonar -->
+    <node name="rqt_image_view_sonar" pkg="rqt_image_view"
+          type="rqt_image_view" args="/rexrov/depth/image_raw_sonar">
+    </node>
+
+</launch>

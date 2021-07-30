@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="teledyne_whn">
+
+  <xacro:include filename="$(find teledyne_whn_dsl_description)/urdf/teledyne_whn.xacro"/>
+
+  <link name="whn_base_link"/>
+
+  <link name="whn_sensor_link">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+  </link>
+
+  <joint name="whn_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="whn_base_link"/>
+    <child link="whn_sensor_link"/>
+  </joint>
+
+  <!-- Attach the DVL to link -->
+  <xacro:teledyne_whn_macro
+    name="whn" namespace="whn" xyz="0 0 0"
+    dvl_topic="dvl" ranges_topic="dvl_ranges"
+    robot_link="whn_sensor_link" joint_xyz="0 0 0"/>
+
+  <gazebo reference="whn_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="whn_sensor_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+</robot>

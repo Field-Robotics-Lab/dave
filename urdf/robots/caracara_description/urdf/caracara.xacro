@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!-- 
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<robot name="caracara" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="caracara"/>
+
+  <!-- "Dummy" base link to eliminate root link inertia warning --> 
+  <link name="$(arg namespace)/base_link"/>
+
+  <link name="$(arg namespace)/caracara_link">
+    <!-- Mass and inertia from the Saab Caracara technical specifications:
+         https://www.saabseaeye.com/solutions/underwater-vehicles/caracara -->
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="60.0"/>
+      <inertia
+        ixx="3.05" ixy="0.0" ixz="0.0"
+        iyy="6.25" iyz="0.0"
+        izz="6.80"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://caracara_description/meshes/caracara_visual.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://caracara_description/meshes/caracara_collision.dae" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Attach caracara_link to the dummy base link -->
+  <joint name="$(arg namespace)/caracara_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="$(arg namespace)/base_link"/>
+    <child link="$(arg namespace)/caracara_link"/>
+  </joint>
+
+ <gazebo>
+   <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+     <!-- Hydro parameters for the vehicle-->
+     <fluid_density>1028.0</fluid_density>
+     <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+     <debug>$(arg debug)</debug>
+
+     <link name="$(arg namespace)/base_link">
+       <neutrally_buoyant>1</neutrally_buoyant>
+       <!-- See Caracara technical specifications -->
+       <volume>0.15</volume> <!-- This is a guess (mostly open chassis) -->
+       <box>
+         <width>0.6</width>
+         <length>1.0</length>
+         <height>0.5</height>
+       </box>
+       <!-- Center of buoyancy is a guess, but height is only 0.5 so it should be close -->
+       <center_of_buoyancy>0.0 0.0 0.2</center_of_buoyancy>
+       <hydrodynamic_model>
+         <type>fossen</type>
+         <!-- Everything else in the model is pulled straight from Berg2012
+              (which means it's not even close for this vehicle) -->
+         <!-- Added mass: see p.28 in Berg2012 -->
+         <added_mass>
+           779.79 -6.8773 -103.32  8.5426 -165.54 -7.8033
+           -6.8773    1222   51.29  409.44 -5.8488  62.726
+           -103.32   51.29  3659.9  6.1112 -386.42  10.774
+           8.5426  409.44  6.1112   534.9 -10.027  21.019
+           -165.54 -5.8488 -386.42 -10.027  842.69 -1.1162
+           -7.8033  62.726  10.775  21.019 -1.1162  224.32
+         </added_mass>
+         <!-- Linear damping: see p.31 in Berg2012 -->
+         <linear_damping>
+           -74.82 -69.48 -728.4 -268.8 -309.77 -105
+         </linear_damping>
+         <!-- Non-linear damping: see p.30 in Berg2012 -->
+         <quadratic_damping>
+           -748.22 -992.53 -1821.01 -672 -774.44 -523.27
+         </quadratic_damping>
+       </hydrodynamic_model>
+     </link>
+   </plugin>
+ </gazebo>
+
+ <gazebo>
+   <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+     <robotNamespace>/$(arg namespace)</robotNamespace>
+     <robotParam>/$(arg namespace)/caracara</robotParam>
+   </plugin>
+ </gazebo>
+
+ <!-- Define thrusters for propulsion -->
+ <xacro:property name="prop_mesh_file" value="file://$(find uuv_descriptions)/meshes/prop.dae"/>
+ <!-- Common values, colors, converstion, standard shapes/inertia etc.
+      Dependency for the thruster_snippets.xacro-->
+ <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro"/>
+ <!-- Various thruster models -->
+ <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/thruster_snippets.xacro"/>
+ <!-- Substitute the ECA A9 prop mesh for the larger uuv_descriptions one -->
+ <xacro:property name="prop_mesh_file" value="file://$(find eca_a9_description)/mesh/eca_a9_propeller.dae"/>
+
+  <!-- Thruster joint and link snippet
+       Wrapper for the the thruster_module_first_order_basic_fcn_macro
+       defined in uuv_gazebo_ros_plugins/urdf/thruster_snippet.
+       Uses the "thruster_cf_basic_macro"
+         1) Basic curve
+       Input: x
+       Output: thrust
+       Function: thrust = rotorConstant * x * abs(x)
+  -->
+  <xacro:macro name="thruster_macro"
+   	           params="thruster_id *origin">
+    <xacro:thruster_module_first_order_basic_fcn_macro
+        namespace="$(arg namespace)"
+        thruster_id="${thruster_id}"
+        mesh_filename="${prop_mesh_file}"
+        dyn_time_constant="0.05"
+        rotor_constant="0.0001">  <!-- This is a guess for now (~1/3 RexROV) -->
+      <xacro:insert_block name="origin"/>
+    </xacro:thruster_module_first_order_basic_fcn_macro>
+  </xacro:macro>
+
+  <!-- Port-Aft -->
+  <xacro:thruster_macro thruster_id="0">
+    <origin xyz="-0.82 0.33 -0.25" rpy="${0*d2r} ${0*d2r} ${-160.0*d2r}"/>
+  </xacro:thruster_macro>
+  <!-- Starboard-Aft -->
+  <xacro:thruster_macro thruster_id="1">
+    <origin xyz="-0.82 -0.33 -0.25" rpy="${0*d2r} ${0*d2r} ${160.0*d2r}"/>
+  </xacro:thruster_macro>
+  <!-- Port-Forward -->
+  <xacro:thruster_macro thruster_id="2">
+    <origin xyz="0.3 0.315 -0.24" rpy="${0*d2r} ${0*d2r} ${160.0*d2r}"/>
+  </xacro:thruster_macro>
+  <!-- Starboard-Forward -->
+  <xacro:thruster_macro thruster_id="3">
+    <origin xyz="0.3 -0.315 -0.24" rpy="${0*d2r} ${0*d2r} ${-160.0*d2r}"/>
+  </xacro:thruster_macro>
+  <!-- Vertical (centerline) -->
+  <xacro:thruster_macro thruster_id="4">
+    <origin xyz="-0.15 0.0 0.33" rpy="${0*d2r} ${-90*d2r} ${0.0*d2r}"/>
+  </xacro:thruster_macro>
+
+ <!-- Default joint state publisher -->
+ <gazebo>
+   <plugin name="uuv_joint_state_publisher" filename="libuuv_joint_state_publisher.so">
+     <robotNamespace>$(arg namespace)</robotNamespace>
+     <updateRate>50</updateRate>
+   </plugin>
+ </gazebo>
+
+</robot>

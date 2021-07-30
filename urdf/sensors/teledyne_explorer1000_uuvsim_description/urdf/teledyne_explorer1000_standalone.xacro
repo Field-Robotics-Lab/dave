@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="teledyne_explorer1000">
+
+  <xacro:include filename="$(find teledyne_explorer1000_uuvsim_description)/urdf/teledyne_explorer1000.xacro"/>
+
+  <link name="explorer1000_base_link"/>
+
+  <link name="explorer1000_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.000000017" ixy="0" ixz="0" 
+               iyy="0.000000017" iyz="0" izz="0.000000017"/>
+    </inertial>
+  </link>
+
+  <joint name="explorer1000_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="explorer1000_base_link"/>
+    <child link="explorer1000_link"/>
+  </joint>
+
+  <xacro:teledyne_explorer1000_enu_macro namespace="explorer1000" parent_link="explorer1000_base_link">
+    <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+  </xacro:teledyne_explorer1000_enu_macro>
+
+  <!-- Turn gravity (off) for now so that the (unpowered) robot doesn't sink like
+       a rock.  Can remove this once the neutral buoyancy issue (#4) is resolved -->
+  <gazebo reference="explorer1000/dvl_sonar0_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="explorer1000/dvl_sonar1_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="explorer1000/dvl_sonar2_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="explorer1000/dvl_sonar3_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="explorer1000_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="explorer1000/dvl_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+</robot>

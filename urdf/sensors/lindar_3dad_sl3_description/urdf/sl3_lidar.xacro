@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<!-- Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<!-- Xacro macros for generating underwater lidar URDF model -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Generates a tiny "no-collision" cylinder for incorporation into a link
+       that we do not want to collide with anything (e.g., individual DVL sonars) -->
+  <xacro:macro name="no_collision">
+    <visual>
+      <geometry>
+        <cylinder length="${0.01}" radius="${0.01}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${0.000001}" radius="${0.000001}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+  </xacro:macro>
+
+  <!-- Generates an Underwater Lidar model and attaches it to a parent link
+       Sensor parameters align with those in the 3D at Depth SL3 datasheet -->
+  <xacro:macro name="sl3_macro" params="namespace parent_link *origin pan tilt inertial_reference_frame">
+    <xacro:sl3_lidar_plugin_macro
+      namespace="${namespace}"
+      suffix=""
+      parent_link="${parent_link}"
+      reference_frame="${inertial_reference_frame}"
+      pan="${pan}"
+      tilt="${tilt}" >
+      <xacro:insert_block name="origin"/>
+    </xacro:sl3_lidar_plugin_macro>
+  </xacro:macro>
+
+
+  <!-- Generates a Lidar sensor -->
+  <xacro:macro name="sl3_lidar_sensor" params="namespace suffix update_rate reference_frame">
+    <link name="${namespace}/uwl${suffix}_sensor_link">
+      <inertial>
+        <mass value="0.001"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.000000017" ixy="0" ixz="0" iyy="0.000000017" iyz="0" izz="0.000000017"/>
+      </inertial>
+      <xacro:no_collision/>
+    </link>
+
+    <joint name="${namespace}/uwl${suffix}_sensor_joint" type="fixed">
+      <origin xyz="0.014 -0.1825 0.168" rpy="0 0 -${pi/2}"/>
+      <parent link="${namespace}/uwl${suffix}_link"/>
+      <child link="${namespace}/uwl${suffix}_sensor_link"/>
+    </joint>
+
+   <gazebo reference="${namespace}/uwl${suffix}_sensor_link">
+     <sensor name="sl3_lidar_sensor" type="gpu_ray">
+       <pose>0 0 0 0 0 0</pose>
+       <update_rate>${update_rate}</update_rate>
+       <visualize>true</visualize>
+       <always_on>true</always_on>
+
+       <plugin name="pulse_lidar_sensing" filename="libgazebo_ros_velodyne_gpu_laser.so">
+           <topicName>sl3_points</topicName>
+           <static_reference_frame>${reference_frame}</static_reference_frame>
+           <min_intensity>0</min_intensity>
+           <min_range>1</min_range>
+           <max_range>20</max_range>
+           <gaussianNoise>0.05</gaussianNoise>
+       </plugin>
+       <ray>
+         <!-- The scan element contains the horizontal and vertical beams.-->
+         <scan>
+           <!-- The horizontal beams -->
+           <horizontal>
+             <!-- # of horizontal beams simulates a spinning beam -->
+             <samples>1450</samples>
+             <!-- Resolution is multiplied by samples to determine number of
+                  simulated beams vs interpolated beams. See:
+                  http://sdformat.org/spec?ver=1.6&elem=sensor#horizontal_resolution
+                  -->
+             <resolution>0.1</resolution>
+             <!-- Minimum angle in radians -->
+             <min_angle>${-pi/12}</min_angle>
+             <!-- Maximum angle in radians -->
+             <max_angle>${pi/12}</max_angle>
+           </horizontal>
+
+           <vertical>
+             <samples>1450</samples>
+             <resolution>0.1</resolution>
+             <min_angle>${-pi/12}</min_angle>
+             <max_angle>${pi/12}</max_angle>
+           </vertical>
+         </scan>
+
+         <!-- Range defines characteristics of an individual beam -->
+         <range>
+           <!-- Minimum distance of the beam in meters-->
+           <min>1</min>
+           <!-- Maximum distance of the beam in meters.
+                Should be between 2 and 45 meters, depending on visibility. -->
+           <max>20</max>
+           <!-- Linear resolution of each lidar ray. This _may_ refer to depth resolution. -->
+           <resolution>0.1</resolution>
+         </range>
+         <noise>
+           <!-- Use gaussian noise -->
+           <type>gaussian</type>
+           <mean>0.0</mean>
+           <stddev>0.05</stddev>
+         </noise>
+       </ray>
+     </sensor>
+   </gazebo>
+  </xacro:macro>
+
+
+  <!-- Generates the sl3_lidar model with stand and motion control plugin -->
+  <xacro:macro name="sl3_lidar_plugin_macro"
+    params="namespace suffix parent_link *origin pan tilt reference_frame">
+
+    <link name="${namespace}/uwl${suffix}_link">
+      <inertial>
+        <mass value="20.9"/>
+        <origin xyz="0 0 0.163" rpy="0 0 0"/>
+        <inertia ixx="0.27709917" ixy="0" ixz="0" iyy="0.11521125" iyz="0" izz="0.27709917" />
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/3dad_sl3.dae"/>
+        </geometry>
+        <origin xyz="0 0 0.163" rpy="0 0 0"/>
+      </visual>
+      <collision>
+       <geometry>
+         <cylinder length="0.355" radius="0.105" />
+       </geometry>
+       <origin xyz="0 0 0.163" rpy="0 ${0.5*pi} ${0.5*pi}"/>
+      </collision>
+    </link>
+
+    <link name="${namespace}/uwl${suffix}_mount_tray_link">
+      <inertial>
+        <mass value="3.29"/>
+        <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+        <inertia ixx="0.01302291666" ixy="0" ixz="0" iyy="0.01302291666" iyz="0" izz="0.0041125" />
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/sl3_lidar_mount_tray.dae"/>
+        </geometry>
+        <origin xyz="0 0.034 0.163" rpy="0 0 0"/>
+      </visual>
+      <collision>
+       <geometry>
+         <cylinder length="0.2" radius="0.05" />
+       </geometry>
+       <origin xyz="0 0 0" rpy="0 ${0.5*pi} 0"/>
+      </collision>
+    </link>
+
+
+    <link name="${namespace}/uwl${suffix}_mount_swivel_link">
+      <inertial>
+        <mass value="1"/>
+        <origin xyz="0 0 0.0375" rpy="0 0 0"/>
+        <inertia ixx="0.000975" ixy="0" ixz="0" iyy="0.000975" iyz="0" izz="0.0010125" />
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/sl3_lidar_mount_swivel.dae"/>
+        </geometry>
+        <origin xyz="0 0.034 0.255" rpy="0 0 0"/>
+      </visual>
+      <collision>
+       <geometry>
+         <cylinder length="0.075" radius="0.045" />
+       </geometry>
+       <origin xyz="0 0 0.0375" rpy="0 0 0"/>
+      </collision>
+    </link>
+
+    <link name="${namespace}/uwl${suffix}_mount_base_link">
+      <inertial>
+        <mass value="2.84"/>
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+        <inertia ixx="0.005964" ixy="0" ixz="0" iyy="0.005964" iyz="0" izz="0.005112" />
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://lidar_3dad_sl3_description/meshes/sl3_lidar_mount_base.dae"/>
+        </geometry>
+        <origin xyz="0 0.034 0.375" rpy="0 0 0"/>
+      </visual>
+      <collision>
+       <geometry>
+         <cylinder length="0.12" radius="0.06" />
+       </geometry>
+       <origin xyz="0 0 0.06" rpy="0 0 0"/>
+      </collision>
+    </link>
+
+    <joint name="${namespace}/uwl_tray_lidar_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${namespace}/uwl${suffix}_mount_tray_link"/>
+      <child link="${namespace}/uwl${suffix}_link"/>
+    </joint>
+
+    <joint name="${namespace}/uwl_swivel_tray_joint" type="revolute">
+      <origin xyz="0 0 0.092" rpy="0 0 0"/>
+      <parent link="${namespace}/uwl${suffix}_mount_swivel_link"/>
+      <child link="${namespace}/uwl${suffix}_mount_tray_link"/>
+      <limit upper="${pi/12}" lower="-${pi/12}" effort="100" velocity="100"/>
+      <axis xyz="1 0 0"/>
+    </joint>
+
+    <joint name="${namespace}/uwl_base_swivel_joint" type="revolute">
+      <origin xyz="0 0 0.12" rpy="0 0 0"/>
+      <parent link="${namespace}/uwl${suffix}_mount_base_link"/>
+      <child link="${namespace}/uwl${suffix}_mount_swivel_link"/>
+      <limit upper="${(35*pi)/36}" lower="-${(35*pi)/36}" effort="100" velocity="100"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <joint name="${namespace}/uwl_base_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent_link}"/>
+      <child link="${namespace}/uwl${suffix}_mount_base_link"/>
+    </joint>
+
+    <xacro:sl3_lidar_sensor
+      namespace="${namespace}" suffix=""
+      update_rate="40" reference_frame="${reference_frame}">
+    </xacro:sl3_lidar_sensor>
+
+    <gazebo>
+       <plugin name="pulse_lidar_control" filename="libdave_pulse_lidar_plugin.so" >
+        <robot_namespace>${namespace}</robot_namespace> 
+         <pan_position>${pan}</pan_position>
+         <tilt_position>${tilt}</tilt_position>
+       </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

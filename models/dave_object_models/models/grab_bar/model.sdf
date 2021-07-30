@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='grab_bar'>
+    <pose>1 2 0 0 0 0</pose>
+    <link name ='link'>
+      <pose>0 0 0 0 0 0</pose>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 0.5</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 0.5</size></box>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

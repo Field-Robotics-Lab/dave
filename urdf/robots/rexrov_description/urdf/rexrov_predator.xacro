@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2016 The UUV Simulator Authors.
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<robot name="rexrov" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="rexrov"/>
+  <xacro:arg name="inertial_reference_frame" default="world"/>
+  <!-- Include the ROV macro file -->
+  <xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
+  <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
+  <xacro:include filename="$(find predator_description)/urdf/predator_default.xacro" />
+
+  <xacro:uuv_forward_looking_sonar
+      namespace="${namespace}"
+      suffix="down"
+      parent_link="${namespace}/base_link"
+      topic="forward_sonar"
+      mass="0.015"
+      update_rate="40"
+      samples="100"
+        fov="1.54719755"
+        width="768"
+        height="492">
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <!--origin xyz="0.83 0 -0.22" rpy="0 ${0.2*pi} 0" /-->
+      <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
+      <visual>
+      </visual>
+    </xacro:uuv_forward_looking_sonar>
+
+<!--
+  <xacro:uuv_forward_multibeam_p900
+      namespace="${namespace}"
+      parent_link="${namespace}/base_link">
+      <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
+    </xacro:uuv_forward_multibeam_p900>
+-->
+
+<!--
+  <xacro:uuv_fl_multibeam_generic
+      namespace="${namespace}"
+      parent_link="${namespace}/base_link">
+      <origin xyz="1.15 0 0.4" rpy="0 0.3 0"/>
+    </xacro:uuv_fl_multibeam_generic>
+-->
+
+<!-- creates beam lines in Gazebo view
+  <xacro:uuv_forward_multibeam_sonar_m450_130 namespace="$(arg namespace)" parent_link="$(arg namespace)/base_link">
+    <origin xyz="1.4 0 0.65" rpy="0 0 0"/>
+  </xacro:uuv_forward_multibeam_sonar_m450_130>
+-->
+
+  <!-- Create the ROV -->
+  <xacro:rexrov_base
+    namespace="$(arg namespace)"
+    inertial_reference_frame="$(arg inertial_reference_frame)">
+    <!-- The underwater object plugin is given as an input block parameter to
+     allow the addition of external models of manipulator units -->
+    <gazebo>
+      <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+        <fluid_density>1028.0</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>$(arg debug)</debug>
+        <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
+        <xacro:rexrov_hydro_model namespace="$(arg namespace)"/>
+        <xacro:oberon7_hydro_model namespace="oberon7"/>
+      </plugin>
+    </gazebo>
+  </xacro:rexrov_base>
+
+  <xacro:predator namespace="predator" parent="$(arg namespace)/base_link">
+    <origin xyz="1.15 -0.5 -0.7" rpy="0 0 0"/>
+  </xacro:predator>
+
+  <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/$(arg namespace)</robotNamespace>
+        <robotParam>/$(arg namespace)/robot_description</robotParam>
+      </plugin>
+  </gazebo>
+
+  <!-- Joint state publisher plugin -->
+  <xacro:default_joint_state_publisher namespace="$(arg namespace)" update_rate="50"/>
+
+</robot>
