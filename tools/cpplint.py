@@ -1551,7 +1551,7 @@ def GetHeaderGuardCPPVariable(filename):
   filename = re.sub(r'/\.flymake/([^/]*)$', r'/\1', filename)
 
   fileinfo = FileInfo(filename)
-  file_path_from_root = fileinfo.RepositoryName()
+  file_path_from_root = fileinfo.RepositoryName().replace(os.path.relpath(os.path.join(filename, os.pardir)) + "/", "")
   if _root:
     file_path_from_root = re.sub('^' + _root + os.sep, '', file_path_from_root)
   return re.sub(r'[-./\s]', '_', file_path_from_root).upper() + '_'

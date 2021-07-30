@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Naval Postgraduate School 
+ * Copyright 2020 Naval Postgraduate School
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  *
 */
-#ifndef PULSE_LIDAR_PLUGIN_H_ // NOLINT
+#ifndef PULSE_LIDAR_PLUGIN_H_
 #define PULSE_LIDAR_PLUGIN_H_
 
 #include <gazebo/gazebo.hh>

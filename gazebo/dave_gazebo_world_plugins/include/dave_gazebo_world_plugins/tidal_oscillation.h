@@ -16,7 +16,7 @@
 /// \file tidal_oscillation.h
 /// \brief Interpolation of NOAA data for Tidal Oscillation feature
 
-#ifndef TIDAL_OSCILLATION_H_ // NOLINT
+#ifndef TIDAL_OSCILLATION_H_
 #define TIDAL_OSCILLATION_H_
 
 #include <gazebo/gazebo.hh>

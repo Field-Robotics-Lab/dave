@@ -15,7 +15,7 @@
 
 /// \file spherical_coordinates_interface.h
 
-#ifndef SPHERICAL_COORDINATES_INTERFACE_H_ // NOLINT
+#ifndef SPHERICAL_COORDINATES_INTERFACE_H_
 #define SPHERICAL_COORDINATES_INTERFACE_H_
 
 #include <ros/ros.h>
