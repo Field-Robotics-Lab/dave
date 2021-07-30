@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="namespace" default="smilodon"/>
+    <arg name="velocity_control" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="x" default="25"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="-85"/>
+    <arg name="roll" default="0"/>
+    <arg name="pitch" default="0"/>
+    <arg name="yaw" default="-1.8"/>
+
+
+
+     <param name="/$(arg namespace)/robot_description"
+           command="$(find xacro)/xacro '$(find uuv_dave)/urdf/smilodon_gazebo_transient_current.xacro' --inorder
+		    debug:=$(arg debug)
+		    namespace:=$(arg namespace)
+		    inertial_reference_frame:=world" />
+     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <node name="urdf_spawner" pkg="uuv_descriptions" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model $(arg namespace) -param /$(arg namespace)/robot_description"/>
+
+    <!-- A joint state publisher plugin already is started with the model,
+	 no need to use the default joint state publisher. -->
+    <!-- Robot state publisher subscribes to the custom joint state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
+      <remap from="robot_description" to="/$(arg namespace)/robot_description"/>
+    </node>
+
+</launch>
