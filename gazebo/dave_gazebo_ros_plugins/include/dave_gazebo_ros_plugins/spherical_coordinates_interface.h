@@ -35,51 +35,49 @@
 
 namespace gazebo
 {
+  class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
+  {
+    /// \brief Constructor
+    public: SphericalCoordinatesROSInterfacePlugin();
 
-class SphericalCoordinatesROSInterfacePlugin : public WorldPlugin
-{
-  /// \brief Constructor
-  public: SphericalCoordinatesROSInterfacePlugin();
+    /// \brief Destructor
+    public: virtual ~SphericalCoordinatesROSInterfacePlugin();
 
-  /// \brief Destructor
-  public: virtual ~SphericalCoordinatesROSInterfacePlugin();
+    /// \brief Load module and read parameters from SDF.
+    public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
 
-  /// \brief Load module and read parameters from SDF.
-  public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
+    /// \brief Service call that returns the origin in WGS84 standard
+    public: bool GetOriginSphericalCoord(
+        dave_gazebo_ros_plugins::GetOriginSphericalCoord::Request& _req,
+        dave_gazebo_ros_plugins::GetOriginSphericalCoord::Response& _res);
 
-  /// \brief Service call that returns the origin in WGS84 standard
-  public: bool GetOriginSphericalCoord(
-      dave_gazebo_ros_plugins::GetOriginSphericalCoord::Request& _req,
-      dave_gazebo_ros_plugins::GetOriginSphericalCoord::Response& _res);
+    /// \brief Service call that returns the origin in WGS84 standard
+    public: bool SetOriginSphericalCoord(
+        dave_gazebo_ros_plugins::SetOriginSphericalCoord::Request& _req,
+        dave_gazebo_ros_plugins::SetOriginSphericalCoord::Response& _res);
 
-  /// \brief Service call that returns the origin in WGS84 standard
-  public: bool SetOriginSphericalCoord(
-      dave_gazebo_ros_plugins::SetOriginSphericalCoord::Request& _req,
-      dave_gazebo_ros_plugins::SetOriginSphericalCoord::Response& _res);
+    /// \brief Service call to transform from Cartesian to spherical coordinates
+    public: bool TransformToSphericalCoord(
+        dave_gazebo_ros_plugins::TransformToSphericalCoord::Request& _req,
+        dave_gazebo_ros_plugins::TransformToSphericalCoord::Response& _res);
 
-  /// \brief Service call to transform from Cartesian to spherical coordinates
-  public: bool TransformToSphericalCoord(
-      dave_gazebo_ros_plugins::TransformToSphericalCoord::Request& _req,
-      dave_gazebo_ros_plugins::TransformToSphericalCoord::Response& _res);
+    /// \brief Service call to transform from spherical to Cartesian coordinates
+    public: bool TransformFromSphericalCoord(
+        dave_gazebo_ros_plugins::TransformFromSphericalCoord::Request& _req,
+        dave_gazebo_ros_plugins::TransformFromSphericalCoord::Response& _res);
 
-  /// \brief Service call to transform from spherical to Cartesian coordinates
-  public: bool TransformFromSphericalCoord(
-      dave_gazebo_ros_plugins::TransformFromSphericalCoord::Request& _req,
-      dave_gazebo_ros_plugins::TransformFromSphericalCoord::Response& _res);
+    /// \brief Pointer to this ROS node's handle.
+    protected: boost::shared_ptr<ros::NodeHandle> rosNode;
 
-  /// \brief Pointer to this ROS node's handle.
-  protected: boost::shared_ptr<ros::NodeHandle> rosNode;
+    /// \brief Connection for callbacks on update world.
+    protected: event::ConnectionPtr rosPublishConnection;
 
-  /// \brief Connection for callbacks on update world.
-  protected: event::ConnectionPtr rosPublishConnection;
+    /// \brief Pointer to world
+    protected: physics::WorldPtr world;
 
-  /// \brief Pointer to world
-  protected: physics::WorldPtr world;
-
-  /// \brief All underwater world services
-  protected: std::map<std::string, ros::ServiceServer> worldServices;
-};
-
+    /// \brief All underwater world services
+    protected: std::map<std::string, ros::ServiceServer> worldServices;
+  };
 }
 
 #endif  // SPHERICAL_COORDINATES_INTERFACE_H_

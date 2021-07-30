@@ -15,9 +15,9 @@
  *
 */
 
-#include "uuv_mating/uuv_mating.hh"
 #include <gazebo/physics/Collision.hh>
 #include <algorithm>    // std::lower_bound
+#include "uuv_mating/uuv_mating.hh"
 
 using namespace gazebo;
 
@@ -139,7 +139,8 @@ double WorldUuvPlugin::movingTimedAverage()
 };
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::addForce(double force) {
+void WorldUuvPlugin::addForce(double force)
+{
   if (abs(force) < 5.0)
     return;
 
@@ -153,7 +154,8 @@ WorldUuvPlugin::WorldUuvPlugin() : WorldPlugin()
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::lockJoint(physics::JointPtr prismaticJoint) {
+void WorldUuvPlugin::lockJoint(physics::JointPtr prismaticJoint)
+{
   if (this->locked)
   {
     ROS_INFO("already locked!");
@@ -308,7 +310,8 @@ bool WorldUuvPlugin::checkProximity(bool verbose)
 //////////////////////////////////////////////////
 void WorldUuvPlugin::construct_joint()
 {
-  if (this->joined) {
+  if (this->joined)
+  {
     ROS_INFO_THROTTLE(1, "already frozen");
     return;
   }
@@ -332,7 +335,8 @@ void WorldUuvPlugin::construct_joint()
 //////////////////////////////////////////////////
 void WorldUuvPlugin::remove_joint()
 {
-  if (this->joined == true) {
+  if (this->joined == true)
+  {
     this->joined = false;
     this->prismaticJoint->Detach();
     this->prismaticJoint->Reset();
@@ -365,7 +369,8 @@ bool WorldUuvPlugin::averageForceOnLink(std::string contact1,
 //////////////////////////////////////////////////
 bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
 {
-  if (!this->averageForceOnLink("plug", "sensor_plate")) {
+  if (!this->averageForceOnLink("plug", "sensor_plate"))
+  {
       return false;
   }
   else

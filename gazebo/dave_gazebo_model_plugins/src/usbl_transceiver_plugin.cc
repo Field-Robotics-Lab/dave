@@ -327,7 +327,8 @@ void TransceiverPlugin::sendCommand(int command_id, std::string& transponder_id)
     dave_gazebo_model_plugins::UsblCommand command;
     command.commandID = command_id;
     command.transponderID = std::stoi(transponder_id);
-    if (command_id == BATTERY_LEVEL) {
+    if (command_id == BATTERY_LEVEL)
+    {
         command.data = "report battery level";
     }
     else if (command_id == GO_TO)

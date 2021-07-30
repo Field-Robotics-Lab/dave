@@ -212,8 +212,8 @@ namespace gazebo
 
       // Need to update tiles for all bathy sources.
       // Some robots may move between bathy sources.
-      std::vector<std::list<std::tuple<int, int>>> indeces_to_add;
-      std::vector<std::list<std::tuple<int, int>>> indeces_to_del;
+      std::vector<std::list<std::tuple<int, int> >> indeces_to_add;
+      std::vector<std::list<std::tuple<int, int> >> indeces_to_del;
       indeces_to_add.resize(this->bathy_grids.size());
       indeces_to_del.resize(this->bathy_grids.size());
 
