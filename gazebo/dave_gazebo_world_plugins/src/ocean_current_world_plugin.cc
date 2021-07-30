@@ -246,7 +246,8 @@ void UnderwaterCurrentPlugin::
   gzmsg << this->databaseFilePath << std::endl;
 
   // Read database
-  std::ifstream csvFile; std::string line;
+  std::ifstream csvFile;
+  std::string line;
   csvFile.open(this->databaseFilePath);
   if (!csvFile)
   {
@@ -260,7 +261,9 @@ void UnderwaterCurrentPlugin::
         << this->databaseFilePath << std::endl;
 
   // skip the 3 lines
-  getline(csvFile, line); getline(csvFile, line); getline(csvFile, line);
+  getline(csvFile, line);
+  getline(csvFile, line);
+  getline(csvFile, line);
   while (getline(csvFile, line))
   {
       if (line.empty())  // skip empty lines:
@@ -276,7 +279,9 @@ void UnderwaterCurrentPlugin::
           row.push_back(stold(lineStream, &sz));  // convert to double
       }
       ignition::math::Vector3d read;
-      read.X() = row[0]; read.Y() = row[1]; read.Z() = row[2];
+      read.X() = row[0];
+      read.Y() = row[1];
+      read.Z() = row[2];
       this->database.push_back(read);
   }
   csvFile.close();

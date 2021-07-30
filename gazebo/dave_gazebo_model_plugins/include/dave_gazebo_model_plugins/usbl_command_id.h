@@ -13,8 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef DAVE_USBLCOMMANDLD_HPP_ // NOLINT
-#define DAVE_USBLCOMMANDLD_HPP_
+#ifndef USBL_COMMAND_ID_H_
+#define USBL_COMMAND_ID_H_
 
 typedef enum {
   BATTERY_LEVEL = 1,

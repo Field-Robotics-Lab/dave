@@ -319,9 +319,12 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     // find current depth index from database
     // (X: north-direction, Y: east-direction, Z: depth)
     int depthIndex = 0;
-    for (int i = 1; i < this->database.size(); i++) {
-      if (this->database[i].Z() > vehicleDepth) {
-        depthIndex = i; break;
+    for (int i = 1; i < this->database.size(); i++)
+    {
+      if (this->database[i].Z() > vehicleDepth)
+      {
+        depthIndex = i;
+        break;
       }
     }
 
@@ -336,7 +339,8 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     }
 
     // interpolate
-    if (depthIndex == 0) {  // Deeper than database use deepest value
+    if (depthIndex == 0)
+    {  // Deeper than database use deepest value
       northCurrent =
         this->database[this->database.size()-1].X();
       eastCurrent =
