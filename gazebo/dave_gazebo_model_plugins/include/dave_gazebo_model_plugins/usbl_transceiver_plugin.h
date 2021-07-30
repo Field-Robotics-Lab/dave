@@ -1,8 +1,33 @@
-#ifndef GAZEBO_TRANSCEIVER_PLUGIN_HPP_
+// Copyright (c) 2016 The dave Simulator Authors.
+// All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#ifndef GAZEBO_TRANSCEIVER_PLUGIN_HPP_ // NOLINT
 #define GAZEBO_TRANSCEIVER_PLUGIN_HPP_
 
-#include <thread>
 #include <math.h>
+#include <ros/ros.h>
+#include <ros/callback_queue.h>
+#include <ros/subscribe_options.h>
+
+#include <std_msgs/String.h>
+#include <std_msgs/Float64.h>
+#include <std_msgs/Int8.h>
+#include <geometry_msgs/Vector3.h>
+
+#include <string>
+#include <thread>
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -15,17 +40,8 @@
 #include <ignition/math/Pose3.hh>
 #include <ignition/common/StringUtils.hh>
 
-#include <ros/ros.h>
-#include <ros/callback_queue.h>
-#include <ros/subscribe_options.h>
-
-#include <std_msgs/String.h>
-#include <std_msgs/Float64.h>
-#include <std_msgs/Int8.h>
-#include <geometry_msgs/Vector3.h>
-
-#include "usbl_gazebo/USBLCommand.h"
-#include "usbl_gazebo/USBLResponse.h"
+#include "dave_gazebo_model_plugins/UsblCommand.h"
+#include "dave_gazebo_model_plugins/UsblResponse.h"
 
 namespace gazebo
 {
@@ -36,7 +52,8 @@ namespace gazebo
       ~TransceiverPlugin();
       void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
       void commandingResponseTestCallback(const std_msgs::StringConstPtr &msg);
-      void commandingResponseCallback(const usbl_gazebo::USBLResponseConstPtr &msg);
+      void commandingResponseCallback
+           (const dave_gazebo_model_plugins::UsblResponseConstPtr &msg);
       void sendCommand(int command_id, std::string& transponder_id);
       void sendPing(const ros::TimerEvent&);
       void channelSwitchCallback(const std_msgs::StringConstPtr &msg);
@@ -44,7 +61,9 @@ namespace gazebo
       void interrogationModeRosCallback(const std_msgs::StringConstPtr &msg);
       void receiveGezeboCallback(ConstVector3dPtr& transponder_position);
       void publishPosition(double &bearing, double &range, double &elevation);
-      void calcuateRelativePose(ignition::math::Vector3d position, double &bearing, double &range, double &elevation);
+      void calcuateRelativePose(ignition::math::Vector3d position,
+                                double &bearing, double &range,
+                                double &elevation);
       void queueThread();
 
     public:
