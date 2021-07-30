@@ -36,7 +36,7 @@
     </include>
 
     <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find uuv_dave)/models/bar/model.sdf -sdf -model grabbable_bar">
+          args="-file $(find dave_object_models)/models/bar/model.sdf -sdf -model grabbable_bar">
     </node>
 
     <!-- joint control for manipulator -->
