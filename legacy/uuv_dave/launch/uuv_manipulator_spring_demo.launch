@@ -22,7 +22,7 @@
 
     <!-- springy plate -->
     <node name="spawn_springy_plate" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find uuv_dave)/models/springy_plate/model.sdf -sdf -model springy_plate">
+          args="-file $(find dave_object_models)/models/springy_plate/model.sdf -sdf -model springy_plate">
     </node>
 
     <!-- rexrov robot with oberon7 arm -->
