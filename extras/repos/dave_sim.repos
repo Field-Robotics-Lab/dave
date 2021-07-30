@@ -19,10 +19,6 @@ repositories:
     type: git
     url: git@github.com:uuvsimulator/eca_a9.git
     version: master
-  hydrographic_msgs:
-    type: git
-    url: git@github.com:apl-ocean-engineering/hydrographic_msgs.git
-    version: main
   rexrov2:
     type: git
     url: git@github.com:uuvsimulator/rexrov2.git
