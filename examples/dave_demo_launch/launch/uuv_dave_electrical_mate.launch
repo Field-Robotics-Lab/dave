@@ -1,7 +1,8 @@
+<?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find uuv_dave)/worlds/uuv_dave_electrical_mating.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/uuv_dave_electrical_mating.world"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="joy_id" default="0"/>
@@ -25,7 +26,7 @@
         </include>
     </group>
 
-    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+    <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
         <arg name="x" value="7.8"/>
         <arg name="y" value="-0.2"/>

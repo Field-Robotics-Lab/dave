@@ -15,7 +15,7 @@
  *
 */
 
-#include "uuv_mating/uuv_mating.hh"
+#include "dave_gazebo_world_plugins/uuv_mating.hh"
 #include <gazebo/physics/Collision.hh>
 #include <algorithm>    // std::lower_bound
 
@@ -380,6 +380,10 @@ bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
       this->timeStamps.clear();
       return true;
     }
+    else
+    {
+      return false;
+    }
   }
 }
 
@@ -401,6 +405,10 @@ bool WorldUuvPlugin::isEndEffectorPushingPlug(int numberOfDatapointsThresh)
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
+    }
+    else
+    {
+      return false;
     }
   }
 }

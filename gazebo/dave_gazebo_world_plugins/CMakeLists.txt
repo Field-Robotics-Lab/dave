@@ -11,9 +11,12 @@ endif()
 find_package(GDAL REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
-    gazebo_dev
-    gazebo_msgs
+  gazebo_dev
+  gazebo_msgs
+  gazebo_ros
+  roscpp
 )
+
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Protobuf REQUIRED)
 
@@ -48,8 +51,10 @@ catkin_package(
 	LIBRARIES
     dave_ocean_current_world_plugin
 	CATKIN_DEPENDS
-		gazebo_msgs
 		gazebo_dev
+		gazebo_msgs
+    gazebo_ros
+    roscpp
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/include
@@ -99,10 +104,15 @@ target_link_libraries(dave_bathymetry_world_plugin
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
   ${GDAL_LIBRARY}
-  )
+)
 add_dependencies(dave_bathymetry_world_plugin ${catkin_EXPORTED_TARGETS})
 list(APPEND DAVE_GAZEBO_WORLD_PLUGINS_LIST dave_bathymetry_world_plugin)
 
+add_library(uuv_mating_plugin SHARED src/uuv_mating.cc)
+target_link_libraries(uuv_mating_plugin
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+)
 
 # Plugin compile directions
 
