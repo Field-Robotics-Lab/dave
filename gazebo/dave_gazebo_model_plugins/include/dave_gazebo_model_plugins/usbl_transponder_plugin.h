@@ -13,8 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GAZEBO_TRANSPONDER_PLUGIN_HPP_ // NOLINT
-#define GAZEBO_TRANSPONDER_PLUGIN_HPP_
+#ifndef USBL_TRANSPONDER_PLUGIN_H_
+#define USBL_TRANSPONDER_PLUGIN_H_
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>

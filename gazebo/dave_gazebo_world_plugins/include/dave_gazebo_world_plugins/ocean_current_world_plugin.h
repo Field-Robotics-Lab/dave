@@ -16,7 +16,7 @@
 /// \file ocean_current_world_plugin.h
 /// \brief Plugin that for the underwater world
 
-#ifndef OCEAN_CURRENT_WORLD_PLUGIN_H_ // NOLINT
+#ifndef OCEAN_CURRENT_WORLD_PLUGIN_H_
 #define OCEAN_CURRENT_WORLD_PLUGIN_H_
 
 #include <dave_gazebo_world_plugins/gauss_markov_process.h>

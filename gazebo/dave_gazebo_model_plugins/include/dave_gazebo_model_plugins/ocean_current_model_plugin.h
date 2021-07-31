@@ -16,7 +16,7 @@
 /// \file TransientCurrentPlugin.hh
 /// \brief Plugin for the transient current plugin to publish vehicle depth
 
-#ifndef OCEAN_CURRENT_MODEL_PLUGIN_H_ // NOLINT
+#ifndef OCEAN_CURRENT_MODEL_PLUGIN_H_
 #define OCEAN_CURRENT_MODEL_PLUGIN_H_
 
 #include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>

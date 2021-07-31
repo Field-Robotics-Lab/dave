@@ -159,7 +159,8 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
 
     // Generate and publish stratified_current_velocity database
     dave_gazebo_ros_plugins::StratifiedCurrentVelocity currentDatabaseMsg;
-    for (int i = 0; i < this->database.size(); i++) {
+    for (int i = 0; i < this->database.size(); i++)
+    {
       // Stratified current database
       geometry_msgs::Vector3 velocity;
       velocity.x = this->database[i].X();
@@ -185,7 +186,8 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     }
     else
     {
-      for (int i = 0; i < this->dateGMT.size(); i++) {
+      for (int i = 0; i < this->dateGMT.size(); i++)
+      {
         // Tidal oscillation database
         currentDatabaseMsg.timeGMTYear.push_back(this->dateGMT[i][0]);
         currentDatabaseMsg.timeGMTMonth.push_back(this->dateGMT[i][1]);

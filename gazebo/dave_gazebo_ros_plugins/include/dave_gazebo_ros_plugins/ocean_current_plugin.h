@@ -17,7 +17,7 @@
 /// \brief Publishes the ocean current velocity in ROS messages and creates a
 /// service to alter the flow model in runtime
 
-#ifndef OCEAN_CURRENT_PLUGIN_H_ // NOLINT
+#ifndef OCEAN_CURRENT_PLUGIN_H_
 #define OCEAN_CURRENT_PLUGIN_H_
 
 #include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>

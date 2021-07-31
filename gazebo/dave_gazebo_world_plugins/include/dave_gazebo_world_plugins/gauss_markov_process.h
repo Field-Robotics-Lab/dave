@@ -16,7 +16,7 @@
 /// \file gauss_markov_process.h
 /// \brief Implementation of a Gauss-Markov process model
 
-#ifndef GAUSS_MARKOV_PROCESS_H_ // NOLINT
+#ifndef GAUSS_MARKOV_PROCESS_H_
 #define GAUSS_MARKOV_PROCESS_H_
 
 #include <gazebo/gazebo.hh>
