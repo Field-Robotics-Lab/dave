@@ -14,7 +14,7 @@
 
 
      <param name="/$(arg namespace)/robot_description"
-           command="$(find xacro)/xacro '$(find uuv_dave)/urdf/smilodon_gazebo_transient_current.xacro' --inorder
+           command="$(find xacro)/xacro '$(find smilodon_description)/urdf/smilodon_gazebo_transient_current.xacro' --inorder
 		    debug:=$(arg debug)
 		    namespace:=$(arg namespace)
 		    inertial_reference_frame:=world" />
