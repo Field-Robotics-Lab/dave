@@ -34,8 +34,6 @@
         <arg name="yaw" value="3.141592"/>
     </include>
 
-
-
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
         <arg name="uuv_name" value="rexrov" />
         <arg name="model_name" value="rexrov" />

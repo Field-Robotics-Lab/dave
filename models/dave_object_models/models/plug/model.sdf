@@ -9,7 +9,7 @@
       <visual name ='visual'>
         <geometry>
           <mesh>
-            <uri>model://Electrical-Plug.dae</uri>
+            <uri>model://plug/meshes/Electrical-Plug.dae</uri>
             <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
@@ -18,11 +18,11 @@
       <collision name ='collision'>
         <geometry>
           <mesh>
-            <uri>model://Electrical-Plug.dae</uri>
+            <uri>model://plug/meshes/Electrical-Plug.dae</uri>
             <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
-      </collision>collisionChecks
+      </collision>
 
       <!-- <collision name ='stand'>
          <pose>0 0.1 -0.06 0 0 0</pose>

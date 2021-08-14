@@ -106,7 +106,7 @@
   </library_effects>
   <library_images>
     <image id="Outer-Plug_png" name="Outer-Plug_png">
-      <init_from>Outer-Plug.png</init_from>
+      <init_from>../materials/textures/Outer-Plug.png</init_from>
     </image>
   </library_images>
   <library_materials>

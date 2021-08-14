@@ -62,7 +62,7 @@
   </library_effects>
   <library_images>
     <image id="Inner-Plug_png" name="Inner-Plug_png">
-      <init_from>Inner-Plug.png</init_from>
+      <init_from>../materials/textures/Inner-Plug.png</init_from>
     </image>
   </library_images>
   <library_materials>
