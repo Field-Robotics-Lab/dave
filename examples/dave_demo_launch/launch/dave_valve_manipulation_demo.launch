@@ -2,11 +2,11 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find uuv_dave)/worlds/valve_manipulation_demo.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
     <arg name="namespace" default="rexrov"/>
     <arg name="joy_id" default="0"/>
  
-    <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
+    <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world_name)"/>
         <arg name="paused" value="$(arg paused)"/>
@@ -18,7 +18,7 @@
     </include>
 
     <!-- Spawn rexrov with oberon7 manipulator -->
-    <include file="$(find uuv_dave)/launch/upload_rexrov_oberon7.launch">
+    <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="$(arg namespace)"/>
         <arg name="x" value="20.5"/>
         <arg name="y" value="-10"/>
