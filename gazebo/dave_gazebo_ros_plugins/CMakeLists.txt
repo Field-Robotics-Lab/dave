@@ -36,6 +36,7 @@ add_service_files(
 
 add_message_files(
   FILES
+  StratifiedCurrentDatabase.msg
   StratifiedCurrentVelocity.msg
 )
 

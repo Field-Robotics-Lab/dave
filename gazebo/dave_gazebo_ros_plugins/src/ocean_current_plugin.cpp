@@ -16,6 +16,7 @@
 /// \file ocean_current_plugin.cpp
 
 #include <dave_gazebo_ros_plugins/ocean_current_plugin.h>
+#include <dave_gazebo_world_plugins/gauss_markov_process.h>
 
 #include <algorithm>
 #include <string>
@@ -49,6 +50,8 @@ void UnderwaterCurrentROSPlugin::Load(gazebo::physics::WorldPtr _world,
   try
   {
     UnderwaterCurrentPlugin::Load(_world, _sdf);
+    this->stratifiedCurrentVelocityDatabaseTopic =
+        this->stratifiedCurrentVelocityTopic + "_database";
   } catch(gazebo::common::Exception &_e)
   {
     gzerr << "Error loading plugin."
@@ -81,6 +84,11 @@ void UnderwaterCurrentROSPlugin::Load(gazebo::physics::WorldPtr _world,
   this->stratifiedCurrentVelocityPub = this->rosNode->advertise<
     dave_gazebo_ros_plugins::StratifiedCurrentVelocity>(
     this->stratifiedCurrentVelocityTopic, 10);
+
+  // Advertise the stratified ocean current msg
+  this->stratifiedCurrentDatabasePub = this->rosNode->advertise<
+    dave_gazebo_ros_plugins::StratifiedCurrentDatabase>(
+    this->stratifiedCurrentVelocityDatabaseTopic, 10);
 
   // Advertise the service to update the current velocity model
   this->worldServices["set_current_velocity_model"] =
@@ -157,17 +165,31 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
 
     this->flowVelocityPub.publish(flowVelMsg);
 
-    // Generate and publish stratified_current_velocity database
-    dave_gazebo_ros_plugins::StratifiedCurrentVelocity currentDatabaseMsg;
-    for (int i = 0; i < this->database.size(); i++)
+    // Generate and publish stratified current velocity
+    dave_gazebo_ros_plugins::StratifiedCurrentVelocity currentVelocityMsg;
+    for (int i = 0; i < this->currentStratifiedVelocity.size(); i++)
+    {
+        geometry_msgs::Vector3 velocity;
+        velocity.x = this->currentStratifiedVelocity[i].X();
+        velocity.y = this->currentStratifiedVelocity[i].Y();
+        velocity.z = this->currentStratifiedVelocity[i].Z();
+        currentVelocityMsg.velocities.push_back(velocity);
+        currentVelocityMsg.depths.push_back(
+          this->currentStratifiedVelocity[i].W());
+    }
+    this->stratifiedCurrentVelocityPub.publish(currentVelocityMsg);
+
+    // Generate and publish stratified current database
+    dave_gazebo_ros_plugins::StratifiedCurrentDatabase currentDatabaseMsg;
+    for (int i = 0; i < this->stratifiedDatabase.size(); i++)
     {
       // Stratified current database
       geometry_msgs::Vector3 velocity;
-      velocity.x = this->database[i].X();
-      velocity.y = this->database[i].Y();
+      velocity.x = this->stratifiedDatabase[i].X();
+      velocity.y = this->stratifiedDatabase[i].Y();
       velocity.z = 0.0;
       currentDatabaseMsg.velocities.push_back(velocity);
-      currentDatabaseMsg.depths.push_back(this->database[i].Z());
+      currentDatabaseMsg.depths.push_back(this->stratifiedDatabase[i].Z());
     }
 
     if (this->tidalHarmonicFlag)
@@ -210,7 +232,7 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     currentDatabaseMsg.worldStartTimeMinute = this->world_start_time_minute;
 
 
-    this->stratifiedCurrentVelocityPub.publish(currentDatabaseMsg);
+    this->stratifiedCurrentDatabasePub.publish(currentDatabaseMsg);
   }
 }
 
@@ -278,7 +300,7 @@ bool UnderwaterCurrentROSPlugin::GetCurrentHorzAngleModel(
     dave_gazebo_ros_plugins::GetCurrentModel::Response& _res)
 {
   _res.mean = this->currentHorzAngleModel.mean;
-  _res.min = this->currentHorzAngleModel.min;
+  _res.max = this->currentHorzAngleModel.min;
   _res.max = this->currentHorzAngleModel.max;
   _res.noise = this->currentHorzAngleModel.noiseAmp;
   _res.mu = this->currentHorzAngleModel.mu;
@@ -306,10 +328,20 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentVelocityModel(
 {
   _res.success = this->currentVelModel.SetModel(
     std::max(0.0, _req.mean),
-    std::max(0.0, _req.min),
+    std::min(0.0, _req.min),
     std::max(0.0, _req.max),
     _req.mu,
     _req.noise);
+
+  for (int i = 0; i < this->stratifiedCurrentModels.size(); i++) {
+    gazebo::GaussMarkovProcess model = this->stratifiedCurrentModels[i][0];
+    model.SetModel(
+      model.mean,
+      std::max(0.0, _req.min),
+      std::max(0.0, _req.max),
+      _req.mu,
+      _req.noise);
+  }
   gzmsg << "Current velocity model updated" << std::endl
     << "\tWARNING: Current velocity calculated in the ENU frame"
     << std::endl;
@@ -324,6 +356,14 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentHorzAngleModel(
 {
   _res.success = this->currentHorzAngleModel.SetModel(_req.mean, _req.min,
     _req.max, _req.mu, _req.noise);
+  for (int i = 0; i < this->stratifiedCurrentModels.size(); i++) {
+    gazebo::GaussMarkovProcess model = this->stratifiedCurrentModels[i][1];
+    model.SetModel(model.mean,
+      std::max(-M_PI, _req.min),
+      std::min(M_PI, _req.max),
+      _req.mu,
+      _req.noise);
+  }
   gzmsg << "Horizontal angle model updated" << std::endl
     << "\tWARNING: Current velocity calculated in the ENU frame"
     << std::endl;

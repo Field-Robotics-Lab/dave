@@ -15,8 +15,9 @@
 
 /// \file ocean_current_world_plugin.cc
 
-// #include <math.h>
+#include <math.h>
 #include <dave_gazebo_world_plugins/ocean_current_world_plugin.h>
+#include <StratifiedCurrentVelocity.pb.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
@@ -212,9 +213,9 @@ void UnderwaterCurrentPlugin::
   sdf::ElementPtr transientCurrentParams = this->sdf->GetElement(
     "transient_current");
 
-  if (transientCurrentParams->HasElement("topic_stratified_database"))
+  if (transientCurrentParams->HasElement("topic_stratified"))
     this->stratifiedCurrentVelocityTopic =
-      transientCurrentParams->Get<std::string>("topic_stratified_database");
+      transientCurrentParams->Get<std::string>("topic_stratified");
   else
     this->stratifiedCurrentVelocityTopic = "stratified_current_velocity";
 
@@ -282,7 +283,34 @@ void UnderwaterCurrentPlugin::
       read.X() = row[0];
       read.Y() = row[1];
       read.Z() = row[2];
-      this->database.push_back(read);
+      this->stratifiedDatabase.push_back(read);
+
+      // Create Gauss-Markov processes for the stratified currents
+      // Means are the database-specified magnitudes & angles, and
+      // the other values come from the constant current models
+      // TODO: Add vertical angle (not currently in database)
+      GaussMarkovProcess magnitudeModel;
+      magnitudeModel.mean = hypot(row[1], row[0]);
+      magnitudeModel.var = magnitudeModel.mean;
+      magnitudeModel.max = this->currentVelModel.max;
+      magnitudeModel.min = 0.0;
+      magnitudeModel.mu = this->currentVelModel.mu;
+      magnitudeModel.noiseAmp = this->currentVelModel.noiseAmp;
+      magnitudeModel.lastUpdate = this->lastUpdate.Double();
+
+      GaussMarkovProcess hAngleModel;
+      hAngleModel.mean = atan2(row[1], row[0]);
+      hAngleModel.var = hAngleModel.mean;
+      hAngleModel.max = M_PI;
+      hAngleModel.min = -M_PI;
+      hAngleModel.mu = this->currentHorzAngleModel.mu;
+      hAngleModel.noiseAmp = this->currentHorzAngleModel.noiseAmp;
+      hAngleModel.lastUpdate = this->lastUpdate.Double();
+      
+      std::vector<GaussMarkovProcess> depthModels;
+      depthModels.push_back(magnitudeModel);
+      depthModels.push_back(hAngleModel);
+      this->stratifiedCurrentModels.push_back(depthModels);
   }
   csvFile.close();
 
@@ -459,13 +487,18 @@ void UnderwaterCurrentPlugin::
     }
   }  // end of tidal oscillation configuration
 
-  // Advertise the current velocity topic
+  // Advertise the current velocity & stratified current velocity topics
   this->publishers[this->currentVelocityTopic] =
     this->node->Advertise<msgs::Vector3d>(
     this->ns + "/" + this->currentVelocityTopic);
-
   gzmsg << "Current velocity topic name: " <<
     this->ns + "/" + this->currentVelocityTopic << std::endl;
+
+  this->publishers[this->stratifiedCurrentVelocityTopic] =
+    this->node->Advertise<dave_gazebo_world_plugins_msgs::msgs::StratifiedCurrentVelocity>(
+    this->ns + "/" + this->stratifiedCurrentVelocityTopic);
+  gzmsg << "Stratified current velocity topic name: " <<
+    this->ns + "/" + this->stratifiedCurrentVelocityTopic << std::endl;
 
   // Connect the update event
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -497,7 +530,6 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
 
   // Update current velocity
   double currentVelMag = this->currentVelModel.Update(time.Double());
-
   // Update current horizontal direction around z axis of flow frame
   double horzAngle = this->currentHorzAngleModel.Update(time.Double());
 
@@ -510,9 +542,27 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
       currentVelMag * sin(horzAngle) * cos(vertAngle),
       currentVelMag * sin(vertAngle));
 
+  // Generate the depth-specific velocities
+  this->currentStratifiedVelocity.clear();
+  for (int i=0; i < this->stratifiedDatabase.size(); i++) {
+      double depth = this->stratifiedDatabase[i].Z();
+      currentVelMag =
+        this->stratifiedCurrentModels[i][0].Update(time.Double());
+      horzAngle =
+        this->stratifiedCurrentModels[i][1].Update(time.Double());
+      vertAngle = 0.0;
+      ignition::math::Vector4d depthVel(
+          currentVelMag * cos(horzAngle) * cos(vertAngle),
+          currentVelMag * sin(horzAngle) * cos(vertAngle),
+          currentVelMag * sin(vertAngle),
+          depth);
+      this->currentStratifiedVelocity.push_back(depthVel);
+  }
+
   // Update time stamp
   this->lastUpdate = time;
   this->PublishCurrentVelocity();
+  this->PublishStratifiedCurrentVelocity();
 }
 
 /////////////////////////////////////////////////
@@ -523,6 +573,22 @@ void UnderwaterCurrentPlugin::PublishCurrentVelocity()
                                                   this->currentVelocity.Y(),
                                                   this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
+}
+
+/////////////////////////////////////////////////
+void UnderwaterCurrentPlugin::PublishStratifiedCurrentVelocity()
+{
+  dave_gazebo_world_plugins_msgs::msgs::StratifiedCurrentVelocity currentVel;
+  for (std::vector<ignition::math::Vector4d>::iterator it = this->currentStratifiedVelocity.begin();
+       it != this->currentStratifiedVelocity.end(); ++it)
+  {
+    msgs::Set(currentVel.add_velocity(), 
+              ignition::math::Vector3d(it->X(), it->Y(), it->Z()));
+    currentVel.add_depth(it->W());
+  }
+  if (currentVel.velocity_size() == 0)
+    return;
+  this->publishers[this->stratifiedCurrentVelocityTopic]->Publish(currentVel);
 }
 
 GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)

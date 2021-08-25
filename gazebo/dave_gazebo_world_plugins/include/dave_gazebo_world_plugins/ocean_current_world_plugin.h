@@ -22,8 +22,6 @@
 #include <dave_gazebo_world_plugins/gauss_markov_process.h>
 #include <dave_gazebo_world_plugins/tidal_oscillation.h>
 
-#include <ocean_current_velocity.pb.h>
-
 #include <ros/ros.h>
 #include <ros/package.h>
 
@@ -64,7 +62,7 @@ namespace gazebo
     /// \brief Publish current velocity and the pose of its frame
     protected: void PublishCurrentVelocity();
 
-    /// \brief Publish stratified oceqan currnet velocity
+    /// \brief Publish stratified oceqan current velocity
     protected: void PublishStratifiedCurrentVelocity();
 
     /// \brief Update event
@@ -104,8 +102,8 @@ namespace gazebo
     /// \brief Tidal Oscillation Database file path for txt file
     protected: std::string tidalFilePath;
 
-    /// \brief Vector for read database
-    protected: std::vector<ignition::math::Vector3d> database;
+    /// \brief Vector for read stratified current database values
+    protected: std::vector<ignition::math::Vector3d> stratifiedDatabase;
 
     /// \brief Namespace for topics and services
     protected: std::string ns;
@@ -118,6 +116,9 @@ namespace gazebo
 
     /// \brief Gauss-Markov process instance for vertical angle model
     protected: GaussMarkovProcess currentVertAngleModel;
+
+    /// \brief Vector of Gauss-Markov process instances for strativied velocity
+    protected: std::vector<std::vector<GaussMarkovProcess>> stratifiedCurrentModels;
 
     /// \brief Vector of dateGMT for tidal oscillation
     protected: std::vector<std::array<int, 5>> dateGMT;
@@ -161,6 +162,9 @@ namespace gazebo
 
     /// \brief Current linear velocity vector
     protected: ignition::math::Vector3d currentVelocity;
+
+    /// \brief Vector of current depth-specific linear velocity vectors
+    protected: std::vector<ignition::math::Vector4d> currentStratifiedVelocity;
 
     /// \brief File path for stratified current database
     protected: std::string db_path;

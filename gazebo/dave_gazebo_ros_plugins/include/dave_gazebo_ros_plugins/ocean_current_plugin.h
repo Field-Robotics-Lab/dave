@@ -28,6 +28,7 @@
 #include <dave_gazebo_ros_plugins/SetOriginSphericalCoord.h>
 #include <dave_gazebo_ros_plugins/GetOriginSphericalCoord.h>
 #include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
+#include <dave_gazebo_ros_plugins/StratifiedCurrentDatabase.h>
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <geometry_msgs/TwistStamped.h>
@@ -123,6 +124,12 @@ namespace dave_simulator_ros
 
     /// \brief Publisher for the stratified current in the world frame
     private: ros::Publisher stratifiedCurrentVelocityPub;
+
+    /// \brief Stratified ocean current database topic
+    private: std::string stratifiedCurrentVelocityDatabaseTopic;
+
+    /// \brief Publisher for the stratified current database in the world frame
+    private: ros::Publisher stratifiedCurrentDatabasePub;
 
     /// \brief Period after which we should publish a message via ROS.
     private: gazebo::common::Time rosPublishPeriod;

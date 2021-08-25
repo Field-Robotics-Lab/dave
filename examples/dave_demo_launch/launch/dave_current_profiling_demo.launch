@@ -2,6 +2,9 @@
 <launch>
   <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="false"/>
   <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves_dvl_current_profiling.world"/>
 
   <!-- use Gazebo's empty_world.launch with uuv_dave_ocean_waves.world -->
@@ -11,12 +14,12 @@
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="$(arg gui)"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-    <arg name="verbose" value="false"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="verbose" value="$(arg verbose)"/>
   </include>
 
   <!-- Load and spawn the model, starts the joint & state publishers, make the model move -->
-  <param name="model_name" type="str" value="whoi_teledyne_whn"/>
+  <param name="model_name" type="str" value="teledyne_teledyne_dsl"/>
   <param name="base_link_name" type="str" value="whn_base_link"/>
 </launch>
