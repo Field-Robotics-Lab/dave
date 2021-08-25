@@ -232,7 +232,7 @@ void UnderwaterCurrentPlugin::
     // boost::filesystem::path
     //    concatPath(boost::filesystem::initial_path().parent_path());
     // concatPath +=
-    //    "/uuv_ws/src/dave/uuv_dave/worlds/transientOceanCurrentDatabase.csv";
+    //    "/uuv_ws/src/dave/models/dave_worlds/worlds/transientOceanCurrentDatabase.csv";
     // this->databaseFilePath = concatPath.generic_string();
     //
     // Use ros package path:
@@ -345,7 +345,7 @@ void UnderwaterCurrentPlugin::
         tidalHarmonicFlag = true;
       }
       else
-        this->tidalFilePath = ros::package::getPath("uuv_dave") +
+        this->tidalFilePath = ros::package::getPath("dave_worlds") +
           "/worlds/ACT1951_predictionMaxSlack_2021-02-24.csv";
     }
 
