@@ -73,16 +73,27 @@
         <arg name="yaw" value="-1.8"/>
     </include>
 
+    <!-- Velocity teleop keyboard (UUV stays in position when keys not used) -->
+    <include file="$(find uuv_control_cascaded_pid)/launch/position_hold.launch">
+      <arg name="model_name" value="rexrov" />
+    </include>
+
+    <!-- Velocity teleop keyboard (UUV stays in position when keys not used) -->
+    <!-- <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/key_board_velocity.launch"> -->
+      <!-- <arg name="model_name" value="rexrov" /> -->
+    <!-- </include> -->
+
     <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
     <!-- <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch"> -->
         <!-- <arg name="uuv_name" value="$(arg namespace)" /> -->
         <!-- <arg name="model_name" value="rexrov" /> -->
         <!-- <arg name="joy_id" value="$(arg joy_id)"/> -->
+        <!-- </include> -->
+
+    <!-- <include file="$(find uuv_thruster_manager)/launch/thruster_manager.launch"> -->
+      <!-- <arg name="uuv_name" value="$(arg namespace)" /> -->
+      <!-- <arg name="model_name" value="$(arg namespace)" /> -->
     <!-- </include> -->
-    <include file="$(find uuv_thruster_manager)/launch/thruster_manager.launch">
-      <arg name="uuv_name" value="$(arg namespace)" />
-      <arg name="model_name" value="$(arg namespace)" />
-    </include>
 
     <!-- joystick control for rexrov and oberon7, no velocity control-->
     <!-- <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch"> -->
