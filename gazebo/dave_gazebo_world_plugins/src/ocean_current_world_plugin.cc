@@ -136,7 +136,8 @@ void UnderwaterCurrentPlugin::Update(const common::UpdateInfo & /** _info */)
         this->stratifiedCurrentModels[i][0].Update(time.Double());
       horzAngle =
         this->stratifiedCurrentModels[i][1].Update(time.Double());
-      vertAngle = 0.0;
+      vertAngle = 
+        this->stratifiedCurrentModels[i][2].Update(time.Double());
       ignition::math::Vector4d depthVel(
           currentVelMag * cos(horzAngle) * cos(vertAngle),
           currentVelMag * sin(horzAngle) * cos(vertAngle),
@@ -383,7 +384,7 @@ void UnderwaterCurrentPlugin::LoadStratifiedCurrentDatabase()
       // Create Gauss-Markov processes for the stratified currents
       // Means are the database-specified magnitudes & angles, and
       // the other values come from the constant current models
-      // TODO: Add vertical angle (not currently in database)
+      // TODO: Vertical angle currently set to 0 (not in database)
       GaussMarkovProcess magnitudeModel;
       magnitudeModel.mean = hypot(row[1], row[0]);
       magnitudeModel.var = magnitudeModel.mean;
@@ -402,9 +403,19 @@ void UnderwaterCurrentPlugin::LoadStratifiedCurrentDatabase()
       hAngleModel.noiseAmp = this->currentHorzAngleModel.noiseAmp;
       hAngleModel.lastUpdate = this->lastUpdate.Double();
       
+      GaussMarkovProcess vAngleModel;
+      vAngleModel.mean = 0.0;
+      vAngleModel.var = vAngleModel.mean;
+      vAngleModel.max = M_PI/2.0;
+      vAngleModel.min = -M_PI/2.0;
+      vAngleModel.mu = this->currentVertAngleModel.mu;
+      vAngleModel.noiseAmp = this->currentVertAngleModel.noiseAmp;
+      vAngleModel.lastUpdate = this->lastUpdate.Double();
+      
       std::vector<GaussMarkovProcess> depthModels;
       depthModels.push_back(magnitudeModel);
       depthModels.push_back(hAngleModel);
+      depthModels.push_back(vAngleModel);
       this->stratifiedCurrentModels.push_back(depthModels);
   }
   csvFile.close();
