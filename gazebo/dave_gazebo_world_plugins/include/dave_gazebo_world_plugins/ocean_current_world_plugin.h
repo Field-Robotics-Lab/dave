@@ -59,6 +59,15 @@ namespace gazebo
     /// \param[in] _info Information used in the update event.
     public: void Update(const common::UpdateInfo &_info);
 
+    /// \brief Load global current velocity configuration
+    protected: virtual void LoadGlobalCurrentConfig();
+
+    /// \brief Load stratified current velocity database
+    protected: virtual void LoadStratifiedCurrentDatabase();
+
+    /// \brief Load tidal oscillation database
+    protected: virtual void LoadTidalOscillationDatabase();
+
     /// \brief Publish current velocity and the pose of its frame
     protected: void PublishCurrentVelocity();
 

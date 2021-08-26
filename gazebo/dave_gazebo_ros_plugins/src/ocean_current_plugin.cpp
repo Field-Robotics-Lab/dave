@@ -166,18 +166,20 @@ void UnderwaterCurrentROSPlugin::OnUpdateCurrentVel()
     this->flowVelocityPub.publish(flowVelMsg);
 
     // Generate and publish stratified current velocity
-    dave_gazebo_ros_plugins::StratifiedCurrentVelocity currentVelocityMsg;
+    dave_gazebo_ros_plugins::StratifiedCurrentVelocity stratCurrentVelocityMsg;
+    stratCurrentVelocityMsg.header.stamp = ros::Time().now();
+    stratCurrentVelocityMsg.header.frame_id = "/world";
     for (int i = 0; i < this->currentStratifiedVelocity.size(); i++)
     {
         geometry_msgs::Vector3 velocity;
         velocity.x = this->currentStratifiedVelocity[i].X();
         velocity.y = this->currentStratifiedVelocity[i].Y();
         velocity.z = this->currentStratifiedVelocity[i].Z();
-        currentVelocityMsg.velocities.push_back(velocity);
-        currentVelocityMsg.depths.push_back(
+        stratCurrentVelocityMsg.velocities.push_back(velocity);
+        stratCurrentVelocityMsg.depths.push_back(
           this->currentStratifiedVelocity[i].W());
     }
-    this->stratifiedCurrentVelocityPub.publish(currentVelocityMsg);
+    this->stratifiedCurrentVelocityPub.publish(stratCurrentVelocityMsg);
 
     // Generate and publish stratified current database
     dave_gazebo_ros_plugins::StratifiedCurrentDatabase currentDatabaseMsg;
