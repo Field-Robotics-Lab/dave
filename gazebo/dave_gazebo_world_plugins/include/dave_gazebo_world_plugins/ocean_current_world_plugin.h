@@ -126,8 +126,9 @@ namespace gazebo
     /// \brief Gauss-Markov process instance for vertical angle model
     protected: GaussMarkovProcess currentVertAngleModel;
 
-    /// \brief Vector of Gauss-Markov process instances for strativied velocity
-    protected: std::vector<std::vector<GaussMarkovProcess>> stratifiedCurrentModels;
+    /// \brief Vector of Gauss-Markov process instances for stratified velocity
+    protected: std::vector<std::vector<GaussMarkovProcess>> 
+      stratifiedCurrentModels;
 
     /// \brief Vector of dateGMT for tidal oscillation
     protected: std::vector<std::array<int, 5>> dateGMT;

@@ -277,7 +277,8 @@ bool UnderwaterCurrentROSPlugin::UpdateStratHorzAngle(
   }
   _res.success =
     this->stratifiedCurrentModels[_req.layer][1].SetMean(_req.angle);
-  if (_res.success) {
+  if (_res.success)
+  {
       // Update the database values (new angle, unchanged velocity)
       double velocity = hypot(this->stratifiedDatabase[_req.layer].X(),
                               this->stratifiedDatabase[_req.layer].Y());
@@ -351,15 +352,17 @@ bool UnderwaterCurrentROSPlugin::UpdateStratCurrentVelocity(
       return true;
   }
   if (this->stratifiedCurrentModels[_req.layer][0].SetMean(_req.velocity) &&
-      this->stratifiedCurrentModels[_req.layer][1].SetMean(_req.horizontal_angle) &&
-      this->stratifiedCurrentModels[_req.layer][2].SetMean(_req.vertical_angle))
+      this->stratifiedCurrentModels[_req.layer][1].SetMean(
+        _req.horizontal_angle) &&
+      this->stratifiedCurrentModels[_req.layer][2].SetMean(
+        _req.vertical_angle))
   {
     // Update the database values as well
     this->stratifiedDatabase[_req.layer].X() = cos(_req.horizontal_angle) *
                                                _req.velocity;
     this->stratifiedDatabase[_req.layer].Y() = sin(_req.horizontal_angle) *
                                                _req.velocity;
-    gzmsg << "Layer " << _req.layer << " current velocity [m/s] = " 
+    gzmsg << "Layer " << _req.layer << " current velocity [m/s] = "
           << _req.velocity << std::endl
       << "  Horizontal angle [rad] = " << _req.horizontal_angle
       << std::endl
@@ -396,7 +399,7 @@ bool UnderwaterCurrentROSPlugin::GetCurrentHorzAngleModel(
     dave_gazebo_ros_plugins::GetCurrentModel::Response& _res)
 {
   _res.mean = this->currentHorzAngleModel.mean;
-  _res.max = this->currentHorzAngleModel.min;
+  _res.min = this->currentHorzAngleModel.min;
   _res.max = this->currentHorzAngleModel.max;
   _res.noise = this->currentHorzAngleModel.noiseAmp;
   _res.mu = this->currentHorzAngleModel.mu;
@@ -429,7 +432,8 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentVelocityModel(
     _req.mu,
     _req.noise);
 
-  for (int i = 0; i < this->stratifiedCurrentModels.size(); i++) {
+  for (int i = 0; i < this->stratifiedCurrentModels.size(); i++)
+  {
     gazebo::GaussMarkovProcess model = this->stratifiedCurrentModels[i][0];
     model.SetModel(
       model.mean,
@@ -452,7 +456,8 @@ bool UnderwaterCurrentROSPlugin::UpdateCurrentHorzAngleModel(
 {
   _res.success = this->currentHorzAngleModel.SetModel(_req.mean, _req.min,
     _req.max, _req.mu, _req.noise);
-  for (int i = 0; i < this->stratifiedCurrentModels.size(); i++) {
+  for (int i = 0; i < this->stratifiedCurrentModels.size(); i++)
+  {
     gazebo::GaussMarkovProcess model = this->stratifiedCurrentModels[i][1];
     model.SetModel(model.mean,
       std::max(-M_PI, _req.min),
