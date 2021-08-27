@@ -423,8 +423,8 @@ void UnderwaterCurrentPlugin::LoadStratifiedCurrentDatabase()
   csvFile.close();
 
   this->publishers[this->stratifiedCurrentVelocityTopic] =
-    this->node->Advertise<dave_gazebo_world_plugins_msgs::msgs::
-                          StratifiedCurrentVelocity>(
+    this->node->Advertise<
+      dave_gazebo_world_plugins_msgs::msgs::StratifiedCurrentVelocity>(
       this->ns + "/" + this->stratifiedCurrentVelocityTopic);
   gzmsg << "Stratified current velocity topic name: " <<
     this->ns + "/" + this->stratifiedCurrentVelocityTopic << std::endl;

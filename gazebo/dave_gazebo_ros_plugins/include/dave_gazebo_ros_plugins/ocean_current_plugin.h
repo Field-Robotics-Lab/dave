@@ -109,7 +109,7 @@ namespace dave_simulator_ros
         dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
         dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res);
 
-    /// \brief Service call to update a stratified crnt horizontal angle mean value
+    /// \brief Service update to a stratified crnt horizontal angle mean value
     public: bool UpdateStratHorzAngle(
         dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Request& _req,
         dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Response& _res);
@@ -119,10 +119,11 @@ namespace dave_simulator_ros
         dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
         dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res);
 
-    /// \brief Service call to update a stratified current vertical angle mean value
+    /// \brief Service update to a stratified current vertical angle mean value
     public: bool UpdateStratVertAngle(
         dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Request& _req,
-        dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Response& _res);
+        dave_gazebo_ros_plugins::
+        SetStratifiedCurrentDirection::Response& _res);
 
     /// \brief Publishes ROS topics
     private: void OnUpdateCurrentVel();
