@@ -105,7 +105,7 @@
       </constant_current>
 
       <transient_current>
-        <topic_stratified_database>stratified_current_velocity_database</topic_stratified_database>
+        <topic_stratified>stratified_current_velocity</topic_stratified>
         <!-- Database tag can accept full path or filename for .csv within the dave_worlds/worlds folder  -->
         <databasefilePath>transientOceanCurrentDatabase.csv</databasefilePath>
       </transient_current>
