@@ -78,7 +78,7 @@
 
     <!-- DVL model (WHOI plugin) -->
     <include>
-      <uri>model://whoi_teledyne_whn</uri>
+      <uri>model://teledyne_whn_dsl</uri>
       <pose>0 0 -15 0 0 0</pose>
     </include>
 
@@ -89,7 +89,7 @@
         <velocity>
           <mean>0</mean>
           <min>0</min>
-          <max>5</max>
+          <max>5.0</max>
           <mu>0.0</mu>
           <noiseAmp>0.0</noiseAmp>
         </velocity>
