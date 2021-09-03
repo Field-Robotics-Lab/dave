@@ -1,10 +1,10 @@
 syntax = "proto2";
-package ocean_current_velocity_msgs.msgs;
+package dave_gazebo_world_plugins_msgs.msgs;
 import "vector3d.proto";
 import "any.proto";
 
 message StratifiedCurrentVelocity
 {
   repeated gazebo.msgs.Vector3d   velocity  = 1;
-  repeated gazebo.msgs.Any        depth     = 2;
+  repeated double                 depth     = 2;
 }

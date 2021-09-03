@@ -49,7 +49,7 @@
         <flow_velocity_topic>hydrodynamics/current_velocity/$(arg namespace)</flow_velocity_topic>
         <base_link_name>$(arg namespace)/base_link</base_link_name>
         <transient_current>
-            <topic_stratified_database>stratified_current_velocity_database</topic_stratified_database>
+            <topic_stratified>stratified_current_velocity</topic_stratified>
             <velocity_north>
                 <noiseAmp>0.3</noiseAmp>
                 <noiseFreq>0.0</noiseFreq>

@@ -106,14 +106,15 @@ void TransientCurrentPlugin::Load(
   {
     sdf::ElementPtr currentVelocityParams = _sdf->GetElement(
       "transient_current");
-    if (currentVelocityParams->HasElement("topic_stratified_database"))
+    if (currentVelocityParams->HasElement("topic_stratified"))
       this->transientCurrentVelocityTopic =
         "/hydrodynamics/" +
-        currentVelocityParams->Get<std::string>("topic_stratified_database");
+        currentVelocityParams->Get<std::string>("topic_stratified") +
+        "_database";
     else
     {
       this->transientCurrentVelocityTopic =
-        "/hydrodynamics/stratified_current_velocity";
+        "/hydrodynamics/stratified_current_velocity_database";
     }
 
     // Read Gauss-Markov parameters
@@ -207,7 +208,7 @@ void TransientCurrentPlugin::Load(
 
   // Subscribe stratified ocean current database
   this->databaseSub = this->rosNode->subscribe
-    <dave_gazebo_ros_plugins::StratifiedCurrentVelocity>
+    <dave_gazebo_ros_plugins::StratifiedCurrentDatabase>
     (this->transientCurrentVelocityTopic, 10,
     boost::bind(&TransientCurrentPlugin::UpdateDatabase, this, _1));
 
@@ -247,7 +248,7 @@ void TransientCurrentPlugin::Update(const gazebo::common::UpdateInfo &)
 
 /////////////////////////////////////////////////
 void TransientCurrentPlugin::UpdateDatabase(
-  const dave_gazebo_ros_plugins::StratifiedCurrentVelocity::ConstPtr &_msg)
+  const dave_gazebo_ros_plugins::StratifiedCurrentDatabase::ConstPtr &_msg)
 {
     this->database.clear();
     for (int i = 0; i < _msg->depths.size(); i++)

@@ -74,6 +74,9 @@ namespace gazebo
     /// \brief Timestamp for the last update
     public: double lastUpdate;
 
+    /// \brief State storage for the random number generator
+    private: unsigned int randSeed;
+
     /// \brief Update function for a new time stamp
     /// \param _time Current time stamp
     public: double Update(double _time);

@@ -24,10 +24,13 @@
 #include <dave_gazebo_ros_plugins/SetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/GetCurrentModel.h>
 #include <dave_gazebo_ros_plugins/SetCurrentVelocity.h>
+#include <dave_gazebo_ros_plugins/SetStratifiedCurrentVelocity.h>
 #include <dave_gazebo_ros_plugins/SetCurrentDirection.h>
+#include <dave_gazebo_ros_plugins/SetStratifiedCurrentDirection.h>
 #include <dave_gazebo_ros_plugins/SetOriginSphericalCoord.h>
 #include <dave_gazebo_ros_plugins/GetOriginSphericalCoord.h>
 #include <dave_gazebo_ros_plugins/StratifiedCurrentVelocity.h>
+#include <dave_gazebo_ros_plugins/StratifiedCurrentDatabase.h>
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <geometry_msgs/TwistStamped.h>
@@ -96,15 +99,31 @@ namespace dave_simulator_ros
         dave_gazebo_ros_plugins::SetCurrentVelocity::Request& _req,
         dave_gazebo_ros_plugins::SetCurrentVelocity::Response& _res);
 
+    /// \brief Service call to update the mean value of the flow velocity
+    public: bool UpdateStratCurrentVelocity(
+        dave_gazebo_ros_plugins::SetStratifiedCurrentVelocity::Request& _req,
+        dave_gazebo_ros_plugins::SetStratifiedCurrentVelocity::Response& _res);
+
     /// \brief Service call to update the mean value of the horizontal angle
     public: bool UpdateHorzAngle(
         dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
         dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res);
 
+    /// \brief Service update to a stratified crnt horizontal angle mean value
+    public: bool UpdateStratHorzAngle(
+        dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Request& _req,
+        dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Response& _res);
+
     /// \brief Service call to update the mean value of the vertical angle
     public: bool UpdateVertAngle(
         dave_gazebo_ros_plugins::SetCurrentDirection::Request& _req,
         dave_gazebo_ros_plugins::SetCurrentDirection::Response& _res);
+
+    /// \brief Service update to a stratified current vertical angle mean value
+    public: bool UpdateStratVertAngle(
+        dave_gazebo_ros_plugins::SetStratifiedCurrentDirection::Request& _req,
+        dave_gazebo_ros_plugins::
+        SetStratifiedCurrentDirection::Response& _res);
 
     /// \brief Publishes ROS topics
     private: void OnUpdateCurrentVel();
@@ -123,6 +142,12 @@ namespace dave_simulator_ros
 
     /// \brief Publisher for the stratified current in the world frame
     private: ros::Publisher stratifiedCurrentVelocityPub;
+
+    /// \brief Stratified ocean current database topic
+    private: std::string stratifiedCurrentVelocityDatabaseTopic;
+
+    /// \brief Publisher for the stratified current database in the world frame
+    private: ros::Publisher stratifiedCurrentDatabasePub;
 
     /// \brief Period after which we should publish a message via ROS.
     private: gazebo::common::Time rosPublishPeriod;

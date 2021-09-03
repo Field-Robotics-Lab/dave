@@ -28,6 +28,8 @@ add_service_files(
   GetCurrentModel.srv
   SetCurrentVelocity.srv
   SetCurrentDirection.srv
+  SetStratifiedCurrentVelocity.srv
+  SetStratifiedCurrentDirection.srv
   SetOriginSphericalCoord.srv
   GetOriginSphericalCoord.srv
   TransformToSphericalCoord.srv
@@ -36,6 +38,7 @@ add_service_files(
 
 add_message_files(
   FILES
+  StratifiedCurrentDatabase.msg
   StratifiedCurrentVelocity.msg
 )
 
