@@ -10,11 +10,11 @@ repositories:
   ds_msgs:
     type: git
     url: git@github.com:Field-Robotics-Lab/ds_msgs.git
-    version: master
+    version: nps_dev
   ds_sim:
     type: git
     url: git@github.com:Field-Robotics-Lab/ds_sim.git
-    version: master
+    version: nps_dev
   eca_a9:
     type: git
     url: git@github.com:uuvsimulator/eca_a9.git
