@@ -100,5 +100,5 @@ This changelog covers the entire dave project which includes a few repositories,
 
 ### Update
 
-- Continued updates to conform to new repository layout for the purposes of increasing clarity and ease of maintenance : PRs [#143](https://github.com/Field-Robotics-Lab/dave/pull/143), [#145](https://github.com/Field-Robotics-Lab/dave/pull/145), [#149](https://github.com/Field-Robotics-Lab/dave/pull/149) and [#150](https://github.com/Field-Robotics-Lab/dave/pull/143).
+- Continued updates to conform to new repository layout for the purposes of increasing clarity and ease of maintenance : dave PRs [#143](https://github.com/Field-Robotics-Lab/dave/pull/143), [#145](https://github.com/Field-Robotics-Lab/dave/pull/145), [#149](https://github.com/Field-Robotics-Lab/dave/pull/149) and [#150](https://github.com/Field-Robotics-Lab/dave/pull/143).
 
