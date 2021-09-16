@@ -23,10 +23,10 @@
         <transmission name="${joint}_trans">
             <type>transmission_interface/SimpleTransmission</type>
             <joint name="${joint}">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             </joint>
             <actuator name="${joint}_motor">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
         </transmission>
@@ -267,7 +267,7 @@
 
         <!-- Adding parallel gripper  -->
         <xacro:include filename="$(find oberon7_description)/urdf/parallel_gripper.xacro" />
-        
+
         <xacro:oberon7_gazebo_macro namespace="${namespace}"/>
     </xacro:macro>
 </robot>
