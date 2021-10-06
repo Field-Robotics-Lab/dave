@@ -78,7 +78,7 @@
     <group unless="$(arg start_at_origin)">
       <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
           <arg name="namespace" value="rexrov"/>
-          <arg name="x" value="4"/>
+          <arg name="x" value="25"/>
           <arg name="y" value="4"/>
           <arg name="z" value="-93"/>
           <arg name="yaw" value="-1.8"/>
