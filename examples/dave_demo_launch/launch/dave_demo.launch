@@ -71,7 +71,7 @@
           <arg name="namespace" value="rexrov"/>
           <arg name="x" value="0"/>
           <arg name="y" value="0"/>
-          <arg name="z" value="-10"/>
+          <arg name="z" value="-5"/>
           <arg name="yaw" value="0"/>
       </include>
     </group>
@@ -80,7 +80,7 @@
           <arg name="namespace" value="rexrov"/>
           <arg name="x" value="25"/>
           <arg name="y" value="4"/>
-          <arg name="z" value="-93"/>
+          <arg name="z" value="-92"/>
           <arg name="yaw" value="-1.8"/>
       </include>
     </group>
