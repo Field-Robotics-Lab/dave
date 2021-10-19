@@ -16,7 +16,6 @@
   <depend>gazebo_dev</depend>
   <depend>uuv_sensor_ros_plugins</depend>
   <export>
-    <gazebo_ros gazebo_model_path="${prefix}/models"/>
     <gazebo_ros gazebo_media_path="${prefix}"/>
   </export>
 
