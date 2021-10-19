@@ -14,7 +14,6 @@
   <depend>ds_sim</depend>
 
   <export>
-    <gazebo_ros gazebo_model_path="${prefix}/bathymetry"/>
     <gazebo_ros gazebo_media_path="${prefix}/media"/>
   </export>
 
