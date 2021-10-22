@@ -17,7 +17,7 @@
 
 #include <gazebo/physics/Collision.hh>
 #include <algorithm>    // std::lower_bound
-#include "dave_gazebo_world_plugins/uuv_mating.hh"
+#include <dave_gazebo_world_plugins/uuv_mating.hh>
 
 using namespace gazebo;
 
@@ -26,90 +26,169 @@ void WorldUuvPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
 {
   this->world = _world;
 
-  // Retrieve models' parameters from SDF
+  // Retrieve model's parameters from SDF
   if (_sdf->HasElement("rollAlignmentTolerence"))
   {
     this->rollAlignmentTolerence =
       _sdf->GetElement("rollAlignmentTolerence")->Get<double>();
-    ROS_INFO("Roll Mating Alignment Tolerence is: %f",
-             this->rollAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Roll Mating Alignment Tolerence is: " <<
+                    this->rollAlignmentTolerence);
   }
   else
   {
     this->rollAlignmentTolerence = 0.3;
-    ROS_INFO("Roll Mating Alignment Tolerence was not stated, "
-             "using value of %f", this->rollAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Roll Mating Alignment Tolerence was not " <<
+                    "specified, using default value of " <<
+                     this->rollAlignmentTolerence);
   }
 
   if (_sdf->HasElement("pitchAlignmentTolerence"))
   {
     this->pitchAlignmentTolerence =
       _sdf->GetElement("pitchAlignmentTolerence")->Get<double>();
-    ROS_INFO("Pitch Mating Alignment Tolerence is: %f",
-             this->pitchAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Pitch Mating Alignment Tolerence is: " <<
+                    this->pitchAlignmentTolerence);
   }
   else
   {
     this->pitchAlignmentTolerence = 0.3;
-    ROS_INFO("Pitch Mating Alignment Tolerence was not stated, "
-             "using value of %f", this->pitchAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Pitch Mating Alignment Tolerence was not " <<
+                    "specified, using default value of " <<
+                    this->pitchAlignmentTolerence);
   }
 
   if (_sdf->HasElement("yawAlignmentTolerence"))
   {
     this->yawAlignmentTolerence =
       _sdf->GetElement("yawAlignmentTolerence")->Get<double>();
-    ROS_INFO("Yaw Mating Alignment Tolerence is: %f",
-             this->yawAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Yaw Mating Alignment Tolerence is: " <<
+                    this->yawAlignmentTolerence);
   }
   else
   {
     this->yawAlignmentTolerence = 0.3;
-    ROS_INFO("Yaw Mating Alignment Tolerence was not stated, "
-             "using value of %f", this->yawAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Yaw Mating Alignment Tolerence was not " <<
+                    "specified, using default value of " << 
+                    this->yawAlignmentTolerence);
   }
 
   if (_sdf->HasElement("zAlignmentTolerence"))
   {
     this->zAlignmentTolerence =
       _sdf->GetElement("zAlignmentTolerence")->Get<double>();
-    ROS_INFO("Z Mating Alignment Tolerence is: %f", this->zAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Z Mating Alignment Tolerence is: " <<
+                    this->zAlignmentTolerence);
   }
   else
   {
     this->zAlignmentTolerence = 0.1;
-    ROS_INFO("Yaw Mating Alignment Tolerence was not stated, "
-             "using value of %f", this->zAlignmentTolerence);
+    ROS_INFO_STREAM("Socket Z Mating Alignment Tolerence was not " <<
+                    "specified, using default value of " <<
+                    this->zAlignmentTolerence);
   }
 
   if (_sdf->HasElement("matingForce"))
   {
     this->matingForce = _sdf->GetElement("matingForce")->Get<double>();
-    ROS_INFO("Mating force: %f", this->matingForce);
+    ROS_INFO_STREAM("Socket Mating Force: " << this->matingForce);
   }
   else
   {
     this->matingForce = 50;
-    ROS_INFO("Mating Force not stated, using value of %f", this->matingForce);
+    ROS_INFO_STREAM("Socket Mating Force not specified, " <<
+                    "using default value of " << this->matingForce);
   }
 
   if (_sdf->HasElement("unmatingForce"))
   {
     this->unmatingForce = _sdf->GetElement("unmatingForce")->Get<double>();
-    ROS_INFO("Unmating Force: %f", this->unmatingForce);
+    ROS_INFO_STREAM("Socket Unmating Force: " << this->unmatingForce);
   }
   else
   {
     this->unmatingForce = 190;
-    ROS_INFO("Unmating Force not stated, using value of %f",
-             this->unmatingForce);
+    ROS_INFO_STREAM("Socket Unmating Force not specified, " <<
+                    "using default value of " << this->unmatingForce);
   }
 
-  this->socketModel = this->world->ModelByName("socket_box");
-  this->plugModel = this->world->ModelByName("plug");
-  this->sensorPlate = this->socketModel->GetLink("sensor_plate");
-  this->tubeLink = this->socketModel->GetLink("socket");
-  this->plugLink = this->plugModel->GetLink("plug");
+  // retrieve the socket model and link info from the SDF
+  if (_sdf->HasElement("socketModel"))
+  {
+    this->socketModelName = _sdf->GetElement("socketModel")
+                                ->Get<std::string>();
+    ROS_INFO_STREAM("Socket Model name set to " << this->socketModelName);
+  }
+  else
+  {
+    this->socketModelName = "socket_box";
+    ROS_INFO_STREAM("Socket Model name not specified, set to default "
+                    << this->socketModelName);
+  }
+  this->socketModel = this->world->ModelByName(this->socketModelName);
+  ROS_INFO_STREAM("Socket Model set from SDF");
+
+  if (_sdf->HasElement("sensorPlateLink"))
+  {
+    this->sensorPlateName = _sdf->GetElement("sensorPlateLink")
+                                ->Get<std::string>();
+    ROS_INFO_STREAM("Socket Sensor Plate Link name set to " <<
+                    this->sensorPlateName);
+  }
+  else
+  {
+    this->sensorPlateName = "sensor_plate";
+    ROS_INFO_STREAM("Socket Sensor Plate link name not specified, " <<
+                    "set to default " << this->sensorPlateName);
+  }
+  this->sensorPlate = this->socketModel->GetLink(this->sensorPlateName);
+  ROS_INFO_STREAM("Socket Sensor Plate link set from SDF");
+
+  if (_sdf->HasElement("socketTubeLink"))
+  {
+    this->tubeLinkName =
+      _sdf->GetElement("socketTubeLink")->Get<std::string>();
+    ROS_INFO_STREAM("Socket Tube Link name set to " << this->tubeLinkName);
+  }
+  else
+  {
+    this->tubeLinkName = "socket";
+    ROS_INFO_STREAM("Socket Tube Link name not specified, " <<
+                    "set to default " << this->tubeLinkName);
+  }
+  this->tubeLink = this->socketModel->GetLink(this->tubeLinkName);
+  ROS_INFO_STREAM("Socket Tube Link set from SDF");
+
+  // Retrieve plug model and link info from the SDF
+  if (_sdf->HasElement("plugModel"))
+  {
+    this->plugModelName = _sdf->GetElement("plugModel")
+                              ->Get<std::string>();
+    ROS_INFO_STREAM("Plug Model name set to " << this->plugModelName);
+  }
+  else
+  {
+    this->plugModelName = "plug";
+    ROS_INFO_STREAM("Plug Model name not specified, set to default " <<
+                    this->plugModelName);
+  }
+  this->plugModel = this->world->ModelByName(this->plugModelName);
+  ROS_INFO_STREAM("Plug Model set from SDF");
+
+  if (_sdf->HasElement("plugLink"))
+  {
+    this->plugLinkName =
+      _sdf->GetElement("plugLink")->Get<std::string>();
+    ROS_INFO_STREAM("Plug Link name set to " << this->plugLinkName);
+  }
+  else
+  {
+    this->plugLinkName = "plug";
+    ROS_INFO_STREAM("Plug Link name not specified, set to default "
+                    << this->plugLinkName);
+  }
+  this->plugLink = this->plugModel->GetLink(this->plugLinkName);
+  ROS_INFO_STREAM("Plug Link set from SDF");
+
   this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
   this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
       std::bind(&WorldUuvPlugin::Update, this));
@@ -158,11 +237,11 @@ void WorldUuvPlugin::lockJoint(physics::JointPtr prismaticJoint)
 {
   if (this->locked)
   {
-    ROS_INFO("already locked!");
+    ROS_DEBUG_STREAM("already locked!");
     return;
   }
   this->locked = true;
-  ROS_INFO("locked!");
+  ROS_DEBUG_STREAM("locked!");
   double currentPosition = prismaticJoint->Position(0);
   prismaticJoint->SetUpperLimit(0, currentPosition);
   prismaticJoint->SetLowerLimit(0, currentPosition);
@@ -173,12 +252,12 @@ void WorldUuvPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
 {
   if (!this->locked)
   {
-    ROS_INFO("Already unlocked");
+    ROS_DEBUG_STREAM("Already unlocked");
     return;
   }
   this->locked = false;
   this->unfreezeTimeBuffer =  this->world->SimTime();
-  ROS_INFO("Unfreeze joint");
+  ROS_DEBUG_STREAM("Unfreeze joint");
   this->remove_joint();
 }
 
@@ -318,18 +397,16 @@ void WorldUuvPlugin::construct_joint()
   this->joined = true;
   this->alignmentTime = 0;
   this->prismaticJoint = plugModel->CreateJoint(
-    "plug_socket_joint",
-    "prismatic",
-    tubeLink,
-    plugLink);
+    this->tubeLinkName + "_plug_joint", "prismatic",
+    tubeLink, plugLink);
   prismaticJoint->Load(this->tubeLink, this->plugLink,
-                        ignition::math::Pose3<double>(
+                       ignition::math::Pose3<double>(
                           ignition::math::Vector3<double>(0, 0, 0),
                           ignition::math::Quaternion<double>(0, 0, 0, 0)));
   prismaticJoint->Init();
   prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
   prismaticJoint->SetLowerLimit(0, prismaticJoint->Position(0));
-  ROS_INFO("joint formed\n");
+  ROS_INFO_STREAM("joint formed");
 }
 
 //////////////////////////////////////////////////
@@ -341,7 +418,7 @@ void WorldUuvPlugin::remove_joint()
     this->prismaticJoint->Detach();
     this->prismaticJoint->Reset();
     this->prismaticJoint->~Joint();
-    ROS_INFO("Joint removed");
+    ROS_INFO_STREAM("Joint removed");
   }
 }
 
@@ -369,7 +446,7 @@ bool WorldUuvPlugin::averageForceOnLink(std::string contact1,
 //////////////////////////////////////////////////
 bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
 {
-  if (!this->averageForceOnLink("plug", "sensor_plate"))
+  if (!this->averageForceOnLink(this->plugLinkName, this->sensorPlateName))
   {
       return false;
   }
@@ -379,8 +456,8 @@ bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
     if ((averageForce > this->matingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-      // ROS_INFO("sensor plate average: %f, size %i",
-      //          averageForce, this->forcesBuffer.size());
+      // ROS_INFO_STREAM("sensor plate average: " << average force " <<
+      //                 ", size ", this->forcesBuffer.size());
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -395,7 +472,7 @@ bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
 //////////////////////////////////////////////////
 bool WorldUuvPlugin::isEndEffectorPushingPlug(int numberOfDatapointsThresh)
 {
-  if (!this->averageForceOnLink("plug", "finger_tip"))
+  if (!this->averageForceOnLink(this->plugLinkName, "finger_tip"))
   {
     return false;
   }
@@ -405,8 +482,8 @@ bool WorldUuvPlugin::isEndEffectorPushingPlug(int numberOfDatapointsThresh)
     if ((averageForce > this->unmatingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-      // ROS_INFO("end effector average: %f, size %i",
-      //          averageForce, this->forcesBuffer.size());
+      // ROS_INFO_STREAM("end effector average: " << averageForce <<
+      //                 ", size " << this->forcesBuffer.size());
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;

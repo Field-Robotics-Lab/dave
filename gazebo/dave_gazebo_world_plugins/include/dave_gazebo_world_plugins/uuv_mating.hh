@@ -37,21 +37,36 @@ namespace gazebo
     /// \brief Pointer to the Gazebo world.
     private: physics::WorldPtr world;
 
-    /// \brief Pointer to the plug model.
-    private: physics::ModelPtr plugModel;
-
-    /// \brief Pointer to the plug link.
-    private: physics::LinkPtr plugLink;
+    /// \brief Name of the socket model
+    private: std::string socketModelName;
 
     /// \brief Pointer to the socket model.
     private: physics::ModelPtr socketModel;
 
-    /// \brief Pointer to the hollow tube like structure that receives the plug.
+    /// \brief Name of the socket tube link
+    private: std::string tubeLinkName;
+
+    /// \brief Pointer to the hollow tube like structure that receives the plug
     private: physics::LinkPtr tubeLink;
+
+    /// \brief Name of the sensor plate link name
+    private: std::string sensorPlateName;
 
     /// \brief Pointer to the sensor plate in the socket model that senses when
     /// the plug is inserter.
     private: physics::LinkPtr sensorPlate;
+
+    /// \brief Model name of the plub model
+    private: std::string plugModelName;
+
+    /// \brief Pointer to the plug model.
+    private: physics::ModelPtr plugModel;
+
+    /// \brief Name of the plug link
+    private: std::string plugLinkName;
+
+    /// \brief Pointer to the plug link.
+    private: physics::LinkPtr plugLink;
 
     /// \brief Pinter to the prismatic joint formed between the plug and the
     /// socket.
@@ -96,6 +111,9 @@ namespace gazebo
 
     /// \brief Z alignment tolerence.
     private: double unmatingForce;
+
+    /// \brief Model and link namespace (for multiple instance deconfliction)
+    private: std::string modelNameSpace;
 
     /// \brief Concatenates/trims forcesBuffer and timeStamps vectors to
     /// include only the last trimDuration.
