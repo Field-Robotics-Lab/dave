@@ -114,8 +114,8 @@ target_link_libraries(dave_bathymetry_world_plugin
 add_dependencies(dave_bathymetry_world_plugin ${catkin_EXPORTED_TARGETS})
 list(APPEND DAVE_GAZEBO_WORLD_PLUGINS_LIST dave_bathymetry_world_plugin)
 
-add_library(uuv_mating_plugin SHARED src/uuv_mating.cc)
-target_link_libraries(uuv_mating_plugin
+add_library(plug_and_socket_plugin SHARED src/plug_and_socket_world_plugin.cc)
+target_link_libraries(plug_and_socket_plugin
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
 )

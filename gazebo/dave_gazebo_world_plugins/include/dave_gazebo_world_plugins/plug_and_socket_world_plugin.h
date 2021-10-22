@@ -32,7 +32,7 @@
 
 namespace gazebo
 {
-  class WorldUuvPlugin : public WorldPlugin
+  class PlugAndSocketMatingPlugin : public WorldPlugin
   {
     /// \brief Pointer to the Gazebo world.
     private: physics::WorldPtr world;
@@ -128,7 +128,7 @@ namespace gazebo
     void addForce(double force);
 
     /// \brief Constructor.
-    public: WorldUuvPlugin();
+    public: PlugAndSocketMatingPlugin();
 
     /// Documentation inherited.
     public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
@@ -197,6 +197,6 @@ namespace gazebo
     /// \brief Callback executed at every physics update.
     public: void Update();
   };
-  GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
+  GZ_REGISTER_WORLD_PLUGIN(PlugAndSocketMatingPlugin)
 }
 #endif

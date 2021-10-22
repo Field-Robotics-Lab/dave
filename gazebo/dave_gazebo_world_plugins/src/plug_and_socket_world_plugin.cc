@@ -17,12 +17,13 @@
 
 #include <gazebo/physics/Collision.hh>
 #include <algorithm>    // std::lower_bound
-#include <dave_gazebo_world_plugins/uuv_mating.hh>
+#include <dave_gazebo_world_plugins/plug_and_socket_world_plugin.h>
 
 using namespace gazebo;
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
+void PlugAndSocketMatingPlugin::Load(physics::WorldPtr _world,
+                                     sdf::ElementPtr _sdf)
 {
   this->world = _world;
 
@@ -191,11 +192,11 @@ void WorldUuvPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
 
   this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
   this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
-      std::bind(&WorldUuvPlugin::Update, this));
+      std::bind(&PlugAndSocketMatingPlugin::Update, this));
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::trimForceVector(double trimDuration)
+void PlugAndSocketMatingPlugin::trimForceVector(double trimDuration)
 {
     std::vector<common::Time>::iterator low;
     if (this->timeStamps.size() == 0)
@@ -211,14 +212,14 @@ void WorldUuvPlugin::trimForceVector(double trimDuration)
 };
 
 //////////////////////////////////////////////////
-double WorldUuvPlugin::movingTimedAverage()
+double PlugAndSocketMatingPlugin::movingTimedAverage()
 {
   return accumulate(this->forcesBuffer.begin(),
                     this->forcesBuffer.end(), 0.0) / this->forcesBuffer.size();
 };
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::addForce(double force)
+void PlugAndSocketMatingPlugin::addForce(double force)
 {
   if (abs(force) < 5.0)
     return;
@@ -228,12 +229,12 @@ void WorldUuvPlugin::addForce(double force)
 }
 
 //////////////////////////////////////////////////
-WorldUuvPlugin::WorldUuvPlugin() : WorldPlugin()
+PlugAndSocketMatingPlugin::PlugAndSocketMatingPlugin() : WorldPlugin()
 {
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::lockJoint(physics::JointPtr prismaticJoint)
+void PlugAndSocketMatingPlugin::lockJoint(physics::JointPtr prismaticJoint)
 {
   if (this->locked)
   {
@@ -248,7 +249,7 @@ void WorldUuvPlugin::lockJoint(physics::JointPtr prismaticJoint)
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
+void PlugAndSocketMatingPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
 {
   if (!this->locked)
   {
@@ -262,7 +263,7 @@ void WorldUuvPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkRollAlignment(double alignmentThreshold)
+bool PlugAndSocketMatingPlugin::checkRollAlignment(double alignmentThreshold)
 {
   ignition::math::Vector3<double> socketRotation =
                              socketModel->RelativePose().Rot().Euler();
@@ -272,7 +273,7 @@ bool WorldUuvPlugin::checkRollAlignment(double alignmentThreshold)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkPitchAlignment(double alignmentThreshold)
+bool PlugAndSocketMatingPlugin::checkPitchAlignment(double alignmentThreshold)
 {
   ignition::math::Vector3<double> socketRotation =
                              socketModel->RelativePose().Rot().Euler();
@@ -282,7 +283,7 @@ bool WorldUuvPlugin::checkPitchAlignment(double alignmentThreshold)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkYawAlignment(double alignmentThreshold)
+bool PlugAndSocketMatingPlugin::checkYawAlignment(double alignmentThreshold)
 {
   ignition::math::Vector3<double> socketRotation =
                          socketModel->RelativePose().Rot().Euler();
@@ -293,7 +294,7 @@ bool WorldUuvPlugin::checkYawAlignment(double alignmentThreshold)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkRotationalAlignment(bool verbose)
+bool PlugAndSocketMatingPlugin::checkRotationalAlignment(bool verbose)
 {
   if (verbose)
   {
@@ -321,8 +322,8 @@ bool WorldUuvPlugin::checkRotationalAlignment(bool verbose)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkVerticalAlignment(double alignmentThreshold,
-                                            bool verbose)
+bool PlugAndSocketMatingPlugin::checkVerticalAlignment(
+    double alignmentThreshold, bool verbose)
 {
   ignition::math::Pose3d socket_pose = this->tubeLink->WorldPose();
   ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
@@ -342,7 +343,7 @@ bool WorldUuvPlugin::checkVerticalAlignment(double alignmentThreshold,
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::isAlligned(bool verbose)
+bool PlugAndSocketMatingPlugin::isAlligned(bool verbose)
 {
   if (checkVerticalAlignment(true) && checkRotationalAlignment())
   {
@@ -358,7 +359,7 @@ bool WorldUuvPlugin::isAlligned(bool verbose)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::checkProximity(bool verbose)
+bool PlugAndSocketMatingPlugin::checkProximity(bool verbose)
 {
   ignition::math::Pose3d socket_pose = this->tubeLink->WorldPose();
   ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
@@ -387,7 +388,7 @@ bool WorldUuvPlugin::checkProximity(bool verbose)
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::construct_joint()
+void PlugAndSocketMatingPlugin::construct_joint()
 {
   if (this->joined)
   {
@@ -410,7 +411,7 @@ void WorldUuvPlugin::construct_joint()
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::remove_joint()
+void PlugAndSocketMatingPlugin::remove_joint()
 {
   if (this->joined == true)
   {
@@ -423,8 +424,8 @@ void WorldUuvPlugin::remove_joint()
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::averageForceOnLink(std::string contact1,
-                                        std::string contact2)
+bool PlugAndSocketMatingPlugin::averageForceOnLink(std::string contact1,
+                                                   std::string contact2)
 {
   int contactIndex = this->getCollisionBetween(contact1, contact2);
   if (contactIndex == -1)
@@ -444,7 +445,8 @@ bool WorldUuvPlugin::averageForceOnLink(std::string contact1,
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
+bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
+    int numberOfDatapointsThresh)
 {
   if (!this->averageForceOnLink(this->plugLinkName, this->sensorPlateName))
   {
@@ -470,7 +472,8 @@ bool WorldUuvPlugin::isPlugPushingSensorPlate(int numberOfDatapointsThresh)
 }
 
 //////////////////////////////////////////////////
-bool WorldUuvPlugin::isEndEffectorPushingPlug(int numberOfDatapointsThresh)
+bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
+    int numberOfDatapointsThresh)
 {
   if (!this->averageForceOnLink(this->plugLinkName, "finger_tip"))
   {
@@ -496,8 +499,8 @@ bool WorldUuvPlugin::isEndEffectorPushingPlug(int numberOfDatapointsThresh)
 }
 
 //////////////////////////////////////////////////
-int WorldUuvPlugin::getCollisionBetween(std::string contact1,
-                                        std::string contact2)
+int PlugAndSocketMatingPlugin::getCollisionBetween(std::string contact1,
+                                                   std::string contact2)
 {
   for (int i = 0;
        i < this->world->Physics()->GetContactManager()->GetContactCount(); i++)
@@ -540,7 +543,7 @@ int WorldUuvPlugin::getCollisionBetween(std::string contact1,
 }
 
 //////////////////////////////////////////////////
-void WorldUuvPlugin::Update()
+void PlugAndSocketMatingPlugin::Update()
 {
   // check if recently removed the joint
   // (to avoid it locking right away after unlocked)

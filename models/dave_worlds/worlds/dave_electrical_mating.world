@@ -190,7 +190,7 @@
       </geometry>
     </plugin>
 
-    <plugin name="uuv_mating_plugin" filename="libuuv_mating_plugin.so">
+    <plugin name="plug_and_socket_plugin" filename="libplug_and_socket_plugin.so">
       <socketModel>socket_box</socketModel>
       <socketTubeLink>socket</socketTubeLink>
       <sensorPlateLink>sensor_plate</sensorPlateLink>
