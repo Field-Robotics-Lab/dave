@@ -142,19 +142,8 @@
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
     <include>
-      <uri>model://socket_box</uri>
-      <pose>0 0 -99.8 0 0 0</pose>
-    </include>
-
-    <!-- <include>
-      <uri>model://bop_panel_with_socket</uri>
-      <pose>0 0 -99.5 0 0 0</pose>
-    </include> -->
-
-    <include>
       <uri>model://plug</uri>
       <pose>5 0 -94.5 1.57079632679 0 -1.57079632679</pose>
-      <!-- <pose>0.525207 0.978282 -97.2 1.57079632679 0 -1.57079632679</pose> -->
     </include>
 
     <model name="platform">
@@ -179,6 +168,11 @@
       </link>
     </model>
 
+    <include>
+      <uri>model://socket_box</uri>
+      <pose>0 0 -99.8 0 0 0</pose>
+    </include>
+
     <plugin name="vehicle_docked_bay1_exterior" filename="libContainPlugin.so">
       <entity>wamv::base_link</entity>
       <namespace>vrx/dock_2018/bay_1_external</namespace>
@@ -189,19 +183,6 @@
         </box>
       </geometry>
     </plugin>
-
-    <plugin name="plug_and_socket_plugin" filename="libplug_and_socket_plugin.so">
-      <socketModel>socket_box</socketModel>
-      <socketTubeLink>socket</socketTubeLink>
-      <sensorPlateLink>sensor_plate</sensorPlateLink>
-      <plugModel>plug</plugModel>
-      <plugLink>plug</plugLink>
-      <rollAlignmentTolerence>0.3</rollAlignmentTolerence>
-      <pitchAlignmentTolerence>0.3</pitchAlignmentTolerence>
-      <yawAlignmentTolerence>0.3</yawAlignmentTolerence>
-      <zAlignmentTolerence>0.5</zAlignmentTolerence>
-    </plugin>
-
 
     <gui fullscreen='0'>
       <camera name='user_camera'>

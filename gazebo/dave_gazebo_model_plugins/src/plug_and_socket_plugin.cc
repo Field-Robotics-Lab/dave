@@ -17,15 +17,15 @@
 
 #include <gazebo/physics/Collision.hh>
 #include <algorithm>    // std::lower_bound
-#include <dave_gazebo_world_plugins/plug_and_socket_world_plugin.h>
+#include <dave_gazebo_model_plugins/plug_and_socket_plugin.h>
 
 using namespace gazebo;
 
 //////////////////////////////////////////////////
-void PlugAndSocketMatingPlugin::Load(physics::WorldPtr _world,
+void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                                      sdf::ElementPtr _sdf)
 {
-  this->world = _world;
+  this->world = _model->GetWorld();
 
   // Retrieve model's parameters from SDF
   if (_sdf->HasElement("rollAlignmentTolerence"))
@@ -113,20 +113,21 @@ void PlugAndSocketMatingPlugin::Load(physics::WorldPtr _world,
   }
 
   // retrieve the socket model and link info from the SDF
-  if (_sdf->HasElement("socketModel"))
-  {
-    this->socketModelName = _sdf->GetElement("socketModel")
-                                ->Get<std::string>();
-    ROS_INFO_STREAM("Socket Model name set to " << this->socketModelName);
-  }
-  else
-  {
-    this->socketModelName = "socket_box";
-    ROS_INFO_STREAM("Socket Model name not specified, set to default "
-                    << this->socketModelName);
-  }
-  this->socketModel = this->world->ModelByName(this->socketModelName);
-  ROS_INFO_STREAM("Socket Model set from SDF");
+//  if (_sdf->HasElement("socketModel"))
+//  {
+//    this->socketModelName = _sdf->GetElement("socketModel")
+//                                ->Get<std::string>();
+//    ROS_INFO_STREAM("Socket Model name set to " << this->socketModelName);
+//  }
+//  else
+//  {
+//    this->socketModelName = "socket_box";
+//    ROS_INFO_STREAM("Socket Model name not specified, set to default "
+//                    << this->socketModelName);
+//  }
+//  this->socketModel = this->world->ModelByName(this->socketModelName);
+//  ROS_INFO_STREAM("Socket Model set from SDF");
+  this->socketModel = _model;
 
   if (_sdf->HasElement("sensorPlateLink"))
   {
@@ -229,7 +230,7 @@ void PlugAndSocketMatingPlugin::addForce(double force)
 }
 
 //////////////////////////////////////////////////
-PlugAndSocketMatingPlugin::PlugAndSocketMatingPlugin() : WorldPlugin()
+PlugAndSocketMatingPlugin::PlugAndSocketMatingPlugin() : ModelPlugin()
 {
 }
 

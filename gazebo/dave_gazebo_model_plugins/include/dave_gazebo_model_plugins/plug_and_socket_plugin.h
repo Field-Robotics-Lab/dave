@@ -32,7 +32,7 @@
 
 namespace gazebo
 {
-  class PlugAndSocketMatingPlugin : public WorldPlugin
+  class PlugAndSocketMatingPlugin : public ModelPlugin
   {
     /// \brief Pointer to the Gazebo world.
     private: physics::WorldPtr world;
@@ -131,7 +131,7 @@ namespace gazebo
     public: PlugAndSocketMatingPlugin();
 
     /// Documentation inherited.
-    public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
+    public: void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
 
     /// \brief Locks the prismatic joint.
     public: void lockJoint(physics::JointPtr prismaticJoint);
@@ -197,6 +197,6 @@ namespace gazebo
     /// \brief Callback executed at every physics update.
     public: void Update();
   };
-  GZ_REGISTER_WORLD_PLUGIN(PlugAndSocketMatingPlugin)
+  GZ_REGISTER_MODEL_PLUGIN(PlugAndSocketMatingPlugin)
 }
 #endif
