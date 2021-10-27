@@ -94,22 +94,22 @@ namespace gazebo
     /// Used to put some buffer between unfreezing and another possible mating.
     private: common::Time unfreezeTimeBuffer = 0;
 
-    /// \brief Roll alignment tolerence.
-    private: double rollAlignmentTolerence;
+    /// \brief Roll alignment tolerance.
+    private: double rollAlignmentTolerance;
 
-    /// \brief pitch alignment tolerence.
-    private: double pitchAlignmentTolerence;
+    /// \brief pitch alignment tolerance.
+    private: double pitchAlignmentTolerance;
 
-    /// \brief Yaw alignment tolerence.
-    private: double yawAlignmentTolerence;
+    /// \brief Yaw alignment tolerance.
+    private: double yawAlignmentTolerance;
 
-    /// \brief Z alignment tolerence.
-    private: double zAlignmentTolerence;
+    /// \brief Z alignment tolerance.
+    private: double zAlignmentTolerance;
 
-    /// \brief Yaw alignment tolerence.
+    /// \brief Yaw alignment tolerance.
     private: double matingForce;
 
-    /// \brief Z alignment tolerence.
+    /// \brief Z alignment tolerance.
     private: double unmatingForce;
 
     /// \brief Model and link namespace (for multiple instance deconfliction)
@@ -127,6 +127,10 @@ namespace gazebo
     /// \brief Appends another force reading to the forcesBuffer vector.
     void addForce(double force);
 
+    /// \brief Utility function to normalize error angles to (-pi, pi]
+    /// \return normalized angle
+    private: double normalizeError(double error);
+
     /// \brief Constructor.
     public: PlugAndSocketMatingPlugin();
 
@@ -138,18 +142,6 @@ namespace gazebo
 
     /// \brief Release the plug from the joint.
     public: void unfreezeJoint(physics::JointPtr prismaticJoint);
-
-    /// \brief Check that plug and socket are aligned in the roll orientation.
-    /// \return Return true of aligned.
-    private: bool checkRollAlignment(double alignmentThreshold);
-
-    /// \brief Check that plug and socket are aligned in the pitch orientation.
-    /// \return Return true if aligned.
-    private: bool checkPitchAlignment(double alignmentThreshold);
-
-    /// \brief Check that plug and socket are aligned in the yaw orientation.
-    /// \return Return true if aligned.
-    private:bool checkYawAlignment(double alignmentThreshold);
 
     /// \brief Check that plug and socket are aligned in the all orientations.
     /// \return Return true if aligned.

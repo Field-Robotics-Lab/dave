@@ -28,64 +28,64 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   this->world = _model->GetWorld();
 
   // Retrieve model's parameters from SDF
-  if (_sdf->HasElement("rollAlignmentTolerence"))
+  if (_sdf->HasElement("rollAlignmentTolerance"))
   {
-    this->rollAlignmentTolerence =
-      _sdf->GetElement("rollAlignmentTolerence")->Get<double>();
-    ROS_INFO_STREAM("Socket Roll Mating Alignment Tolerence is: " <<
-                    this->rollAlignmentTolerence);
+    this->rollAlignmentTolerance =
+      _sdf->GetElement("rollAlignmentTolerance")->Get<double>();
+    ROS_INFO_STREAM("Socket Roll Mating Alignment Tolerance is: " <<
+                    this->rollAlignmentTolerance);
   }
   else
   {
-    this->rollAlignmentTolerence = 0.3;
-    ROS_INFO_STREAM("Socket Roll Mating Alignment Tolerence was not " <<
+    this->rollAlignmentTolerance = 0.3;
+    ROS_INFO_STREAM("Socket Roll Mating Alignment Tolerance was not " <<
                     "specified, using default value of " <<
-                     this->rollAlignmentTolerence);
+                     this->rollAlignmentTolerance);
   }
 
-  if (_sdf->HasElement("pitchAlignmentTolerence"))
+  if (_sdf->HasElement("pitchAlignmentTolerance"))
   {
-    this->pitchAlignmentTolerence =
-      _sdf->GetElement("pitchAlignmentTolerence")->Get<double>();
-    ROS_INFO_STREAM("Socket Pitch Mating Alignment Tolerence is: " <<
-                    this->pitchAlignmentTolerence);
+    this->pitchAlignmentTolerance =
+      _sdf->GetElement("pitchAlignmentTolerance")->Get<double>();
+    ROS_INFO_STREAM("Socket Pitch Mating Alignment Tolerance is: " <<
+                    this->pitchAlignmentTolerance);
   }
   else
   {
-    this->pitchAlignmentTolerence = 0.3;
-    ROS_INFO_STREAM("Socket Pitch Mating Alignment Tolerence was not " <<
+    this->pitchAlignmentTolerance = 0.3;
+    ROS_INFO_STREAM("Socket Pitch Mating Alignment Tolerance was not " <<
                     "specified, using default value of " <<
-                    this->pitchAlignmentTolerence);
+                    this->pitchAlignmentTolerance);
   }
 
-  if (_sdf->HasElement("yawAlignmentTolerence"))
+  if (_sdf->HasElement("yawAlignmentTolerance"))
   {
-    this->yawAlignmentTolerence =
-      _sdf->GetElement("yawAlignmentTolerence")->Get<double>();
-    ROS_INFO_STREAM("Socket Yaw Mating Alignment Tolerence is: " <<
-                    this->yawAlignmentTolerence);
+    this->yawAlignmentTolerance =
+      _sdf->GetElement("yawAlignmentTolerance")->Get<double>();
+    ROS_INFO_STREAM("Socket Yaw Mating Alignment Tolerance is: " <<
+                    this->yawAlignmentTolerance);
   }
   else
   {
-    this->yawAlignmentTolerence = 0.3;
-    ROS_INFO_STREAM("Socket Yaw Mating Alignment Tolerence was not " <<
+    this->yawAlignmentTolerance = 0.3;
+    ROS_INFO_STREAM("Socket Yaw Mating Alignment Tolerance was not " <<
                     "specified, using default value of " << 
-                    this->yawAlignmentTolerence);
+                    this->yawAlignmentTolerance);
   }
 
-  if (_sdf->HasElement("zAlignmentTolerence"))
+  if (_sdf->HasElement("zAlignmentTolerance"))
   {
-    this->zAlignmentTolerence =
-      _sdf->GetElement("zAlignmentTolerence")->Get<double>();
-    ROS_INFO_STREAM("Socket Z Mating Alignment Tolerence is: " <<
-                    this->zAlignmentTolerence);
+    this->zAlignmentTolerance =
+      _sdf->GetElement("zAlignmentTolerance")->Get<double>();
+    ROS_INFO_STREAM("Socket Z Mating Alignment Tolerance is: " <<
+                    this->zAlignmentTolerance);
   }
   else
   {
-    this->zAlignmentTolerence = 0.1;
-    ROS_INFO_STREAM("Socket Z Mating Alignment Tolerence was not " <<
+    this->zAlignmentTolerance = 0.1;
+    ROS_INFO_STREAM("Socket Z Mating Alignment Tolerance was not " <<
                     "specified, using default value of " <<
-                    this->zAlignmentTolerence);
+                    this->zAlignmentTolerance);
   }
 
   if (_sdf->HasElement("matingForce"))
@@ -112,21 +112,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                     "using default value of " << this->unmatingForce);
   }
 
-  // retrieve the socket model and link info from the SDF
-//  if (_sdf->HasElement("socketModel"))
-//  {
-//    this->socketModelName = _sdf->GetElement("socketModel")
-//                                ->Get<std::string>();
-//    ROS_INFO_STREAM("Socket Model name set to " << this->socketModelName);
-//  }
-//  else
-//  {
-//    this->socketModelName = "socket_box";
-//    ROS_INFO_STREAM("Socket Model name not specified, set to default "
-//                    << this->socketModelName);
-//  }
-//  this->socketModel = this->world->ModelByName(this->socketModelName);
-//  ROS_INFO_STREAM("Socket Model set from SDF");
+  // set the socket model and retrieve the link info from the SDF
   this->socketModel = _model;
 
   if (_sdf->HasElement("sensorPlateLink"))
@@ -143,7 +129,8 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                     "set to default " << this->sensorPlateName);
   }
   this->sensorPlate = this->socketModel->GetLink(this->sensorPlateName);
-  ROS_INFO_STREAM("Socket Sensor Plate link set from SDF");
+  ROS_INFO_STREAM("Socket Sensor Plate link set from SDF to " <<
+                  this->sensorPlate->GetName());
 
   if (_sdf->HasElement("socketTubeLink"))
   {
@@ -158,7 +145,8 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                     "set to default " << this->tubeLinkName);
   }
   this->tubeLink = this->socketModel->GetLink(this->tubeLinkName);
-  ROS_INFO_STREAM("Socket Tube Link set from SDF");
+  ROS_INFO_STREAM("Socket Tube Link set from SDF to " <<
+                  this->tubeLink->GetName());
 
   // Retrieve plug model and link info from the SDF
   if (_sdf->HasElement("plugModel"))
@@ -189,7 +177,8 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                     << this->plugLinkName);
   }
   this->plugLink = this->plugModel->GetLink(this->plugLinkName);
-  ROS_INFO_STREAM("Plug Link set from SDF");
+  ROS_INFO_STREAM("Plug Link set from SDF to " <<
+                  this->plugLink->GetName());
 
   this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
   this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
@@ -264,56 +253,46 @@ void PlugAndSocketMatingPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
 }
 
 //////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::checkRollAlignment(double alignmentThreshold)
+double PlugAndSocketMatingPlugin::normalizeError(double error)
 {
-  ignition::math::Vector3<double> socketRotation =
-                             socketModel->RelativePose().Rot().Euler();
-  ignition::math::Vector3<double> plugRotation =
-                               plugModel->RelativePose().Rot().Euler();
-  return abs(plugRotation[0] - socketRotation[0]) < alignmentThreshold;
-}
-
-//////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::checkPitchAlignment(double alignmentThreshold)
-{
-  ignition::math::Vector3<double> socketRotation =
-                             socketModel->RelativePose().Rot().Euler();
-  ignition::math::Vector3<double> plugRotation =
-                               plugModel->RelativePose().Rot().Euler();
-  return abs(plugRotation[1] - socketRotation[1]) < alignmentThreshold;
-}
-
-//////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::checkYawAlignment(double alignmentThreshold)
-{
-  ignition::math::Vector3<double> socketRotation =
-                         socketModel->RelativePose().Rot().Euler();
-  ignition::math::Vector3<double> plugRotation =
-                           plugModel->RelativePose().Rot().Euler();
-  return abs(plugRotation[2]+1.57079632679 - socketRotation[2]) <
-                                                alignmentThreshold;
+  while (error > M_PI)
+  {
+    error -= (2.0 * M_PI);
+  }
+  while (error <= -M_PI)
+  {
+    error += (2.0 * M_PI);
+  }
+  return error;
 }
 
 //////////////////////////////////////////////////
 bool PlugAndSocketMatingPlugin::checkRotationalAlignment(bool verbose)
 {
+  ignition::math::Vector3<double> socketRotation =
+                       this->tubeLink->WorldPose().Rot().Euler();
+  ignition::math::Vector3<double> plugRotation =
+                       this->plugLink->WorldPose().Rot().Euler();
+  double rollError = abs(normalizeError(plugRotation[0] - socketRotation[0]));
+  double pitchError = abs(normalizeError(plugRotation[1] - socketRotation[1]));
+  double yawError = abs(normalizeError(plugRotation[2] - socketRotation[2]));
   if (verbose)
   {
-    ignition::math::Vector3<double> socketRotation =
-                         socketModel->RelativePose().Rot().Euler();
-    ignition::math::Vector3<double> plugRotation =
-                           plugModel->RelativePose().Rot().Euler();
-    ROS_INFO_THROTTLE(1, "socket euler: %.2f %.2f %.2f "
-                         "plug euler: %.2f %.2f %.2f",
-                      socketRotation[0], socketRotation[1], socketRotation[2],
-                      plugRotation[0], plugRotation[1],
-                      plugRotation[2]+1.57079632679);
+    ROS_INFO_STREAM_THROTTLE(1, "socket euler: " <<
+                                socketRotation[0] << ", " <<
+                                socketRotation[1] << ", " <<
+                                socketRotation[2] << std::endl <<
+                                "plug euler: " <<
+                                plugRotation[0] << ", " <<
+                                plugRotation[1] << ", " <<
+                                plugRotation[2]);
   }
-  if (this->checkYawAlignment(this->yawAlignmentTolerence) &&
-      this->checkPitchAlignment(this->pitchAlignmentTolerence) &&
-      this->checkRollAlignment(this->rollAlignmentTolerence))
+
+  if (rollError <= this->rollAlignmentTolerance &&
+      pitchError <= this->pitchAlignmentTolerance &&
+      yawError <= this->yawAlignmentTolerance)
   {
-    ROS_INFO_THROTTLE(1, "Socket and plug are aligned");
+    ROS_INFO_STREAM_THROTTLE(1, "Socket and plug are aligned");
     return true;
   }
   else
@@ -334,8 +313,8 @@ bool PlugAndSocketMatingPlugin::checkVerticalAlignment(
     abs(plugPosition[2] - socketPositon[2]) < alignmentThreshold;
 
   if (verbose)
-    ROS_INFO_THROTTLE(1, "Z plug: %f  Z socket: %f",
-                      plugPosition[2], socketPositon[2]);
+    ROS_INFO_STREAM_THROTTLE(1, "Z plug: " << plugPosition[2] <<
+                              "  Z socket: " << socketPositon[2]);
 
   if (onSameVerticalLevel)
     return true;
@@ -349,8 +328,8 @@ bool PlugAndSocketMatingPlugin::isAlligned(bool verbose)
   if (checkVerticalAlignment(true) && checkRotationalAlignment())
   {
     if (verbose)
-      ROS_INFO_THROTTLE(1, "Plug and socket are aligned in "
-                           "orientation and altitude");
+      ROS_INFO_STREAM_THROTTLE(1, "Plug and socket are aligned in " <<
+                                  "orientation and altitude");
     return true;
   }
   else
@@ -371,19 +350,20 @@ bool PlugAndSocketMatingPlugin::checkProximity(bool verbose)
   float zdiff_squared = pow(abs(plugPosition[2] - socketPositon[2]), 2);
 
   if (verbose)
-    ROS_INFO_THROTTLE(1, "eucleadian distance: %f",
+    ROS_INFO_STREAM_THROTTLE(1, "eucleadian distance: " <<
                       pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5));
 
   bool withinProximity =
     pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) < 0.14;
   if (withinProximity)
   {
-    ROS_INFO_THROTTLE(1, "Within proximity");
+    ROS_INFO_STREAM_THROTTLE(1, "Within proximity");
     return true;
   }
   else
   {
-    ROS_INFO_THROTTLE(1, "Not within proximity, please more the plug closer");
+    ROS_INFO_STREAM_THROTTLE(1, "Not within proximity, " <<
+                                "please more the plug closer");
   }
   return false;
 }
@@ -393,7 +373,7 @@ void PlugAndSocketMatingPlugin::construct_joint()
 {
   if (this->joined)
   {
-    ROS_INFO_THROTTLE(1, "already frozen");
+    ROS_INFO_STREAM_THROTTLE(1, "already frozen");
     return;
   }
   this->joined = true;
@@ -408,7 +388,7 @@ void PlugAndSocketMatingPlugin::construct_joint()
   prismaticJoint->Init();
   prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
   prismaticJoint->SetLowerLimit(0, prismaticJoint->Position(0));
-  ROS_INFO_STREAM("joint formed");
+  ROS_INFO_STREAM("Joint formed");
 }
 
 //////////////////////////////////////////////////
@@ -459,8 +439,8 @@ bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
     if ((averageForce > this->matingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-      // ROS_INFO_STREAM("sensor plate average: " << average force " <<
-      //                 ", size ", this->forcesBuffer.size());
+      //ROS_INFO_STREAM("sensor plate average: " << average force " <<
+      //                ", size ", this->forcesBuffer.size());
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -486,8 +466,8 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
     if ((averageForce > this->unmatingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-      // ROS_INFO_STREAM("end effector average: " << averageForce <<
-      //                 ", size " << this->forcesBuffer.size());
+      //ROS_INFO_STREAM("end effector average: " << averageForce <<
+      //                ", size " << this->forcesBuffer.size());
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -523,18 +503,18 @@ int PlugAndSocketMatingPlugin::getCollisionBetween(std::string contact1,
           (contact->collision2->GetLink()->GetName().find(contact2) !=
                                                           std::string::npos))
       {
-        ROS_INFO_THROTTLE(1, "%s %s",
-                          contact->collision1->GetLink()->GetName().c_str(),
-                          contact->collision2->GetLink()->GetName().c_str());
+        ROS_INFO_STREAM_THROTTLE(1, "Links in contact: " <<
+              contact->collision1->GetLink()->GetName() << " and " <<
+              contact->collision2->GetLink()->GetName());
       }
       else if ((contact->collision1->GetLink()->GetName().find(contact2) !=
                                                            std::string::npos) &&
                (contact->collision2->GetLink()->GetName().find(contact1) !=
                                                              std::string::npos))
       {
-        ROS_INFO_THROTTLE(1, "%s %s",
-                          contact->collision1->GetLink()->GetName().c_str(),
-                          contact->collision2->GetLink()->GetName().c_str());
+        ROS_INFO_STREAM_THROTTLE(1, "Links in contact: " <<
+              contact->collision1->GetLink()->GetName() << " and " <<
+              contact->collision2->GetLink()->GetName());
       }
 
     if (isPlugContactingSensorPlate)

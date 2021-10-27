@@ -8,8 +8,9 @@
     </include>
 
     <link name ='socket'>
-      <pose>3.32 0.3 8.3 0 0 -1.570796</pose>
-      <visual name ='visual'>
+      <pose>3.32 0.3 8.3 0 0 0</pose>
+      <visual name ='socket_visual'>
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
         <geometry>
           <mesh>
             <uri>model://socket_box/meshes/Electrical-Socket.dae</uri>
@@ -17,7 +18,8 @@
           </mesh>
         </geometry>
       </visual>
-      <collision name ='collision'>
+      <collision name ='socket_collision'>
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
         <geometry>
           <mesh>
             <uri>model://socket_box/meshes/Electrical-Socket.dae</uri>
@@ -28,8 +30,9 @@
     </link>
 
     <link name ='sensor_plate'>
-      <pose>3.34 0.3 8.3 0 1.570796 0</pose>
-      <collision name ='collision'>
+      <pose>3.34 0.3 8.3 0 0 0</pose>
+      <collision name ='plate_collision'>
+        <pose>0 0 0 0 1.5707963267948966 0</pose>
         <geometry>
           <cylinder>
             <radius>0.06</radius>

@@ -7,6 +7,7 @@
       <self_collide>true</self_collide>
 
       <visual name ='visual'>
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
         <geometry>
           <mesh>
             <uri>model://plug/meshes/Electrical-Plug.dae</uri>
@@ -16,6 +17,7 @@
       </visual>
 
       <collision name ='collision'>
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
         <geometry>
           <mesh>
             <uri>model://plug/meshes/Electrical-Plug.dae</uri>
@@ -32,7 +34,7 @@
       </collision> -->
 
       <inertial>
-        <pose>0 0.1 0 0 0 0</pose>
+        <pose>-0.1 0 0 0 0</pose>
         <inertia>
           <ixx>0.04</ixx>
           <ixy>0</ixy>
