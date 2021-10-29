@@ -64,7 +64,7 @@ object_prefix = 'coke_can'
 Set optional arguments. If not specified, the default will be used.
 ```
 fouling_rating = 20
-method = 'deform'
+method = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
 ```
 
 Put the args into the input array:
