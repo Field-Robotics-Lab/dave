@@ -57,7 +57,7 @@ object_prefix = 'LPCoke_Cube'
 
 Or the `Coke_Can` model:
 ```
-file_path = '/path/to/dave/models/dave_object_models/models/Coke_Can/meshes/coke_can.dae'
+file_path = '/path/to/dave/models/dave_object_models/models/Coke_Can/meshes/coke_can.obj'
 object_prefix = 'coke_can'
 ```
 
@@ -79,4 +79,10 @@ exec(open('/path/to/dave/urdf/scripts/mesh_distortion/distort.py').read());
 ```
 
 This will execute the script with the command line arguments defined in
-`sys.argv`.
+`sys.argv` and export the result to file.
+
+## Known issues
+
+- Blender sometimes does not export the texture back to a COLLADA file
+  correctly.
+  Inputting OBJ and exporting COLLADA works fine.

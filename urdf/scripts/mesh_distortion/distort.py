@@ -18,6 +18,7 @@
 
 import bpy
 
+import os
 import sys
 
 
@@ -81,6 +82,9 @@ def mesh_vert_randomize(obj, offset=0.0, uniform=0.0, normal=1.0, seed=0):
 
     print('Applying mesh vertex randomization with offset {}...'.format(offset))
 
+    # Set active object, otherwise incorrect context
+    bpy.context.view_layer.objects.active = obj
+
     # Go into Edit mode
     bpy.ops.object.mode_set(mode='EDIT')
 
@@ -97,6 +101,9 @@ def mesh_vert_randomize(obj, offset=0.0, uniform=0.0, normal=1.0, seed=0):
 def edge_subdivide(obj, ncuts=1, smooth=1.0):
 
     print('Applying edge subdivide with number of cuts {}...'.format(ncuts))
+
+    # Set active object, otherwise incorrect context
+    bpy.context.view_layer.objects.active = obj
 
     # Go into Edit mode
     bpy.ops.object.mode_set(mode='EDIT')
@@ -180,6 +187,17 @@ def distort(file_path, object_prefix, rating, method):
         elif step == 'edge_subdiv':
 
             edge_subdivide(target_obj)
+
+    # Export result to file
+    out_path = os.path.splitext(file_path)[0] + '_distort' + \
+        os.path.splitext(file_path)[1]
+    # TODO: COLLADA is not exporting texture correctly, not sure why
+    if out_path.lower().endswith('dae'):
+        bpy.ops.wm.collada_export(filepath=out_path)
+    elif out_path.lower().endswith('obj'):
+        bpy.ops.export_scene.obj(filepath=out_path, axis_forward='X',
+            axis_up='Z')
+    print('Exported result to [{}]'.format(out_path))
 
 
 if __name__ == '__main__':
