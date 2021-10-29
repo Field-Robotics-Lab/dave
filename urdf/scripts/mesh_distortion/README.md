@@ -5,8 +5,9 @@ the generalization of machine learning algorithms.
 
 ## Prerequisites
 
-The scripts are tested with [Blender](https://www.blender.org/) 2.9.2,
-which may be newer than the version in `apt-get`.
+These instructions are written for [Blender](https://www.blender.org/) 2.92,
+which has a revamped user interface.
+The version may be newer than the version in `apt-get`.
 Install manually as needed.
 
 Helpful tip for Blender Python development:
@@ -17,8 +18,6 @@ Tooltips.
 ## Usage
 
 Launch Blender GUI.
-These instructions are written for Blender 2.9.2, which has a revamped user
-interface.
 
 ### Locate model file and mesh name
 
@@ -28,8 +27,11 @@ These will be passed as parameters to the script.
 
 First, open or import the 3D model file of the object you want to distort.
 In upper-left corner, File > Import.
-Navigate to the mesh file, e.g. `models/dave_object_models/models/Coke/meshes/coke.obj`.
-For this specific file, choose Transform while importing: Z Up, X Forward.
+Navigate to the mesh file you want.
+There are two Coke can models as examples:
+`models/dave_object_models/models/Coke/meshes/coke.obj` and
+`models/dave_object_models/models/Coke_Can/meshes/coke_can.obj`.
+Choose Transform while importing: Z Up, X Forward.
 
 Look for the mesh name in the model.
 If the model has multiple parts, you will need to merge the parts, so that the
@@ -46,10 +48,17 @@ At the top of Blender GUI, go to the Scripting tab.
 All commands will be executed in the Console panel in the middle-left of the
 screen.
 
-Define the path to the model file and the mesh name, which you found above:
+Define the path to the model file and the mesh name, which you found above.
+For example, the `Coke` model:
 ```
 file_path = '/path/to/dave/models/dave_object_models/models/Coke/meshes/coke.obj'
 object_prefix = 'LPCoke_Cube'
+```
+
+Or the `Coke_Can` model:
+```
+file_path = '/path/to/dave/models/dave_object_models/models/Coke_Can/meshes/coke_can.dae'
+object_prefix = 'coke_can'
 ```
 
 Set optional arguments. If not specified, the default will be used.

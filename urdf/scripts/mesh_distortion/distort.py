@@ -21,6 +21,24 @@ import bpy
 import sys
 
 
+def find_target_object(object_prefix):
+
+    target_obj = None
+    object_name = None
+
+    # Find the object that matches the name prefix. Assume the first one.
+    for obj in bpy.data.objects:
+        if obj.name.startswith(object_prefix):
+            target_obj = bpy.data.objects[obj.name]
+            object_name = obj.name
+            break
+    if target_obj == None:
+        print('ERROR: Object with prefix [{}] not found'.format(object_prefix))
+        return
+
+    return target_obj, object_name
+
+
 # shading: 'WIREFRAME', 'SOLID', 'MATERIAL', or 'RENDERED'
 def viewport_shading(shading):
     print('Changing viewport shading to {}...'.format(shading))
@@ -39,6 +57,8 @@ def subdivision_modifier(obj, levels=2):
 
     # Select the object
     obj.select_set(True)
+    # Set active object, otherwise incorrect context
+    bpy.context.view_layer.objects.active = obj
 
     # subdivision modifier
     mod = obj.modifiers.new(name='Subdivision', type='SUBSURF')
@@ -47,9 +67,7 @@ def subdivision_modifier(obj, levels=2):
     mod.show_only_control_edges = False
     mod.levels = levels
 
-    # Set active object, otherwise modifier_apply() does not have context
-    bpy.context.view_layer.objects.active = obj
-    bpy.ops.object.modifier_apply(modifier='Subdivision')
+    print(bpy.ops.object.modifier_apply(modifier='Subdivision'))
 
 
 # Randomize mesh vertices
@@ -59,59 +77,38 @@ def subdivision_modifier(obj, levels=2):
 # normal (float in [0, 1], (optional)): Normal, Align offset direction to
 #     normals
 # seed (int in [0, 10000], (optional)): Random Seed
-def mesh_vert_randomize(obj, offset=0.0, uniform=0.0, normal=0.0, seed=0):
+def mesh_vert_randomize(obj, offset=0.0, uniform=0.0, normal=1.0, seed=0):
+
+    print('Applying mesh vertex randomization with offset {}...'.format(offset))
 
     # Go into Edit mode
     bpy.ops.object.mode_set(mode='EDIT')
 
+    bpy.ops.mesh.select_all(action='SELECT')
+
     # Offset is in meters
-    bpy.ops.transform.vertex_random(offset=offset, uniform=uniform,
-        normal=normal, seed=seed)
+    print(bpy.ops.transform.vertex_random(offset=offset, uniform=uniform,
+        normal=normal, seed=seed))
 
     # Go back to object mode
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
-# rating: Fouling rating, in range [0, 100]
-def deform(object_prefix, rating):
+def edge_subdivide(obj, ncuts=1, smooth=1.0):
 
-    target_obj = None
-    object_name = None
+    print('Applying edge subdivide with number of cuts {}...'.format(ncuts))
 
-    # Find the object that matches the name prefix. Assume the first one.
-    for obj in bpy.data.objects:
-        if obj.name.startswith(object_prefix):
-            target_obj = bpy.data.objects[obj.name]
-            object_name = obj.name
-            break
-    if target_obj == None:
-        print('ERROR: Object with prefix [{}] not found'.format(object_prefix))
-        return
+    # Go into Edit mode
+    bpy.ops.object.mode_set(mode='EDIT')
 
-    print('Distorting mesh [{}] for Fouling Rating {}...'.format(object_name,
-        rating))
+    bpy.ops.mesh.select_all(action='SELECT')
 
-    RATING_MIN = 0
-    RATING_MAX = 100
-    # Normalize
-    rating_norm = (rating - RATING_MIN) / (RATING_MAX - RATING_MIN)
+    print(bpy.ops.mesh.subdivide(number_cuts=ncuts, smoothness=smooth,
+        ngon=True, quadcorner='STRAIGHT_CUT', fractal=0.0,
+        fractal_along_normal=0.0, seed=0))
 
-    SUBDIV_LVL_MIN = 0
-    SUBDIV_LVL_MAX = 4
-    # Must be integer
-    subdiv_lvl = round(SUBDIV_LVL_MIN + (
-        (SUBDIV_LVL_MAX - SUBDIV_LVL_MIN) * rating_norm))
-    subdivision_modifier(target_obj, subdiv_lvl)
-
-    # Meters
-    VERT_RAND_MIN = 0
-    VERT_RAND_MAX = 0.02
-    vert_rand_amt = VERT_RAND_MIN + (
-        (VERT_RAND_MAX - VERT_RAND_MIN) * rating_norm)
-    mesh_vert_randomize(target_obj, vert_rand_amt, uniform=1.0, normal=1.0,
-        seed=0)
-
-    return object_name
+    # Go back to object mode
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def fill_holes(object_prefix):
@@ -119,33 +116,76 @@ def fill_holes(object_prefix):
     return
 
 
-
+# rating: Fouling rating, in range [0, 100]
 def distort(file_path, object_prefix, rating, method):
-
-    methods = ['deform']
-    if not method in methods:
-        print('ERROR: Unrecognized distortion method {}'.format(method))
-        print('Available methods are:')
-        for m in methods:
-            print(m)
-        return
 
     # Clear scene
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete()
 
     # Open file
-    bpy.ops.import_scene.obj(filepath=file_path, axis_forward='X', axis_up='Z')
+    if file_path.lower().endswith('dae'):
+        bpy.ops.wm.collada_import(filepath=file_path)
+    elif file_path.lower().endswith('obj'):
+        bpy.ops.import_scene.obj(filepath=file_path, axis_forward='X',
+            axis_up='Z')
+    # TODO add imports for other formats. Trivial one-liners, but OBJ and
+    # COLLADA are the most common used for Gazebo, others not needed now.
+    else:
+        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported at the moment.')
+        return
 
-    if method == 'deform':
-        object_name = deform(object_prefix, fouling_rating)
-        fill_holes(object_name)
+    target_obj, object_name = find_target_object(object_prefix)
+
+    print('Distorting mesh [{}] for Fouling Rating {}...'.format(object_name,
+        rating))
+
+    # Normalize fouling rating
+    RATING_MIN = 0
+    RATING_MAX = 100
+    rating_norm = (rating - RATING_MIN) / (RATING_MAX - RATING_MIN)
+
+    METHODS = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
+    for step in method:
+
+        if not step in METHODS:
+            print('ERROR: Unrecognized step {}'.format(step))
+            print('Available steps are:')
+            for m in METHODS:
+                print(m)
+            print('Aborting')
+            break
+
+        if step == 'subdiv_mod':
+            # Figure out levels magnitude
+            SUBDIV_LVL_MIN = 0
+            SUBDIV_LVL_MAX = 4
+            # Must be integer
+            subdiv_lvl = round(SUBDIV_LVL_MIN + (
+                (SUBDIV_LVL_MAX - SUBDIV_LVL_MIN) * rating_norm))
+
+            subdivision_modifier(target_obj, subdiv_lvl)
+
+        elif step == 'vert_rand':
+            # Meters
+            VERT_RAND_MIN = 0
+            VERT_RAND_MAX = 0.02
+            # Figure out offset magnitude
+            vert_rand_amt = VERT_RAND_MIN + (
+                (VERT_RAND_MAX - VERT_RAND_MIN) * rating_norm)
+
+            mesh_vert_randomize(target_obj, vert_rand_amt, uniform=0.0,
+                normal=1.0, seed=0)
+
+        elif step == 'edge_subdiv':
+
+            edge_subdivide(target_obj)
 
 
 if __name__ == '__main__':
     # Default values
     fouling_rating = 10
-    method = 'deform'
+    method = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
     
     # Parse args
     if len(sys.argv) < 2:
