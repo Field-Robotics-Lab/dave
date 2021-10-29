@@ -17,35 +17,57 @@ Tooltips.
 ## Usage
 
 Launch Blender GUI.
+These instructions are written for Blender 2.9.2, which has a revamped user
+interface.
 
-At the top, go to the Scripting tab.
+### Locate model file and mesh name
 
+Before we run the script, we need to locate the path of the 3D model file and
+find the name of the part in the actual model file.
+These will be passed as parameters to the script.
+
+First, open or import the 3D model file of the object you want to distort.
 In upper-left corner, File > Import.
 Navigate to the mesh file, e.g. `models/dave_object_models/models/Coke/meshes/coke.obj`.
 For this specific file, choose Transform while importing: Z Up, X Forward.
 
-Right-click a mesh in the 3D view panel to select it.
+Look for the mesh name in the model.
+If the model has multiple parts, you will need to merge the parts, so that the
+entire model is distorted, or choose the part that you wish to distort.
 
-In the console panel in the middle of the left of the screen, set the mesh name
-argument:
+Note that depending on how the polygons are arranged on a mesh, the results of
+the distortion will differ.
+Advanced users may choose to split up the polygons or otherwise change the
+polygon layout to get more even distortion results.
+
+### Run the script
+
+At the top of Blender GUI, go to the Scripting tab.
+All commands will be executed in the Console panel in the middle-left of the
+screen.
+
+Define the path to the model file and the mesh name, which you found above:
 ```
-file_path = '/path/to/file.dae'
-object_name = 'LPCoke_Cube.000'
+file_path = '/path/to/dave/models/dave_object_models/models/Coke/meshes/coke.obj'
+object_prefix = 'LPCoke_Cube'
 ```
 
-Set optional arguments:
+Set optional arguments. If not specified, the default will be used.
 ```
-fouling_rating = 10
+fouling_rating = 20
 method = 'deform'
 ```
 
 Put the args into the input array:
 ```
-sys.argv = ['distort.py', file_path, object_name, fouling_rating, method]
+import sys
+sys.argv = ['distort.py', file_path, object_prefix, fouling_rating, method]
 ```
 
 Run the script, replacing its path with the one on your machine:
 ```
-exec(open('/path/to/distort.py').read());
+exec(open('/path/to/dave/urdf/scripts/mesh_distortion/distort.py').read());
 ```
 
+This will execute the script with the command line arguments defined in
+`sys.argv`.
