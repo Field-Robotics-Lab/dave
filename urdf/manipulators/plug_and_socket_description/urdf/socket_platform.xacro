@@ -34,12 +34,13 @@
     pitch_tolerance="0.3" yaw_tolerance="0.3" z_tolerance="0.5"
     mating_force="50" unmating_force="190"/>
 
+  <!-- Revolute joint gets accurately loaded into Gazebo -->
   <joint name="socket1_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="0.25 0.8 1.25" rpy="0 0 ${pi/2}"/>
+    <origin xyz="0 0.8 1" rpy="0 0 ${pi/2}"/>
     <parent link="socket_platform_link"/>
     <child link="socket1_link"/>
-  </joint>
+  </joint> -->
 
   <xacro:socket_macro
     name="socket2" xyz="0 0 0"
@@ -49,7 +50,7 @@
 
   <joint name="socket2_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="0 0.8 1.25" rpy="0 0 ${pi/2}"/>
+    <origin xyz="0.8 0 1" rpy="0 0 0"/>
     <parent link="socket_platform_link"/>
     <child link="socket2_link"/>
   </joint>
@@ -62,7 +63,7 @@
 
   <joint name="socket3_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="-0.25 0.8 1.25" rpy="0 0 ${pi/2}"/>
+    <origin xyz="0 -0.8 1" rpy="0 0 ${-pi/2}"/>
     <parent link="socket_platform_link"/>
     <child link="socket3_link"/>
   </joint>
@@ -75,35 +76,22 @@
 
   <joint name="socket4_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="0.25 0.8 1" rpy="0 0 ${pi/2}"/>
+    <origin xyz="-0.8 0 1" rpy="0 0 ${pi}"/>
     <parent link="socket_platform_link"/>
     <child link="socket4_link"/>
   </joint>
 
   <xacro:socket_macro
     name="socket5" xyz="0 0 0"
-    plug_model_name="plug" plug_link_name="plug" roll_tolerance="0.3"
+    plug_model_name="plug" plug_link_name="plug" roll_tolerance="${pi/2}"
     pitch_tolerance="0.3" yaw_tolerance="0.3" z_tolerance="0.5"
     mating_force="50" unmating_force="190"/>
 
   <joint name="socket5_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="0 0.8 1" rpy="0 0 ${pi/2}"/>
+    <origin xyz="0 0 1.55" rpy="0 -${pi/2} 0"/>
     <parent link="socket_platform_link"/>
     <child link="socket5_link"/>
-  </joint>
-
-  <xacro:socket_macro
-    name="socket6" xyz="0 0 0"
-    plug_model_name="plug" plug_link_name="plug" roll_tolerance="0.3"
-    pitch_tolerance="0.3" yaw_tolerance="0.3" z_tolerance="0.5"
-    mating_force="50" unmating_force="190"/>
-
-  <joint name="socket6_joint" type="revolute">
-    <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="-0.25 0.8 1" rpy="0 0 ${pi/2}"/>
-    <parent link="socket_platform_link"/>
-    <child link="socket6_link"/>
   </joint>
 
 </robot>

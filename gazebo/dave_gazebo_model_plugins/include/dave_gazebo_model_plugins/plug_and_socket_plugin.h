@@ -112,8 +112,16 @@ namespace gazebo
     /// \brief Z alignment tolerance.
     private: double unmatingForce;
 
-    /// \brief Model and link namespace (for multiple instance deconfliction)
-    private: std::string modelNameSpace;
+    // Some private counter variables ISO "throttled" logging/messages
+
+    /// \brief rotational alignment of plug & socket INFO message
+    private: int rotateAlignLogThrottle = 0;
+
+    /// \brief proximity of plug & socket INFO message
+    private: int proximityLogThrottle = 0;
+
+    /// \brief rotational alignment of plug & socket INFO message
+    private: int linksInContactLogThrottle = 0;
 
     /// \brief Concatenates/trims forcesBuffer and timeStamps vectors to
     /// include only the last trimDuration.
@@ -161,10 +169,10 @@ namespace gazebo
     private: bool checkProximity(bool verbose = false);
 
     /// \brief Creates the prismatic joint between the socket and plug.
-    private: void construct_joint();
+    private: void constructJoint();
 
     /// \brief Distroys the prismatic joint between the socket and the plug.
-    private: void remove_joint();
+    private: void removeJoint();
 
     /// \brief Calculates the average force exerted by contact2 on contact 1.
     /// \return Average force exerted by contact2 on contact1.
