@@ -83,7 +83,7 @@
 
   <xacro:socket_macro
     name="socket5" xyz="0 0 0"
-    plug_model_name="plug" plug_link_name="plug" roll_tolerance="${pi/2}"
+    plug_model_name="plug" plug_link_name="plug" roll_tolerance="${pi}"
     pitch_tolerance="0.3" yaw_tolerance="0.3" z_tolerance="0.5"
     mating_force="50" unmating_force="190"/>
 
