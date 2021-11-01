@@ -103,19 +103,16 @@ namespace gazebo
     /// \brief Yaw alignment tolerance.
     private: double yawAlignmentTolerance;
 
-    /// \brief Z alignment tolerance.
-    private: double zAlignmentTolerance;
-
-    /// \brief Yaw alignment tolerance.
+    /// \brief force required to mate the plug & socket (lock joint).
     private: double matingForce;
 
-    /// \brief Z alignment tolerance.
+    /// \brief force required to unmate the plug & socket (unlock joint).
     private: double unmatingForce;
 
     // Some private counter variables ISO "throttled" logging/messages
 
-    /// \brief rotational alignment of plug & socket INFO message
-    private: int rotateAlignLogThrottle = 0;
+    /// \brief alignment of plug & socket INFO message
+    private: int alignLogThrottle = 0;
 
     /// \brief proximity of plug & socket INFO message
     private: int proximityLogThrottle = 0;
@@ -151,18 +148,9 @@ namespace gazebo
     /// \brief Release the plug from the joint.
     public: void unfreezeJoint(physics::JointPtr prismaticJoint);
 
-    /// \brief Check that plug and socket are aligned in the all orientations.
-    /// \return Return true if aligned.
-    private: bool checkRotationalAlignment(bool verbose = false);
-
-    /// \brief Check if plug and socket have the same altitude.
-    /// \return Return true if on same altitude.
-    private: bool checkVerticalAlignment(double alignmentThreshold,
-                                         bool verbose = false);
-
     /// \brief Check if plug and socket have the same orientation and altitude.
     /// \return Return true if same r,p,y and z.
-    private: bool isAlligned(bool verbose = false);
+    private: bool isAligned(bool verbose = false);
 
     /// \brief Measure Euclidean distance between plug an socket.
     /// \return Return true if plug is close to the socket.

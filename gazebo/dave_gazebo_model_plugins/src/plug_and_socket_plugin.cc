@@ -25,6 +25,9 @@ using namespace gazebo;
 // counter-based message throttle is being used for some output
 const int LOG_THROTTLE_RATE = 750;
 
+// Distance at which mating joint creation tests commence
+const float JOINT_TEST_RANGE = 0.5;
+
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                                      sdf::ElementPtr _sdf)
@@ -151,23 +154,6 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                     this->yawAlignmentTolerance);
   }
 
-  if (_sdf->HasElement("zAlignmentTolerance"))
-  {
-    this->zAlignmentTolerance =
-      _sdf->GetElement("zAlignmentTolerance")->Get<double>();
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Z Mating Alignment Tolerance is: " <<
-                    this->zAlignmentTolerance);
-  }
-  else
-  {
-    this->zAlignmentTolerance = 0.1;
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Z Mating Alignment Tolerance was not " <<
-                    "specified, using default value of " <<
-                    this->zAlignmentTolerance);
-  }
-
   if (_sdf->HasElement("matingForce"))
   {
     this->matingForce = _sdf->GetElement("matingForce")->Get<double>();
@@ -190,7 +176,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->unmatingForce = 190;
+    this->unmatingForce = 125;
     ROS_INFO_STREAM(this->tubeLinkName <<
                     " socket Unmating Force not specified, " <<
                     "using default value of " << this->unmatingForce);
@@ -287,80 +273,50 @@ double PlugAndSocketMatingPlugin::normalizeError(double error)
 }
 
 //////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::checkRotationalAlignment(bool verbose)
+bool PlugAndSocketMatingPlugin::isAligned(bool verbose)
 {
-  ignition::math::Vector3<double> socketRotation =
-                       this->tubeLink->WorldPose().Rot().Euler();
-  ignition::math::Vector3<double> plugRotation =
-                       this->plugLink->WorldPose().Rot().Euler();
-  double rollError = abs(normalizeError(plugRotation[0] - socketRotation[0]));
-  double pitchError = abs(normalizeError(plugRotation[1] - socketRotation[1]));
-  double yawError = abs(normalizeError(plugRotation[2] - socketRotation[2]));
-  if (verbose)
-  {
-    ROS_DEBUG_STREAM(this->tubeLinkName << "-" <<
-                     this->plugLinkName << std::endl <<
-                     "socket euler: " <<
-                     socketRotation[0] << ", " <<
-                     socketRotation[1] << ", " <<
-                     socketRotation[2] << std::endl <<
-                     "plug euler: " <<
-                     plugRotation[0] << ", " <<
-                     plugRotation[1] << ", " <<
-                     plugRotation[2]);
-  }
+  ignition::math::Pose3d socketPose = this->tubeLink->WorldPose();
+  ignition::math::Pose3d plugPose = this->plugLink->WorldPose();
+  ignition::math::Pose3d poseDiff = plugPose - socketPose;
 
-  this->rotateAlignLogThrottle =
-      (this->rotateAlignLogThrottle + 1) % LOG_THROTTLE_RATE;
-  if (rollError <= this->rollAlignmentTolerance &&
-      pitchError <= this->pitchAlignmentTolerance &&
-      yawError <= this->yawAlignmentTolerance)
+  ignition::math::Vector3<double> rotError = poseDiff.Rot().Euler();
+  ignition::math::Vector3<double> posError = poseDiff.Pos();
+  double lateralOffset = hypot(posError[1], posError[2]);
+  double offsetAngle = normalizeError(atan2(lateralOffset, posError[0]));
+  double range = sqrt(posError[0] * posError[0] +
+                      posError[1] * posError[1] +
+                      posError[2] * posError[2]);
+
+  bool orientOK =
+      (abs(normalizeError(rotError[0])) <= this->rollAlignmentTolerance) &&
+      (abs(normalizeError(rotError[1])) <= this->pitchAlignmentTolerance) &&
+      (abs(normalizeError(rotError[2])) <= this->yawAlignmentTolerance);
+  bool lateralOK = (abs(offsetAngle) <= std::max(
+                                           this->yawAlignmentTolerance,
+                                           this->pitchAlignmentTolerance));
+  bool rangeOK = (range >= 0.0) && (range <= JOINT_TEST_RANGE);
+
+  this->alignLogThrottle =
+      (this->alignLogThrottle + 1) % LOG_THROTTLE_RATE;
+  if (orientOK && lateralOK && rangeOK)
   {
-    if (this->rotateAlignLogThrottle == 0)
+    if (this->alignLogThrottle == 0)
     {
       ROS_INFO_STREAM(this->tubeLinkName << " and " <<
-                      this->plugLinkName << " are aligned");
+                      this->plugLinkName <<
+                      " are aligned in orientation and distance");
     }
     return true;
   }
-  else
+  else if (orientOK && lateralOK)
   {
+    if (this->alignLogThrottle == 0)
+    {
+      ROS_INFO_STREAM(this->tubeLinkName << " and " <<
+                      this->plugLinkName <<
+                      " are aligned but too far apart");
+    }
     return false;
-  }
-}
-
-//////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::checkVerticalAlignment(
-    double alignmentThreshold, bool verbose)
-{
-  ignition::math::Pose3d socket_pose = this->tubeLink->WorldPose();
-  ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
-  ignition::math::Pose3d plug_pose = plugModel->RelativePose();
-  ignition::math::Vector3<double> plugPosition = plug_pose.Pos();
-  bool onSameVerticalLevel =
-    abs(plugPosition[2] - socketPositon[2]) < alignmentThreshold;
-
-  if (verbose)
-    ROS_DEBUG_STREAM(
-        this->plugLinkName << " Z plug: " << plugPosition[2] << ", " <<
-        this->tubeLinkName << "  Z socket: " << socketPositon[2]);
-
-  if (onSameVerticalLevel)
-    return true;
-
-  return false;
-}
-
-//////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::isAlligned(bool verbose)
-{
-  if (checkVerticalAlignment(true) && checkRotationalAlignment())
-  {
-    if (verbose)
-      ROS_DEBUG_STREAM(this->tubeLinkName << " and " <<
-                       this->plugLinkName << " are aligned in " <<
-                       "orientation and altitude");
-    return true;
   }
   else
   {
@@ -486,9 +442,9 @@ bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
     if ((averageForce > this->matingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-//      ROS_INFO_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-//                      " sensor plate average: " << average force " <<
-//                      ", size ", this->forcesBuffer.size());
+//      gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+//               " sensor plate average: " << averageForce <<
+//               ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -514,9 +470,9 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
     if ((averageForce > this->unmatingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-//      ROS_INFO_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-//                      " end effector average: " << averageForce <<
-//                      ", size " << this->forcesBuffer.size());
+//      gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+//               " end effector average: " << averageForce <<
+//               ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -573,9 +529,9 @@ void PlugAndSocketMatingPlugin::Update()
       // 2 seconds, then construct a joint between them
   if (!this->joined)
   {
-    // TODO: update isAlligned & checkProximity to work
+    // TODO: update isAligned & checkProximity to work
     //       better in various orientations.
-    if (this->isAlligned() && this->checkProximity(true))
+    if (this->isAligned() && this->checkProximity(true))
     {
         if (alignmentTime == 0)
         {

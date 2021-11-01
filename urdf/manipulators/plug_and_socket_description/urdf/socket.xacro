@@ -3,7 +3,7 @@
 
   <xacro:macro name="socket_macro"
                params="name xyz plug_model_name plug_link_name
-                       roll_tolerance pitch_tolerance yaw_tolerance z_tolerance
+                       roll_tolerance pitch_tolerance yaw_tolerance
                        mating_force unmating_force">
 
     <!-- Socket tube link -->
@@ -59,10 +59,9 @@
         <sensorPlateLink>${name}_sensor_link</sensorPlateLink>
         <plugModel>${plug_model_name}</plugModel>
         <plugLink>${plug_link_name}</plugLink>
-        <rollAlignmentTolerence>${roll_tolerance}</rollAlignmentTolerence>
-        <pitchAlignmentTolerence>${pitch_tolerance}</pitchAlignmentTolerence>
-        <yawAlignmentTolerence>${yaw_tolerance}</yawAlignmentTolerence>
-        <zAlignmentTolerence>${z_tolerance}</zAlignmentTolerence>
+        <rollAlignmentTolerance>${roll_tolerance}</rollAlignmentTolerance>
+        <pitchAlignmentTolerance>${pitch_tolerance}</pitchAlignmentTolerance>
+        <yawAlignmentTolerance>${yaw_tolerance}</yawAlignmentTolerance>
         <matingForce>${mating_force}</matingForce>
         <unmatingForce>${unmating_force}</unmatingForce>
       </plugin>

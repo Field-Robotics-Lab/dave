@@ -48,10 +48,9 @@
       <sensorPlateLink>sensor_plate</sensorPlateLink>
       <plugModel>plug</plugModel>
       <plugLink>plug</plugLink>
-      <rollAlignmentTolerence>0.3</rollAlignmentTolerence>
-      <pitchAlignmentTolerence>0.3</pitchAlignmentTolerence>
-      <yawAlignmentTolerence>0.3</yawAlignmentTolerence>
-      <zAlignmentTolerence>0.5</zAlignmentTolerence>
+      <rollAlignmentTolerance>0.3</rollAlignmentTolerance>
+      <pitchAlignmentTolerance>0.3</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>0.3</yawAlignmentTolerance>
     </plugin>
 
   </model>
