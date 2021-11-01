@@ -15,7 +15,7 @@
         <arg name="gui" value="$(arg gui)"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
-        <arg name="verbose" value="false"/>
+        <arg name="verbose" value="true"/>
     </include>
 
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
@@ -28,9 +28,9 @@
 
     <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="7.8"/>
-        <arg name="y" value="-0.2"/>
-        <arg name="z" value="-93.7"/>
+        <arg name="x" value="7.5"/>
+        <arg name="y" value="1.0"/>
+        <arg name="z" value="-95.5"/>
         <arg name="yaw" value="3.141592"/>
     </include>
 

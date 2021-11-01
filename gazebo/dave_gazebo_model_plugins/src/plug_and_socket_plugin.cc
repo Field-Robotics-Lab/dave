@@ -14,15 +14,13 @@
  * limitations under the License.
  *
 */
-
 #include <gazebo/physics/Collision.hh>
 #include <algorithm>    // std::lower_bound
 #include <dave_gazebo_model_plugins/plug_and_socket_plugin.h>
 
 using namespace gazebo;
 
-// ROS_INFO_STREAM_THROTTLE suppresses too much, so a
-// counter-based message throttle is being used for some output
+// Counters are used for message throttle of some output
 const int LOG_THROTTLE_RATE = 750;
 
 // Distance at which mating joint creation tests commence
@@ -41,145 +39,146 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   {
     this->sensorPlateName = _sdf->GetElement("sensorPlateLink")
                                 ->Get<std::string>();
-    ROS_INFO_STREAM("Socket Sensor Plate Link name set to " <<
-                    this->sensorPlateName);
+    gzmsg << "Socket Sensor Plate Link name set to " <<
+             this->sensorPlateName << std::endl;
   }
   else
   {
     this->sensorPlateName = "sensor_plate";
-    ROS_INFO_STREAM("Socket Sensor Plate link name not specified, " <<
-                    "set to default " << this->sensorPlateName);
+     gzmsg << "Socket Sensor Plate link name not specified, " <<
+              "set to default " << this->sensorPlateName << std::endl;
   }
   this->sensorPlate = this->socketModel->GetLink(this->sensorPlateName);
-  ROS_INFO_STREAM("Socket Sensor Plate link set from SDF to " <<
-                  this->sensorPlate->GetName());
+  gzmsg << "Socket Sensor Plate link set from SDF to " <<
+           this->sensorPlate->GetName() << std::endl;
 
   if (_sdf->HasElement("socketTubeLink"))
   {
     this->tubeLinkName =
       _sdf->GetElement("socketTubeLink")->Get<std::string>();
-    ROS_INFO_STREAM("Socket Tube Link name set to " << this->tubeLinkName);
+    gzmsg << "Socket Tube Link name set to " <<
+             this->tubeLinkName << std::endl;
   }
   else
   {
     this->tubeLinkName = "socket";
-    ROS_INFO_STREAM("Socket Tube Link name not specified, " <<
-                    "set to default " << this->tubeLinkName);
+    gzmsg << "Socket Tube Link name not specified, set to default " <<
+             this->tubeLinkName << std::endl;
   }
   this->tubeLink = this->socketModel->GetLink(this->tubeLinkName);
-  ROS_INFO_STREAM("Socket Tube Link set from SDF to " <<
-                  this->tubeLink->GetName());
+  gzmsg << "Socket Tube Link set from SDF to " <<
+           this->tubeLink->GetName() << std::endl;
 
   // Retrieve plug model and link info from the SDF
   if (_sdf->HasElement("plugModel"))
   {
     this->plugModelName = _sdf->GetElement("plugModel")
                               ->Get<std::string>();
-    ROS_INFO_STREAM("Plug Model name set to " << this->plugModelName);
+    gzmsg << "Plug Model name set to " << this->plugModelName << std::endl;
   }
   else
   {
     this->plugModelName = "plug";
-    ROS_INFO_STREAM("Plug Model name not specified, set to default " <<
-                    this->plugModelName);
+    gzmsg << "Plug Model name not specified, set to default " <<
+             this->plugModelName << std::endl;
   }
   this->plugModel = this->world->ModelByName(this->plugModelName);
-  ROS_INFO_STREAM("Plug Model set from SDF");
+  gzmsg << "Plug Model set from SDF" << std::endl;
 
   if (_sdf->HasElement("plugLink"))
   {
     this->plugLinkName =
       _sdf->GetElement("plugLink")->Get<std::string>();
-    ROS_INFO_STREAM("Plug Link name set to " << this->plugLinkName);
+    gzmsg << "Plug Link name set to " << this->plugLinkName << std::endl;
   }
   else
   {
     this->plugLinkName = "plug";
-    ROS_INFO_STREAM("Plug Link name not specified, set to default "
-                    << this->plugLinkName);
+    gzmsg << "Plug Link name not specified, set to default " <<
+             this->plugLinkName << std::endl;
   }
   this->plugLink = this->plugModel->GetLink(this->plugLinkName);
-  ROS_INFO_STREAM("Plug Link set from SDF to " <<
-                  this->plugLink->GetName());
+  gzmsg << "Plug Link set from SDF to " << this->plugLink->GetName() <<
+           std::endl;
 
   // Retrieve socket tolerance parameters from SDF
   if (_sdf->HasElement("rollAlignmentTolerance"))
   {
     this->rollAlignmentTolerance =
       _sdf->GetElement("rollAlignmentTolerance")->Get<double>();
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Roll Mating Alignment Tolerance is: " <<
-                    this->rollAlignmentTolerance);
+    gzmsg << this->tubeLinkName <<
+             " socket Roll Mating Alignment Tolerance is: " <<
+             this->rollAlignmentTolerance << std::endl;
   }
   else
   {
     this->rollAlignmentTolerance = 0.3;
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Roll Mating Alignment Tolerance was not " <<
-                    "specified, using default value of " <<
-                     this->rollAlignmentTolerance);
+    gzmsg << this->tubeLinkName <<
+             " socket Roll Mating Alignment Tolerance was not " <<
+             "specified, using default value of " <<
+             this->rollAlignmentTolerance << std::endl;
   }
 
   if (_sdf->HasElement("pitchAlignmentTolerance"))
   {
     this->pitchAlignmentTolerance =
       _sdf->GetElement("pitchAlignmentTolerance")->Get<double>();
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Pitch Mating Alignment Tolerance is: " <<
-                    this->pitchAlignmentTolerance);
+    gzmsg << this->tubeLinkName <<
+             " socket Pitch Mating Alignment Tolerance is: " <<
+             this->pitchAlignmentTolerance << std::endl;
   }
   else
   {
     this->pitchAlignmentTolerance = 0.3;
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Pitch Mating Alignment Tolerance was not " <<
-                    "specified, using default value of " <<
-                    this->pitchAlignmentTolerance);
+    gzmsg << this->tubeLinkName <<
+             " socket Pitch Mating Alignment Tolerance was not " <<
+             "specified, using default value of " <<
+             this->pitchAlignmentTolerance << std::endl;
   }
 
   if (_sdf->HasElement("yawAlignmentTolerance"))
   {
     this->yawAlignmentTolerance =
       _sdf->GetElement("yawAlignmentTolerance")->Get<double>();
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Yaw Mating Alignment Tolerance is: " <<
-                    this->yawAlignmentTolerance);
+    gzmsg << this->tubeLinkName <<
+             " socket Yaw Mating Alignment Tolerance is: " <<
+             this->yawAlignmentTolerance << std::endl;
   }
   else
   {
     this->yawAlignmentTolerance = 0.3;
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Yaw Mating Alignment Tolerance was not " <<
-                    "specified, using default value of " <<
-                    this->yawAlignmentTolerance);
+    gzmsg << this->tubeLinkName <<
+             " socket Yaw Mating Alignment Tolerance was not " <<
+             "specified, using default value of " <<
+             this->yawAlignmentTolerance << std::endl;
   }
 
   if (_sdf->HasElement("matingForce"))
   {
     this->matingForce = _sdf->GetElement("matingForce")->Get<double>();
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Mating Force: " << this->matingForce);
+    gzmsg << this->tubeLinkName <<
+             " socket Mating Force: " << this->matingForce << std::endl;
   }
   else
   {
     this->matingForce = 50;
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Mating Force not specified, " <<
-                    "using default value of " << this->matingForce);
+    gzmsg << this->tubeLinkName <<
+             " socket Mating Force not specified, " <<
+             "using default value of " << this->matingForce << std::endl;
   }
 
   if (_sdf->HasElement("unmatingForce"))
   {
     this->unmatingForce = _sdf->GetElement("unmatingForce")->Get<double>();
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Unmating Force: " << this->unmatingForce);
+    gzmsg << this->tubeLinkName <<
+             " socket Unmating Force: " << this->unmatingForce << std::endl;
   }
   else
   {
     this->unmatingForce = 125;
-    ROS_INFO_STREAM(this->tubeLinkName <<
-                    " socket Unmating Force not specified, " <<
-                    "using default value of " << this->unmatingForce);
+    gzmsg << this->tubeLinkName <<
+             " socket Unmating Force not specified, " <<
+             "using default value of " << this->unmatingForce << std::endl;
   }
 
   this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
@@ -230,13 +229,13 @@ void PlugAndSocketMatingPlugin::lockJoint(physics::JointPtr prismaticJoint)
 {
   if (this->locked)
   {
-      ROS_DEBUG_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                       " joint already locked!");
+      gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
+               " joint already locked!" << std::endl;
     return;
   }
   this->locked = true;
-  ROS_INFO_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                  " joint locked!");
+  gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+           " joint locked!" << std::endl;
   double currentPosition = prismaticJoint->Position(0);
   prismaticJoint->SetUpperLimit(0, currentPosition);
   prismaticJoint->SetLowerLimit(0, currentPosition);
@@ -247,14 +246,14 @@ void PlugAndSocketMatingPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
 {
   if (!this->locked)
   {
-    ROS_DEBUG_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                     " joint already unlocked");
+    gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
+             " joint already unlocked" << std::endl;
     return;
   }
   this->locked = false;
   this->unfreezeTimeBuffer =  this->world->SimTime();
-  ROS_INFO_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                  " joint unlocked!");
+  gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+                  " joint unlocked!" << std::endl;
   this->removeJoint();
 }
 
@@ -273,7 +272,7 @@ double PlugAndSocketMatingPlugin::normalizeError(double error)
 }
 
 //////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::isAligned(bool verbose)
+bool PlugAndSocketMatingPlugin::isAligned()
 {
   ignition::math::Pose3d socketPose = this->tubeLink->WorldPose();
   ignition::math::Pose3d plugPose = this->plugLink->WorldPose();
@@ -302,9 +301,8 @@ bool PlugAndSocketMatingPlugin::isAligned(bool verbose)
   {
     if (this->alignLogThrottle == 0)
     {
-      ROS_INFO_STREAM(this->tubeLinkName << " and " <<
-                      this->plugLinkName <<
-                      " are aligned in orientation and distance");
+      gzmsg << this->tubeLinkName << " and " << this->plugLinkName <<
+               " are aligned in orientation and distance" << std::endl;
     }
     return true;
   }
@@ -312,9 +310,8 @@ bool PlugAndSocketMatingPlugin::isAligned(bool verbose)
   {
     if (this->alignLogThrottle == 0)
     {
-      ROS_INFO_STREAM(this->tubeLinkName << " and " <<
-                      this->plugLinkName <<
-                      " are aligned but too far apart");
+      gzmsg << this->tubeLinkName << " and " << this->plugLinkName <<
+               " are aligned but too far apart" << std::endl;
     }
     return false;
   }
@@ -325,7 +322,7 @@ bool PlugAndSocketMatingPlugin::isAligned(bool verbose)
 }
 
 //////////////////////////////////////////////////
-bool PlugAndSocketMatingPlugin::checkProximity(bool verbose)
+bool PlugAndSocketMatingPlugin::checkProximity()
 {
   ignition::math::Pose3d socket_pose = this->tubeLink->WorldPose();
   ignition::math::Vector3<double> socketPositon = socket_pose.Pos();
@@ -335,10 +332,10 @@ bool PlugAndSocketMatingPlugin::checkProximity(bool verbose)
   float ydiff_squared = pow(abs(plugPosition[1] - socketPositon[1]), 2);
   float zdiff_squared = pow(abs(plugPosition[2] - socketPositon[2]), 2);
 
-  if (verbose)
-    ROS_DEBUG_STREAM(this->tubeLinkName << " and " << this->plugLinkName <<
-                     " eucleadian distance: " <<
-                     pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5));
+  if (DEBUG)
+    gzmsg << this->tubeLinkName << " and " << this->plugLinkName <<
+             " euclidean distance: " <<
+             pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) << std::endl;
 
   bool withinProximity =
     pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) < 0.14;
@@ -349,8 +346,8 @@ bool PlugAndSocketMatingPlugin::checkProximity(bool verbose)
   {
     if (this->proximityLogThrottle == 0)
     {
-      ROS_INFO_STREAM(this->tubeLinkName << " and " <<
-                      this->plugLinkName << " within proximity");
+      gzmsg << this->tubeLinkName << " and " << this->plugLinkName <<
+               " within proximity" << std::endl;
     }
     return true;
   }
@@ -358,9 +355,9 @@ bool PlugAndSocketMatingPlugin::checkProximity(bool verbose)
   {
     if (this->proximityLogThrottle == 0)
     {
-      ROS_INFO_STREAM(this->tubeLinkName << " and " <<
-                      this->plugLinkName <<
-                      " not within proximity, please move the plug closer");
+      gzmsg << this->tubeLinkName << " and " << this->plugLinkName <<
+               " not within proximity, please move the plug closer" <<
+               std::endl;
     }
   }
   return false;
@@ -371,8 +368,8 @@ void PlugAndSocketMatingPlugin::constructJoint()
 {
   if (this->joined)
   {
-    ROS_DEBUG_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                     " joint already frozen");
+    gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+             " joint already frozen" << std::endl;
     return;
   }
   this->joined = true;
@@ -388,8 +385,8 @@ void PlugAndSocketMatingPlugin::constructJoint()
   this->prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
   this->prismaticJoint->SetLowerLimit(0, this->prismaticJoint->Position(0)-10);
   this->prismaticJoint->SetUpperLimit(0, this->prismaticJoint->Position(0)+10);
-  ROS_INFO_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                  " joint formed, position ");
+  gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+           " joint formed, position " << std::endl;
 }
 
 //////////////////////////////////////////////////
@@ -401,8 +398,8 @@ void PlugAndSocketMatingPlugin::removeJoint()
     this->prismaticJoint->Detach();
     this->prismaticJoint->Reset();
     this->prismaticJoint->~Joint();
-    ROS_INFO_STREAM(this->tubeLinkName << "-" << this->plugLinkName <<
-                    " joint removed");
+    gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
+             " joint removed" << std::endl;
   }
 }
 
@@ -439,12 +436,12 @@ bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
   else
   {
     double averageForce = this->movingTimedAverage();
-    if ((averageForce > this->matingForce) &&
+    if (DEBUG && (averageForce > this->matingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-//      gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
-//               " sensor plate average: " << averageForce <<
-//               ", size " << this->forcesBuffer.size() << std::endl;
+      gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
+               " sensor plate average: " << averageForce <<
+               ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -470,9 +467,9 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
     if ((averageForce > this->unmatingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-//      gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
-//               " end effector average: " << averageForce <<
-//               ", size " << this->forcesBuffer.size() << std::endl;
+      gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
+               " end effector average: " << averageForce <<
+               ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -507,11 +504,12 @@ int PlugAndSocketMatingPlugin::getCollisionBetween(std::string contact1,
         (this->linksInContactLogThrottle + 1) % LOG_THROTTLE_RATE;
     if (isPlugContactingSensorPlate)
     {
-        if (this->linksInContactLogThrottle == 0)
-        {
-            ROS_INFO_STREAM(contact1 << " and " << contact2 << " in contact.");
-        }
-        return i;
+      if (this->linksInContactLogThrottle == 0)
+      {
+        gzmsg << contact1 << " and " << contact2 << " in contact." <<
+                 std::endl;
+      }
+      return i;
     }
   }
   return -1;
@@ -529,18 +527,16 @@ void PlugAndSocketMatingPlugin::Update()
       // 2 seconds, then construct a joint between them
   if (!this->joined)
   {
-    // TODO: update isAligned & checkProximity to work
-    //       better in various orientations.
-    if (this->isAligned() && this->checkProximity(true))
+    if (this->isAligned() && this->checkProximity())
     {
-        if (alignmentTime == 0)
-        {
-          alignmentTime = this->world->SimTime();
-        }
-        else if (this->world->SimTime() - alignmentTime > 2)
-        {
-          this->constructJoint();
-        }
+      if (alignmentTime == 0)
+      {
+        alignmentTime = this->world->SimTime();
+      }
+      else if (this->world->SimTime() - alignmentTime > 2)
+      {
+        this->constructJoint();
+      }
     }
     else
     {

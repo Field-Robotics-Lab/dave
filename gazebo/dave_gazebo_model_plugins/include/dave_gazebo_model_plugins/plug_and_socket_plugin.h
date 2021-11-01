@@ -18,7 +18,9 @@
 #ifndef GAZEBO_UUV_MATING_HH_
 #define GAZEBO_UUV_MATING_HH_
 
-#include <ros/ros.h>
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 #include <sstream>
 #include <string>
@@ -150,11 +152,11 @@ namespace gazebo
 
     /// \brief Check if plug and socket have the same orientation and altitude.
     /// \return Return true if same r,p,y and z.
-    private: bool isAligned(bool verbose = false);
+    private: bool isAligned();
 
     /// \brief Measure Euclidean distance between plug an socket.
     /// \return Return true if plug is close to the socket.
-    private: bool checkProximity(bool verbose = false);
+    private: bool checkProximity();
 
     /// \brief Creates the prismatic joint between the socket and plug.
     private: void constructJoint();
