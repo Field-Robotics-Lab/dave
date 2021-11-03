@@ -54,3 +54,8 @@ roslaunch dave_demo_launch distorted_coke.launch
 ## Resources
 
 For parameters in the `<collision>` tag, see [`sdformat` specification](http://sdformat.org/spec?ver=1.8&elem=collision).
+
+In Gazebo 11, regardless of the physics engine, parameters in the `<ode>` tag
+are used for most engines.
+This is an implementation detail.
+More documentation upstream is required, as ticketed in [this issue](https://github.com/ignitionrobotics/sdformat/issues/31).
