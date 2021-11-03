@@ -70,7 +70,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include
 link_directories(${catkin_LIBRARY_DIRS}
                  ${GAZEBO_LIBRARY_DIRS}
                  ${GAZEBO_MSG_INCLUDE_DIRS}
-                 ${CMAKE_CURRENT_BINARY_DIR}/msgs
+                 ${CMAKE_CURRENT_BINARY_DIR}
 #                ...
 )
 

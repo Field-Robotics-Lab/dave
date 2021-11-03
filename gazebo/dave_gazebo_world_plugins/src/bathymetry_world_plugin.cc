@@ -238,6 +238,8 @@ namespace gazebo
               {
                 bathy->last_update = now;
 
+                // gzdbg << "Updating bathy...."  << std::endl;
+
                 // Get the geographic coordinates.
                 // Use our geographic transformation, not gazebo's since our
                 // projection could be different.
@@ -266,8 +268,8 @@ namespace gazebo
                   {
                     bathy_grid_t *bg = this->bathy_grids[nn];
 
-                    int col = floor((tLon - bg->anchor_lon) / bg->spacing_lon);
-                    int row = floor((tLat - bg->anchor_lat) / bg->spacing_lat);
+                    int col = floor((tLat - bg->anchor_lon) / bg->spacing_lon);
+                    int row = floor((tLon - bg->anchor_lat) / bg->spacing_lat);
 
                     // If bathymetry exists for this location it is the highest
                     // priority available so use it and don't check lower
@@ -451,7 +453,7 @@ namespace gazebo
         }
 
         // Perform delayed removal
-        if (delayRemoveList.size() > 1)
+        if (delayRemoveList.size() >= 1)
         {
           std::string modelnamestr = delayRemoveList.front();
           delayRemoveList.erase(delayRemoveList.begin());
