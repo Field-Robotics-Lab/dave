@@ -12,7 +12,3 @@ install(DIRECTORY meshes urdf launch
         PATTERN "*~" EXCLUDE)
 
 
-install(DIRECTORY launch meshes urdf
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-        PATTERN "*~" EXCLUDE)
-

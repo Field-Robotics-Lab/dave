@@ -144,11 +144,11 @@ namespace gazebo
     /// Documentation inherited.
     public: void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
 
-    /// \brief Locks the prismatic joint.
-    public: void lockJoint(physics::JointPtr prismaticJoint);
+    /// \brief Locks the prismatic joint connecting plug & socket.
+    public: void lockJoint();
 
-    /// \brief Release the plug from the joint.
-    public: void unfreezeJoint(physics::JointPtr prismaticJoint);
+    /// \brief Release the plug from the joint connecting plug & socket.
+    public: void unlockJoint();
 
     /// \brief Check if plug and socket have the same orientation and altitude.
     /// \return Return true if same r,p,y and z.

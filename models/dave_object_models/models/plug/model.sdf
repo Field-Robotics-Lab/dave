@@ -34,7 +34,7 @@
       </collision> -->
 
       <inertial>
-        <pose>-0.1 0 0 0 0</pose>
+        <pose>-0.1 0 0 0 0 0</pose>
         <inertia>
           <ixx>0.04</ixx>
           <ixy>0</ixy>

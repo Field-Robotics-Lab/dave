@@ -26,6 +26,9 @@ const int LOG_THROTTLE_RATE = 750;
 // Distance at which mating joint creation tests commence
 const float JOINT_TEST_RANGE = 0.5;
 
+// Distance at which the joint will actually be created
+const float JOINT_CREATE_RANGE = 0.14;
+
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                                      sdf::ElementPtr _sdf)
@@ -225,7 +228,7 @@ PlugAndSocketMatingPlugin::PlugAndSocketMatingPlugin() : ModelPlugin()
 }
 
 //////////////////////////////////////////////////
-void PlugAndSocketMatingPlugin::lockJoint(physics::JointPtr prismaticJoint)
+void PlugAndSocketMatingPlugin::lockJoint()
 {
   if (this->locked)
   {
@@ -236,13 +239,13 @@ void PlugAndSocketMatingPlugin::lockJoint(physics::JointPtr prismaticJoint)
   this->locked = true;
   gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
            " joint locked!" << std::endl;
-  double currentPosition = prismaticJoint->Position(0);
-  prismaticJoint->SetUpperLimit(0, currentPosition);
-  prismaticJoint->SetLowerLimit(0, currentPosition);
+  double currentPosition = this->prismaticJoint->Position(0);
+  this->prismaticJoint->SetUpperLimit(0, currentPosition);
+  this->prismaticJoint->SetLowerLimit(0, currentPosition);
 }
 
 //////////////////////////////////////////////////
-void PlugAndSocketMatingPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
+void PlugAndSocketMatingPlugin::unlockJoint()
 {
   if (!this->locked)
   {
@@ -253,7 +256,7 @@ void PlugAndSocketMatingPlugin::unfreezeJoint(physics::JointPtr prismaticJoint)
   this->locked = false;
   this->unfreezeTimeBuffer =  this->world->SimTime();
   gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
-                  " joint unlocked!" << std::endl;
+           " joint unlocked!" << std::endl;
   this->removeJoint();
 }
 
@@ -338,7 +341,7 @@ bool PlugAndSocketMatingPlugin::checkProximity()
              pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) << std::endl;
 
   bool withinProximity =
-    pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) < 0.14;
+    pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) < JOINT_CREATE_RANGE;
 
   this->proximityLogThrottle =
       (this->proximityLogThrottle + 1) % LOG_THROTTLE_RATE;
@@ -383,10 +386,12 @@ void PlugAndSocketMatingPlugin::constructJoint()
                                 ignition::math::Quaternion<double>(0, 0, 0)));
   this->prismaticJoint->Init();
   this->prismaticJoint->SetAxis(0, ignition::math::Vector3<double>(1, 0, 0));
-  this->prismaticJoint->SetLowerLimit(0, this->prismaticJoint->Position(0)-10);
-  this->prismaticJoint->SetUpperLimit(0, this->prismaticJoint->Position(0)+10);
+  this->prismaticJoint->SetLowerLimit(0, this->prismaticJoint->
+                                               Position(0)-JOINT_CREATE_RANGE);
+  this->prismaticJoint->SetUpperLimit(0, this->prismaticJoint->
+                                               Position(0)+JOINT_CREATE_RANGE);
   gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
-           " joint formed, position " << std::endl;
+           " joint formed" << std::endl;
 }
 
 //////////////////////////////////////////////////
@@ -397,7 +402,7 @@ void PlugAndSocketMatingPlugin::removeJoint()
     this->joined = false;
     this->prismaticJoint->Detach();
     this->prismaticJoint->Reset();
-    this->prismaticJoint->~Joint();
+    this->prismaticJoint->Fini();
     gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
              " joint removed" << std::endl;
   }
@@ -436,12 +441,13 @@ bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
   else
   {
     double averageForce = this->movingTimedAverage();
-    if (DEBUG && (averageForce > this->matingForce) &&
+    if ((averageForce > this->matingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-      gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
-               " sensor plate average: " << averageForce <<
-               ", size " << this->forcesBuffer.size() << std::endl;
+      if (DEBUG)
+        gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
+                 " sensor plate average: " << averageForce <<
+                 ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -467,9 +473,10 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
     if ((averageForce > this->unmatingForce) &&
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
-      gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
-               " end effector average: " << averageForce <<
-               ", size " << this->forcesBuffer.size() << std::endl;
+      if (DEBUG)
+        gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
+                 " end effector average: " << averageForce <<
+                 ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -550,7 +557,7 @@ void PlugAndSocketMatingPlugin::Update()
   {
     if (this->isPlugPushingSensorPlate())
     {
-      this->lockJoint(this->prismaticJoint);
+      this->lockJoint();
     }
   }
   // If plug is locked to socket, see if there is
@@ -559,7 +566,7 @@ void PlugAndSocketMatingPlugin::Update()
   {
     if (this->isEndEffectorPushingPlug())
     {
-      this->unfreezeJoint(prismaticJoint);
+      this->unlockJoint();
     }
   }
 }
