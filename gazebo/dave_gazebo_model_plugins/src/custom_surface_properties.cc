@@ -21,7 +21,6 @@
 
 namespace gazebo
 {
-
 /////////////////////////////////////////////////
 void CustomSurfaceProperties::Load(physics::ModelPtr _parent,
   sdf::ElementPtr _sdf)

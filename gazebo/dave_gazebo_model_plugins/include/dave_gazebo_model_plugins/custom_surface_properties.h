@@ -19,6 +19,7 @@
 #define CUSTOM_SURFACE_PROPERTIES_H_
 
 #include <functional>
+#include <string>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/common/common.hh>
