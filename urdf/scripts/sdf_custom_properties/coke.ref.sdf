@@ -7,7 +7,6 @@
       <!-- To get model to show up in empty world without ground plane -->
       <static>true</static>
       <pose>1.0 0 0 0 0 0</pose>
-
       <link name="coke_link">
         <inertial>
           <inertia>
