@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
+
+<!-- This file is generated from ERB template coke_template.erb -->
 <sdf version="1.6" xmlns:surface_props="https://github.com/Field-Robotics-Lab/dave">
   <world name="coke">
-    <!-- Example of how fouling_rating can be used to vary coefficients -->
+
 
     <model name="coke_1">
       <!-- To get model to show up in empty world without ground plane -->
