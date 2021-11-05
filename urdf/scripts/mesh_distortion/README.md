@@ -81,6 +81,24 @@ exec(open('/path/to/dave/urdf/scripts/mesh_distortion/distort.py').read());
 This will execute the script with the command line arguments defined in
 `sys.argv` and export the result to file.
 
+## Tips
+
+- Collision geometry
+
+  When using the mesh with a physics engine, for example by way of an SDF file
+  to be loaded into Gazebo, note that it is usually not a good idea to use the
+  visual mesh for collision, because of the high polygon count.
+  Typically, a simple primitive is used for collision, which makes computations
+  much faster.
+
+  However, if the goal is to have mesh deformation affect physical interactions
+  like manipulation, using a simple primitive would defeat the purpose.
+  In that case, a good compromise is to optimize (for example, using the
+  Decimate modifier in Blender) the visual mesh down to a fraction of its
+  polygon count, and use the optimized mesh for collision.
+  There will be mismatches between collision and visual geometry, but collision
+  computations would be much faster.
+
 ## Known issues
 
 - Blender sometimes does not export the texture back to a COLLADA file
