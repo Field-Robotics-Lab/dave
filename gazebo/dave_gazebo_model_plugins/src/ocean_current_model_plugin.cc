@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file ocean_current.cc
+/// \file ocean_current_model_plugin.cc
 
 #include <dave_gazebo_model_plugins/ocean_current_model_plugin.h>
 

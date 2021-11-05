@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<sdf version="1.6">
+<sdf version="1.6" xmlns:surface_props="https://github.com/Field-Robotics-Lab/dave">
   <world name="coke">
     <!-- Example of how fouling_rating can be used to vary coefficients -->
 
@@ -7,6 +7,7 @@
       <!-- To get model to show up in empty world without ground plane -->
       <static>true</static>
       <pose>1.0 0 0 0 0 0</pose>
+
       <link name="coke_link">
         <inertial>
           <inertia>
@@ -64,6 +65,13 @@
           </geometry>
         </visual>
       </link>
+
+      <!-- Custom SDF elements for surface properties -->
+      <surface_props:material>metal</surface_props:material>
+      <surface_props:biofouling_rating>10</surface_props:biofouling_rating>
+      <surface_props:roughness>0.1</surface_props:roughness>
+      <plugin name="custom_surface_properties"
+        filename="libcustom_surface_properties.so"/>
     </model>
 
   </world>

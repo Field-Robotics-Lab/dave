@@ -19,7 +19,8 @@ objects.
 
 ## Dependencies
 
-[Ruby](https://www.ruby-lang.org) is required:
+[Ruby](https://www.ruby-lang.org) is required for generating SDF files from
+ERB templates:
 ```
 sudo apt-get install -y ruby
 ```
@@ -44,9 +45,39 @@ ROS, you may want to export the file elsewhere, such as
 erb coke_template.erb > ../../../models/dave_worlds/worlds/distorted_coke.world
 ```
 
+## Custom SDF elements for surface properties
+
+[An introductory tutorial](http://sdformat.org/tutorials?tut=custom_elements_attributes_proposal&cat=pose_semantics_docs&)
+on custom SDF elements and attributes can be found on the sdformat website.
+
+### Schema
+
+Currently, these custom properties are defined:
+
+- `<surface_props:material>`: `string`
+- `<surface_props:biofouling_rating>`: `int`, in range `[0, 100]`, defined by
+  the Navy biofouling scale.
+- `<surface_props:roughness>`: `double`, in range `[0.0, 1.0]`
+
+Example SDF snippet:
+```
+<surface_props:material>metal</surface_props:material>
+<surface_props:biofouling_rating>30</surface_props:biofouling_rating>
+<surface_props:roughness>0.3</surface_props:roughness>
+```
+
+### Custom Gazebo plugin
+
+The custom SDF tags are handled by a custom Gazebo plugin that reads the SDF
+file.
+An example plugin (`custom_surface_properties`) is provided, which reads the
+custom SDF tags.
+
+This plugin is loaded in the SDF file.
+
 ## Load the SDF in Gazebo
 
-An example launch file is provided, which loads the SDF world:
+An example launch file is provided, which loads the SDF world generated above:
 ```
 roslaunch dave_demo_launch distorted_coke.launch 
 ```
@@ -59,3 +90,10 @@ In Gazebo 11, regardless of the physics engine, parameters in the `<ode>` tag
 are used for most engines.
 This is an implementation detail.
 More documentation upstream is required, as ticketed in [this issue](https://github.com/ignitionrobotics/sdformat/issues/31).
+
+## Future work
+
+- Write a regression test to diff between the ERB generated file and the
+  reference SDF file in the repo.
+- Flesh out the set of friction parameters that the biofouling rating should
+  affect

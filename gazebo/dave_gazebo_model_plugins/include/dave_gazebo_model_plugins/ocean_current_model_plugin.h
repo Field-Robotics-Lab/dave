@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file TransientCurrentPlugin.hh
+/// \file ocean_current_model_plugin.h
 /// \brief Plugin for the transient current plugin to publish vehicle depth
 
 #ifndef OCEAN_CURRENT_MODEL_PLUGIN_H_
