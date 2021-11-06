@@ -3,6 +3,20 @@
 <!-- This file is generated from ERB template coke_template.erb -->
 <sdf version="1.6" xmlns:surface_props="https://github.com/Field-Robotics-Lab/dave">
   <world name="coke">
+    <gui>
+      <camera name="coke_cam">
+        <pose>1.263625 -0.334611 0.188714 0 0.271642 2.200189</pose>
+      </camera>
+    </gui>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
 <%# Example of how fouling_rating can be used to vary coefficients %>
 <%
       fouling_rating = 10

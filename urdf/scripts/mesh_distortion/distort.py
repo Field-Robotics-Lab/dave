@@ -52,6 +52,10 @@ def viewport_shading(shading):
 
 def subdivision_modifier(obj, levels=2):
 
+    if levels == 0:
+        print('Subdivision modifier level is 0, skipping')
+        return
+
     print('Applying subdivision modifier with level {}...'.format(levels))
 
     viewport_shading('WIREFRAME')
