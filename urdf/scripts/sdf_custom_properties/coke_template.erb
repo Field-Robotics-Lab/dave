@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
-<sdf version="1.6">
+<%# Header for files generated from this file %>
+<!-- This file is generated from ERB template coke_template.erb -->
+<sdf version="1.6" xmlns:surface_props="https://github.com/Field-Robotics-Lab/dave">
   <world name="coke">
-    <!-- Example of how fouling_rating can be used to vary coefficients -->
+<%# Example of how fouling_rating can be used to vary coefficients %>
 <%
       fouling_rating = 10
       mu_factor = 0.001
@@ -70,6 +72,13 @@
           </geometry>
         </visual>
       </link>
+
+      <!-- Custom SDF elements for surface properties -->
+      <surface_props:material>metal</surface_props:material>
+      <surface_props:biofouling_rating><%= fouling_rating %></surface_props:biofouling_rating>
+      <surface_props:roughness><%= fouling_rating * 0.01 %></surface_props:roughness>
+      <plugin name="custom_surface_properties"
+        filename="libcustom_surface_properties.so"/>
     </model>
 <%
       end

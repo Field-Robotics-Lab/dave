@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.0.2)
 project(dave_gazebo_model_plugins)
 
 if(NOT "${CMAKE_VERSION}" VERSION_LESS "3.16")
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else()
-    add_compile_options(-std=c++11)
+  add_compile_options(-std=c++11)
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
@@ -30,7 +30,7 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs
-  )
+)
 
 catkin_package(
   INCLUDE_DIRS
@@ -46,7 +46,6 @@ catkin_package(
       dave_gazebo_world_plugins
       dave_gazebo_ros_plugins
 )
-
 
 include_directories(${PROJECT_SOURCE_DIR}/include
                     ${Boost_INCLUDE_DIR}
@@ -64,17 +63,43 @@ link_directories(${catkin_LIBRARY_DIRS}
 
 # ocean current model plugin
 add_library(dave_ocean_current_model_plugin
-   SHARED
-   src/ocean_current_model_plugin.cc
+  SHARED
+  src/ocean_current_model_plugin.cc
 )
 add_dependencies(dave_ocean_current_model_plugin
- ${catkin_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(dave_ocean_current_model_plugin
-   ${catkin_LIBRARIES}
-   ${PROTOBUF_LIBRARY}
+  ${catkin_LIBRARIES}
+  ${PROTOBUF_LIBRARY}
 )
 list(APPEND DAVE_GAZEBO_MODEL_PLUGINS_LIST dave_ocean_current_model_plugin)
+
+# Declare C++ libraries for USBL
+add_library(transponderPlugin
+  SHARED
+  src/usbl_transponder_plugin.cc
+)
+add_dependencies(transponderPlugin
+  dave_gazebo_model_plugins_generate_messages_cpp
+)
+
+add_library(transceiverPlugin
+  SHARED
+  src/usbl_transceiver_plugin.cc
+)
+add_dependencies(transceiverPlugin
+  dave_gazebo_model_plugins_generate_messages_cpp
+)
+
+# Custom surface properties
+add_library(custom_surface_properties
+  SHARED
+  src/custom_surface_properties.cc
+)
+target_link_libraries(custom_surface_properties
+  ${catkin_LIBRARIES}
+)
 
 #add_library(plugin_name
 #    SHARED
@@ -107,8 +132,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 install(DIRECTORY include/
-   DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN ".h"
+  DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN ".h"
 )
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
@@ -116,10 +141,3 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
   FILES_MATCHING PATTERN "*.pb.*"
   PATTERN "*~" EXCLUDE
 )
-
-## Declare a C++ libraries for USBL
-add_library(transponderPlugin SHARED src/usbl_transponder_plugin.cc)
-add_dependencies(transponderPlugin dave_gazebo_model_plugins_generate_messages_cpp)
-
-add_library(transceiverPlugin SHARED src/usbl_transceiver_plugin)
-add_dependencies(transceiverPlugin dave_gazebo_model_plugins_generate_messages_cpp)
