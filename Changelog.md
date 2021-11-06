@@ -108,8 +108,8 @@ This changelog covers the entire dave project which includes a few repositories,
 
 - Object model degradation tool.  
     - 3D mesh modification via Blender script [PR#160](https://github.com/Field-Robotics-Lab/dave/pull/160)
-    - Parameterization proof of concept for SDF friction values via embedded Ruby scropt [PR#163](https://github.com/Field-Robotics-Lab/dave/pull/163)
-    - Demonstration of addition of custome SDF tags for extending model properties and corresponding influence on sensing [PR#164](https://github.com/Field-Robotics-Lab/dave/pull/164)
+    - Parameterization proof of concept for SDF friction values via embedded Ruby script [PR#163](https://github.com/Field-Robotics-Lab/dave/pull/163)
+    - Demonstration of addition of custom SDF tags for extending model properties and corresponding influence on sensing [PR#164](https://github.com/Field-Robotics-Lab/dave/pull/164)
 
 ### Coming Soon
 
