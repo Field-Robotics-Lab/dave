@@ -90,7 +90,7 @@ revision 5, 1 Oct 2006.
 Fouling ratings (FR) in order of increasing severity
 
 Type | FR | Description 
---- | --- | ---
+:---: | :---: | ---
 Soft | 0 | A clean, foul-free surface; red and/or black AF paint or a bare metal surface.
 Soft | 10 | Light shades of red and green (incipient slime). Bare metal and painted surfaces are visible beneath the fouling.
 Soft | 20 | Slime as dark green patches with yellow or brown colored areas (advanced slime). Bare metal and painted surfaces may by obscured by the fouling.
