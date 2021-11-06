@@ -18,7 +18,9 @@
 #ifndef GAZEBO_UUV_MATING_HH_
 #define GAZEBO_UUV_MATING_HH_
 
-#include <ros/ros.h>
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 #include <sstream>
 #include <string>
@@ -32,26 +34,41 @@
 
 namespace gazebo
 {
-  class WorldUuvPlugin : public WorldPlugin
+  class PlugAndSocketMatingPlugin : public ModelPlugin
   {
     /// \brief Pointer to the Gazebo world.
     private: physics::WorldPtr world;
 
-    /// \brief Pointer to the plug model.
-    private: physics::ModelPtr plugModel;
-
-    /// \brief Pointer to the plug link.
-    private: physics::LinkPtr plugLink;
+    /// \brief Name of the socket model
+    private: std::string socketModelName;
 
     /// \brief Pointer to the socket model.
     private: physics::ModelPtr socketModel;
 
-    /// \brief Pointer to the hollow tube like structure that receives the plug.
+    /// \brief Name of the socket tube link
+    private: std::string tubeLinkName;
+
+    /// \brief Pointer to the hollow tube like structure that receives the plug
     private: physics::LinkPtr tubeLink;
+
+    /// \brief Name of the sensor plate link name
+    private: std::string sensorPlateName;
 
     /// \brief Pointer to the sensor plate in the socket model that senses when
     /// the plug is inserter.
     private: physics::LinkPtr sensorPlate;
+
+    /// \brief Model name of the plub model
+    private: std::string plugModelName;
+
+    /// \brief Pointer to the plug model.
+    private: physics::ModelPtr plugModel;
+
+    /// \brief Name of the plug link
+    private: std::string plugLinkName;
+
+    /// \brief Pointer to the plug link.
+    private: physics::LinkPtr plugLink;
 
     /// \brief Pinter to the prismatic joint formed between the plug and the
     /// socket.
@@ -79,23 +96,31 @@ namespace gazebo
     /// Used to put some buffer between unfreezing and another possible mating.
     private: common::Time unfreezeTimeBuffer = 0;
 
-    /// \brief Roll alignment tolerence.
-    private: double rollAlignmentTolerence;
+    /// \brief Roll alignment tolerance.
+    private: double rollAlignmentTolerance;
 
-    /// \brief pitch alignment tolerence.
-    private: double pitchAlignmentTolerence;
+    /// \brief pitch alignment tolerance.
+    private: double pitchAlignmentTolerance;
 
-    /// \brief Yaw alignment tolerence.
-    private: double yawAlignmentTolerence;
+    /// \brief Yaw alignment tolerance.
+    private: double yawAlignmentTolerance;
 
-    /// \brief Z alignment tolerence.
-    private: double zAlignmentTolerence;
-
-    /// \brief Yaw alignment tolerence.
+    /// \brief force required to mate the plug & socket (lock joint).
     private: double matingForce;
 
-    /// \brief Z alignment tolerence.
+    /// \brief force required to unmate the plug & socket (unlock joint).
     private: double unmatingForce;
+
+    // Some private counter variables ISO "throttled" logging/messages
+
+    /// \brief alignment of plug & socket INFO message
+    private: int alignLogThrottle = 0;
+
+    /// \brief proximity of plug & socket INFO message
+    private: int proximityLogThrottle = 0;
+
+    /// \brief rotational alignment of plug & socket INFO message
+    private: int linksInContactLogThrottle = 0;
 
     /// \brief Concatenates/trims forcesBuffer and timeStamps vectors to
     /// include only the last trimDuration.
@@ -109,52 +134,35 @@ namespace gazebo
     /// \brief Appends another force reading to the forcesBuffer vector.
     void addForce(double force);
 
+    /// \brief Utility function to normalize error angles to (-pi, pi]
+    /// \return normalized angle
+    private: double normalizeError(double error);
+
     /// \brief Constructor.
-    public: WorldUuvPlugin();
+    public: PlugAndSocketMatingPlugin();
 
     /// Documentation inherited.
-    public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
+    public: void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
 
-    /// \brief Locks the prismatic joint.
-    public: void lockJoint(physics::JointPtr prismaticJoint);
+    /// \brief Locks the prismatic joint connecting plug & socket.
+    public: void lockJoint();
 
-    /// \brief Release the plug from the joint.
-    public: void unfreezeJoint(physics::JointPtr prismaticJoint);
-
-    /// \brief Check that plug and socket are aligned in the roll orientation.
-    /// \return Return true of aligned.
-    private: bool checkRollAlignment(double alignmentThreshold);
-
-    /// \brief Check that plug and socket are aligned in the pitch orientation.
-    /// \return Return true if aligned.
-    private: bool checkPitchAlignment(double alignmentThreshold);
-
-    /// \brief Check that plug and socket are aligned in the yaw orientation.
-    /// \return Return true if aligned.
-    private:bool checkYawAlignment(double alignmentThreshold);
-
-    /// \brief Check that plug and socket are aligned in the all orientations.
-    /// \return Return true if aligned.
-    private: bool checkRotationalAlignment(bool verbose = false);
-
-    /// \brief Check if plug and socket have the same altitude.
-    /// \return Return true if on same altitude.
-    private: bool checkVerticalAlignment(double alignmentThreshold,
-                                         bool verbose = false);
+    /// \brief Release the plug from the joint connecting plug & socket.
+    public: void unlockJoint();
 
     /// \brief Check if plug and socket have the same orientation and altitude.
     /// \return Return true if same r,p,y and z.
-    private: bool isAlligned(bool verbose = false);
+    private: bool isAligned();
 
     /// \brief Measure Euclidean distance between plug an socket.
     /// \return Return true if plug is close to the socket.
-    private: bool checkProximity(bool verbose = false);
+    private: bool checkProximity();
 
     /// \brief Creates the prismatic joint between the socket and plug.
-    private: void construct_joint();
+    private: void constructJoint();
 
     /// \brief Distroys the prismatic joint between the socket and the plug.
-    private: void remove_joint();
+    private: void removeJoint();
 
     /// \brief Calculates the average force exerted by contact2 on contact 1.
     /// \return Average force exerted by contact2 on contact1.
@@ -179,6 +187,6 @@ namespace gazebo
     /// \brief Callback executed at every physics update.
     public: void Update();
   };
-  GZ_REGISTER_WORLD_PLUGIN(WorldUuvPlugin)
+  GZ_REGISTER_MODEL_PLUGIN(PlugAndSocketMatingPlugin)
 }
 #endif

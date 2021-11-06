@@ -143,12 +143,12 @@
 
     <include>
       <uri>model://plug</uri>
-      <pose>5 0 -94.84 0 -1.5707963267948966 0</pose>
+      <pose>5 1.5 -96.84 0 -1.5707963267948966 0</pose>
     </include>
 
     <model name="platform">
       <static>true</static>
-      <pose>5 0 -95 0 0 0</pose>
+      <pose>5 1.5 -97 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
@@ -167,22 +167,6 @@
         </visual>
       </link>
     </model>
-
-    <include>
-      <uri>model://socket_box</uri>
-      <pose>0 0 -99.8 0 0 0</pose>
-    </include>
-
-    <plugin name="vehicle_docked_bay1_exterior" filename="libContainPlugin.so">
-      <entity>wamv::base_link</entity>
-      <namespace>vrx/dock_2018/bay_1_external</namespace>
-      <pose frame="robotx_dock_2018::dock_2018_placard1::placard::link">0 -10 -1.5 0 0 0</pose>
-      <geometry>
-        <box>
-          <size>8 1.5 2</size>
-        </box>
-      </geometry>
-    </plugin>
 
     <gui fullscreen='0'>
       <camera name='user_camera'>

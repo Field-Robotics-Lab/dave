@@ -1,0 +1,5 @@
+<?xml version="1.0"?> 
+<launch>
+  <param name="socket"
+         command="$(find xacro)/xacro $(find plug_and_socket_description)/urdf/socket_standalone.xacro" />
+</launch>

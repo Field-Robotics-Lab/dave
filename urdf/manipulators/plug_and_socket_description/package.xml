@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>plug_and_socket_description</name>
+  <version>3.1.1</version>
+  <description>The plug_and_socket package containing Xacro templates
+               associated with the electrical plug and socket using the
+               DAVE plug and socket model plugin</description>
+
+  <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>gazebo_ros</depend>
+  <depend>xacro</depend>
+</package>

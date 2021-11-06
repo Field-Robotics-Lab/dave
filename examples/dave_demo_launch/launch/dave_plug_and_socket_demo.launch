@@ -2,7 +2,7 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_electrical_mating.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_plug_and_socket_demo.world"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="joy_id" default="0"/>
@@ -28,9 +28,9 @@
 
     <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="7.8"/>
-        <arg name="y" value="-0.2"/>
-        <arg name="z" value="-93.7"/>
+        <arg name="x" value="7.5"/>
+        <arg name="y" value="1.25"/>
+        <arg name="z" value="-95.5"/>
         <arg name="yaw" value="3.141592"/>
     </include>
 
@@ -43,5 +43,9 @@
     <include file="$(find oberon7_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov"/>
     </include>
+
+  <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
+  <node name="spawn_socket" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param socket_platform -model socket_platform -x 0 -y 0 -z -99 -Y -1.57079632679" respawn="false" output="screen" />
 
 </launch>

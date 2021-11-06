@@ -92,6 +92,15 @@ add_dependencies(transceiverPlugin
   dave_gazebo_model_plugins_generate_messages_cpp
 )
 
+add_library(plugAndSocketPlugin
+  SHARED
+  src/plug_and_socket_plugin.cc
+)
+target_link_libraries(plugAndSocketPlugin
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+)
+
 # Custom surface properties
 add_library(custom_surface_properties
   SHARED
