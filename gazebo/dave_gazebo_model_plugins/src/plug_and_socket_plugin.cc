@@ -29,6 +29,11 @@ const float JOINT_TEST_RANGE = 0.5;
 // Distance at which the joint will actually be created
 const float JOINT_CREATE_RANGE = 0.14;
 
+// Default plugin parameter values
+const float DEFAULT_ALIGNMENT_TOLERANCE = 0.15;
+const float DEFAULT_MATING_FORCE = 25.0;
+const float DEFAULT_UNMATING_FORCE = 125.0;
+
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                                      sdf::ElementPtr _sdf)
@@ -115,7 +120,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->rollAlignmentTolerance = 0.3;
+    this->rollAlignmentTolerance = DEFAULT_ALIGNMENT_TOLERANCE;
     gzmsg << this->tubeLinkName <<
              " socket Roll Mating Alignment Tolerance was not " <<
              "specified, using default value of " <<
@@ -132,7 +137,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->pitchAlignmentTolerance = 0.3;
+    this->pitchAlignmentTolerance = DEFAULT_ALIGNMENT_TOLERANCE;
     gzmsg << this->tubeLinkName <<
              " socket Pitch Mating Alignment Tolerance was not " <<
              "specified, using default value of " <<
@@ -149,7 +154,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->yawAlignmentTolerance = 0.3;
+    this->yawAlignmentTolerance = DEFAULT_ALIGNMENT_TOLERANCE;
     gzmsg << this->tubeLinkName <<
              " socket Yaw Mating Alignment Tolerance was not " <<
              "specified, using default value of " <<
@@ -164,7 +169,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->matingForce = 50;
+    this->matingForce = DEFAULT_MATING_FORCE;
     gzmsg << this->tubeLinkName <<
              " socket Mating Force not specified, " <<
              "using default value of " << this->matingForce << std::endl;
@@ -178,7 +183,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->unmatingForce = 125;
+    this->unmatingForce = DEFAULT_UNMATING_FORCE;
     gzmsg << this->tubeLinkName <<
              " socket Unmating Force not specified, " <<
              "using default value of " << this->unmatingForce << std::endl;
@@ -401,8 +406,8 @@ void PlugAndSocketMatingPlugin::removeJoint()
   {
     this->joined = false;
     this->prismaticJoint->Detach();
-    this->prismaticJoint->Reset();
-    this->prismaticJoint->Fini();
+    this->plugModel->RemoveJoint(this->tubeLinkName + "_plug_joint");
+    this->prismaticJoint.reset();
     gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
              " joint removed" << std::endl;
   }

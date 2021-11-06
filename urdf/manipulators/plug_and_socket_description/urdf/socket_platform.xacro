@@ -32,7 +32,7 @@
     name="socket1" xyz="0 0 0"
     plug_model_name="plug" plug_link_name="plug" roll_tolerance="0.3"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
-    mating_force="50" unmating_force="125"/>
+    mating_force="25" unmating_force="125"/>
 
   <!-- Revolute joint gets accurately loaded into Gazebo -->
   <joint name="socket1_joint" type="revolute">
@@ -46,7 +46,7 @@
     name="socket2" xyz="0 0 0"
     plug_model_name="plug" plug_link_name="plug" roll_tolerance="0.3"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
-    mating_force="50" unmating_force="125"/>
+    mating_force="25" unmating_force="125"/>
 
   <joint name="socket2_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
@@ -59,7 +59,7 @@
     name="socket3" xyz="0 0 0"
     plug_model_name="plug" plug_link_name="plug" roll_tolerance="0.3"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
-    mating_force="50" unmating_force="125"/>
+    mating_force="25" unmating_force="125"/>
 
   <joint name="socket3_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
@@ -72,7 +72,7 @@
     name="socket4" xyz="0 0 0"
     plug_model_name="plug" plug_link_name="plug" roll_tolerance="0.3"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
-    mating_force="50" unmating_force="125"/>
+    mating_force="25" unmating_force="125"/>
 
   <joint name="socket4_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
@@ -85,7 +85,7 @@
     name="socket5" xyz="0 0 0"
     plug_model_name="plug" plug_link_name="plug" roll_tolerance="${pi}"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
-    mating_force="50" unmating_force="125"/>
+    mating_force="25" unmating_force="125"/>
 
   <joint name="socket5_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
