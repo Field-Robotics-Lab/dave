@@ -12,7 +12,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://teledyne_whn_dsl_description/meshes/WorkhorseNavigator.dae" scale="${scale}"/>
+          <mesh filename="package://dave_sensor_models/models/teledyne_whn_dsl/meshes/WorkhorseNavigator.dae" scale="${scale}"/>
         </geometry>
         <origin xyz="${xyz}" rpy="0 0 0"/>
       </visual>

@@ -137,7 +137,7 @@
       <visual>
         <geometry>
           <!-- Replace with Sonardyne Syrinx 600 mesh when available -->
-          <mesh filename="package://sonardyne_syrinx600_uuvsim_description/meshes/Syrinx600.dae"/>
+          <mesh filename="package://dave_sensor_models/models/sonardyne_syrinx600/meshes/Syrinx600.dae"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 -1.5707963 0"/>
       </visual>

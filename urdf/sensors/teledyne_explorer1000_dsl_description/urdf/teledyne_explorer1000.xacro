@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://teledyne_explorer1000_dsl_description/meshes/MarineExplorer.dae"/>
+          <mesh filename="package://dave_sensor_models/models/teledyne_explorer1000/meshes/MarineExplorer.dae"/>
         </geometry>
         <origin xyz="${xyz}" rpy="${-0.5*pi} 0 ${-0.5*pi}"/>
       </visual>

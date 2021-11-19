@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://teledyne_whn_dsl_description/meshes/WorkhorseNavigator.dae"/>
+          <mesh filename="package://dave_sensor_models/models/teledyne_whn_dsl/meshes/WorkhorseNavigator.dae"/>
         </geometry>
         <origin xyz="${xyz}" rpy="0 0 0"/>
       </visual>

@@ -8,12 +8,8 @@ find_package(catkin REQUIRED
 
 catkin_package()
 
-install(DIRECTORY meshes urdf launch
+install(DIRECTORY urdf launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
         PATTERN "*~" EXCLUDE)
 
-
-install(DIRECTORY launch meshes urdf
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-        PATTERN "*~" EXCLUDE)
 
