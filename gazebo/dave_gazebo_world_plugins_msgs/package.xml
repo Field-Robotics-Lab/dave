@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dave_gazebo_world_plugins_msgs</name>
+  <version>1.0.0</version>
+  <description>The dave_gazebo_world_plugins_msgs package</description>
+  <maintainer email="dtdavis@nps.edu">dtdavis</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>protobuf-dev</buildtool_depend>
+  <build_depend>protobuf</build_depend>
+  <build_export_depend>protobuf</build_export_depend>
+  <exec_depend>protobuf</exec_depend>
+
+  <depend>gazebo_dev</depend>
+  <depend>gazebo_msgs</depend>
+
+  <export>
+  </export>
+</package>

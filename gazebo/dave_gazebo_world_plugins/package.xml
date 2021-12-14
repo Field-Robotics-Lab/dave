@@ -7,16 +7,13 @@
   <license>Apache 2.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <buildtool_depend>protobuf-dev</buildtool_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>roscpp</build_depend>
-  <build_depend>protobuf</build_depend>
   <build_export_depend>gazebo_ros</build_export_depend>
-  <build_export_depend>protobuf</build_export_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>roscpp</exec_depend>
-  <exec_depend>protobuf</exec_depend>
 
+  <depend>dave_gazebo_world_plugins_msgs</depend>
   <depend>gazebo_dev</depend>
   <depend>gazebo_msgs</depend>
 
