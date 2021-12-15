@@ -3,7 +3,7 @@
   <name>teledyne_explorer1000_dsl_description</name>
   <version>3.1.1</version>
   <description>The teledyne_explorer1000_dsl_description package containing Xacro templates associated with the Teledyne Explorer 1000 DVL using the WHOI DSL Gazebo environment DVL plugin</description>
-
+  <author email="dtdavi1@nps.edu">Duane Davis</author>
   <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 

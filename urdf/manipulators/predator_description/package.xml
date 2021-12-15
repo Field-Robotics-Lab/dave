@@ -3,7 +3,7 @@
   <name>predator_description</name>
   <version>0.0.1</version>
   <description>Robot and parameter description for the mock-up model of the Kraft Robotics Predator Arm</description>
-  
+  <author email="khakyya@gmail.com">Youssef Khaky</author>
   <maintainer email="khakyya@gmail.com">Youssef Khaky</maintainer>
 
   <license>Apache-2.0</license>
