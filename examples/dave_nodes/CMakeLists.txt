@@ -41,4 +41,7 @@ install(DIRECTORY launch
 catkin_install_python(PROGRAMS
   src/simple_box_motion.py
   src/joy_thrusterop.py
+  src/dvl_gradient_plot.py
+  src/dvl_state_and_gradient_dsl.py
+  src/dvl_state_and_gradient_uuvsim.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
