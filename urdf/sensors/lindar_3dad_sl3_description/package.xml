@@ -3,7 +3,7 @@
   <name>lidar_3dad_sl3_description</name>
   <version>3.1.1</version>
   <description>The 3dad_sl3_description package containing macros for the 3D at Depth SL3 subsea LIDAR</description>
-
+  <author email="mrmccarr@nps.edu"> Michael McCarrin</author>
   <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 

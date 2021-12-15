@@ -3,7 +3,7 @@
   <name>predator_control</name>
   <version>0.1.1</version>
   <description>Package with configuration and launch files to control the predator manipulator.</description>
-  
+  <author email="khakyya@gmail.com">Youssef Khaky</author>
   <maintainer email="khakyya@gmail.com">Youssef Khaky</maintainer>
 
   <license>Apache-2.0</license>

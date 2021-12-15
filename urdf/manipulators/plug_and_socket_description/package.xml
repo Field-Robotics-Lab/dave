@@ -5,7 +5,7 @@
   <description>The plug_and_socket package containing Xacro templates
                associated with the electrical plug and socket using the
                DAVE plug and socket model plugin</description>
-
+  <author email="khakyya@gmail.com">Youssef Khaky</author>
   <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 

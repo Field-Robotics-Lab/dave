@@ -3,7 +3,7 @@
   <name>dave_robot_models</name>
   <version>3.1.1</version>
   <description>The dave_robot_models package</description>
-
+  <author email="woensug.choi.ks@nps.edu">Woensug Choi</author>
   <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 

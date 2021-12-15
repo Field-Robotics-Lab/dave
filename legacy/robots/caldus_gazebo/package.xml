@@ -3,9 +3,9 @@
   <name>caldus_gazebo</name>
   <version>0.0.0</version>
   <description>The caldus_gazebo package</description>
+  <author email="bbingham@nps.edu">Brian Bingham</author>
   <maintainer email="dtdavi1@nps.edu">dtdavi1</maintainer>
   <license>Apache2</license>
-  <author email="dtdavi1@nps.edu">dtdavi1</author>
   <buildtool_depend>catkin</buildtool_depend>
   <depend>uuv_dave</depend>
   <depend>caracara_description</depend>

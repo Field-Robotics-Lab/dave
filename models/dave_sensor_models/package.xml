@@ -3,13 +3,13 @@
   <name>dave_sensor_models</name>
   <version>3.1.1</version>
   <description>The dave_sensor_models package</description>
-
+  <author email="dtdavi1@nps.edu">Duane Davis</author>
   <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>gazebo_ros</depend>
+  <depend>gazebo_ros</depend>s
   <depend>uuv_sensor_ros_plugins</depend>
   <depend>ds_sim</depend>
   <export>
