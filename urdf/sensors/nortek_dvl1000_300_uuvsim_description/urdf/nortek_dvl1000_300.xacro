@@ -136,7 +136,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://nortek_dvl1000_300_uuvsim_description/meshes/DVL1000-300m.dae"/>
+          <mesh filename="package://dave_sensor_models/models/nortek_dvl1000_300/meshes/DVL1000-300m.dae"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 -1.5707963267948966 0"/>
       </visual>

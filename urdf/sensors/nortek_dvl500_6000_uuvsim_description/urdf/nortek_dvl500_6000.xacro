@@ -136,8 +136,7 @@
       </inertial>
       <visual>
         <geometry>
-          <!-- Replace with Nortek DVL500 mesh when available -->
-          <mesh filename="package://nortek_dvl500_6000_uuvsim_description/meshes/DVL500-6000m.dae"/>
+          <mesh filename="package://dave_sensor_models/models/nortek_dvl500_6000/meshes/DVL500-6000m.dae"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 -1.5707963267948966 0"/>
       </visual>

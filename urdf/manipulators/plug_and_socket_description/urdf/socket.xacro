@@ -16,13 +16,13 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://plug_and_socket_description/meshes/Electrical-Socket.dae" scale="0.12 0.12 0.12"/>
+          <mesh filename="package://dave_object_models/models/socket/meshes/Electrical-Socket.dae" scale="0.12 0.12 0.12"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 ${-pi/2}"/>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://plug_and_socket_description/meshes/Electrical-Socket.dae" scale="0.12 0.12 0.12"/>
+          <mesh filename="package://dave_object_models/models/socket/meshes/Electrical-Socket.dae" scale="0.12 0.12 0.12"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 ${-pi/2}"/>
       </collision>

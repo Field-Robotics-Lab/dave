@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <visual>
         <geometry>
           <!-- Replace mesh with correct one once it's available -->
-          <mesh filename="package://sonardyne_syrinx600_dsl_description/meshes/Syrinx600.dae"/>
+          <mesh filename="package://dave_sensor_models/models/sonardyne_syrinx600/meshes/Syrinx600.dae"/>
         </geometry>
         <origin xyz="${xyz}" rpy="0 ${pi} 0"/>
       </visual>
