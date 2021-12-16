@@ -3,7 +3,7 @@
   <name>dave_worlds</name>
   <version>3.1.1</version>
   <description>The dave_worlds package</description>
-
+  <author email="dtdavi1@nps.edu">dtdavis</author>
   <maintainer email="dtdavi1@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 

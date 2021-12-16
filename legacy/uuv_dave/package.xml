@@ -3,13 +3,9 @@
   <name>uuv_dave</name>
   <version>0.0.1</version>
   <description>The uuv_dave package</description>
-
   <maintainer email="bdallen@nps.edu">Bruce Allen</maintainer>
-
   <author email="bdallen@nps.edu">Bruce Allen</author>
-
   <license>Apache-2.0</license>
-
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend version_gte="2.5.17">gazebo_ros</depend>
