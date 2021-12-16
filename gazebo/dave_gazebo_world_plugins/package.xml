@@ -3,6 +3,7 @@
   <name>dave_gazebo_world_plugins</name>
   <version>3.1.1</version>
   <description>The dave_gazebo_world_plugins package (Gazebo world plugin definitions)</description>
+  <author email="dtdavi1@nps.edu">Duane Davis</author>
   <maintainer email="dtdavis@nps.edu">dtdavis</maintainer>
   <license>Apache 2.0</license>
 

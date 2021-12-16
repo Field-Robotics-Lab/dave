@@ -50,8 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
       </inertial>
       <visual>
         <geometry>
-          <!-- Replace mesh with correct one once it's available -->
-          <mesh filename="package://nortek_dvl500_300_dsl_description/meshes/DVL500-300m.dae"/>
+          <mesh filename="package://dave_sensor_models/models/nortek_dvl500_300/meshes/DVL500-300m.dae"/>
         </geometry>
         <origin xyz="${xyz}" rpy="0 ${pi} 0"/>
       </visual>
