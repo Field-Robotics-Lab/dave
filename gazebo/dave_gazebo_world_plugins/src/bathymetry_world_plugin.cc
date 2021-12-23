@@ -43,11 +43,6 @@ struct bathy_grid_t
 {
   std::string prefix;
   int priority;
-  int epsg;
-
-  // spatial reference system
-  OGRSpatialReference srs;
-  OGRCoordinateTransformation *poCT;
 
   // lower-left-hand-corner.
   double anchor_lat;
@@ -72,13 +67,10 @@ namespace gazebo
       this->sdf = _sdf;
 
       // Load the spatial reference system (simulation coordinates)
-      this->srs.importFromEPSG(this->sdf->GetElement("projection")->Get<int>(
-        "epsg"));
-      OGRSpatialReference tsrs;
-
+      this->srs.importFromEPSG(3857);
       // lat/lon
-      tsrs.importFromEPSG(4326);
-      this->poCT = OGRCreateCoordinateTransformation(&this->srs, &tsrs);
+      this->tsrs.importFromEPSG(4326);
+      this->poCT = OGRCreateCoordinateTransformation(&this->srs, &this->tsrs);
 
       // populate the list of available bathymetry.
       if (_sdf->HasElement("bathymetry"))
@@ -99,14 +91,6 @@ namespace gazebo
 
           bg->prefix = gridSDF->Get<std::string>("prefix");
           bg->priority = gridSDF->Get<int>("priority");
-
-          bg->epsg = gridSDF->Get<int>("epsg");
-          bg->srs.importFromEPSG(bg->epsg);
-
-          // lat/lon
-          tsrs.importFromEPSG(4326);
-          bg->poCT = OGRCreateCoordinateTransformation(&this->srs, &tsrs);
-
           bg->anchor_lat = gridSDF->Get<double>("anchor_lat");
           bg->anchor_lon = gridSDF->Get<double>("anchor_lon");
           bg->spacing_lat = gridSDF->Get<double>("spacing_lat");
@@ -250,11 +234,11 @@ namespace gazebo
                 double sEasting = pose.Pos().X();
 
                 // This is both the input and output to Transform() below.
-                double tLat = sNorthing;
-                double tLon = sEasting;
+                double tLat = sEasting;
+                double tLon = sNorthing;
 
                 if (this->poCT == NULL ||
-                    !this->poCT->Transform(1, &tLon, &tLat))
+                    !this->poCT->Transform(1, &tLat, &tLon))
                 {
                   gzerr << "Projected coordinate transformation failed."
                         << std::endl;
@@ -268,8 +252,8 @@ namespace gazebo
                   {
                     bathy_grid_t *bg = this->bathy_grids[nn];
 
-                    int col = floor((tLat - bg->anchor_lon) / bg->spacing_lon);
-                    int row = floor((tLon - bg->anchor_lat) / bg->spacing_lat);
+                    int col = floor((tLon - bg->anchor_lon) / bg->spacing_lon);
+                    int row = floor((tLat - bg->anchor_lat) / bg->spacing_lat);
 
                     // If bathymetry exists for this location it is the highest
                     // priority available so use it and don't check lower
@@ -385,13 +369,9 @@ namespace gazebo
                 << lonc + this->bathy_grids[nn]->spacing_lon << "_"
                 << latc << "_"
                 << latc + this->bathy_grids[nn]->spacing_lat;
-            std::string fnamestr = "model://" + this->bathy_grids[nn]->prefix +
-              "." + bboxstr.str() + ".epsg" + std::to_string(
-                this->bathy_grids[nn]->epsg);
             std::string modelnamestr = this->bathy_grids[nn]->prefix + "." +
               bboxstr.str();
-
-            this->world->InsertModelFile(fnamestr);
+            this->world->InsertModelFile("model://" + modelnamestr + ".epsg3857");
             gzdbg << "Inserted model: " << modelnamestr << std::endl;
             // Next call almost always returns NULL because apparently the one
             // above isn't blocking and insertion takes some time.
@@ -473,6 +453,7 @@ namespace gazebo
 
     // spatial reference system
     private: OGRSpatialReference srs;
+    private: OGRSpatialReference tsrs;
 
     private: OGRCoordinateTransformation *poCT;
 
