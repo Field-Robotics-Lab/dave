@@ -1,0 +1,57 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='m_to_f_socket'>
+
+    <link name ='receptacle'>
+      <pose>0 0 0 0 0 0</pose>
+      <visual name ='receptacle_visual'>
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://f_to_m_receptacle/meshes/Plug-Receptacle.dae</uri>
+            <scale>0.4 0.4 0.4</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name ='receptacle_collision'>
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae</uri>
+            <scale>0.4 0.4 0.4</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name ='sensor_plate'>
+      <pose>0 0 0 0 0 0</pose>
+      <collision name ='plate_collision'>
+        <pose>0.02 0 0 0 1.5707963267948966 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.06</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="sensor_plate_joint" type="fixed">
+        <parent>receptacle</parent>
+        <child>sensor_plate</child>
+    </joint>
+
+    <!-- Electrical receptacle plugin (pairs with the plug model loaded separately)-->
+    <plugin name="plug_and_socket" filename="libplugAndSocketPlugin.so">
+      <socketTubeLink>receptacle</socketTubeLink>
+      <sensorPlateLink>sensor_plate</sensorPlateLink>
+      <plugModel>f_to_m_plug</plugModel>
+      <plugLink>plug</plugLink>
+      <rollAlignmentTolerance>0.3</rollAlignmentTolerance>
+      <pitchAlignmentTolerance>0.3</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>0.3</yawAlignmentTolerance>
+    </plugin>
+
+  </model>
+</sdf>

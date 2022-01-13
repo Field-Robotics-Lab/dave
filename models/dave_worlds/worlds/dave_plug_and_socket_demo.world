@@ -177,7 +177,12 @@
 
     <include>
       <uri>model://m_to_f_plug</uri>
-      <pose>-0.5 2.48 -97.84 0 -1.5707963267948966 0</pose>
+      <pose>-0.5 2.25 -97.84 0 -1.5707963267948966 0</pose>
+    </include>
+
+    <include>
+      <uri>model://f_to_m_plug</uri>
+      <pose>-0.5 2.75 -97.84 0 -1.5707963267948966 0</pose>
     </include>
 
     <gui fullscreen='0'>

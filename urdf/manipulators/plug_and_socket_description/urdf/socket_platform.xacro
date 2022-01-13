@@ -3,6 +3,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="socket">
 
   <xacro:include filename="$(find plug_and_socket_description)/urdf/m_to_f_socket.xacro"/>
+  <xacro:include filename="$(find plug_and_socket_description)/urdf/f_to_m_receptacle.xacro"/>
 
   <link name="socket_platform_link">
       <inertial name="socket_platform_inertial">
@@ -27,18 +28,18 @@
   </link>
 
   <!-- Generate the sockets & attach them to the platform link -->
-  <xacro:m_to_f_socket_macro
-    name="socket1" xyz="0 0 0"
-    plug_model_name="m_to_f_plug" plug_link_name="plug" roll_tolerance="0.3"
+  <xacro:f_to_m_receptacle_macro
+    name="receptacle1" xyz="0 0 0"
+    plug_model_name="f_to_m_plug" plug_link_name="plug" roll_tolerance="0.3"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
     mating_force="25" unmating_force="125"/>
 
   <!-- Revolute joint gets accurately loaded into Gazebo -->
-  <joint name="socket1_joint" type="revolute">
+  <joint name="receptacle1_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="-0.31 0.51 1.34" rpy="0 ${-pi/4} ${pi/2}"/>
+    <origin xyz="-0.31 0.43 1.26" rpy="0 ${-pi/4} ${pi/2}"/>
     <parent link="socket_platform_link"/>
-    <child link="socket1_link"/>
+    <child link="receptacle1_link"/>
   </joint>
 
   <xacro:m_to_f_socket_macro
@@ -54,17 +55,17 @@
     <child link="socket2_link"/>
   </joint>
 
-  <xacro:m_to_f_socket_macro
-    name="socket3" xyz="0 0 0"
-    plug_model_name="m_to_f_plug" plug_link_name="plug" roll_tolerance="0.3"
+  <xacro:f_to_m_receptacle_macro
+    name="receptacle3" xyz="0 0 0"
+    plug_model_name="f_to_m_plug" plug_link_name="plug" roll_tolerance="0.3"
     pitch_tolerance="0.3" yaw_tolerance="0.3"
     mating_force="25" unmating_force="125"/>
 
-  <joint name="socket3_joint" type="revolute">
+  <joint name="receptacle3_joint" type="revolute">
     <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
-    <origin xyz="-0.98 0.56 1.33" rpy="0 ${-pi/4} ${pi/2}"/>
+    <origin xyz="-0.98 0.48 1.25" rpy="0 ${-pi/4} ${pi/2}"/>
     <parent link="socket_platform_link"/>
-    <child link="socket3_link"/>
+    <child link="receptacle3_link"/>
   </joint>
 
 </robot>
