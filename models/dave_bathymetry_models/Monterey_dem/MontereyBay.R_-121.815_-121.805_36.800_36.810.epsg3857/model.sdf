@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="MontereyBay.R_-121.815_-121.805_36.800_36.810">
+    <static>true</static>
+    <!-- <pose></pose> -->
+    <self_collide>false</self_collide>
+    <link name="link">
+        <collision name="collision">
+          <geometry>
+            <heightmap>
+              <uri>model://MontereyBay.R_-121.815_-121.805_36.800_36.810.epsg3857/heightmap/MontereyBay.R_-121.815_-121.805_36.800_36.810.epsg3857.tif</uri>
+              <scale>1 1 1</scale>
+              <pos>-13559827.175  4411961.067 0.0</pos>
+            </heightmap>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <texture>
+                <diffuse>model://MontereyBay.R_-121.815_-121.805_36.800_36.810.epsg3857/heightmap/MontereyBay.R_-121.815_-121.805_36.800_36.810.epsg3857.texture.png</diffuse>
+                <normal>file://media/materials/textures/flat_normal.png</normal>
+                <size>1226.58</size>
+              </texture>
+              <!-- <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/flat_normal.png</normal>
+                <size>10</size>
+              </texture>
+              <texture>
+                <diffuse>file://media/materials/textures/grass_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/flat_normal.png</normal>
+                <size>10</size>
+              </texture>
+              <texture>
+                <diffuse>file://media/materials/textures/fungus_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/flat_normal.png</normal>
+                <size>10</size>
+              </texture>
+              <blend>
+                <min_height>-100</min_height>
+                <fade_dist>5</fade_dist>
+              </blend>
+              <blend>
+                <min_height>-50</min_height>
+                <fade_dist>5</fade_dist>
+              </blend> -->
+              <uri>model://MontereyBay.R_-121.815_-121.805_36.800_36.810.epsg3857/heightmap/MontereyBay.R_-121.815_-121.805_36.800_36.810.epsg3857.tif</uri>
+              <scale>1 1 1</scale>
+              <pos>-13559827.175  4411961.067 0.0</pos>
+            </heightmap>
+          </geometry>
+        </visual>
+
+
+    </link>
+  </model>
+</sdf>

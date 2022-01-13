@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="default">
+
+    <physics name="50Hz" default="true" type="ode">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+
+    <light type="directional" name="sun">
+      <pose>50 0 150 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>.1 .1 .1 1</specular>
+      <direction>0.3 0.3 -1</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
+    <!-- Virtual NED frame -->
+    <include>
+      <uri>model://ned_frame</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <plugin name="underwater_current_plugin" filename="libuuv_underwater_current_ros_plugin.so">
+      <namespace>hydrodynamics</namespace>
+      <constant_current>
+        <topic>current_velocity</topic>
+        <velocity>
+          <mean>10</mean>
+          <min>0</min>
+          <max>10</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </velocity>
+
+        <horizontal_angle>
+          <mean>3.1415</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </horizontal_angle>
+
+        <vertical_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </vertical_angle>
+      </constant_current>
+    </plugin>
+
+    <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
+
+    <plugin name="dave_bathymetry_plugin" filename="libdave_bathymetry_world_plugin.so">
+      <bathymetry>
+        <grid prefix="MontereyBay" priority="1" epsg="3857" colmax="50" rowmax="50" anchor_lon="-121.825" anchor_lat="36.790" spacing_lon="0.01" spacing_lat="0.01" />
+      </bathymetry>
+    </plugin>
+
+    <gui>
+      <camera name="user_camera">
+        <projection_type>orthographic</projection_type>
+        <!-- <pose>-13559693 4411815 189.00 0 0.78 2.32</pose> -->
+        <clip>
+          <near>0.1</near>
+          <far>5000</far>
+        </clip>
+        <track_visual>
+          <use_model_frame>true</use_model_frame>
+          <name>rexrov</name>
+          <static>true</static>
+          <min_dist>10.0</min_dist>
+          <max_dist>10.0</max_dist>
+          <xyz>10 -10 10</xyz>
+        </track_visual>
+      </camera>
+    </gui>
+
+  </world>
+</sdf>

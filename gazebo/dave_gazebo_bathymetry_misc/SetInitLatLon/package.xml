@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>set_init_latlon</name>
+  <version>0.0.0</version>
+  <description> Set initial location using latitude and longitude for bathymetry </description>
+  <maintainer email="woensug.choi@gmail.com">Woensug Choi</maintainer>
+  <license>TODO</license>
+
+  <depend>rospy</depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

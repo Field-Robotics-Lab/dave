@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find dave_worlds)/worlds/dave_bathymetry_demo.world --verbose -u -e ode" respawn="false" output="screen">
+        <env name="GAZEBO_RESOURCE_PATH" value="$(optenv GAZEBO_RESOURCE_PATH):$(find dave_worlds)/media/"/>
+        <env name="GAZEBO_MODEL_PATH" value="$(optenv GAZEBO_MODEL_PATH):$(find dave_bathymetry_models)/Monterey_dem/"/>
+    </node>
+
+    <arg name="robot_name" value="rexrov"/>
+    <arg name="initial_latitude" value="36.805"/>
+    <arg name="initial_longitude" value="-121.810"/>
+    <arg name="initial_depth" value="-5"/>
+    <!-- <arg name="init_pose" default="-x -13559827.17 -y 4411961.04 -z -1 -Y 3.14" /> -->
+
+    <!-- rexrov robot -->
+    <!-- <group ns="rexrov"> -->
+        <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_bathymetry.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <!-- <arg name="init_pose" value="$(arg init_pose)"/> -->
+        </include>
+    <!-- </group> -->
+
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <arg name="velocity_control" default="true"/>
+    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
+    </include>
+
+    <!-- Set initial position using latitude and longitude (EPSG:4326) -->
+    <include file="$(find set_init_latlon)/launch/set_init_latlon.launch">
+        <arg name="namespace" value="$(arg robot_name)"/>
+        <arg name="init_lat" value="$(arg initial_latitude)"/>
+        <arg name="init_lon" value="$(arg initial_longitude)"/>
+        <arg name="depth" value="$(arg initial_depth)"/>
+    </include>
+
+    <!-- Merry-go-round maneuver -->
+    <!-- <include file="$(find merry_go_round)/launch/merry_go_round.launch">
+        <arg name="namespace" value="$(arg robot_name)"/>
+        <arg name="center_lat" value="$(arg initial_latitude)"/>
+        <arg name="center_lon" value="$(arg initial_longitude)"/>
+        <arg name="radius" value="230"/>
+        <arg name="depth" value="$(arg initial_depth)"/>
+        <arg name="angularSpeed" value="30"/>
+    </include> -->
+
+</launch>

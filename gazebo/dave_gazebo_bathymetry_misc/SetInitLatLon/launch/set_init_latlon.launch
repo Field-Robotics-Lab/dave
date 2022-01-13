@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="namespace" default="robot" doc="namespace of the robot"/>
+  <arg name="init_lat" default="36.790" doc="initial latitude"/>
+  <arg name="init_lon" default="-121.810" doc="initial longitude"/>
+  <arg name="depth" default="10" doc="depth"/>
+
+  <node pkg="set_init_latlon" type="set_init_latlon.py"	name="set_init_latlon"	output="screen">
+    <param name="namespace" value="$(arg namespace)"/>
+    <param name="init_lat" value="$(arg init_lat)"/>
+    <param name="init_lon" value="$(arg init_lon)"/>
+    <param name="depth" value="$(arg depth)"/>
+  </node>
+
+</launch>
