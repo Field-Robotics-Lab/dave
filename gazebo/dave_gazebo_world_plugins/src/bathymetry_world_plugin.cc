@@ -372,8 +372,7 @@ namespace gazebo
             std::string modelnamestr = this->bathy_grids[nn]->prefix + "." +
               bboxstr.str();
             this->world->InsertModelFile(
-                "model://" + modelnamestr + ".epsg3857"
-                );
+                "model://" + modelnamestr + ".epsg3857");
             gzdbg << "Inserted model: " << modelnamestr << std::endl;
             // Next call almost always returns NULL because apparently the one
             // above isn't blocking and insertion takes some time.
