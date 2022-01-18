@@ -43,6 +43,7 @@ struct bathy_grid_t
 {
   std::string prefix;
   int priority;
+  int tiles_to_keep;
 
   // lower-left-hand-corner.
   double anchor_lat;
@@ -91,6 +92,7 @@ namespace gazebo
 
           bg->prefix = gridSDF->Get<std::string>("prefix");
           bg->priority = gridSDF->Get<int>("priority");
+          bg->tiles_to_keep = gridSDF->Get<int>("tiles_to_keep");
           bg->anchor_lat = gridSDF->Get<double>("anchor_lat");
           bg->anchor_lon = gridSDF->Get<double>("anchor_lon");
           bg->spacing_lat = gridSDF->Get<double>("spacing_lat");
@@ -434,7 +436,7 @@ namespace gazebo
         }
 
         // Perform delayed removal
-        if (delayRemoveList.size() >= 1)
+        if (delayRemoveList.size() >= this->bathy_grids[nn]->tiles_to_keep)
         {
           std::string modelnamestr = delayRemoveList.front();
           delayRemoveList.erase(delayRemoveList.begin());
