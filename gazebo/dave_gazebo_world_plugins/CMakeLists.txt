@@ -44,15 +44,16 @@ message(STATUS "GAZEBO_MSG_INCLUDE_DIRS = " ${GAZEBO_MSG_INCLUDE_DIRS})
 file(GLOB msgs msgs/*.proto)
 
 catkin_package(
-	INCLUDE_DIRS
+  INCLUDE_DIRS
     include
     ${CMAKE_CURRENT_BINARY_DIR} # for generated messages
     ${GAZEBO_MSG_INCLUDE_DIRS}
-	LIBRARIES
+  LIBRARIES
+    dave_gazebo_world_plugins_msgs
     dave_ocean_current_world_plugin
-	CATKIN_DEPENDS
-		gazebo_dev
-		gazebo_msgs
+  CATKIN_DEPENDS
+    gazebo_dev
+    gazebo_msgs
     gazebo_ros
     roscpp
 )
