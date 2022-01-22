@@ -182,7 +182,8 @@ namespace gazebo
 
     /// \brief Gets the collision index between two links.
     /// \return Collision index between contact1 and contact2.
-    public: int getCollisionBetween(std::string contact1, std::string contact2);
+    public: std::vector<int>
+            getCollisionsBetween(std::string contact1, std::string contact2);
 
     /// \brief Callback executed at every physics update.
     public: void Update();

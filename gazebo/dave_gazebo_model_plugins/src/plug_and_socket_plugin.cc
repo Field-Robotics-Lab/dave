@@ -18,6 +18,7 @@
 #include <algorithm>    // std::lower_bound
 #include <dave_gazebo_model_plugins/plug_and_socket_plugin.h>
 
+
 using namespace gazebo;
 
 // Counters are used for message throttle of some output
@@ -32,7 +33,7 @@ const float JOINT_CREATE_RANGE = 0.14;
 // Default plugin parameter values
 const float DEFAULT_ALIGNMENT_TOLERANCE = 0.15;
 const float DEFAULT_MATING_FORCE = 25.0;
-const float DEFAULT_UNMATING_FORCE = 125.0;
+const float DEFAULT_UNMATING_FORCE = 60.0;
 
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
@@ -242,6 +243,7 @@ void PlugAndSocketMatingPlugin::lockJoint()
     return;
   }
   this->locked = true;
+  this->unfreezeTimeBuffer =  this->world->SimTime();
   gzmsg << this->tubeLinkName << "-" << this->plugLinkName <<
            " joint locked!" << std::endl;
   double currentPosition = this->prismaticJoint->Position(0);
@@ -303,8 +305,6 @@ bool PlugAndSocketMatingPlugin::isAligned()
                                            this->pitchAlignmentTolerance));
   bool rangeOK = (range >= 0.0) && (range <= JOINT_TEST_RANGE);
 
-  this->alignLogThrottle =
-      (this->alignLogThrottle + 1) % LOG_THROTTLE_RATE;
   if (orientOK && lateralOK && rangeOK)
   {
     if (this->alignLogThrottle == 0)
@@ -348,8 +348,6 @@ bool PlugAndSocketMatingPlugin::checkProximity()
   bool withinProximity =
     pow(xdiff_squared+ydiff_squared+zdiff_squared, 0.5) < JOINT_CREATE_RANGE;
 
-  this->proximityLogThrottle =
-      (this->proximityLogThrottle + 1) % LOG_THROTTLE_RATE;
   if (withinProximity)
   {
     if (this->proximityLogThrottle == 0)
@@ -417,20 +415,39 @@ void PlugAndSocketMatingPlugin::removeJoint()
 bool PlugAndSocketMatingPlugin::averageForceOnLink(std::string contact1,
                                                    std::string contact2)
 {
-  int contactIndex = this->getCollisionBetween(contact1, contact2);
-  if (contactIndex == -1)
-      return false;
-  physics::Contact *contact =
-    this->world->Physics()->GetContactManager()->GetContact(contactIndex);
-  // TODO: update to use vectored force rather than just magnitude
-  if (contact->collision1->GetLink()->GetName() == contact1)
+  msgs::Contact contactMsg;
+  std::vector<int> contacts = this->getCollisionsBetween(contact1, contact2);
+  if (contacts.size() == 0)
   {
-    this->addForce(contact->wrench[0].body1Force.Length());
+    return false;
   }
-  else
+
+  double force = 0.0;
+  for (int i = 0; i < contacts.size(); i++)
   {
-    this->addForce(contact->wrench[0].body2Force.Length());
+    physics::Contact *contact =
+      this->world->Physics()->GetContactManager()->GetContact(contacts[i]);
+    contact->FillMsg(contactMsg);
+    ignition::math::Vector3d body1F(0.0, 0.0, 0.0);
+    ignition::math::Vector3d body2F(0.0, 0.0, 0.0);
+    for (int j = 0; j < contactMsg.wrench().size(); j++)
+    {
+      msgs::Vector3d f1 = contactMsg.wrench()[j].body_1_wrench().force();
+      msgs::Vector3d f2 = contactMsg.wrench()[j].body_2_wrench().force();
+      body1F += ignition::math::Vector3d(f1.x(), f1.y(), f1.z());
+      body2F += ignition::math::Vector3d(f2.x(), f2.y(), f2.z());
+    }
+    // Add force applied to the plug along its link X axis
+    if (contact->collision1->GetLink()->GetName() == contact1)
+    {
+      force += body1F[0];
+    }
+    else
+    {
+      force += body2F[0];
+    }
   }
+  this->addForce(force);
   this->trimForceVector(0.1);
   return true;
 }
@@ -450,9 +467,9 @@ bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
       if (DEBUG)
-        gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
-                 " sensor plate average: " << averageForce <<
-                 ", size " << this->forcesBuffer.size() << std::endl;
+        gzdbg << this->tubeLinkName << "-" << this->plugLinkName
+              << " sensor plate average: " << averageForce
+              << ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -468,6 +485,8 @@ bool PlugAndSocketMatingPlugin::isPlugPushingSensorPlate(
 bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
     int numberOfDatapointsThresh)
 {
+  // This will sum forces from all "*finger_tip*" links in contact
+  // with the plug (right & left in the demo)
   if (!this->averageForceOnLink(this->plugLinkName, "finger_tip"))
   {
     return false;
@@ -479,9 +498,9 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
         (this->forcesBuffer.size() > numberOfDatapointsThresh))
     {
       if (DEBUG)
-        gzdbg << this->tubeLinkName << "-" << this->plugLinkName <<
-                 " end effector average: " << averageForce <<
-                 ", size " << this->forcesBuffer.size() << std::endl;
+        gzdbg << this->tubeLinkName << "-" << this->plugLinkName
+              << " end effector average: " << averageForce
+              << ", size " << this->forcesBuffer.size() << std::endl;
       this->forcesBuffer.clear();
       this->timeStamps.clear();
       return true;
@@ -494,15 +513,17 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
 }
 
 //////////////////////////////////////////////////
-int PlugAndSocketMatingPlugin::getCollisionBetween(std::string contact1,
-                                                   std::string contact2)
+std::vector<int>
+PlugAndSocketMatingPlugin::getCollisionsBetween(std::string contact1,
+                                                std::string contact2)
 {
+  std::vector<int> collisions;
   for (int i = 0;
        i < this->world->Physics()->GetContactManager()->GetContactCount(); i++)
   {
     physics::Contact *contact =
       this->world->Physics()->GetContactManager()->GetContact(i);
-    bool isPlugContactingSensorPlate =
+    bool inContact =
            (contact->collision1->GetLink()->GetName().find(contact1) !=
                                                           std::string::npos) &&
            (contact->collision2->GetLink()->GetName().find(contact2) !=
@@ -511,20 +532,18 @@ int PlugAndSocketMatingPlugin::getCollisionBetween(std::string contact1,
                                                           std::string::npos) &&
            (contact->collision2->GetLink()->GetName().find(contact1) !=
                                                           std::string::npos);
-
-    this->linksInContactLogThrottle =
-        (this->linksInContactLogThrottle + 1) % LOG_THROTTLE_RATE;
-    if (isPlugContactingSensorPlate)
+    if (inContact)
     {
-      if (this->linksInContactLogThrottle == 0)
-      {
-        gzmsg << contact1 << " and " << contact2 << " in contact." <<
-                 std::endl;
-      }
-      return i;
+      collisions.push_back(i);
     }
   }
-  return -1;
+
+  if ((this->linksInContactLogThrottle == 0) && (collisions.size() > 0))
+  {
+    gzmsg << contact1 << " and " << contact2 << " in contact in "
+          << collisions.size() << " places." <<std::endl;
+  }
+  return collisions;
 }
 
 //////////////////////////////////////////////////
@@ -574,4 +593,12 @@ void PlugAndSocketMatingPlugin::Update()
       this->unlockJoint();
     }
   }
+
+  // Increment the logging throttle counters
+  this->proximityLogThrottle =
+      (this->proximityLogThrottle + 1) % LOG_THROTTLE_RATE;
+  this->alignLogThrottle =
+      (this->alignLogThrottle + 1) % LOG_THROTTLE_RATE;
+  this->linksInContactLogThrottle =
+      (this->linksInContactLogThrottle + 1) % LOG_THROTTLE_RATE;
 }
