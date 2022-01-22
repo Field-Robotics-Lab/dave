@@ -70,7 +70,7 @@
 
     <!-- Heightmap -->
     <include>
-      <uri>model://sand_heightmap</uri>
+      <uri>model://occluded_sand_heightmap</uri>
       <pose>0 0 -95 0 0 0</pose>
     </include>
 
@@ -122,14 +122,12 @@
     </include>
 
     <model name="mud_pit_thin">
-      <pose>5 1.5 -95.074951 0 0 0</pose>
+      <pose>0 0 -94.9 0 0 0</pose>
       <static>true</static>
       <link name="link">
         <collision name="collision">
           <geometry>
-            <box>
-              <size>5 3 0.2</size>
-            </box>
+            <mesh><uri>model://occluded_sand_heightmap/meshes/occluded_sand_mudpit.dae</uri></mesh>
           </geometry>
           <surface>
             <contact>
@@ -137,17 +135,17 @@
             </contact>
           </surface>
         </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>5 3 0.2</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.2 0.2 0.2 1.0</ambient>
-            <diffuse>.421 0.225 0.0 1.0</diffuse>
-          </material>
-        </visual>
+              <visual name='visual'>
+        <geometry>
+          <mesh><uri>model://occluded_sand_heightmap/meshes/occluded_sand_mudpit.dae</uri></mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Brown</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
         <sensor name="mud_contact" type="contact">
           <always_on>true</always_on>
           <update_rate>1000</update_rate>

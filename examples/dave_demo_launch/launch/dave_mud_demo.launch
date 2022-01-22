@@ -2,7 +2,7 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_mud_demo.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_mud_occlusion_demo.world"/>
     <arg name="namespace" default="rexrov"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
