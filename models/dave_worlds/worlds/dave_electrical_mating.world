@@ -141,6 +141,12 @@
 
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
+    <include>
+      <uri>model://bop_panel</uri>
+      <static>true</static>
+      <pose>-4.4 0 -101.5 0 0 0</pose>
+    </include>
+
     <model name="platform">
       <static>true</static>
       <pose>0.25 3 -99 0 0 0</pose>
@@ -171,6 +177,7 @@
     <include>
       <uri>model://electrical_panel</uri>
       <pose>0 0 -100 0 0 0</pose>
+      <static>true</static>
     </include>
 
     <gui fullscreen='0'>
