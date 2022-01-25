@@ -16,13 +16,15 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/Plug-Receptacle.dae" scale="0.4 0.4 0.4"/>
+          <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/Plug-Receptacle.dae"
+                scale="0.4 0.4 0.4"/>
         </geometry>
         <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae" scale="0.4 0.4 0.4"/>
+          <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae"
+                scale="0.375 0.375 0.375"/> <!-- A little smaller to make the fit more forgiving -->
         </geometry>
         <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
       </collision>

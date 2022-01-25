@@ -18,7 +18,8 @@
         <geometry>
           <mesh>
             <uri>model://f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae</uri>
-            <scale>0.4 0.4 0.4</scale>
+            <!-- A little smaller to make the fit more forgiving -->
+            <scale>0.375 0.375 0.375</scale>
           </mesh>
         </geometry>
       </collision>
