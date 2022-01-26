@@ -46,7 +46,10 @@ file(GLOB msgs msgs/*.proto)
 catkin_package(
   INCLUDE_DIRS
     include
-    ${CMAKE_CURRENT_BINARY_DIR} # for generated messages
+    # for generated Protobuf messages. Export parent dir (build/), so that
+    # the #include <*.pb.h> line has the package name, consistent between
+    # catkin config --install and --no-install.
+    ${CMAKE_CURRENT_BINARY_DIR}/..
     ${GAZEBO_MSG_INCLUDE_DIRS}
   LIBRARIES
     dave_gazebo_world_plugins_msgs
