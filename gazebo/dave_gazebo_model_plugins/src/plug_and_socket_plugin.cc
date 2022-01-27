@@ -30,10 +30,13 @@ const float JOINT_TEST_RANGE = 0.5;
 // Distance at which the joint will actually be created
 const float JOINT_CREATE_RANGE = 0.14;
 
+// Wait time between lock/unlock and continued tests
+const float JOINT_LOCK_TIMEOUT = 5.0;
+
 // Default plugin parameter values
 const float DEFAULT_ALIGNMENT_TOLERANCE = 0.15;
-const float DEFAULT_MATING_FORCE = 25.0;
-const float DEFAULT_UNMATING_FORCE = 60.0;
+const float DEFAULT_MATING_FORCE = 50.0;
+const float DEFAULT_UNMATING_FORCE = 90.0;
 
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
@@ -447,6 +450,11 @@ bool PlugAndSocketMatingPlugin::averageForceOnLink(std::string contact1,
       force += body2F[0];
     }
   }
+  if (this->linksInContactLogThrottle == 0)
+  {
+    gzmsg << "Force of " << force << " by " << contact1 << " on " << contact2
+          << " from " << contacts.size() << " contact points." <<std::endl;
+  }
   this->addForce(force);
   this->trimForceVector(0.1);
   return true;
@@ -538,24 +546,20 @@ PlugAndSocketMatingPlugin::getCollisionsBetween(std::string contact1,
     }
   }
 
-  if ((this->linksInContactLogThrottle == 0) && (collisions.size() > 0))
-  {
-    gzmsg << contact1 << " and " << contact2 << " in contact in "
-          << collisions.size() << " places." <<std::endl;
-  }
   return collisions;
 }
 
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Update()
 {
-  // check if recently removed the joint
-  // (to avoid it locking right away after unlocked)
-  if (this->world->SimTime() - unfreezeTimeBuffer < 2)
+  // check if recently locked or removed the joint
+  // (to avoid recreating it or removing it right away)
+  if (this->world->SimTime() - unfreezeTimeBuffer < JOINT_LOCK_TIMEOUT)
       return;
-      // If plug and socket are not joined yet, check the alignment
-      // between them, and if alignment is maintained for more than
-      // 2 seconds, then construct a joint between them
+
+  // If plug and socket are not joined yet, check the alignment
+  // between them, and if alignment is maintained for more than
+  // 2 seconds, then construct a joint between them
   if (!this->joined)
   {
     if (this->isAligned() && this->checkProximity())

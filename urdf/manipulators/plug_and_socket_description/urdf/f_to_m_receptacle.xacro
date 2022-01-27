@@ -16,15 +16,16 @@
       </inertial>
       <visual>
         <geometry>
+          <!-- Smaller scale than plug to make the fit more forgiving -->
           <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/Plug-Receptacle.dae"
-                scale="0.4 0.4 0.4"/>
+                scale="0.375 0.375 0.375"/>
         </geometry>
         <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
       </visual>
       <collision>
         <geometry>
           <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae"
-                scale="0.375 0.375 0.375"/> <!-- A little smaller to make the fit more forgiving -->
+                scale="0.375 0.375 0.375"/>
         </geometry>
         <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
       </collision>
@@ -42,7 +43,7 @@
         <geometry>
           <cylinder length="0.01" radius="0.06"/>
         </geometry>
-        <origin xyz="0.02 0 0" rpy="0 ${-pi/2} 0"/>
+        <origin xyz="0.01 0 0" rpy="0 ${-pi/2} 0"/>
       </collision>
     </link>
 

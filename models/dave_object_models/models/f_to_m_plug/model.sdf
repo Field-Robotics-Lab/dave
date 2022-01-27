@@ -2,11 +2,11 @@
 <sdf version ='1.6'>
   <model name ='f_to_m_plug'>
 
-    <link name ='plug'>
+    <link name ='f_to_m_plug'>
       <pose>0 0 0 0 0 0</pose>
       <self_collide>true</self_collide>
 
-      <visual name ='visual'>
+      <visual name ='f_to_m_plug_visual'>
         <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
         <geometry>
           <mesh>
@@ -16,7 +16,7 @@
         </geometry>
       </visual>
 
-      <collision name ='collision'>
+      <collision name ='f_to_m_plug_collision'>
         <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
         <geometry>
           <mesh>

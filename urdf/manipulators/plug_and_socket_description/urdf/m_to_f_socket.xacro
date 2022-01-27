@@ -40,7 +40,7 @@
         <geometry>
           <cylinder length="0.01" radius="0.06"/>
         </geometry>
-        <origin xyz="0 0 0" rpy="0 ${-pi/2} 0"/>
+        <origin xyz="0.01 0 0" rpy="0 ${-pi/2} 0"/>
       </collision>
     </link>
 
