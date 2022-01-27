@@ -27,7 +27,7 @@
         <pose>0 0 0 0 0 1.5707963267948966</pose>
         <geometry>
           <mesh>
-            <uri>model://electrical_panel/meshes/COLLISION-Underwater-Frame.dae</uri>
+            <uri>model://electrical_panel/meshes/Underwater-Frame.dae</uri>
           </mesh>
         </geometry>
       </collision>

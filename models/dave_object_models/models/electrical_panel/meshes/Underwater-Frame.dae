@@ -41,7 +41,7 @@
   </library_effects>
   <library_images>
     <image id="Underwater-Table_png" name="Underwater-Table_png">
-      <init_from>Underwater-Table.png</init_from>
+      <init_from>../materials/textures/Underwater-Table.png</init_from>
     </image>
   </library_images>
   <library_materials>
