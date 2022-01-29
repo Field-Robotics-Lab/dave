@@ -68,12 +68,20 @@ Example SDF snippet:
 
 ### Custom Gazebo plugin
 
-The custom SDF tags are handled by a custom Gazebo plugin that reads the SDF
+The custom SDF tags are handled by a custom C++ Gazebo plugin that reads the SDF
 file.
-An example plugin (`custom_surface_properties`) is provided, which reads the
-custom SDF tags.
+An example plugin (`custom_surface_properties` in `dave_gazebo_model_plugins`
+package) is provided, which reads the custom SDF tags.
 
 This plugin is loaded in the SDF file.
+
+### To add new custom tags
+
+To add a new custom SDF tag or change an existing one, follow these steps:
+1. In your SDF file (or ERB file, if using one to generate the SDF), add a tag,
+   following the pattern in the schema above.
+2. In your C++ Gazebo plugin, add a call to the SDF parser to read the new tag.
+   See the plugin above for example calls.
 
 ## Load the SDF in Gazebo
 

@@ -4,15 +4,15 @@
 #
 # Usage:
 #   This script is to be run from within the Blender GUI. Tested in Blender 2.9.2.
-#   distort.py <file_path> <object_prefix> [fouling_rating] [method]
+#   distort.py <file_path> <object_prefix> [distort_extent] [method]
 #
 #   Example:
 #   From the console panel, run
 #   >>> file_path = '/path/to/file.dae'
 #   >>> object_prefix = 'Cube'
-#   >>> fouling_rating = 10  # 0 to 100
+#   >>> distort_extent = 0.1  # float in range [0, 1]
 #   >>> method = 'deform'  # method of distortion
-#   >>> sys.argv = ['distort.py', file_path, object_prefix, fouling_rating, method]
+#   >>> sys.argv = ['distort.py', file_path, object_prefix, distort_extent, method]
 #   >>> exec(open('/path/to/distort.py').read());
 #
 
@@ -127,8 +127,8 @@ def fill_holes(object_prefix):
     return
 
 
-# rating: Fouling rating, in range [0, 100]
-def distort(file_path, object_prefix, rating, method):
+# distort_extent: in range [0, 1]
+def distort(file_path, object_prefix, distort_extent, method):
 
     # Clear scene
     bpy.ops.object.select_all(action='SELECT')
@@ -148,13 +148,8 @@ def distort(file_path, object_prefix, rating, method):
 
     target_obj, object_name = find_target_object(object_prefix)
 
-    print('Distorting mesh [{}] for Fouling Rating {}...'.format(object_name,
-        rating))
-
-    # Normalize fouling rating
-    RATING_MIN = 0
-    RATING_MAX = 100
-    rating_norm = (rating - RATING_MIN) / (RATING_MAX - RATING_MIN)
+    print('Distorting mesh [{}] for relative extent {} out of [0, 1]...'.format(
+        object_name, distort_extent))
 
     METHODS = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
     for step in method:
@@ -173,7 +168,7 @@ def distort(file_path, object_prefix, rating, method):
             SUBDIV_LVL_MAX = 4
             # Must be integer
             subdiv_lvl = round(SUBDIV_LVL_MIN + (
-                (SUBDIV_LVL_MAX - SUBDIV_LVL_MIN) * rating_norm))
+                (SUBDIV_LVL_MAX - SUBDIV_LVL_MIN) * distort_extent))
 
             subdivision_modifier(target_obj, subdiv_lvl)
 
@@ -183,7 +178,7 @@ def distort(file_path, object_prefix, rating, method):
             VERT_RAND_MAX = 0.02
             # Figure out offset magnitude
             vert_rand_amt = VERT_RAND_MIN + (
-                (VERT_RAND_MAX - VERT_RAND_MIN) * rating_norm)
+                (VERT_RAND_MAX - VERT_RAND_MIN) * distort_extent)
 
             mesh_vert_randomize(target_obj, vert_rand_amt, uniform=0.0,
                 normal=1.0, seed=0)
@@ -206,7 +201,7 @@ def distort(file_path, object_prefix, rating, method):
 
 if __name__ == '__main__':
     # Default values
-    fouling_rating = 10
+    distort_extent = 0.1
     method = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
     
     # Parse args
@@ -216,8 +211,8 @@ if __name__ == '__main__':
         file_path = sys.argv[1]
         object_prefix = sys.argv[2]
         if len(sys.argv) > 2:
-            fouling_rating = int(sys.argv[3])
+            distort_extent = float(sys.argv[3])
         if len(sys.argv) > 3:
             method = sys.argv[4]
 
-        distort(file_path, object_prefix, fouling_rating, method)
+        distort(file_path, object_prefix, distort_extent, method)
