@@ -1,0 +1,72 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='mud_anchor'>
+    <pose>0 0 0 0 0 0</pose>
+    <link name ='handle'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia> <!-- inertias are tricky to compute -->
+          <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+          <ixx>0.00838</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+          <iyy>0.00838</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+          <izz>0.00017</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+        </inertia>
+      </inertial>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 1.0</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 1.0</size></box>
+        </geometry>
+      </visual>
+    </link>
+    <link name ='drag_anchor'>
+      <pose>0 0 -0.75 0 0 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <inertia> <!-- inertias are tricky to compute -->
+          <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+          <ixx>0.10375</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+          <iyy>0.02158</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+          <izz>0.08383</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+        </inertia>
+      </inertial>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 1.0 0.5</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 1.0 0.5</size></box>
+        </geometry>
+      </visual>
+    </link>
+    <include>
+      <uri>model://fire_hose_long</uri>
+      <pose>0 0 1.5 0 0 0</pose>
+    </include>
+    <joint name="anchor_joint" type="fixed">
+      <parent>handle</parent>
+      <child>drag_anchor</child>
+    </joint>
+<!--     <joint name="hose_attachment" type="ball">
+      <parent>handle</parent>
+      <child>fire_hose_long</child>
+    </joint>
+ -->  </model>
+</sdf>
