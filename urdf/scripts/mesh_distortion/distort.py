@@ -35,7 +35,7 @@ def find_target_object(object_prefix):
             break
     if target_obj == None:
         print('ERROR: Object with prefix [{}] not found'.format(object_prefix))
-        return
+        return None
 
     return target_obj, object_name
 
@@ -122,13 +122,23 @@ def edge_subdivide(obj, ncuts=1, smooth=1.0):
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
-def fill_holes(object_prefix):
-    # TODO
-    return
-
-
-# distort_extent: in range [0, 1]
+# file_path: Full path to input file
+# object_prefix: Prefix of the mesh name found in the 3D model file
+# distort_extent: relative scale, in range [0, 1]
+# method: List of strings, a subset of those defined in METHODS
 def distort(file_path, object_prefix, distort_extent, method):
+
+    # Sanity checks
+    if not os.path.exists(file_path):
+        print('ERROR: File does not exist: [{}]'.format(file_path))
+        return
+    if distort_extent < 0 or distort_extent > 1:
+        print('ERROR: distort_extent ({}) must be in range [0, 1]'.format(
+            distort_extent))
+        return
+    if not isinstance(method, list):
+        print('ERROR: method parameter must be specified as a list')
+        return
 
     # Clear scene
     bpy.ops.object.select_all(action='SELECT')
@@ -143,10 +153,14 @@ def distort(file_path, object_prefix, distort_extent, method):
     # TODO add imports for other formats. Trivial one-liners, but OBJ and
     # COLLADA are the most common used for Gazebo, others not needed now.
     else:
-        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported at the moment.')
+        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported for importing at the moment.')
         return
 
-    target_obj, object_name = find_target_object(object_prefix)
+    objs = find_target_object(object_prefix)
+    if objs is None:
+        print('Error detected. Aborting')
+        return
+    target_obj, object_name = objs
 
     print('Distorting mesh [{}] for relative extent {} out of [0, 1]...'.format(
         object_name, distort_extent))
@@ -196,6 +210,10 @@ def distort(file_path, object_prefix, distort_extent, method):
     elif out_path.lower().endswith('obj'):
         bpy.ops.export_scene.obj(filepath=out_path, axis_forward='X',
             axis_up='Z')
+    else:
+        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported for exporting at the moment.')
+        return
+
     print('Exported result to [{}]'.format(out_path))
 
 

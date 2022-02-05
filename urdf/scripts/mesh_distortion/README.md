@@ -56,7 +56,7 @@ At the top of Blender GUI, go to the Scripting tab.
 All commands will be executed in the Console panel in the middle-left of the
 screen.
 
-Define the path to the model file and the mesh name, which you found above.
+Define the full path to the model file and the mesh name, which you found above.
 For example, the `Coke` model:
 ```
 file_path = '/path/to/dave/models/dave_object_models/models/Coke/meshes/coke.obj'
@@ -70,8 +70,10 @@ object_prefix = 'coke_can'
 ```
 
 Set optional arguments. If not specified, the default will be used.
+Make sure `method` is specified as a list in brackets, even if it contains only
+one element.
 ```
-distort_extent = 20
+distort_extent = 0.2
 method = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
 ```
 
