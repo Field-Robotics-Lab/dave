@@ -124,7 +124,7 @@ def edge_subdivide(obj, ncuts=1, smooth=1.0):
 
 # file_path: Full path to input file
 # object_prefix: Prefix of the mesh name found in the 3D model file
-# distort_extent: relative scale, in range [0, 1]
+# distort_extent: relative scale, in range [0.0, 1.0]
 # method: List of strings, a subset of those defined in METHODS
 def distort(file_path, object_prefix, distort_extent, method):
 
@@ -132,8 +132,8 @@ def distort(file_path, object_prefix, distort_extent, method):
     if not os.path.exists(file_path):
         print('ERROR: File does not exist: [{}]'.format(file_path))
         return
-    if distort_extent < 0 or distort_extent > 1:
-        print('ERROR: distort_extent ({}) must be in range [0, 1]'.format(
+    if distort_extent < 0.0 or distort_extent > 1.0:
+        print('ERROR: distort_extent ({}) must be in range [0.0, 1.0]'.format(
             distort_extent))
         return
     if not isinstance(method, list):
