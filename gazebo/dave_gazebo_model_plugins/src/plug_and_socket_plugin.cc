@@ -494,7 +494,7 @@ bool PlugAndSocketMatingPlugin::averageForceOnLink(std::string contact1,
   if (this->linksInContactLogThrottle == 0)
   {
     gzmsg << "Force of " << this->plugLinkForce[0] << " by " << contact1
-          << " on " << contact2 << " from " << contacts.size() 
+          << " on " << contact2 << " from " << contacts.size()
           << " contact points." <<std::endl;
   }
   this->addForce(this->plugLinkForce[0]);

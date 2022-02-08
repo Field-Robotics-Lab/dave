@@ -211,7 +211,6 @@ namespace gazebo
 
     /// \brief Publisher for the plug link applied force in the link frame
     protected: ros::Publisher linkForcePub;
-
   };
   GZ_REGISTER_MODEL_PLUGIN(PlugAndSocketMatingPlugin)
 }
