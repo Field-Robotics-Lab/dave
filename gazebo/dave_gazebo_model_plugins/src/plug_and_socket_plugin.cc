@@ -38,6 +38,13 @@ const float DEFAULT_ALIGNMENT_TOLERANCE = 0.15;
 const float DEFAULT_MATING_FORCE = 50.0;
 const float DEFAULT_UNMATING_FORCE = 90.0;
 
+// Default model and link name strings
+const std::string DEFAULT_SENSOR_PLATE_NAME = "sensor_plate";
+const std::string DEFAULT_TUBE_LINK_NAME = "socket";
+const std::string DEFAULT_PLUG_MODEL_NAME = "plug";
+const std::string DEFAULT_PLUG_LINK_NAME = "plug";
+const std::string DEFAULT_GRIPPER_LINK_SUBSTRING = "finger_tip";
+
 //////////////////////////////////////////////////
 void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
                                      sdf::ElementPtr _sdf)
@@ -56,7 +63,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->sensorPlateName = "sensor_plate";
+    this->sensorPlateName = DEFAULT_SENSOR_PLATE_NAME;
      gzmsg << "Socket Sensor Plate link name not specified, " <<
               "set to default " << this->sensorPlateName << std::endl;
   }
@@ -73,7 +80,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->tubeLinkName = "socket";
+    this->tubeLinkName = DEFAULT_TUBE_LINK_NAME;
     gzmsg << "Socket Tube Link name not specified, set to default " <<
              this->tubeLinkName << std::endl;
   }
@@ -90,7 +97,7 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->plugModelName = "plug";
+    this->plugModelName = DEFAULT_PLUG_MODEL_NAME;
     gzmsg << "Plug Model name not specified, set to default " <<
              this->plugModelName << std::endl;
   }
@@ -105,13 +112,27 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
   }
   else
   {
-    this->plugLinkName = "plug";
+    this->plugLinkName = DEFAULT_PLUG_LINK_NAME;
     gzmsg << "Plug Link name not specified, set to default " <<
              this->plugLinkName << std::endl;
   }
   this->plugLink = this->plugModel->GetLink(this->plugLinkName);
   gzmsg << "Plug Link set from SDF to " << this->plugLink->GetName() <<
            std::endl;
+
+  if (_sdf->HasElement("gripperLinkSubstring"))
+  {
+    this->gripperLinkSubstring =
+      _sdf->GetElement("gripperLinkSubstring")->Get<std::string>();
+    gzmsg << "Gripper link substring set to " <<
+             this->gripperLinkSubstring << std::endl;
+  }
+  else
+  {
+    this->gripperLinkSubstring = DEFAULT_GRIPPER_LINK_SUBSTRING;
+    gzmsg << "Gripper link substring not specified, set to default " <<
+             this->gripperLinkSubstring << std::endl;
+  }
 
   // Retrieve socket tolerance parameters from SDF
   if (_sdf->HasElement("rollAlignmentTolerance"))
@@ -193,9 +214,29 @@ void PlugAndSocketMatingPlugin::Load(physics::ModelPtr _model,
              "using default value of " << this->unmatingForce << std::endl;
   }
 
+  this->ns = "/" + this->plugModelName + "/";
+  if (_sdf->HasElement("linkForceTopic"))
+  {
+    this->linkForceTopic = this->ns + _sdf->GetElement("linkForceTopic")
+                                          ->Get<std::string>();
+    gzmsg << "Plug applied force topic name: " <<
+             this->linkForceTopic << std::endl;
+  }
+  else
+  {
+    this->linkForceTopic = this->ns + "appliedForce";
+    gzmsg << "Plug applied force topic name not specified, " <<
+             "using default value of " << this->linkForceTopic << std::endl;
+  }
+
   this->world->Physics()->GetContactManager()->SetNeverDropContacts(true);
   this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
       std::bind(&PlugAndSocketMatingPlugin::Update, this));
+
+  // Set up ROS stuff so that we can publish the force applied to the plug link
+  this->rosNode.reset(new ros::NodeHandle(this->ns));
+  this->linkForcePub = this->rosNode->advertise<geometry_msgs::Vector3Stamped>(
+    this->linkForceTopic, 5);
 }
 
 //////////////////////////////////////////////////
@@ -425,38 +466,49 @@ bool PlugAndSocketMatingPlugin::averageForceOnLink(std::string contact1,
     return false;
   }
 
-  double force = 0.0;
+  this->plugLinkForce.Set(0.0, 0.0, 0.0);
   for (int i = 0; i < contacts.size(); i++)
   {
     physics::Contact *contact =
       this->world->Physics()->GetContactManager()->GetContact(contacts[i]);
     contact->FillMsg(contactMsg);
-    ignition::math::Vector3d body1F(0.0, 0.0, 0.0);
-    ignition::math::Vector3d body2F(0.0, 0.0, 0.0);
+    ignition::math::Vector3d body1Force(0.0, 0.0, 0.0);
+    ignition::math::Vector3d body2Force(0.0, 0.0, 0.0);
     for (int j = 0; j < contactMsg.wrench().size(); j++)
     {
       msgs::Vector3d f1 = contactMsg.wrench()[j].body_1_wrench().force();
       msgs::Vector3d f2 = contactMsg.wrench()[j].body_2_wrench().force();
-      body1F += ignition::math::Vector3d(f1.x(), f1.y(), f1.z());
-      body2F += ignition::math::Vector3d(f2.x(), f2.y(), f2.z());
+      body1Force += ignition::math::Vector3d(f1.x(), f1.y(), f1.z());
+      body2Force += ignition::math::Vector3d(f2.x(), f2.y(), f2.z());
     }
     // Add force applied to the plug along its link X axis
     if (contact->collision1->GetLink()->GetName() == contact1)
     {
-      force += body1F[0];
+      this->plugLinkForce += body1Force;
     }
     else
     {
-      force += body2F[0];
+      this->plugLinkForce += body2Force;
     }
   }
   if (this->linksInContactLogThrottle == 0)
   {
-    gzmsg << "Force of " << force << " by " << contact1 << " on " << contact2
-          << " from " << contacts.size() << " contact points." <<std::endl;
+    gzmsg << "Force of " << this->plugLinkForce[0] << " by " << contact1
+          << " on " << contact2 << " from " << contacts.size() 
+          << " contact points." <<std::endl;
   }
-  this->addForce(force);
+  this->addForce(this->plugLinkForce[0]);
   this->trimForceVector(0.1);
+
+  // Generate and publish the ROS message with the applied force
+  geometry_msgs::Vector3Stamped forceMsg;
+  forceMsg.header.stamp = ros::Time::now();
+  forceMsg.header.frame_id = this->plugLinkName;
+  forceMsg.vector.x = this->plugLinkForce.X();
+  forceMsg.vector.y = this->plugLinkForce.Y();
+  forceMsg.vector.z = this->plugLinkForce.Z();
+  this->linkForcePub.publish(forceMsg);
+
   return true;
 }
 
@@ -495,7 +547,8 @@ bool PlugAndSocketMatingPlugin::isEndEffectorPushingPlug(
 {
   // This will sum forces from all "*finger_tip*" links in contact
   // with the plug (right & left in the demo)
-  if (!this->averageForceOnLink(this->plugLinkName, "finger_tip"))
+  if (!this->averageForceOnLink(this->plugLinkName,
+                                this->gripperLinkSubstring))
   {
     return false;
   }
