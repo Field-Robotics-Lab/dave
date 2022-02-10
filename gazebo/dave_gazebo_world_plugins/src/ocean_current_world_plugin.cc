@@ -319,18 +319,7 @@ void UnderwaterCurrentPlugin::LoadStratifiedCurrentDatabase()
       transientCurrentParams->Get<std::string>("databasefilePath");
   else
   {
-    // Using boost:
-    // boost::filesystem::path
-    //    concatPath(boost::filesystem::initial_path().parent_path());
-    // concatPath +=
-    //    ("/uuv_ws/src/dave/models/dave_worlds/" +
-    //     "worlds/transientOceanCurrentDatabase.csv");
-    // this->databaseFilePath = concatPath.generic_string();
-    //
-    // Use ros package path:
-
-    this->databaseFilePath = ros::package::getPath("dave_worlds") +
-      "/worlds/transientOceanCurrentDatabase.csv";
+    this->databaseFilePath = "transientOceanCurrentDatabase.csv";
   }
 
   GZ_ASSERT(!this->databaseFilePath.empty(),
@@ -350,8 +339,9 @@ void UnderwaterCurrentPlugin::LoadStratifiedCurrentDatabase()
   csvFile.open(this->databaseFilePath);
   if (!csvFile)
   {
-    this->databaseFilePath = ros::package::getPath("dave_worlds") +
-      "/worlds/" + this->databaseFilePath;
+    common::SystemPaths *paths = common::SystemPaths::Instance();
+    this->databaseFilePath =
+      paths->FindFile(this->databaseFilePath, true);
     csvFile.open(this->databaseFilePath);
   }
   GZ_ASSERT(csvFile, "Stratified Ocean database file does not exist");
