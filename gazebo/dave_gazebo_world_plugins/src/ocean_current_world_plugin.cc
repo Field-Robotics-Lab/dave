@@ -529,8 +529,9 @@ void UnderwaterCurrentPlugin::LoadTidalOscillationDatabase()
     csvFile.open(this->tidalFilePath);
     if (!csvFile)
     {
-      this->tidalFilePath = ros::package::getPath("dave_worlds") +
-        "/worlds/" + this->tidalFilePath;
+      common::SystemPaths *paths = common::SystemPaths::Instance();
+      this->tidalFilePath =
+        paths->FindFile(this->tidalFilePath, true);
       csvFile.open(this->tidalFilePath);
     }
     GZ_ASSERT(csvFile, "Tidal Oscillation database file does not exist");
