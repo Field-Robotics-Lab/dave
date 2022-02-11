@@ -14,6 +14,7 @@
   <depend>ds_sim</depend>
 
   <export>
+    <gazebo_ros gazebo_media_path="${prefix}/worlds"/>
     <gazebo_ros gazebo_media_path="${prefix}/media"/>
   </export>
 
