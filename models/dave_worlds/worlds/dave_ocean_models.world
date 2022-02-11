@@ -137,5 +137,18 @@
       <pose>13 -1 -94 0 0 0</pose>
       <uri>model://torpedo_mk46</uri>
     </include>
+
+    <include>
+      <name>sonobuoy</name>
+      <pose>13 -3 -94 0 0 0</pose>
+      <uri>model://sonobuoy</uri>
+    </include>
+
+    <include>
+      <name>flight_data_recorder</name>
+      <pose>13 -5 -94 0 0 0</pose>
+      <uri>model://flight_data_recorder</uri>
+    </include>
+
   </world>
 </sdf>
