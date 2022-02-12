@@ -125,7 +125,7 @@
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>18.0 -15.0 -89 0 0.26 1.82</pose>
+        <pose frame=''>18.0 -4.4 -90 0 0.68 2.95</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -140,14 +140,32 @@
 
     <include>
       <name>sonobuoy</name>
-      <pose>13 -3 -94 0 0 0</pose>
+      <pose>13 -2 -94 0 0 0</pose>
       <uri>model://sonobuoy</uri>
     </include>
 
     <include>
       <name>flight_data_recorder</name>
-      <pose>13 -5 -94 0 0 0</pose>
+      <pose>13 -3 -94 0 0 0</pose>
       <uri>model://flight_data_recorder</uri>
+    </include>
+
+    <include>
+      <name>uxo_a</name>
+      <pose>13 -4 -94 0 0 0</pose>
+      <uri>model://uxo_a</uri>
+    </include>
+
+    <include>
+      <name>uxo_b</name>
+      <pose>13 -5 -94 0 0 0</pose>
+      <uri>model://uxo_b</uri>
+    </include>
+
+    <include>
+      <name>uxo_c</name>
+      <pose>13 -6 -94 0 0 0</pose>
+      <uri>model://uxo_c</uri>
     </include>
 
   </world>
