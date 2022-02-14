@@ -22,6 +22,7 @@ jobs:
         -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=lld
         -DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=lld
         -DCMAKE_BUILD_TYPE=Release
+      ADDITIONAL_DEBS: lld python3-catkin-tools python3-osrf-pycommon
     runs-on: ubuntu-20.04
 
     steps:
