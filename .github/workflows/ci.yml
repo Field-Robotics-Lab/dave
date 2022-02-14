@@ -22,10 +22,6 @@ jobs:
         -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=lld
         -DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=lld
         -DCMAKE_BUILD_TYPE=Release
-      ADDITIONAL_DEBS: lld net-tools
-      # CCACHE_DIR: ${{ github.workspace }}/.ccache
-      # CACHE_PREFIX: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}
-      # CLANG_TIDY_BASE_REF: ${{ github.base_ref || github.ref }}
     runs-on: ubuntu-20.04
 
     steps:

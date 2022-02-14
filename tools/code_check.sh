@@ -156,3 +156,4 @@ if [ $xmlout -eq 1 ]; then
 elif [ $QUICK_CHECK -eq 0 ]; then
   echo $CPPLINT_FILES | xargs python tools/cpplint.py 2>&1
 fi
+echo ""
