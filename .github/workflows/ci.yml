@@ -30,10 +30,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Static code checking
-      run: sh tools/code_check.sh
     - name: Prepare
       run: |
+        sudo apt update;
+        sudo apt-get -y install cppcheck protobuf-compiler;
         sed -i "s/git@github.com:/https:\/\/github.com\//g" extras/repos/dave_sim.repos
+    - name: Static code checking
+      run: sh tools/code_check.sh
     - uses: 'ros-industrial/industrial_ci@master'
       env: ${{ matrix.env }}
