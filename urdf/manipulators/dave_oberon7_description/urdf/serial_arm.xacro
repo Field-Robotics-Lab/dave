@@ -18,6 +18,9 @@
     <!-- Import arm parameters -->
     <xacro:include filename="$(find oberon7_description)/urdf/parameters/serial_arm.xacro" />
 
+    <!-- Parameters -->
+    <xacro:property name="joint" value="rexrov/anchor"/>
+
     <!-- Transmission Macro -->
     <xacro:macro name="simple_transmission" params="joint">
         <transmission name="${joint}_trans">
@@ -267,7 +270,7 @@
 
         <!-- Adding parallel gripper  -->
         <xacro:include filename="$(find oberon7_description)/urdf/parallel_gripper.xacro" />
-        
+
         <xacro:oberon7_gazebo_macro namespace="${namespace}"/>
     </xacro:macro>
 </robot>
