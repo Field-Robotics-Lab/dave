@@ -5,10 +5,13 @@ the generalization of machine learning algorithms.
 
 ## Prerequisites
 
-These instructions are written for [Blender](https://www.blender.org/) 2.92,
-which has a revamped user interface.
-The version may be newer than the version in `apt-get`.
+These instructions have been tested in [Blender](https://www.blender.org/) 2.92,
+which has a revamped user interface from previous versions.
+The version in `apt-get` may be older.
+These instructions should work in newer versions.
 Install manually as needed.
+If newer versions do not work for you, Blender 2.92 can be found
+[here](https://download.blender.org/release/Blender2.92).
 
 Helpful tip for Blender Python development:
 To show Python API in the tooltips when the cursor is hovered over a button or
@@ -35,6 +38,9 @@ Choose Transform while importing: Z Up, X Forward.
 
 Tip: To view the textured object in the viewport, click on the globe icon in the
 upper right of the viewport, which is for Viewport Shading: Material Preview.
+
+If the texture is not loading correctly for you, check that you have the entire
+folder for the object, which includes the `meshes` and `materials` directories.
 
 Look for the mesh name in the model.
 You can find this in the View Layer list in the upper-right panel.

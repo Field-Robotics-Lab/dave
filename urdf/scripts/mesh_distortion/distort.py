@@ -204,12 +204,13 @@ def distort(file_path, object_prefix, distort_extent, method):
     # Export result to file
     out_path = os.path.splitext(file_path)[0] + '_distort' + \
         os.path.splitext(file_path)[1]
-    # TODO: COLLADA is not exporting texture correctly, not sure why
+    # TODO: COLLADA is not exporting texture correctly, not sure why.
+    # TODO: collada_export() does not expose relative path option.
     if out_path.lower().endswith('dae'):
         bpy.ops.wm.collada_export(filepath=out_path)
     elif out_path.lower().endswith('obj'):
-        bpy.ops.export_scene.obj(filepath=out_path, axis_forward='X',
-            axis_up='Z')
+        bpy.ops.export_scene.obj(filepath=out_path, path_mode='RELATIVE',
+            axis_forward='X', axis_up='Z')
     else:
         print('ERROR: Only COLLADA (.dae) and OBJ formats are supported for exporting at the moment.')
         return

@@ -55,14 +55,13 @@ on custom SDF elements and attributes can be found on the sdformat website.
 Currently, these custom properties are defined:
 
 - `<surface_props:material>`: `string`
-- `<surface_props:biofouling_rating>`: `int`, in range `[0, 100]`, defined by
-  the Navy biofouling scale.
+- `<surface_props:distort_extent>`: `float`, in range `[0, 1]`.
 - `<surface_props:roughness>`: `double`, in range `[0.0, 1.0]`
 
 Example SDF snippet:
 ```
 <surface_props:material>metal</surface_props:material>
-<surface_props:biofouling_rating>30</surface_props:biofouling_rating>
+<surface_props:distort_extent>30</surface_props:distort_extent>
 <surface_props:roughness>0.3</surface_props:roughness>
 ```
 
@@ -103,5 +102,3 @@ More documentation upstream is required, as ticketed in [this issue](https://git
 
 - Write a regression test to diff between the ERB generated file and the
   reference SDF file in the repo.
-- Flesh out the set of friction parameters that the biofouling rating should
-  affect
