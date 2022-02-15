@@ -1,0 +1,18 @@
+material Bathymetry/Santorini
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.5 0.5 0.5 1.0
+            diffuse 0.5 0.5 0.5 1.0
+            specular 0.2 0.2 0.2 1.0 12.5
+
+            texture_unit
+            {
+                texture ../textures/Santorini.R_25.317_25.489_36.337_36.479.epsg3857.texture.png
+                scale 1 1
+            }
+        }
+    }
+}
