@@ -75,20 +75,6 @@
     <joint name="anchor_joint" type="fixed">
       <parent>drag_anchor</parent>
       <child>sphere</child>
-<!--         <axis>
-        <xyz>0.000000 1.000000 0.000000</xyz>
-        <limit>
-          <lower>-0.700000</lower>
-          <upper>0.700000</upper>
-        </limit>
-        <dynamics>
-          <stiffness>0</stiffness>
-          <damping>2.0</damping>
-          <friction>0</friction>
-        </dynamics>
-        <use_parent_model_frame>true</use_parent_model_frame>
-      </axis>
-      <velocity_decay />
- -->    </joint>
+    </joint>
  </model>
 </sdf>
