@@ -37,13 +37,13 @@ void CustomSurfaceProperties::Load(physics::ModelPtr _parent,
   sdf::ElementPtr modelElt = _sdf->GetParent();
   this->material = modelElt->Get<std::string>("surface_props:material");
 
-  this->biofoulingRating = modelElt->Get<int>(
-    "surface_props:biofouling_rating");
+  this->distortExtent = modelElt->Get<int>(
+    "surface_props:distort_extent");
 
   this->roughness = modelElt->Get<double>("surface_props:roughness");
 
   gzdbg << "Read custom SDF tags: material " << this->material
-    << ", biofouling rating " << this->biofoulingRating
+    << ", distort extent " << this->distortExtent
     << ", roughness " << this->roughness << std::endl;
 }
 

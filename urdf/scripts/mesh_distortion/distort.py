@@ -4,15 +4,15 @@
 #
 # Usage:
 #   This script is to be run from within the Blender GUI. Tested in Blender 2.9.2.
-#   distort.py <file_path> <object_prefix> [fouling_rating] [method]
+#   distort.py <file_path> <object_prefix> [distort_extent] [method]
 #
 #   Example:
 #   From the console panel, run
 #   >>> file_path = '/path/to/file.dae'
 #   >>> object_prefix = 'Cube'
-#   >>> fouling_rating = 10  # 0 to 100
+#   >>> distort_extent = 0.1  # float in range [0, 1]
 #   >>> method = 'deform'  # method of distortion
-#   >>> sys.argv = ['distort.py', file_path, object_prefix, fouling_rating, method]
+#   >>> sys.argv = ['distort.py', file_path, object_prefix, distort_extent, method]
 #   >>> exec(open('/path/to/distort.py').read());
 #
 
@@ -35,7 +35,7 @@ def find_target_object(object_prefix):
             break
     if target_obj == None:
         print('ERROR: Object with prefix [{}] not found'.format(object_prefix))
-        return
+        return None
 
     return target_obj, object_name
 
@@ -122,13 +122,23 @@ def edge_subdivide(obj, ncuts=1, smooth=1.0):
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
-def fill_holes(object_prefix):
-    # TODO
-    return
+# file_path: Full path to input file
+# object_prefix: Prefix of the mesh name found in the 3D model file
+# distort_extent: relative scale, in range [0.0, 1.0]
+# method: List of strings, a subset of those defined in METHODS
+def distort(file_path, object_prefix, distort_extent, method):
 
-
-# rating: Fouling rating, in range [0, 100]
-def distort(file_path, object_prefix, rating, method):
+    # Sanity checks
+    if not os.path.exists(file_path):
+        print('ERROR: File does not exist: [{}]'.format(file_path))
+        return
+    if distort_extent < 0.0 or distort_extent > 1.0:
+        print('ERROR: distort_extent ({}) must be in range [0.0, 1.0]'.format(
+            distort_extent))
+        return
+    if not isinstance(method, list):
+        print('ERROR: method parameter must be specified as a list')
+        return
 
     # Clear scene
     bpy.ops.object.select_all(action='SELECT')
@@ -143,18 +153,17 @@ def distort(file_path, object_prefix, rating, method):
     # TODO add imports for other formats. Trivial one-liners, but OBJ and
     # COLLADA are the most common used for Gazebo, others not needed now.
     else:
-        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported at the moment.')
+        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported for importing at the moment.')
         return
 
-    target_obj, object_name = find_target_object(object_prefix)
+    objs = find_target_object(object_prefix)
+    if objs is None:
+        print('Error detected. Aborting')
+        return
+    target_obj, object_name = objs
 
-    print('Distorting mesh [{}] for Fouling Rating {}...'.format(object_name,
-        rating))
-
-    # Normalize fouling rating
-    RATING_MIN = 0
-    RATING_MAX = 100
-    rating_norm = (rating - RATING_MIN) / (RATING_MAX - RATING_MIN)
+    print('Distorting mesh [{}] for relative extent {} out of [0, 1]...'.format(
+        object_name, distort_extent))
 
     METHODS = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
     for step in method:
@@ -173,7 +182,7 @@ def distort(file_path, object_prefix, rating, method):
             SUBDIV_LVL_MAX = 4
             # Must be integer
             subdiv_lvl = round(SUBDIV_LVL_MIN + (
-                (SUBDIV_LVL_MAX - SUBDIV_LVL_MIN) * rating_norm))
+                (SUBDIV_LVL_MAX - SUBDIV_LVL_MIN) * distort_extent))
 
             subdivision_modifier(target_obj, subdiv_lvl)
 
@@ -183,7 +192,7 @@ def distort(file_path, object_prefix, rating, method):
             VERT_RAND_MAX = 0.02
             # Figure out offset magnitude
             vert_rand_amt = VERT_RAND_MIN + (
-                (VERT_RAND_MAX - VERT_RAND_MIN) * rating_norm)
+                (VERT_RAND_MAX - VERT_RAND_MIN) * distort_extent)
 
             mesh_vert_randomize(target_obj, vert_rand_amt, uniform=0.0,
                 normal=1.0, seed=0)
@@ -195,18 +204,23 @@ def distort(file_path, object_prefix, rating, method):
     # Export result to file
     out_path = os.path.splitext(file_path)[0] + '_distort' + \
         os.path.splitext(file_path)[1]
-    # TODO: COLLADA is not exporting texture correctly, not sure why
+    # TODO: COLLADA is not exporting texture correctly, not sure why.
+    # TODO: collada_export() does not expose relative path option.
     if out_path.lower().endswith('dae'):
         bpy.ops.wm.collada_export(filepath=out_path)
     elif out_path.lower().endswith('obj'):
-        bpy.ops.export_scene.obj(filepath=out_path, axis_forward='X',
-            axis_up='Z')
+        bpy.ops.export_scene.obj(filepath=out_path, path_mode='RELATIVE',
+            axis_forward='X', axis_up='Z')
+    else:
+        print('ERROR: Only COLLADA (.dae) and OBJ formats are supported for exporting at the moment.')
+        return
+
     print('Exported result to [{}]'.format(out_path))
 
 
 if __name__ == '__main__':
     # Default values
-    fouling_rating = 10
+    distort_extent = 0.1
     method = ['subdiv_mod', 'vert_rand', 'edge_subdiv']
     
     # Parse args
@@ -216,8 +230,8 @@ if __name__ == '__main__':
         file_path = sys.argv[1]
         object_prefix = sys.argv[2]
         if len(sys.argv) > 2:
-            fouling_rating = int(sys.argv[3])
+            distort_extent = float(sys.argv[3])
         if len(sys.argv) > 3:
             method = sys.argv[4]
 
-        distort(file_path, object_prefix, fouling_rating, method)
+        distort(file_path, object_prefix, distort_extent, method)
