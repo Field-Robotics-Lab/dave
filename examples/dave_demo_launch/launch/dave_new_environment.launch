@@ -20,12 +20,8 @@
         <arg name="verbose" value="false"/>
     </include>
 
-
     <!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
-
-
-
 
     <!-- timeout -->
     <group if="$(arg set_timeout)">
@@ -56,15 +52,9 @@
         <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
     
-
     <!-- joint control for oberon7 -->
     <include file="$(find oberon7_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="$(arg namespace)"/>
     </include>
-
-    <!-- grabbable bar -->
-    <node name="spawn_grabbable_bar" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find dave_object_models)/models/grab_bar/model.sdf -sdf -model grab_bar -z -90">
-    </node>
 
 </launch>
