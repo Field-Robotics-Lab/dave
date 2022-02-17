@@ -1,0 +1,38 @@
+controller_list:
+  - name: fake_arm_l_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - oberon7_l/azimuth
+      - oberon7_l/shoulder
+      - oberon7_l/elbow
+      - oberon7_l/roll
+      - oberon7_l/pitch
+      - oberon7_l/wrist
+  - name: fake_arm_r_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - oberon7_r/azimuth
+      - oberon7_r/shoulder
+      - oberon7_r/elbow
+      - oberon7_r/roll
+      - oberon7_r/pitch
+      - oberon7_r/wrist
+  - name: fake_hand_l_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - oberon7_l/finger_left_joint
+      - oberon7_l/finger_tip_left_joint
+      - oberon7_l/finger_right_joint
+      - oberon7_l/finger_tip_right_joint
+  - name: fake_hand_r_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - oberon7_r/finger_left_joint
+      - oberon7_r/finger_tip_left_joint
+      - oberon7_r/finger_right_joint
+      - oberon7_r/finger_tip_right_joint
+initial:  # Define initial robot poses per group
+#  - group: arm_l
+#    pose: home
+
+  []

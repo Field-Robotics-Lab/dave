@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: rexrov_description
+    relative_path: urdf/rexrov_robot.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/rexrov.srdf
+  CONFIG:
+    author_name: c
+    author_email: c@c.com
+    generated_timestamp: 1644625029

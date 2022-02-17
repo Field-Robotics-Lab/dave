@@ -1,0 +1,643 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 84
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /MotionPlanning1
+        - /MotionPlanning1/Planned Path1
+      Splitter Ratio: 0.5
+    Tree Height: 230
+  - Class: rviz/Help
+    Name: Help
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+Preferences:
+  PromptSaveOnExit: true
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Acceleration_Scaling_Factor: 1
+      Class: moveit_rviz_plugin/MotionPlanning
+      Enabled: true
+      Move Group Namespace: ""
+      MoveIt_Allow_Approximate_IK: false
+      MoveIt_Allow_External_Program: false
+      MoveIt_Allow_Replanning: false
+      MoveIt_Allow_Sensor_Positioning: false
+      MoveIt_Planning_Attempts: 10
+      MoveIt_Planning_Time: 5
+      MoveIt_Use_Cartesian_Path: false
+      MoveIt_Use_Constraint_Aware_IK: false
+      MoveIt_Workspace:
+        Center:
+          X: 0
+          Y: 0
+          Z: 0
+        Size:
+          X: 2
+          Y: 2
+          Z: 2
+      Name: MotionPlanning
+      Planned Path:
+        Color Enabled: false
+        Interrupt Display: false
+        Links:
+          All Links Enabled: true
+          Expand Joint Details: false
+          Expand Link Details: false
+          Expand Tree: false
+          Link Tree Style: Links in Alphabetic Order
+          oberon7_l/base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/elbow_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/end_effector:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_tip_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_tip_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/forearm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/shoulder_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/upper_arm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/wrist_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/elbow_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/end_effector:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_tip_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_tip_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/forearm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/shoulder_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/upper_arm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/wrist_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/camera_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/camera_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraleft_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraleft_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraright_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraright_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar0_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar1_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar2_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar3_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/imu_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rexrov/magnetometer_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/pose_sensor_link_default:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rexrov/pressure_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/rpt_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_7:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+        Loop Animation: false
+        Robot Alpha: 0.5
+        Robot Color: 150; 50; 150
+        Show Robot Collision: false
+        Show Robot Visual: true
+        Show Trail: false
+        State Display Time: 0.05 s
+        Trail Step Size: 1
+        Trajectory Topic: move_group/display_planned_path
+      Planning Metrics:
+        Payload: 1
+        Show Joint Torques: false
+        Show Manipulability: false
+        Show Manipulability Index: false
+        Show Weight Limit: false
+        TextHeight: 0.07999999821186066
+      Planning Request:
+        Colliding Link Color: 255; 0; 0
+        Goal State Alpha: 1
+        Goal State Color: 250; 128; 0
+        Interactive Marker Size: 0
+        Joint Violation Color: 255; 0; 255
+        Planning Group: arm_l
+        Query Goal State: true
+        Query Start State: false
+        Show Workspace: false
+        Start State Alpha: 1
+        Start State Color: 0; 255; 0
+      Planning Scene Topic: move_group/monitored_planning_scene
+      Robot Description: robot_description
+      Scene Geometry:
+        Scene Alpha: 1
+        Scene Color: 50; 230; 50
+        Scene Display Time: 0.009999999776482582
+        Show Scene Geometry: true
+        Voxel Coloring: Z-Axis
+        Voxel Rendering: Occupied Voxels
+      Scene Robot:
+        Attached Body Color: 150; 50; 150
+        Links:
+          All Links Enabled: true
+          Expand Joint Details: false
+          Expand Link Details: false
+          Expand Tree: false
+          Link Tree Style: Links in Alphabetic Order
+          oberon7_l/base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/elbow_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/end_effector:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_tip_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/finger_tip_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/forearm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/shoulder_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/upper_arm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_l/wrist_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/elbow_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/end_effector:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_tip_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/finger_tip_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/forearm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/shoulder_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/upper_arm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          oberon7_r/wrist_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/camera_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/camera_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraleft_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraleft_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraright_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/cameraright_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar0_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar1_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar2_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/dvl_sonar3_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/imu_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rexrov/magnetometer_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/pose_sensor_link_default:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rexrov/pressure_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/rpt_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rexrov/thruster_7:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+        Robot Alpha: 0.5
+        Show Robot Collision: false
+        Show Robot Visual: true
+      Value: true
+      Velocity_Scaling_Factor: 1
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Default Light: true
+    Fixed Frame: rexrov/base_link
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 5.878925800323486
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Field of View: 0.75
+      Focal Point:
+        X: 0.45829543471336365
+        Y: 0.22139666974544525
+        Z: -0.5603793859481812
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.03500014916062355
+      Target Frame: rexrov/base_link
+      Yaw: 6.274960041046143
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 848
+  Help:
+    collapsed: false
+  Hide Left Dock: false
+  Hide Right Dock: false
+  MotionPlanning:
+    collapsed: false
+  MotionPlanning - Trajectory Slider:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd0000000100000000000001f0000002fafc0200000007fb000000100044006900730070006c006100790073010000003b00000175000000c700fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000010c000000a4000000a000fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001b60000017f0000016900ffffff00000315000002fa00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Views:
+    collapsed: false
+  Width: 1291
+  X: 454
+  Y: 0
