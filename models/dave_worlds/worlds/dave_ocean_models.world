@@ -168,5 +168,25 @@
       <uri>model://uxo_c</uri>
     </include>
 
+    <include>
+      <pose>13 -7 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri>
+    </include>
+
+    <include>
+      <pose>13 -8 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
+    </include>
+
+    <include>
+      <pose>13 -9 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri>
+    </include>
+
+    <include>
+      <pose>13 -10 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+    </include>
+
   </world>
 </sdf>
