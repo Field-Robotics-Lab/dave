@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
-    <model name="Pot01">
+    <model name="Pot01_distorted">
         <static>false</static>
         <link name="base_link">
             <inertial>
@@ -22,7 +22,7 @@
                     </mesh>
                 </geometry>
             </collision>
-            <visual name="Pot01_visual">
+            <visual name="Pot01_distorted_visual">
                 <geometry>
                     <mesh>
                         <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/meshes/Pot01.dae</uri-->
