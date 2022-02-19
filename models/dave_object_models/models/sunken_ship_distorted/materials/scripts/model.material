@@ -1,0 +1,14 @@
+
+material UrbanTile/SunkenShip
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture SunkenShip_Albedo.png
+      }
+    }
+  }
+}
