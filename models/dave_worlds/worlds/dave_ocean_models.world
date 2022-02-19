@@ -168,5 +168,12 @@
       <uri>model://uxo_c</uri>
     </include>
 
+    <include>
+      <name>hardhat_standard</name>
+      <pose>13 0 -94 0 0 0</pose>
+      <uri>model://hardhat_standard</uri>
+    </include>
+
+    
   </world>
 </sdf>
