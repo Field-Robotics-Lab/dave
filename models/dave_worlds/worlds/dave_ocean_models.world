@@ -173,10 +173,11 @@
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri>
     </include>
 
-    <include>
+    <!-- Pending model fix upstream -->
+    <!--include>
       <pose>13 -8 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
-    </include>
+    </include-->
 
     <include>
       <pose>13 -9 -94 0 0 0</pose>
@@ -186,6 +187,11 @@
     <include>
       <pose>13 -10 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+    </include>
+
+    <include>
+      <pose>35 -10 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Ship</uri>
     </include>
 
   </world>
