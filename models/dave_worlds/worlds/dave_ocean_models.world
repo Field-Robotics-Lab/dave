@@ -174,6 +174,23 @@
       <uri>model://hardhat_standard</uri>
     </include>
 
-    
+     <include>
+      <name>hardhat_ribbed</name>
+      <pose>13 1 -94 0 0 0</pose>
+      <uri>model://hardhat_ribbed</uri>
+    </include>
+
+    <include>
+      <name>hardhat_superribbed</name>
+      <pose>13 2 -94 0 0 0</pose>
+      <uri>model://hardhat_superribbed</uri>
+    </include>
+
+    <include>
+      <name>hardhat_octagonal</name>
+      <pose>13 3 -94 0 0 0</pose>
+      <uri>model://hardhat_octagonal</uri>
+    </include>
+
   </world>
 </sdf>
