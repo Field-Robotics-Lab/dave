@@ -193,9 +193,8 @@ def distort(file_path, object_prefix, distort_extent, method):
         elif step == 'vert_rand':
             # Meters
             VERT_RAND_MIN = 0
-            # Set max as 10% of the max xyz component in object dimensions.
-            # This might need tuning.
-            VERT_RAND_MAX = 0.1 * np.max(target_obj.dimensions)
+            # Set max in terms of object dimensions. This might need tuning.
+            VERT_RAND_MAX = 10 * np.max(target_obj.dimensions)
 
             # Figure out offset magnitude
             vert_rand_amt = VERT_RAND_MIN + (
