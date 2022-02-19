@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="uxo_c">
+    <static>false</static>
+    <link name="base_link">
+      <inertial>
+        <pose>0.5 0 0 0 0 0</pose>
+        <mass>33.0</mass>
+        <inertia>
+          <ixx>0.67</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>19</iyy>
+          <iyz>0.0</iyz>
+          <izz>19</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+           <mesh>
+            <uri>file://uxo_c/meshes/uxo_c.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>file://uxo_c/meshes/uxo_c_collision.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

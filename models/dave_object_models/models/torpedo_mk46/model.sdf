@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="torpedo_mk46">
+    <static>false</static>
+    <link name="base_link">
+      <inertial>
+        <!-- See python script in model folder for calcs -->
+        <mass>40</mass>
+        <inertia>
+          <ixx>0.53</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>18.0</iyy>
+          <iyz>0.0</iyz>
+          <izz>18.0</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+           <mesh>
+            <uri>file://torpedo_mk46/meshes/torpedo_mk46.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>file://torpedo_mk46/meshes/torpedo_mk46_collision.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

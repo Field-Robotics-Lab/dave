@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="flight_data_recorder">
+    <static>false</static>
+    <link name="base_link">
+      <inertial>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.04</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.04</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.04</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+           <mesh>
+            <scale> 2.0 2.0 2.0 </scale>
+            <uri>file://flight_data_recorder/meshes/flight_data_recorder.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale> 2.0 2.0 2.0 </scale>
+            <uri>file://flight_data_recorder/meshes/flight_data_recorder_collision.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
