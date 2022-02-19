@@ -5,14 +5,14 @@
     <link name="base_link">
       <inertial>
         <!-- See python script in model folder for calcs -->
-        <mass>4</mass>
+        <mass>5.6</mass>
         <inertia>
-          <ixx>0.1</ixx>
+          <ixx>0.39</ixx>
           <ixy>0.0</ixy>
           <ixz>0.0</ixz>
-          <iyy>2.0</iyy>
+          <iyy>0.39</iyy>
           <iyz>0.0</iyz>
-          <izz>2.0</izz>
+          <izz>0.012</izz>
         </inertia>
       </inertial>
       <visual name="visual">
