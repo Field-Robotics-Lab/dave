@@ -4,15 +4,15 @@ iPython script to calculate inertial properties
 from math import pi
 
 # Mass [kg]
-m = 17.7
+m = 60.0
 # Length and dia [m]
-l = 0.91
-d = 0.13
+l = 1.1
+d = 0.2
 # Volume
 v = pi*(d/2)**2*l
 
 # "mass" in water [kg]
-m_water = m - v*1000
+m_water = m - v*1000.0
 print("Mass in water %f kg"%m_water)
 
 ixx = 0.5 * m_water * (d/2)**2

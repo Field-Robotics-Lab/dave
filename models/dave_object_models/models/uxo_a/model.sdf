@@ -4,14 +4,14 @@
     <static>false</static>
     <link name="base_link">
       <inertial>
-        <mass>2</mass>
+        <mass>25</mass>
         <inertia>
-          <ixx>1</ixx>
+          <ixx>0.12</ixx>
           <ixy>0.0</ixy>
           <ixz>0.0</ixz>
-          <iyy>1</iyy>
+          <iyy>2.6</iyy>
           <iyz>0.0</iyz>
-          <izz>1</izz>
+          <izz>2.6</izz>
         </inertia>
       </inertial>
       <visual name="visual">
