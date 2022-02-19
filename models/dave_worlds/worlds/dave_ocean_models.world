@@ -170,7 +170,9 @@
 
     <include>
       <pose>13 -7 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://sunken_vase</uri>
     </include>
 
     <!-- Pending model fix upstream -->
@@ -181,11 +183,13 @@
 
     <include>
       <pose>13 -9 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://niskin</uri>
     </include>
 
     <include>
-      <pose>13 -10 -94 0 0 0</pose>
+      <pose>13 -12 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
     </include>
 

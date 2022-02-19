@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+    <model name="niskin">
+        <static>false</static>
+        <link name="base_link">
+            <inertial>
+                <pose>0.001636 -0.004927 0.001843</pose>
+                <mass>0.008183</mass>
+                <inertia>
+                    <ixx>0.000173</ixx>
+                    <iyy>0.000172</iyy>
+                    <izz>0.000022</izz>
+                </inertia>
+            </inertial>
+            <collision name="collision">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/meshes/niskin.dae</uri>
+                        <scale>1.0 1.0 1.0</scale>
+                    </mesh>
+                </geometry>
+            </collision>
+            <visual name="Niskin_visual">
+                <geometry>
+                    <mesh>
+                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/meshes/niskin.dae</uri>
+                        <submesh>
+                            <name>Niskin</name>
+                            <center>false</center>
+                        </submesh>
+                    </mesh>
+                </geometry>
+                <material>
+                    <diffuse>1.0 1.0 1.0</diffuse>
+                    <specular>1.0 1.0 1.0</specular>
+                    <pbr>
+                        <metal>
+                            <albedo_map>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/materials/textures/Niskin_Albedo.png</albedo_map>
+                            <normal_map>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/materials/textures/Niskin_Normal.png</normal_map>
+                            <metalness_map>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/materials/textures/Niskin_Metalness.png</metalness_map>
+                            <roughness_map>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/materials/textures/Niskin_Roughness.png</roughness_map>
+                        </metal>
+                    </pbr>
+                    <!-- fallback to script if no PBR support-->
+                    <script>
+                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/materials/scripts/</uri>
+                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/niskin/3/files/materials/textures/</uri>
+                        <name>UrbanTile/Niskin_Diffuse</name>
+                    </script>
+                </material>
+            </visual>
+        </link>
+    </model>
+</sdf>
