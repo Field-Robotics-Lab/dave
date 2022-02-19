@@ -192,5 +192,11 @@
       <uri>model://hardhat_octagonal</uri>
     </include>
 
+    <include>
+      <name>mbari_mars</name>
+      <pose>13 6 -94 0 0 0</pose>
+      <uri>model://mbari_mars</uri>
+    </include>
+
   </world>
 </sdf>
