@@ -2,7 +2,7 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find bathy_test)/worlds/dave_new_bathy_example.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_new_bathy_example.world"/>
     <arg name="namespace" default="rexrov"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
