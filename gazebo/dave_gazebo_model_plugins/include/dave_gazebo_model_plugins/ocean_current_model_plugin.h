@@ -36,10 +36,9 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <mutex>
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
-
-#include <mutex>
 
 namespace gazebo
 {
