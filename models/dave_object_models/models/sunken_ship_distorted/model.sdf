@@ -8,7 +8,7 @@
                 <geometry>
                     <mesh>
                         <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/meshes/sunkenship.dae</uri-->
-                        <uri>model://sunken_ship/meshes/sunkenship_distort.dae</uri>
+                        <uri>model://sunken_ship_distorted/meshes/sunkenship_distort.dae</uri>
                         <scale>1.0 1.0 1.0</scale>
                     </mesh>
                 </geometry>
@@ -17,7 +17,7 @@
                 <geometry>
                     <mesh>
                         <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/meshes/sunkenship.dae</uri-->
-                        <uri>model://sunken_ship/meshes/sunkenship_distort.dae</uri>
+                        <uri>model://sunken_ship_distorted/meshes/sunkenship_distort.dae</uri>
                         <submesh>
                             <name>SunkenShip</name>
                             <center>false</center>
