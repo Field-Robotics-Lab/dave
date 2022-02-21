@@ -304,6 +304,8 @@ void TransientCurrentPlugin::UpdateDatabase(
 /////////////////////////////////////////////////
 void TransientCurrentPlugin::CalculateOceanCurrent()
 {
+  this->lock_.lock();
+
   // Update vehicle position
   double vehicleDepth = - this->model->WorldPose().Pos().Z();
 
@@ -442,6 +444,8 @@ void TransientCurrentPlugin::CalculateOceanCurrent()
     // Update time stamp
     this->lastUpdate = time;
   }
+
+  this->lock_.unlock();
 }
 
 /////////////////////////////////////////////////

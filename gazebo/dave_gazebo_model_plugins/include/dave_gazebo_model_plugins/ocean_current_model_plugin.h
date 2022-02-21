@@ -39,6 +39,8 @@
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
+#include <mutex>
+
 namespace gazebo
 {
   /// \brief Class for the underwater current plugin
@@ -107,6 +109,9 @@ namespace gazebo
 
     /// \brief A thread the keeps running the rosQueue
     private: std::thread databaseSubQueueThread;
+
+    /// \brief A thread mutex to lock
+    private: std::mutex lock_;
 
     /// \brief Period after which we should publish a message via ROS.
     private: gazebo::common::Time rosPublishPeriod;
