@@ -8,7 +8,7 @@
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
     <arg name="joy_id" default="0"/>
- 
+
     <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world_name)"/>
@@ -85,7 +85,6 @@
         <arg name="model_name" value="rexrov"/>
         <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
-    
 
     <!-- joint control for oberon7 -->
     <include file="$(find oberon7_control)/launch/joint_control.launch">

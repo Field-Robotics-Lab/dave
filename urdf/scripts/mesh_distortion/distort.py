@@ -3,7 +3,8 @@
 # In Blender, perform mesh modifications.
 #
 # Usage:
-#   This script is to be run from within the Blender GUI. Tested in Blender 2.9.2.
+#   This script is to be run from within the Blender GUI. Tested in Blender
+#   2.92.
 #   distort.py <file_path> <object_prefix> [distort_extent] [method]
 #
 #   Example:
@@ -20,6 +21,8 @@ import bpy
 
 import os
 import sys
+
+import numpy as np
 
 
 def find_target_object(object_prefix):
@@ -179,6 +182,7 @@ def distort(file_path, object_prefix, distort_extent, method):
         if step == 'subdiv_mod':
             # Figure out levels magnitude
             SUBDIV_LVL_MIN = 0
+            # This might need tuning
             SUBDIV_LVL_MAX = 4
             # Must be integer
             subdiv_lvl = round(SUBDIV_LVL_MIN + (
@@ -189,7 +193,9 @@ def distort(file_path, object_prefix, distort_extent, method):
         elif step == 'vert_rand':
             # Meters
             VERT_RAND_MIN = 0
-            VERT_RAND_MAX = 0.02
+            # Set max in terms of object dimensions. This might need tuning.
+            VERT_RAND_MAX = 10 * np.max(target_obj.dimensions)
+
             # Figure out offset magnitude
             vert_rand_amt = VERT_RAND_MIN + (
                 (VERT_RAND_MAX - VERT_RAND_MIN) * distort_extent)

@@ -1,0 +1,18 @@
+material Bathymetry/AxialSeamountPatch
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.5 0.5 0.5 1.0
+            diffuse 0.5 0.5 0.5 1.0
+            specular 0.2 0.2 0.2 1.0 12.5
+
+            texture_unit
+            {
+                texture ../textures/AxialSeamountPatch.R_-129.930_-129.914_46.035_46.050.epsg3857.texture.png
+                scale 1 1
+            }
+        }
+    }
+}
