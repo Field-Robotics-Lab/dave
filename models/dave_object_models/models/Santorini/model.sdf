@@ -11,7 +11,7 @@
 				<geometry>
 					<mesh>
 						<uri>model://Santorini/mesh/Santorini.R_25.317_25.489_36.337_36.479.epsg3857.obj</uri>
-						<scale>0.1 0.1 0.1</scale>
+						<scale>0.05 0.05 0.1</scale>
 					</mesh>
 				</geometry>
         <material>
@@ -28,7 +28,7 @@
 				<geometry>
 					<mesh>
 						<uri>model://Santorini/mesh/Santorini.R_25.317_25.489_36.337_36.479.epsg3857.obj</uri>
-						<scale>0.1 0.1 0.1</scale>
+						<scale>0.05 0.05 0.1</scale>
 					</mesh>
 				</geometry>
 				<surface>
