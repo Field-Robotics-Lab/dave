@@ -250,6 +250,8 @@ void TransientCurrentPlugin::Update(const gazebo::common::UpdateInfo &)
 void TransientCurrentPlugin::UpdateDatabase(
   const dave_gazebo_ros_plugins::StratifiedCurrentDatabase::ConstPtr &_msg)
 {
+    this->lock_.lock();
+
     this->database.clear();
     for (int i = 0; i < _msg->depths.size(); i++)
     {
@@ -299,6 +301,8 @@ void TransientCurrentPlugin::UpdateDatabase(
       this->world_start_time[3] = _msg->worldStartTimeHour;
       this->world_start_time[4] = _msg->worldStartTimeMinute;
     }
+
+    this->lock_.unlock();
 }
 
 /////////////////////////////////////////////////
