@@ -163,12 +163,12 @@
     <!-- Electrical flying lead -->
     <include>
       <uri>model://plug</uri>
-      <pose>40 -18 -110 0 -1.5707963267948966 0</pose>
+      <pose>-210 140 -152 0 -1.5707963267948966 0</pose>
     </include>
 
     <model name="platform">
       <static>true</static>
-      <pose>40 -18 -110 0 0 0</pose>
+      <pose>-210 140 -152 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
@@ -190,13 +190,13 @@
 
     <include>
       <uri>model://socket_box</uri>
-      <pose>35 -20 -119 0 0 0</pose>
+      <pose>-215 140 -156.2 0 0 0</pose>
     </include>
 
     <plugin name="vehicle_docked_bay1_exterior" filename="libContainPlugin.so">
       <entity>wamv::base_link</entity>
       <namespace>vrx/dock_2018/bay_1_external</namespace>
-      <pose frame="robotx_dock_2018::dock_2018_placard1::placard::link">35 -10 -110 0 0 0</pose>
+      <pose frame="robotx_dock_2018::dock_2018_placard1::placard::link">215 130 -155 0 0 0</pose>
       <geometry>
         <box>
           <size>8 1.5 2</size>
