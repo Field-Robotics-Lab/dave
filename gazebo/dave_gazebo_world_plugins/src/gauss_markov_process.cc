@@ -27,8 +27,9 @@ GaussMarkovProcess::GaussMarkovProcess()
   this->max = 1;
   this->mu = 0;
   this->noiseAmp = 0;
+  this->lastUpdate = 0;
   this->Reset();
-  std::srand(std::time(NULL));
+  this->randSeed = std::time(NULL);
 }
 
 /////////////////////////////////////////////////
