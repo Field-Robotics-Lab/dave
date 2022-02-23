@@ -139,6 +139,12 @@
     </include>
 
     <include>
+      <name>torpedo_mk48</name>
+      <pose>13 -1.5 -94 0 0 0</pose>
+      <uri>model://torpedo_mk48</uri>
+    </include>
+
+    <include>
       <name>sonobuoy</name>
       <pose>13 -2 -94 0 0 0</pose>
       <uri>model://sonobuoy</uri>
@@ -222,6 +228,14 @@
       <pose>13 -12 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
     </include>
+
+    <!-- Still pending
+    <include>
+      <name>airplane_wreck</name>
+      <pose>20 -11 -94 0 0 0</pose>
+      <uri>model://airplane_wreck</uri>
+    </include>
+    -->
 
     <include>
       <pose>35 -10 -94 0 0 0</pose>
