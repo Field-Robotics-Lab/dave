@@ -198,5 +198,35 @@
       <uri>model://mbari_mars</uri>
     </include>
 
+    <include>
+      <pose>13 -7 -94 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://sunken_vase</uri>
+    </include>
+
+    <!-- Pending model fix upstream -->
+    <!--include>
+      <pose>13 -8 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
+    </include-->
+
+    <include>
+      <pose>13 -9 -94 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://niskin</uri>
+    </include>
+
+    <include>
+      <pose>13 -12 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+    </include>
+
+    <include>
+      <pose>35 -10 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Ship</uri>
+    </include>
+
   </world>
 </sdf>

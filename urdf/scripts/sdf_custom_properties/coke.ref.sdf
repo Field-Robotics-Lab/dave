@@ -83,7 +83,7 @@
 
       <!-- Custom SDF elements for surface properties -->
       <surface_props:material>metal</surface_props:material>
-      <surface_props:biofouling_rating>10</surface_props:biofouling_rating>
+      <surface_props:distort_extent>10</surface_props:distort_extent>
       <surface_props:roughness>0.1</surface_props:roughness>
       <plugin name="custom_surface_properties"
         filename="libcustom_surface_properties.so"/>

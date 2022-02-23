@@ -80,5 +80,12 @@
 
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
+    <!-- Setting initial camera pose for DVL demos:
+         dave_dvl_gradient_demo_dsl.launch and dave_dvl_gradient_demo_uuvsim.launch -->
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>14.26 -12.53 0.054 -0.0 0.28 2.36</pose>
+      </camera>
+    </gui>
   </world>
 </sdf>

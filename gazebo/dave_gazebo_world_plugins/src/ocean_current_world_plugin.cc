@@ -572,7 +572,7 @@ void UnderwaterCurrentPlugin::LoadTidalOscillationDatabase()
 
     // Eliminate data with same consecutive type
     std::vector<int> duplicated;
-    for (int i = 0; i  <this->dateGMT.size(); i++)
+    for (int i = 0; i  <this->dateGMT.size() - 1; i++)
     {
       // delete latter if same sign
       if (((this->speedcmsec[i] > 0) - (this->speedcmsec[i] < 0))

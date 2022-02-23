@@ -1,0 +1,80 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='mud_anchor'>
+    <pose>0 0 0 0 0 0</pose>
+    <link name ='handle'>
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>false</gravity>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 1.0</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 0.1 1.0</size></box>
+        </geometry>
+      </visual>
+    </link>
+    <link name="sphere">
+      <gravity>true</gravity>
+      <pose>0 0 -0.5 0 0 0</pose>
+      <collision name="sphere_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05000</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name="sphere_vis">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05000</radius>
+          </sphere>
+        </geometry>
+      </visual>
+      <velocity_decay />
+    </link>
+    <link name ='drag_anchor'>
+      <pose>0 0 -0.75 0 0 0</pose>
+      <collision name ='collision'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 1.0 0.5</size></box>
+        </geometry>
+      </collision>
+      <visual name ='visual'>
+        <laser_retro>255</laser_retro>
+        <geometry>
+          <box><size>0.1 1.0 0.5</size></box>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="sphere_joint" type="revolute">
+      <parent>handle</parent>
+      <child>sphere</child>
+        <axis>
+        <xyz>0.000000 1.000000 0.000000</xyz>
+        <limit>
+          <lower>-0.700000</lower>
+          <upper>0.700000</upper>
+        </limit>
+        <dynamics>
+          <stiffness>0</stiffness>
+          <damping>2.0</damping>
+          <friction>0</friction>
+        </dynamics>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <velocity_decay />
+    </joint>
+    <joint name="anchor_joint" type="fixed">
+      <parent>drag_anchor</parent>
+      <child>sphere</child>
+    </joint>
+ </model>
+</sdf>

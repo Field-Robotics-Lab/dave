@@ -46,8 +46,8 @@ namespace gazebo
     /// \brief Surface roughness, [0.0, 1.0]
     private: double roughness = 0.0;
 
-    /// \brief Biofouling rating, [0, 100]
-    private: int biofoulingRating = 0;
+    /// \brief Distort extent, [0, 1]
+    private: float distortExtent = 0.0;
   };
 }
 

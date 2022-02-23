@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="rexrov">
+	<xacro:arg name="namespace" default="rexrov"/>
+	<xacro:arg name="inertial_reference_frame" default="world"/>
+	<xacro:arg name="debug" default="false"/>
+
+	<xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
+	<xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
+	<!-- <xacro:include filename="$(find dave_oberon7_description)/urdf/serial_arm.gazebo.xacro"/> -->
+	<!-- <xacro:include filename="$(find oberon7_description)/urdf/parameters/serial_arm.xacro"/> -->
+
+	<!-- <xacro:include filename="$(find dave_oberon7_description)/urdf/oberon7_default.xacro"/> -->
+	<xacro:include filename="$(find oberon7_description)/urdf/common.gazebo.xacro"/>
+	<xacro:include filename="$(find oberon7_description)/urdf/oberon7.urdf.xacro"/>
+
+	<xacro:rexrov_base namespace="$(arg namespace)" inertial_reference_frame="$(arg inertial_reference_frame)">
+    <!-- The underwater object plugin is given as an input block parameter to
+     allow the addition of external models of manipulator units -->
+    <gazebo>
+	  	<plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+		    <fluid_density>1028.0</fluid_density>
+		    <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+		    <debug>$(arg debug)</debug>
+		    <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
+		    <xacro:rexrov_hydro_model namespace="$(arg namespace)"/>
+		    <!-- <xacro:oberon7_hydro_model namespace="oberon7"/> -->
+      	</plugin>
+    </gazebo>
+  	</xacro:rexrov_base>
+
+<!-- oberon7 -->
+	<xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+
+	<!-- <xacro:include filename="$(find oberon7_description)/urdf/common.gazebo.xacro"/> -->
+	<!-- <xacro:include filename="$(find oberon7_description)/urdf/oberon7.urdf.xacro"/> -->
+	
+	<xacro:oberon7_arm transmission_hw_interface="$(arg transmission_hw_interface)" namespace="oberon7_r"/>
+	<xacro:oberon7_arm transmission_hw_interface="$(arg transmission_hw_interface)" namespace="oberon7_l"/>
+
+	<joint name="oberon7_r_anchor" type="fixed">
+		<parent link="$(arg namespace)/base_link"/>
+		<child link="oberon7_r/base"/>
+		<origin rpy="0 0 0" xyz="1.3 -0.5 -0.615"/>
+		<!-- <origin rpy="0 0 0" xyz="0 0 2.0"/> -->
+	</joint>
+	<joint name="oberon7_l_anchor" type="fixed">
+		<parent link="$(arg namespace)/base_link"/>
+		<child link="oberon7_l/base"/>
+		<origin rpy="0 0 0" xyz="1.3 0.5 -0.615"/>
+	</joint>
+
+</robot>

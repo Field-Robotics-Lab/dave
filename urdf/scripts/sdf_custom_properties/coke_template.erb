@@ -17,9 +17,9 @@
       <uri>model://sun</uri>
     </include>
 
-<%# Example of how fouling_rating can be used to vary coefficients %>
+<%# Example of how distort_extent can be used to vary coefficients %>
 <%
-      fouling_rating = 10
+      distort_extent = 10
       mu_factor = 0.001
 
       n_objs = 1
@@ -61,7 +61,7 @@
                 </ode>
               </torsional>
               <ode>
-                <mu><%= 1.0 + fouling_rating * mu_factor * idx %></mu>
+                <mu><%= 1.0 + distort_extent * mu_factor * idx %></mu>
                 <mu2>1.0</mu2>
                 <fdir1>0 0 0</fdir1>
                 <slip1>0.0</slip1>
@@ -89,8 +89,8 @@
 
       <!-- Custom SDF elements for surface properties -->
       <surface_props:material>metal</surface_props:material>
-      <surface_props:biofouling_rating><%= fouling_rating %></surface_props:biofouling_rating>
-      <surface_props:roughness><%= fouling_rating * 0.01 %></surface_props:roughness>
+      <surface_props:distort_extent><%= distort_extent %></surface_props:distort_extent>
+      <surface_props:roughness><%= distort_extent * 0.01 %></surface_props:roughness>
       <plugin name="custom_surface_properties"
         filename="libcustom_surface_properties.so"/>
     </model>

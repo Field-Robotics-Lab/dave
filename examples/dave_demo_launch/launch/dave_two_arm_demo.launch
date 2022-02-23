@@ -1,0 +1,39 @@
+<launch>
+	<param name="use_sim_time" value="true"/>
+	<arg name="robot_name"/>
+	
+	<!-- <arg name="init_pose"/> -->
+	<!-- <arg name="parent" default="world"/> -->
+
+	<arg name="xyzpos" default="0.0 0.0 2.0"/>
+	<arg name="parent" default="world"/>
+
+	<arg name="paused" default="false"/>
+	<arg name="gui" default="true"/>
+
+	<param name="robot_description" command="$(find xacro)/xacro '$(find oberon7_description)/urdf/oberon7_robot.urdf.xacro'"/>
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" default="worlds/empty.world"/>
+		<arg name="paused" value="$(arg paused)"/>
+		<arg name="gui" value="$(arg gui)"/>
+	</include>
+
+	<group ns="robot1">
+		<param name="tf_prefix" value="robot1_tf"/>
+		<include file="$(find oberon7_gazebo)/launch/oberon7_multi.launch">
+			<arg name="xyzpos" value="0.0 0.0 2.0"/>
+			<arg name="parent" value="$(arg parent)"/>
+			<arg name="robot_name" value="robot1"/>
+		</include>
+	</group>
+
+	<group ns="robot2">
+		<param name="tf_prefix" value="robot2_tf"/>
+		<include file="$(find oberon7_gazebo)/launch/oberon7_multi.launch">
+			<arg name="xyzpos" value="0 2.0 2.0"/>
+			<arg name="parent" value="$(arg parent)"/>
+			<arg name="robot_name" value="robot2"/>
+		</include>
+	</group>
+</launch>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- <arg name="world_name" default="worlds/empty.world"/> -->
+	<arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
+	<arg name="joy_id" default="0"/>
+	<arg name="paused" default="false"/>
+	<arg name="gui" default="true"/>
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(arg world_name)"/>
+		<arg name="paused" value="$(arg paused)"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="$(arg gui)"/>
+		<arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+	</include>
+
+	<!-- use ned frame north east down -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+
+	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch"/>
+
+	<include file="$(find oberon7_gazebo)/launch/controller_utils.launch"/>
+
+	<!-- Start this controller -->
+	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_l.yaml" command="load"/>
+	<node name="arm_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_l" respawn="false" output="screen"/> 
+
+	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_r.yaml" command="load"/>
+	<node name="arm_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_r" respawn="false" output="screen"/> 
+
+	<!-- Start another controller -->
+	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_l.yaml" command="load"/>
+	<node name="hand_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_l" respawn="false" output="screen"/>
+
+	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_r.yaml" command="load"/>
+	<node name="hand_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_r" respawn="false" output="screen"/>
+
+	<!-- Load other controllers -->
+	<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller"/>
+
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+    	<arg name="uuv_name" value="rexrov" />
+    	<arg name="model_name" value="rexrov" />
+    	<arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+</launch>
