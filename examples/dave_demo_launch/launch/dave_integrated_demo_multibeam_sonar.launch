@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_integrated.world"/>
+    <arg name="namespace" default="rexrov"/>
+    <arg name="set_timeout" default="false"/>
+    <arg name="timeout" default="0.0"/>
+    <arg name="velocity_control" default="true"/>
+    <arg name="joy_id" default="0"/>
+
+    <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="false"/>
+    </include>
+
+    <!-- use ned frame north east down -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+
+    <!-- timeout -->
+    <group if="$(arg set_timeout)">
+        <include file="$(find uuv_assistants)/launch/set_simulation_timer.launch">
+            <arg name="timeout" value="$(arg timeout)"/>
+        </include>
+    </group>
+
+    <!-- For Multibeam Sonar -->
+    <arg name="sonar_name" value="blueview_p900"/>
+    <arg name="sonar_image_topic" value="sonar_image"/>
+
+    <!-- rexrov robot with oberon7 arm -->
+    <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_multibeam_sonar.launch">
+        <arg name="namespace" value="rexrov"/>
+        <arg name="x" value="30.0"/>
+        <arg name="y" value="-28.0"/>
+        <arg name="z" value="-115.0"/>
+        <arg name="yaw" value="1.5708"/>
+
+        <!-- For Multibeam Sonar -->
+        <arg name="sonar_name" value="$(arg sonar_name)"/>
+        <arg name="gpu_ray" value="true"/>
+        <arg name="maxDistance" value="15"/>
+        <!-- fidelity is only for gpu_ray == true -->
+        <!-- fidelity is limited by GPU RAM size and maxDistance-->
+        <arg name="fidelity" default="700"/>
+        <arg name="raySkips" value="10"/>
+        <arg name="sonar_image_topic" value="$(arg sonar_image_topic)"/>
+        <arg name="sonar_image_raw_topic" value="sonar_image_raw"/>
+        <arg name="plotScaler" value="0"/>
+        <arg name="sensorGain" value="0.04"/>
+        <arg name="ray_visual" value="true"/>
+        <arg name="writeLog" value="true"/>
+        <arg name="writeFrameInterval" value="5"/>
+    </include>
+
+    <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
+    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="$(arg namespace)" />
+        <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+
+    <!-- joystick control for rexrov and oberon7, no velocity control-->
+    <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
+        <arg name="model_name" value="rexrov"/>
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+
+    <!-- joint control for oberon7 -->
+    <include file="$(find oberon7_control)/launch/joint_control.launch">
+        <arg name="uuv_name" value="$(arg namespace)"/>
+    </include>
+
+    <!-- image_view for sonar image -->
+    <node name="image_view_sonar" pkg="image_view" type="image_view"
+          args="image:=/$(arg namespace)/$(arg sonar_name)/$(arg sonar_image_topic)">
+      <param name="window_name" value="/$(arg namespace)/$(arg sonar_name)/$(arg sonar_image_topic)" />
+      <param name="autosize" value="true" />
+      <param name="filename_format" value="/tmp/SonarImage_capture_%04i.jpg" />
+    </node>
+
+    <node pkg="tf" type="static_transform_publisher" name="multibeam_sonar_base_link"
+          args="0 0 0 0 0 0 world $(arg namespace)/$(arg sonar_name)_forward_sonar_optical_link 50" />
+</launch>

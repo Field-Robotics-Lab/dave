@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2016 The UUV Simulator Authors.
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<robot name="rexrov" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="rexrov"/>
+  <xacro:arg name="inertial_reference_frame" default="world"/>
+  <!-- Include the ROV macro file -->
+  <xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
+  <xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
+  <xacro:include filename="$(find dave_oberon7_description)/urdf/oberon7_default.xacro" />
+
+  <!-- Create the ROV -->
+  <xacro:rexrov_base
+    namespace="$(arg namespace)"
+    inertial_reference_frame="$(arg inertial_reference_frame)">
+    <!-- The underwater object plugin is given as an input block parameter to
+     allow the addition of external models of manipulator units -->
+    <gazebo>
+      <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+        <fluid_density>1028.0</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>$(arg debug)</debug>
+        <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
+        <xacro:rexrov_hydro_model namespace="$(arg namespace)"/>
+        <xacro:oberon7_hydro_model namespace="oberon7"/>
+      </plugin>
+    </gazebo>
+  </xacro:rexrov_base>
+
+  <xacro:oberon7 namespace="oberon7" parent="$(arg namespace)/base_link">
+    <origin xyz="1.3 -0.5 -0.615" rpy="0 0 0"/>
+  </xacro:oberon7>
+
+  <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/$(arg namespace)</robotNamespace>
+        <robotParam>/$(arg namespace)/robot_description</robotParam>
+      </plugin>
+  </gazebo>
+
+  <!-- Joint state publisher plugin -->
+  <xacro:default_joint_state_publisher namespace="$(arg namespace)" update_rate="50"/>
+
+  <!-- Multibeam Sonar Blueview P900 -->
+  <xacro:arg name="gpu_ray" default="false"/>
+  <xacro:arg name="sonar_name" default="blueview_p900"/>
+
+  <xacro:arg name="robot_link" default="$(arg namespace)/base_link"/>
+  <xacro:arg name="sonar_scale" default="'1 1 1'"/>
+
+  <xacro:arg name="maxDistance" default="10"/>
+  <xacro:arg name="fidelity" default="500"/>
+  <xacro:arg name="raySkips" default="1"/>
+  <xacro:arg name="sonar_image_topic" default="sonar_image"/>
+  <xacro:arg name="sonar_image_raw_topic" default="sonar_image_raw"/>
+  <xacro:arg name="plotScaler" default="0"/>
+  <xacro:arg name="sensorGain" default="0.04"/>
+  <xacro:arg name="ray_visual" default="true"/>
+  <xacro:arg name="writeLog" default="false"/>
+  <xacro:arg name="writeFrameInterval" default="5"/>
+  <xacro:arg name="artificialVehicleVibration" default="false"/>
+  <xacro:arg name="constantReflectivity" default="true"/>
+  <xacro:arg name="reflectivityDatabaseFile" default="variationalReflectivityDatabase.csv"/>
+  <xacro:arg name="gaussian_noise_mean" default="0.0"/>
+  <xacro:arg name="gaussian_noise_stddev" default="0.0"/>
+
+  <xacro:include filename="$(find nps_uw_multibeam_sonar)/urdf/multibeam_sonar_blueview_p900.xacro" />
+  <xacro:multibeam_blueview_p900_macro
+        name="$(arg sonar_name)" scale="$(arg sonar_scale)" debug="$(arg debug)"
+        sonar_image_topic="$(arg sonar_image_topic)" gpu_ray="$(arg gpu_ray)"
+        robot_name="$(arg namespace)"
+        sonar_image_raw_topic="$(arg sonar_image_raw_topic)"
+        maxDistance="$(arg maxDistance)" raySkips="$(arg raySkips)"
+        plotScaler="$(arg plotScaler)" sensorGain="$(arg sensorGain)"
+        writeLog="$(arg writeLog)" writeFrameInterval="$(arg writeFrameInterval)"
+        artificialVehicleVibration="$(arg artificialVehicleVibration)"
+        constantReflectivity="$(arg constantReflectivity)"
+        reflectivityDatabaseFile="$(arg reflectivityDatabaseFile)"
+        gaussian_noise_mean="$(arg gaussian_noise_mean)"
+        gaussian_noise_stddev="$(arg gaussian_noise_stddev)"
+        fidelity="$(arg fidelity)" robot_link="$(arg robot_link)" ray_visual="$(arg ray_visual)">
+      <origin xyz="1.3 0 0.615" rpy="3.141592 0.25 0"/>
+  </xacro:multibeam_blueview_p900_macro>
+
+</robot>
