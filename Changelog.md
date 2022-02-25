@@ -129,19 +129,19 @@ This changelog covers the entire dave project which includes a few repositories,
   - Custom SDF tags of model description for multibeam sonar reflecitivty [Reflectivity by custom sdf tags](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#reflectivity-by-custom-sdf-tags)
   - Multibeam Sonar URDF for standalone and robot description [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
    - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
-   - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
+   - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios) and [nps_uw_multibeam_sonar PR #33](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/33)
    
 - Bathymetry Converter
-  - Docker image distribution including neccesary libraries and excutables [Docker Hub image] (https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
-  - Redesign of the automatic tile generator with python language [mkbathy.py] (https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/master/mkbathy.py)
+  - Docker image distribution including neccesary libraries and excutables [Docker Hub image](https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
+  - Redesign of the automatic tile generator with python language [mkbathy.py](https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/master/mkbathy.py)
   - Automatic color texture generation with bathymetry depth
 
 - Demonstration of Importing Bathymetric Maps 
   - [Bathymetry Models Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Models)
 
 - Mud Plugin
-	- Demonstration and associated models for incorporation of the Gazebo mud plugin into the dave environment [dave PR #184] (https://github.com/Field-Robotics-Lab/dave/pull/184)
-	- Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
+	- Demonstration and associated models for incorporation of the Gazebo mud plugin into the dave environment [dave PR #184](https://github.com/Field-Robotics-Lab/dave/pull/184)
+	- Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
 
 - Bimanual Manipulation
   - Demonstration of binmanual manipulation scenarios using joy teleop, RVIZ interaction and MoveIt.  
@@ -152,6 +152,8 @@ This changelog covers the entire dave project which includes a few repositories,
   - Expose mating forces for mating plugin as ROS publication [PR #189](https://github.com/Field-Robotics-Lab/dave/pull/189)
   - Electrical flying lead demonstration scenario - incremental improvement [PR#161](https://github.com/Field-Robotics-Lab/dave/pull/161)
   - Updated [Electrical Plug Mating Plugin Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Electrical-Plug-Mating-Plugin)
+
+- [Building Bathymetry Heightmaps Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
 
 
 ### Coming Soon
