@@ -144,9 +144,10 @@ This changelog covers the entire dave project which includes a few repositories,
 	- Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
 
 - Bimanual Manipulation
-  - Demonstration of binmanual manipulation scenarios using joy teleop, RVIZ interaction and MoveIt.  
-  - [PR #206](https://github.com/Field-Robotics-Lab/dave/pull/206), [PR #228](https://github.com/Field-Robotics-Lab/dave/pull/228)
-  - 
+  - Creation of MoveIt-based infrastructure for motion planning with single and multi-arm systems. [uuv_manipulators PR #8](https://github.com/Field-Robotics-Lab/uuv_manipulators/pull/8)
+  - Addition and configuration of multiple arms onboard arbitrary robot. [dave PR #206](https://github.com/Field-Robotics-Lab/dave/pull/206)
+  - Demonstration of bimanual manipulation scenarios using joy teleop, RVIZ interaction, and MoveIt ROS nodes.  [PR #228](https://github.com/Field-Robotics-Lab/dave/pull/228)
+  - Documentation and tutorial [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bimanual-Manipulation-Setup-and-Examples) 
 
 - Mating Plugin
   - Expose mating forces for mating plugin as ROS publication [PR #189](https://github.com/Field-Robotics-Lab/dave/pull/189)
