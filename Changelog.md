@@ -175,4 +175,4 @@ This changelog covers the entire dave project which includes a few repositories,
   - GPS Viewer\Logger and a new flag to set how many tiles to keep in the scene
   - New tutorial document and demo files [Bathymetry integration wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Integration)
 
-- Example and tutorial for creating new seafloor heightmaps from arbitrary-format bathymetry sources [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/DRAFT:-Building-a-simple-underwater-environment-via-heightmaps)
+- Example and tutorial for creating new seafloor heightmaps from arbitrary-format bathymetry sources [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
