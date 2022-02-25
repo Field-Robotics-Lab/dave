@@ -1,0 +1,59 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='m_to_f_socket'>
+
+    <link name ='f_to_m_receptacle'>
+      <pose>0 0 0 0 0 0</pose>
+      <visual name ='receptacle_visual'>
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://f_to_m_receptacle/meshes/Plug-Receptacle.dae</uri>
+            <!-- Smaller scale than the plug to make the fit more forgiving -->
+            <scale>0.365 0.375 0.375</scale>
+
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name ='f_to_m_receptacle_collision'>
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae</uri>
+            <scale>0.365 0.375 0.375</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name ='f_to_m_sensor_plate'>
+      <pose>0 0 0 0 0 0</pose>
+      <collision name ='f_to_m_plate_collision'>
+        <pose>0.02 0 0 0 1.5707963267948966 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.06</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="sensor_plate_joint" type="fixed">
+        <parent>f_to_m_receptacle</parent>
+        <child>f_to_m_sensor_plate</child>
+    </joint>
+
+    <!-- Electrical receptacle plugin (pairs with the plug model loaded separately)-->
+    <plugin name="plug_and_socket" filename="libplugAndSocketPlugin.so">
+      <socketTubeLink>f_to_m_receptacle</socketTubeLink>
+      <sensorPlateLink>f_to_m_sensor_plate</sensorPlateLink>
+      <plugModel>f_to_m_plug</plugModel>
+      <plugLink>f_to_m_plug</plugLink>
+      <rollAlignmentTolerance>0.3</rollAlignmentTolerance>
+      <pitchAlignmentTolerance>0.1</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>0.1</yawAlignmentTolerance>
+    </plugin>
+
+  </model>
+</sdf>

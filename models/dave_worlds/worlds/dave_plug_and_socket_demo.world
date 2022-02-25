@@ -142,18 +142,19 @@
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
     <include>
-      <uri>model://plug</uri>
-      <pose>5 1.5 -96.84 0 -1.5707963267948966 0</pose>
+      <uri>model://bop_panel</uri>
+      <static>true</static>
+      <pose>-4.4 0 -101.5 0 0 0</pose>
     </include>
 
     <model name="platform">
       <static>true</static>
-      <pose>5 1.5 -97 0 0 0</pose>
+      <pose>-0.5 2.48 -98 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>1 1 0.2</size>
+              <size>0.5 1.83 0.1</size>
             </box>
           </geometry>
         </collision>
@@ -161,16 +162,32 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>1 1 0.2</size>
+              <size>0.5 1.83 0.1</size>
             </box>
           </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Gold</name>
+            </script>
+          </material>
         </visual>
       </link>
     </model>
 
+    <include>
+      <uri>model://m_to_f_plug</uri>
+      <pose>-0.5 2.25 -97.84 0 -1.5707963267948966 0</pose>
+    </include>
+
+    <include>
+      <uri>model://f_to_m_plug</uri>
+      <pose>-0.5 2.75 -97.84 0 -1.5707963267948966 0</pose>
+    </include>
+
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>9.0 -8.0 -87.0 0.0 0.7 2.2</pose>
+        <pose frame=''>5.5 -5.0 -90.0 0.0 0.7 2.2</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
