@@ -1,70 +1,38 @@
 name: Ubuntu CI
 
-on: [pull_request]
+on: 
+  workflow_dispatch:
+  pull_request:
+
 
 jobs:
-  Test-Focal-Noetic-Gazebo11:
+  build-focal-noetic-gazebo11:
+    strategy:
+      matrix:
+        env:
+          - {ROS_DISTRO: noetic, ROS_REPO: main}
 
+    env:
+      UPSTREAM_WORKSPACE: extras/repos/dave_sim.repos
+      BASEDIR: ${{ github.workspace }}/.work
+      AFTER_SETUP_UPSTREAM_WORKSPACE: vcs pull $BASEDIR/upstream_ws/src
+      DOCKER_IMAGE: woensugchoi/dave:latest
+      TARGET_CMAKE_ARGS: >
+        -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=lld
+        -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=lld
+        -DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=lld
+        -DCMAKE_BUILD_TYPE=Release
+      ADDITIONAL_DEBS: lld python3-catkin-tools python3-osrf-pycommon
     runs-on: ubuntu-20.04
-    container:
-      image: woensugchoi/dave:latest
+
     steps:
-      - run: sudo chown -R `whoami`:`whoami` .
-      - uses: actions/checkout@v2
-      - name: Install base dependencies
-        run: |
-          sudo apt update;
-          sudo apt-get -y install cppcheck protobuf-compiler;
-
-      - name: Static code checking
-        run: sh tools/code_check.sh
-
-      - name: Checkout ds_msgs
-        uses: actions/checkout@v2
-        with:
-          repository: Field-Robotics-Lab/ds_msgs
-          path: ds_msgs
-
-      - name: Checkout ds_sim
-        uses: actions/checkout@v2
-        with:
-          repository: Field-Robotics-Lab/ds_sim
-          path: ds_sim
-
-      - name: Checkout eca a9
-        uses: actions/checkout@v2
-        with:
-          repository: uuvsimulator/eca_a9
-          path: eca_a9
-
-      - name: Checkout rexrov2
-        uses: actions/checkout@v2
-        with:
-          repository: uuvsimulator/rexrov2
-          path: rexrov2
-
-      - name: Checkout uuv manipulators
-        uses: actions/checkout@v2
-        with:
-          repository: Field-Robotics-Lab/uuv_manipulators
-          path: uuv_manipulators
-
-      - name: Checkout uuv simulator
-        uses: actions/checkout@v2
-        with:
-          repository: Field-Robotics-Lab/uuv_simulator
-          path: uuv_simulator
-
-      - name: Set up workspace
-        run: |
-          mkdir -p /tmp/uuv_ws/src;
-          ln -s `pwd` /tmp/uuv_ws/src;
-
-
-      - name: Build and run tests
-        shell: bash
-        run: |
-          cd /tmp/uuv_ws;
-          source /opt/ros/noetic/setup.bash;
-          catkin_make -j1;
-          catkin_make run_tests -j1;
+    - uses: actions/checkout@v2
+    - name: Prepare
+      run: |
+        sudo apt update;
+        sudo apt-get -y install cppcheck protobuf-compiler;
+        sed -i "s/git@github.com:/https:\/\/github.com\//g" extras/repos/dave_sim.repos
+    - name: Static code checking
+      run: sh tools/code_check.sh
+    - uses: 'ros-industrial/industrial_ci@master'
+      env: ${{ matrix.env }}
