@@ -134,10 +134,16 @@ This changelog covers the entire dave project which includes a few repositories,
   - Redesign of the automatic tile generator with python language [mkbathy.py] (https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/master/mkbathy.py)
   - Automatic color texture generation with bathymetry depth
 
+- Mud plugin
+  - Demonstration and associated models for incorporation of the Gazebo mud plugin into the
+  dave environment [dave PR #184] (https://github.com/Field-Robotics-Lab/dave/pull/184)
+
 - Documentation, descriptions and tutorials
   - Multibeam sonar
     - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
     - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
+    - Documentation and tutorial - updates Occlusion documentation to include the mud 
+    demo [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
 
 ### Coming Soon
 
@@ -149,3 +155,5 @@ This changelog covers the entire dave project which includes a few repositories,
   - A new script to set the initial position with geodetic coordinates
   - GPS Viewer\Logger and a new flag to set how many tiles to keep in the scene
   - New tutorial document and demo files [Bathymetry integration wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Integration)
+
+- Example and tutorial for creating new seafloor heightmaps from arbitrary-format bathymetry sources [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/DRAFT:-Building-a-simple-underwater-environment-via-heightmaps)
