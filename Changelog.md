@@ -122,6 +122,10 @@ This changelog covers the entire dave project which includes a few repositories,
   - Docker environment using OSRF Rocker and dockwater [Installation using docker](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#option-a-use-docker)
   - New colorized live sonar image viewer [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
 
+- Object model degradation tool
+  - Bug fixes; tutorial updates documenting how to add new distortion methods [dave PR #185](https://github.com/Field-Robotics-Lab/dave/pull/185)
+  - Set the amount of vertex randomization offset `VERT_RAND_MAX` based on object size; degraded model examples [dave PR #212](https://github.com/Field-Robotics-Lab/dave/pull/212)
+
 ### Added
 
 - Multibeam Sonar Plugin
@@ -129,7 +133,7 @@ This changelog covers the entire dave project which includes a few repositories,
   - Custom SDF tags of model description for multibeam sonar reflecitivty [Reflectivity by custom sdf tags](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#reflectivity-by-custom-sdf-tags)
   - Multibeam Sonar URDF for standalone and robot description [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
    - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
-   - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios) and [nps_uw_multibeam_sonar PR #33](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/33)
+   - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios) and [Multibeam Sonar PR #33](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/33)
    
 - Bathymetry Converter
   - Docker image distribution including neccesary libraries and excutables [Docker Hub image](https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
@@ -146,21 +150,24 @@ This changelog covers the entire dave project which includes a few repositories,
 - Bimanual Manipulation
   - Creation of MoveIt-based infrastructure for motion planning with single and multi-arm systems. [uuv_manipulators PR #8](https://github.com/Field-Robotics-Lab/uuv_manipulators/pull/8)
   - Addition and configuration of multiple arms onboard arbitrary robot. [dave PR #206](https://github.com/Field-Robotics-Lab/dave/pull/206)
-  - Demonstration of bimanual manipulation scenarios using joy teleop, RVIZ interaction, and MoveIt ROS nodes.  [PR #228](https://github.com/Field-Robotics-Lab/dave/pull/228)
+  - Demonstration of bimanual manipulation scenarios using joy teleop, RVIZ interaction, and MoveIt ROS nodes.  [dave PR #228](https://github.com/Field-Robotics-Lab/dave/pull/228)
   - Documentation and tutorial [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bimanual-Manipulation-Setup-and-Examples) 
 
 - Mating Plugin
-  - Expose mating forces for mating plugin as ROS publication [PR #189](https://github.com/Field-Robotics-Lab/dave/pull/189)
-  - Electrical flying lead demonstration scenario - incremental improvement [PR#161](https://github.com/Field-Robotics-Lab/dave/pull/161)
+  - Expose mating forces for mating plugin as ROS publication [dave PR #189](https://github.com/Field-Robotics-Lab/dave/pull/189)
+  - Electrical flying lead demonstration scenario - incremental improvement [dave PR #161](https://github.com/Field-Robotics-Lab/dave/pull/161)
   - Updated [Electrical Plug Mating Plugin Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Electrical-Plug-Mating-Plugin)
 
 - [Building Bathymetry Heightmaps Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
 
+- Object model degradation tool [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Object-Degradation-Tools) documentation
+
+- Object Models
+  - New 3D object models. dave PRs [#194](https://github.com/Field-Robotics-Lab/dave/pull/194), [#205](https://github.com/Field-Robotics-Lab/dave/pull/205), [#209](https://github.com/Field-Robotics-Lab/dave/pull/209), and [#225](https://github.com/Field-Robotics-Lab/dave/pull/225)
 
 ### Coming Soon
 
 - Manipulator reaction force interface
-
 
 - Bathymetry integration plugin usability upgrades [Dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
   - Simpler latitude/longitude coordinate system
