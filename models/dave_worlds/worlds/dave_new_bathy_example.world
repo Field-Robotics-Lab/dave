@@ -144,7 +144,7 @@
                 <normal>file://media/materials/textures/flat_normal.png</normal>
                 <size>1</size>
               </texture>
-              <uri>file://media/Santorini_heightmap.tif</uri>
+              <uri>file://Santorini_heightmap.tif</uri>
               <size>8090 6000 141</size>
               <pos>0 0 1400</pos>
              </heightmap>
