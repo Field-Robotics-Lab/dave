@@ -106,12 +106,46 @@ This changelog covers the entire dave project which includes a few repositories,
 
 ### Added
 
-- Object model degradation tool.  
-    - 3D mesh modification via Blender script [PR#160](https://github.com/Field-Robotics-Lab/dave/pull/160)
-    - Parameterization proof of concept for SDF friction values via embedded Ruby script [PR#163](https://github.com/Field-Robotics-Lab/dave/pull/163)
-    - Demonstration of addition of custom SDF tags for extending model properties and corresponding influence on sensing [PR#164](https://github.com/Field-Robotics-Lab/dave/pull/164)
+- Object model degradation tool
+  - 3D mesh modification via Blender script [PR#160](https://github.com/Field-Robotics-Lab/dave/pull/160)
+  - Parameterization proof of concept for SDF friction values via embedded Ruby script [PR#163](https://github.com/Field-Robotics-Lab/dave/pull/163)
+  - Demonstration of addition of custom SDF tags for extending model properties and corresponding influence on sensing [PR#164](https://github.com/Field-Robotics-Lab/dave/pull/164)
+
+## [4.3.0] - 2022-02-25
+
+### Update
+
+- Ocean current plugin
+  - Search for database file in all gazebo paths (GAZEBO_MODEL_PATH, GAZEBO_RESOURCE_PATH, etc) [dave PR #190](https://github.com/Field-Robotics-Lab/dave/pull/190)
+
+- Multibeam Sonar plugin
+  - Docker environment using OSRF Rocker and dockwater [Installation using docker](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#option-a-use-docker)
+  - New colorized live sonar image viewer [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
+
+### Added
+
+- Multibeam Sonar plugin
+  - GPURay-based multibeam sonar with fidelity flag for number of elevation rays [Multibeam Sonar PR #37](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/37)
+  - Custom SDF tags of model description for multibeam sonar reflecitivty [Reflectivity by custom sdf tags](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#reflectivity-by-custom-sdf-tags)
+  - Multibeam Sonar URDF for standalone and robot description [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
+
+- Bathymetry converter
+  - Docker image distribution including neccesary libraries and excutables [Docker Hub image] (https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
+  - Redesign of the automatic tile generator with python language [mkbathy.py] (https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/master/mkbathy.py)
+  - Automatic color texture generation with bathymetry depth
+
+- Documentation, descriptions and tutorials
+  - Multibeam sonar
+    - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
+    - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
 
 ### Coming Soon
 
 - Manipulator reaction force interface
 - Electrical flying lead demonstration scenario - incremental improvement [PR#161](https://github.com/Field-Robotics-Lab/dave/pull/161)
+
+- Bathymetry integration plugin usability upgrades [Dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
+  - Simpler latitude/longitude coordinate system
+  - A new script to set the initial position with geodetic coordinates
+  - GPS Viewer\Logger and a new flag to set how many tiles to keep in the scene
+  - New tutorial document and demo files [Bathymetry integration wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Integration)
