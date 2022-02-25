@@ -329,9 +329,8 @@ class MoveGroupPythonInterface(object):
 
         return new_target_pose
 
-    def run_node(self):
+    def run_node(self, action_num):
         # Create a counter to give sim time to give object coords
-        counter = 0
         while not rospy.is_shutdown():
             # Get the location of a target relative to the robot in 
             # arm command coordinates
@@ -340,23 +339,30 @@ class MoveGroupPythonInterface(object):
                                                self.get_state_msg.pose[-1],
                                                self.move_group_arm_l.get_current_pose().pose)
 
-            if counter == 2:
-                try:
-                    # Open and close each gripper
+            try:
+                # Open and close each gripper
+                if action_num == 0:
                     self.open_gripper_r()
+                elif action_num == 1:
                     self.close_gripper_r()
+                elif action_num == 2:    
                     self.open_gripper_l()
+                elif action_num == 3:
                     self.close_gripper_l()
+                elif action_num == 4:    
                     # Go to first pose goal, set home pose as False
                     self.go_to_pose_goal_r(False)
+                elif action_num == 5:    
                     self.go_to_pose_goal_l(False)
+                elif action_num == 6:    
                     # Set home pose as true to return to start
                     self.go_to_pose_goal_r(True)
+                elif action_num == 7:    
                     self.go_to_pose_goal_l(True)
-                except:
-                    print("Unable to assume pose")
-                break
-            counter = counter + 1
+            except:
+                print("Unable to assume pose")
+            break
+
             self.rate.sleep()
 
 
@@ -364,8 +370,8 @@ def main():
     try:
         print("Setting up moveit commander")
         bimanual_demo = MoveGroupPythonInterface()
-
-        bimanual_demo.run_node()
+        for action_num in range(8):
+            bimanual_demo.run_node(action_num)
 
     except rospy.ROSInterruptException:
         return
