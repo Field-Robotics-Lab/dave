@@ -113,7 +113,7 @@ This changelog covers the entire dave project which includes a few repositories,
 
 ## [4.3.0] - 2022-02-25
 
-### Update
+### Updated
 
 - Ocean current plugin
   - Search for database file in all gazebo paths (GAZEBO_MODEL_PATH, GAZEBO_RESOURCE_PATH, etc) [dave PR #190](https://github.com/Field-Robotics-Lab/dave/pull/190)
@@ -124,31 +124,40 @@ This changelog covers the entire dave project which includes a few repositories,
 
 ### Added
 
-- Multibeam Sonar plugin
+- Multibeam Sonar Plugin
   - GPURay-based multibeam sonar with fidelity flag for number of elevation rays [Multibeam Sonar PR #37](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/37)
   - Custom SDF tags of model description for multibeam sonar reflecitivty [Reflectivity by custom sdf tags](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#reflectivity-by-custom-sdf-tags)
   - Multibeam Sonar URDF for standalone and robot description [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
-
-- Bathymetry converter
+   - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
+   - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
+   
+- Bathymetry Converter
   - Docker image distribution including neccesary libraries and excutables [Docker Hub image] (https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
   - Redesign of the automatic tile generator with python language [mkbathy.py] (https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/master/mkbathy.py)
   - Automatic color texture generation with bathymetry depth
 
-- Mud plugin
-  - Demonstration and associated models for incorporation of the Gazebo mud plugin into the
-  dave environment [dave PR #184] (https://github.com/Field-Robotics-Lab/dave/pull/184)
+- Demonstration of Importing Bathymetric Maps 
+  - [Bathymetry Models Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Models)
 
-- Documentation, descriptions and tutorials
-  - Multibeam sonar
-    - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
-    - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
-    - Documentation and tutorial - updates Occlusion documentation to include the mud 
-    demo [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
+- Mud Plugin
+	- Demonstration and associated models for incorporation of the Gazebo mud plugin into the dave environment [dave PR #184] (https://github.com/Field-Robotics-Lab/dave/pull/184)
+	- Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
+
+- Bimanual Manipulation
+  - Demonstration of binmanual manipulation scenarios using joy teleop, RVIZ interaction and MoveIt.  
+  - [PR #206](https://github.com/Field-Robotics-Lab/dave/pull/206), [PR #228](https://github.com/Field-Robotics-Lab/dave/pull/228)
+  - 
+
+- Mating Plugin
+  - Expose mating forces for mating plugin as ROS publication [PR #189](https://github.com/Field-Robotics-Lab/dave/pull/189)
+  - Electrical flying lead demonstration scenario - incremental improvement [PR#161](https://github.com/Field-Robotics-Lab/dave/pull/161)
+  - Updated [Electrical Plug Mating Plugin Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Electrical-Plug-Mating-Plugin)
+
 
 ### Coming Soon
 
 - Manipulator reaction force interface
-- Electrical flying lead demonstration scenario - incremental improvement [PR#161](https://github.com/Field-Robotics-Lab/dave/pull/161)
+
 
 - Bathymetry integration plugin usability upgrades [Dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
   - Simpler latitude/longitude coordinate system
