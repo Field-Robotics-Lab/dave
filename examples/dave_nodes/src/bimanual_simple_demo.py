@@ -214,9 +214,9 @@ class MoveGroupPythonInterface(object):
         # Call the planner to compute the plan and execute it.
         plan = self.move_group_arm_l.go(wait=True)
         # Call `stop()` to ensure there is no residual movement
-        move_group.stop()
+        self.move_group_arm_l.stop()
         # Clear your targets after planning with poses.
-        move_group.clear_pose_targets()
+        self.move_group_arm_l.clear_pose_targets()
 
         current_pose = self.move_group_arm_l.get_current_pose().pose
         return all_close(pose_goal, current_pose, 0.01)
