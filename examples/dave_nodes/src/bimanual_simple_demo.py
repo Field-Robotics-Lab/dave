@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 from six.moves import input
@@ -50,15 +50,13 @@ def all_close(goal, actual, tolerance):
     return True
 
 
-class MoveGroupPythonInterfaceTutorial(object):
-    """MoveGroupPythonInterfaceTutorial"""
-
+class MoveGroupPythonInterface(object):
     def __init__(self):
-        super(MoveGroupPythonInterfaceTutorial, self).__init__()
+        super(MoveGroupPythonInterface, self).__init__()
 
         # Initialize `moveit_commander` and node:
         moveit_commander.roscpp_initialize(sys.argv)
-        rospy.init_node("move_group_python_interface_tutorial", anonymous=True)
+        rospy.init_node("move_group_python_interface", anonymous=True)
 
 
         # Instantiate a `RobotCommander` object. Provides robot's
@@ -223,7 +221,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         current_pose = self.move_group_arm_l.get_current_pose().pose
         return all_close(pose_goal, current_pose, 0.01)
 
-    def go_to_pose_goal_r(self, home_var, target_pose):
+    def go_to_pose_goal_r(self, home_var):
         print()
         print("==========Sending right ee to goal...==========")
         current_pose = self.move_group_arm_r.get_current_pose().pose
@@ -231,7 +229,6 @@ class MoveGroupPythonInterfaceTutorial(object):
         pose_goal = geometry_msgs.msg.Pose()
 
         if home_var == False:
-            pose_goal = target_pose
             pose_goal.orientation.w = 0.928
             pose_goal.orientation.x = 0.0198
             pose_goal.orientation.y = 0.37158
@@ -325,28 +322,26 @@ class MoveGroupPythonInterfaceTutorial(object):
         new_target_pose.position.x = o_r_T[0, 3]
         new_target_pose.position.y = o_r_T[1, 3]
         new_target_pose.position.z = o_r_T[2, 3]
-        new_target_pose.orientation.x = object_quat[0]
-        new_target_pose.orientation.y = object_quat[1]
-        new_target_pose.orientation.z = object_quat[2]
-        new_target_pose.orientation.w = object_quat[3]
+        new_target_pose.orientation.x = 0.0
+        new_target_pose.orientation.y = 0.0
+        new_target_pose.orientation.z = 0.0
+        new_target_pose.orientation.w = 1.0
 
         return new_target_pose
 
     def run_node(self):
+        # Create a counter to give sim time to give object coords
         counter = 0
         while not rospy.is_shutdown():
-            self.rate.sleep()
-
+            # Get the location of a target relative to the robot in 
+            # arm command coordinates
+            # TODO: Orientation aligned with world
             target_pose = self.get_target_pose(self.get_state_msg.pose[3],
                                                self.get_state_msg.pose[-1],
                                                self.move_group_arm_l.get_current_pose().pose)
 
             if counter == 2:
                 try:
-                    print()
-                    print("Target Pose")
-                    print(target_pose)
-                    self.go_to_pose_goal_r(False, target_pose)
                     # Open and close each gripper
                     self.open_gripper_r()
                     self.close_gripper_r()
@@ -368,17 +363,14 @@ class MoveGroupPythonInterfaceTutorial(object):
 def main():
     try:
         print("Setting up moveit commander")
-        tutorial = MoveGroupPythonInterfaceTutorial()
+        bimanual_demo = MoveGroupPythonInterface()
 
-        while(True):
-            input("Press 'Enter' to try to pick up object")
-            tutorial.run_node()
+        bimanual_demo.run_node()
 
     except rospy.ROSInterruptException:
         return
     except KeyboardInterrupt:
         return
-
 
 if __name__ == "__main__":
     main()
