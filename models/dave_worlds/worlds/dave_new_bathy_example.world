@@ -129,7 +129,7 @@
         <collision name="collision">
           <geometry>
             <heightmap>
-                <uri>file://media/Santorini_heightmap.tif</uri>
+                <uri>file://Santorini_heightmap.tif</uri>
                 <!-- Scale for original size of terrain segment -->
                 <size>8090 6000 141</size>         
                 <pos>0 0 1400</pos>
