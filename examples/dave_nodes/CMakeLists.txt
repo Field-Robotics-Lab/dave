@@ -44,4 +44,5 @@ catkin_install_python(PROGRAMS
   src/dvl_gradient_plot.py
   src/dvl_state_and_gradient_dsl.py
   src/dvl_state_and_gradient_uuvsim.py
+  src/bimanual_simple_demo.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
