@@ -18,14 +18,14 @@
         <geometry>
           <!-- Smaller scale than plug to make the fit more forgiving -->
           <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/Plug-Receptacle.dae"
-                scale="0.375 0.375 0.375"/>
+                scale="0.365 0.375 0.375"/>
         </geometry>
         <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
       </visual>
       <collision>
         <geometry>
           <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae"
-                scale="0.375 0.375 0.375"/>
+                scale="0.365 0.375 0.375"/>
         </geometry>
         <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
       </collision>

@@ -31,7 +31,7 @@
   <xacro:f_to_m_receptacle_macro
     name="receptacle1" xyz="0 0 0"
     plug_model_name="f_to_m_plug" plug_link_name="f_to_m_plug" roll_tolerance="0.3"
-    pitch_tolerance="0.3" yaw_tolerance="0.3"
+    pitch_tolerance="0.1" yaw_tolerance="0.1"
     mating_force="25" unmating_force="125"/>
 
   <!-- Revolute joint gets accurately loaded into Gazebo -->
@@ -58,7 +58,7 @@
   <xacro:f_to_m_receptacle_macro
     name="receptacle3" xyz="0 0 0"
     plug_model_name="f_to_m_plug" plug_link_name="f_to_m_plug" roll_tolerance="0.3"
-    pitch_tolerance="0.3" yaw_tolerance="0.3"
+    pitch_tolerance="0.1" yaw_tolerance="0.1"
     mating_force="25" unmating_force="125"/>
 
   <joint name="receptacle3_joint" type="revolute">

@@ -10,7 +10,7 @@
           <mesh>
             <uri>model://f_to_m_receptacle/meshes/Plug-Receptacle.dae</uri>
             <!-- Smaller scale than the plug to make the fit more forgiving -->
-            <scale>0.375 0.375 0.375</scale>
+            <scale>0.365 0.375 0.375</scale>
 
           </mesh>
         </geometry>
@@ -20,7 +20,7 @@
         <geometry>
           <mesh>
             <uri>model://f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae</uri>
-            <scale>0.375 0.375 0.375</scale>
+            <scale>0.365 0.375 0.375</scale>
           </mesh>
         </geometry>
       </collision>
@@ -51,8 +51,8 @@
       <plugModel>f_to_m_plug</plugModel>
       <plugLink>f_to_m_plug</plugLink>
       <rollAlignmentTolerance>0.3</rollAlignmentTolerance>
-      <pitchAlignmentTolerance>0.3</pitchAlignmentTolerance>
-      <yawAlignmentTolerance>0.3</yawAlignmentTolerance>
+      <pitchAlignmentTolerance>0.1</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>0.1</yawAlignmentTolerance>
     </plugin>
 
   </model>
