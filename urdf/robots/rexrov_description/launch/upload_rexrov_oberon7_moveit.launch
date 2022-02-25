@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-
 	<arg name="namespace" default="rexrov"/>
 	<arg name="debug" default="false"/>
 
 	<param name="robot_description" command="$(find xacro)/xacro '$(find rexrov_description)/urdf/rexrov_robot.urdf.xacro' inertial_reference_frame:=world"/>
 
-
 	<node name="urdf_spawner" pkg="uuv_descriptions" type="spawn_model" respawn="false" output="screen" args="-urdf -x 4 -y 2 -z -91 -model $(arg namespace) -param robot_description"/>
-
 </launch>
