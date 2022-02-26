@@ -144,8 +144,8 @@ This changelog covers the entire dave project which includes a few repositories,
   - [Bathymetry Models Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Models)
 
 - Mud Plugin
-	- Demonstration and associated models for incorporation of the Gazebo mud plugin into the dave environment [dave PR #184](https://github.com/Field-Robotics-Lab/dave/pull/184)
-	- Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
+  - Demonstration and associated models for incorporation of the Gazebo mud plugin into the dave environment [dave PR #184](https://github.com/Field-Robotics-Lab/dave/pull/184)
+  - Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
 
 - Bimanual Manipulation
   - Creation of MoveIt-based infrastructure for motion planning with single and multi-arm systems. [uuv_manipulators PR #8](https://github.com/Field-Robotics-Lab/uuv_manipulators/pull/8)
