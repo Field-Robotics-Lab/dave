@@ -137,7 +137,7 @@ This changelog covers the entire dave project which includes a few repositories,
    
 - Bathymetry Converter
   - Docker image distribution including neccesary libraries and excutables [Docker Hub image](https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
-  - Redesign of the automatic tile generator with python language [mkbathy.py](https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/master/mkbathy.py)
+  - Redesign of the automatic tile generator with python language [mkbathy.py](https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/a6fa5ba1549e15a17eb7869f6103e907b9f4394a/mkbathy.py)
   - Automatic color texture generation with bathymetry depth
 
 - Demonstration of Importing Bathymetric Maps 
