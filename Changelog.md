@@ -136,7 +136,7 @@ This changelog covers the entire dave project which includes a few repositories,
    - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios) and [Multibeam Sonar PR #33](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/33)
    
 - Bathymetry Converter
-  - Docker image distribution including neccesary libraries and excutables [Docker Hub image](https://hub.docker.com/repository/docker/woensugchoi/bathymetry_converter)
+  - Docker image distribution including neccesary libraries and excutables [Docker Hub image](https://hub.docker.com/r/woensugchoi/bathymetry_converter)
   - Redesign of the automatic tile generator with python language [mkbathy.py](https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/a6fa5ba1549e15a17eb7869f6103e907b9f4394a/mkbathy.py)
   - Automatic color texture generation with bathymetry depth
 
