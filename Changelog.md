@@ -171,7 +171,7 @@ This changelog covers the entire dave project which includes a few repositories,
 
 - Manipulator reaction force interface
 
-- Bathymetry integration plugin usability upgrades [Dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
+- Bathymetry integration plugin usability upgrades [dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
   - Simpler latitude/longitude coordinate system
   - A new script to set the initial position with geodetic coordinates
   - GPS Viewer\Logger and a new flag to set how many tiles to keep in the scene
