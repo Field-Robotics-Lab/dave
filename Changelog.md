@@ -158,7 +158,9 @@ This changelog covers the entire dave project which includes a few repositories,
   - Electrical flying lead demonstration scenario - incremental improvement [dave PR #161](https://github.com/Field-Robotics-Lab/dave/pull/161)
   - Updated [Electrical Plug Mating Plugin Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Electrical-Plug-Mating-Plugin)
 
-- [Building Bathymetry Heightmaps Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
+- Simple Bathymetry with Heightmaps
+  - Example and tutorial for creating new seafloor heightmaps from arbitrary-format bathymetry sources [dave PR #207](https://github.com/Field-Robotics-Lab/dave/pull/207)
+  - [Building Bathymetry Heightmaps Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
 
 - Object model degradation tool [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Object-Degradation-Tools) documentation
 
@@ -175,4 +177,4 @@ This changelog covers the entire dave project which includes a few repositories,
   - GPS Viewer\Logger and a new flag to set how many tiles to keep in the scene
   - New tutorial document and demo files [Bathymetry integration wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Integration)
 
-- Example and tutorial for creating new seafloor heightmaps from arbitrary-format bathymetry sources [wiki] (https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
+
