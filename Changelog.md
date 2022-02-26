@@ -174,5 +174,5 @@ This changelog covers the entire dave project which includes a few repositories,
 - Bathymetry integration plugin usability upgrades [dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
   - Simpler latitude/longitude coordinate system
   - A new script to set the initial position with geodetic coordinates
-  - GPS Viewer\Logger and a new flag to set how many tiles to keep in the scene
+  - GPS Viewer/Logger and a new flag to set how many tiles to keep in the scene
   - New tutorial document and demo files [Bathymetry integration wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Integration)
