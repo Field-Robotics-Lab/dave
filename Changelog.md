@@ -116,7 +116,7 @@ This changelog covers the entire dave project which includes a few repositories,
 ### Updated
 
 - Ocean current plugin
-  - Search for database file in all gazebo paths (GAZEBO_MODEL_PATH, GAZEBO_RESOURCE_PATH, etc) [dave PR #190](https://github.com/Field-Robotics-Lab/dave/pull/190)
+  - Search for database file in all Gazebo paths (`GAZEBO_MODEL_PATH`, `GAZEBO_RESOURCE_PATH`, etc) [dave PR #190](https://github.com/Field-Robotics-Lab/dave/pull/190)
 
 - Multibeam Sonar plugin
   - Docker environment using OSRF Rocker and dockwater [Installation using docker](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#option-a-use-docker)
