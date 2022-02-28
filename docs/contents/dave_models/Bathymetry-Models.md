@@ -32,7 +32,7 @@ The first dave_demo.launch you will be trying out after the installation include
 roslaunch dave_demo_launch dave_demo.launch
 ```
 
-![images/sand_heightmap.png |Sand Heightmap inherited from UUV Simulator.](../images/sand_heightmap.png)
+![images/sand_heightmap.png](../images/sand_heightmap.png)
 
 
 # Axial Seamount
@@ -43,9 +43,9 @@ Axial seamount is a submarine volcano at Juan de Fuca Ridge which is approximate
 roslaunch dave_demo_launch dave_Axial_Seamount_demo.launch
 ```
 
-![images/axial_seamount_overview.png |Location of the patch in the Axial Seamount region. ](../images/axial_seamount_overview.png)
+![images/axial_seamount_overview.png](../images/axial_seamount_overview.png)
 
-![images/axial_seamount_regions.png |Center and four corner regions in the patch. ](../images/axial_seamount_regions.png)
+![images/axial_seamount_regions.png](../images/axial_seamount_regions.png)
 
 ### Related files
 - world file : `dave_Axial_Seamount.world`
@@ -101,7 +101,7 @@ roslaunch dave_demo_launch dave_Axial_Seamount_demo.launch
 - Tiles to keep on the scene  = 3 tiles
 - **GIF animation (click image to see the animated GIF)**
 
-![images/Axial_seamount_tile.gif |Tiled version of the Axial Seamount. ](../images/Axial_seamount_tile.gif)
+![images/Axial_seamount_tile.gif](../images/Axial_seamount_tile.gif)
 
 
 
@@ -115,11 +115,11 @@ roslaunch dave_demo_launch dave_Santorini_demo.launch
 python3 dave/examples/dave_nodes/src/merry_go_round.py
 ```
 
-![images/Santorini_map.png |Map of Santorini island. ](../images/Santorini_map.png)
+![images/Santorini_map.png](../images/Santorini_map.png)
 
 - **GIF animation (click image to see the animated GIF)**
 
-![images/Santorini_merry_go_round.gif |Animated image of a vehicle moving in circle using the merry_go_round.py script. ](../images/Santorini_merry_go_round.gif)
+![images/Santorini_merry_go_round.gif](../images/Santorini_merry_go_round.gif)
 
 
 ### Related files
