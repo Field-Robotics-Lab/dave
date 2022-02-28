@@ -15,11 +15,10 @@
 # in the templates via {{ site.myvariable }}.
 title: Just the Docs
 description: A Jekyll theme for documentation
-baseurl: "/dave_ghpage" # the subpath of your site, e.g. /blog
+baseurl: "/dave" # the subpath of your site, e.g. /blog
 url: "https://woensug-choi.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 permalink: pretty
-include: ["docs/tests/"]
 
 # Regression tests
 # By default, the pages in /docs/tests are excluded when the ste is built.
@@ -62,8 +61,8 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  "Just the Docs on GitHub":
-    - "https://woensug-choi.github.io/dave_ghpage"
+  "Project DAVE on GitHub":
+    - "https://woensug-choi.github.io/dave"
 
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: false
@@ -90,7 +89,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true # show or hide edit this page link
 gh_edit_link_text: "Edit this page on GitHub"
-gh_edit_repository: "https://woensug-choi.github.io/dave_ghpage" # the github URL for your repo
+gh_edit_repository: "https://woensug-choi.github.io/dave" # the github URL for your repo
 gh_edit_branch: "master" # the branch that your docs is served from
 # gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately

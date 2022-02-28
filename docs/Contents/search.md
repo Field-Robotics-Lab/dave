@@ -76,7 +76,7 @@ To allow search for hyphenated words:
 search.tokenizer_separator: /[\s/]+/
 ```
 
-### Display URL in search results 
+### Display URL in search results
 
 ```yaml
 # Display the relative url in search results
