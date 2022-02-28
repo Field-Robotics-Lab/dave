@@ -2,95 +2,117 @@
 layout: default
 title: Home
 nav_order: 1
-description: "Just the Docs is a responsive Jekyll theme with built-in search that is easily customizable and hosted on GitHub Pages."
+description: "Project DAVE"
 permalink: /
 ---
 
-# Focus on writing good documentation
-{: .fs-9 }
+# Project `dave`
 
-Just the Docs gives your documentation a jumpstart with a responsive Jekyll theme that is easily customizable and hosted on GitHub Pages.
-{: .fs-6 .fw-300 }
+Dave is a simulation environment to support the rapid testing and evaluation of underwater robotic solutions, specifically underwater vehicles (AUVs/UUVs) operating autonomously and completing missions that involve autonomous maniputlation.  The environment is built upon existing ROS and Gazebo infrastructure, particularly the [UUV Simulator](https://github.com/uuvsimulator/) and WHOI's [ds_sim](https://bitbucket.org/whoidsl/ds_sim/src/master/).
 
-[Get started now](#getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [View it on GitHub](https://github.com/pmarsceill/just-the-docs){: .btn .fs-5 .mb-4 .mb-md-0 }
+## Quick Start
 
----
+* For a high-level overview of the project, see the release highlight videos:
+    * [Release 2.0.0 Highlight Video, September 2020](https://vimeo.com/462024036)
+        * Narrated version of the [Electrical Mating](https://vimeo.com/463124725) demonstration.
+    * [Release 1.0.0 Highlight Video, June 2020](https://vimeo.com/426414758).
+* For an overview of what is included in the most recent release, see the [Changelog](https://github.com/Field-Robotics-Lab/dave/blob/master/Changelog.md)
+* To review the project plans and priorities for future development efforts, review the [Dave Roadmap](roadmap) and consider submitting an issue or pull request.
+* To try the simulation, follow the [Installation Tutorial](Installation).
 
-## Getting started
+## Project Objective
 
-### Dependencies
+The objective of the project is to provide the following capabilities:
 
-Just the Docs is built for [Jekyll](https://jekyllrb.com), a static site generator. View the [quick start guide](https://jekyllrb.com/docs/) for more information. Just the Docs requires no special plugins and can run on GitHub Pages' standard Jekyll compiler. The [Jekyll SEO Tag plugin](https://github.com/jekyll/jekyll-seo-tag) is included by default (no need to run any special installation) to inject SEO and open graph metadata on docs pages. For information on how to configure SEO and open graph metadata visit the [Jekyll SEO Tag usage guide](https://jekyll.github.io/jekyll-seo-tag/usage/).
+* Visual, physical and (hydro)dynamic models of generlized vehicle, manipulator and sensor elements.
+* Simulation of sensing specific to underwater robotics including perception (e.g., sonar, underwater lidar and optical imaging) and navigation (e.g., DVL and USBL).
+* Parameterized representations of the ocean environment including seafloor bathymetry and ocean currents.
 
-### Quick start: Use as a GitHub Pages remote theme
+These capabilities will enable support the development of autonomous systems capable of multi-phase underwater missions over large time and space scales.
 
-1. Add Just the Docs to your Jekyll site's `_config.yml` as a [remote theme](https://blog.github.com/2017-11-29-use-any-theme-with-github-pages/)
-```yaml
-remote_theme: pmarsceill/just-the-docs
-```
-<small>You must have GitHub Pages enabled on your repo, one or more Markdown files, and a `_config.yml` file. [See an example repository](https://github.com/pmarsceill/jtd-remote)</small>
+## Contributing
 
-### Local installation: Use the gem-based theme
+We welcome contributions from the robotics community. We are particularly interested in contributions to extend and improve capabiliteis associated with the objectives described above. To contribute, please submit an issue or a [pull request](https://github.com/Field-Robotics-Lab/dave/pulls).
 
-1. Install the Ruby Gem
-```bash
-$ gem install just-the-docs
-```
-```yaml
-# .. or add it to your your Jekyll site’s Gemfile
-gem "just-the-docs"
-```
-2. Add Just the Docs to your Jekyll site’s `_config.yml`
-```yaml
-theme: "just-the-docs"
-```
-3. _Optional:_ Initialize search data (creates `search-data.json`)
-```bash
-$ bundle exec just-the-docs rake search:init
-```
-3. Run you local Jekyll server
-```bash
-$ jekyll serve
-```
-```bash
-# .. or if you're using a Gemfile (bundler)
-$ bundle exec jekyll serve
-```
-4. Point your web browser to [http://localhost:4000](http://localhost:4000)
+In addition to our officially supported, core features, Dave also includes a number of features that are supported exclusively by community members. Click here for the current list of [community supported features](Community-Supported-Features).
 
-If you're hosting your site on GitHub Pages, [set up GitHub Pages and Jekyll locally](https://help.github.com/en/articles/setting-up-your-github-pages-site-locally-with-jekyll) so that you can more easily work in your development environment.
+# Tutorials and Demonstrations
 
-### Configure Just the Docs
+Step-by-step guides to illustrate working examples how to accomplish certain tasks and demonstrate features of the project.
 
-- [See configuration options]({{ site.baseurl }}{% link docs/configuration.md %})
+## Project Setup
 
----
+Dave depends upon ROS Noetic and Gazebo 11 - with community support for previous versions of ROS and Gazebo.  The project may be installed directly on your host or run using Docker.
 
-## About the project
+* Check to make sure you meet the [[System Requirements]].
+* Follow the [Installation Tutorials](Installation) to set up your system.
 
-Just the Docs is &copy; 2017-{{ "now" | date: "%Y" }} by [Patrick Marsceill](http://patrickmarsceill.com).
+## Dave Models
 
-### License
+### Underwater Vehicle Models
 
-Just the Docs is distributed by an [MIT license](https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt).
+* [[New-Underwater-Vehicle]]: Given a visual and dynamic model of an underwater vehicle, how to instantiate the model in Gazebo.
+* Vehicle Models: Visual and physical models of existing vehicle platforms.
+    * [Dave ROV Models](vehicle_examples): Custom ROV's
+    * [Dave Glider Models](Glider-Models): Underwater and wave glider model examples.
+    * [UUV Simulator Models](uuv_sim_vehicles): ROV and AUV models from UUV Simulator project.
 
-### Contributing
+### Bathymetry Models
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. Read more about becoming a contributor in [our GitHub repo](https://github.com/pmarsceill/just-the-docs#contributing).
+* [Bathymetry Models](Bathymetry-Models): Underwater heightmap included in the repository.
+* [Building a simple underwater environment via heightmaps](Building-a-simple-underwater-environment-via-heightmaps): How to build your own bathymetry.
 
-#### Thank you to the contributors of Just the Docs!
+### Object Models
 
-<ul class="list-style-none">
-{% for contributor in site.github.contributors %}
-  <li class="d-inline-block mr-1">
-     <a href="{{ contributor.html_url }}"><img src="{{ contributor.avatar_url }}" width="32" height="32" alt="{{ contributor.login }}"/></a>
-  </li>
-{% endfor %}
-</ul>
+* [Object Models](Dave-Object-Models): A collection of useful objects for composing underwater search and manipulation scenarios.
 
-### Code of Conduct
+* [Object Degradation Tools](Object-Degradation-Tools): Tools for altering the geometric shape of a 3D mesh model and for adding customized SDF properties such as surface material to be interpreted by Gazebo plugins.
 
-Just the Docs is committed to fostering a welcoming community.
+## Perception and Sensing
 
-[View our Code of Conduct](https://github.com/pmarsceill/just-the-docs/tree/master/CODE_OF_CONDUCT.md) on our GitHub repository.
+* [Multibeam Forward Looking Sonar](Multibeam-Forward-Looking-Sonar)
+* [Doppler Velocity Logger Examples](whn_dvl_examples)
+    * [DVL Water Tracking and Current Profiling](DVL-Water-Tracking)
+    * [DVL Seabed Gradient Estimation](DVL-Seabed-Gradient)
+* Sensor Tutorials:
+    * [USBL Tutorial](usbl_tutorial)
+
+## Subsea Manipulator Models and Manipulation Feature Demonstrations
+
+* [Manipulator-Models](Manipulator-Models)
+* [Electrical Mating Plugin](Electrical-Plug-Mating-Plugin): Youssef's GSoC demo of a custom plugin to implement the subsea mating of an electrical connector.  The plugin implements constraints on alignment and forces necessary to complete the manipulation.
+* [BOP panel manipulation mission](BOP-Panel-Manipulation-Mission): Implementing the blowout preventer panel example from the UUV Simulator.
+* [Manipulation force feedback](Manipulator-Force-Feedback): First implementation of joint-based force feedback to enhance perception.
+* [[Swapping-out-the-Oberon7-arm-with-another-manipulator]]: Tutorial demonstrating how to swap out the oberon7 arm for another custom made arm.
+* [Retrieving a bar from the seafloor](Teleop-Bar-Retrieval): Coordinated telecoperation of vehicle and manipulator.
+* [Bimanual Manipulation Example](Bimanual-Manipulation-Setup-and-Examples): Equipping the RexROV with dual Oberon7s.
+
+## Ocean Environmental Models
+
+* [Ocean Current Models](Ocean-Current):  A plugin for constant/stratified ocean current with Gauss-Markov model definitions.
+* [Bathymetry generation and auto spawning](Bathymetry-Integration): A plugin that automatically spawns and removes bathymetry grids converted preliminarily from NOAA data.
+* [Occlusion](Occlusion): An example of bottom occlusion due to silt or object occlusion due to marine growth.
+
+## Navigation system design
+* [Terrain Aided Navigation (TAN) Senarios](Terrain-Aided-Navigation-(TAN)-Senarios)
+
+# Notes and Sandboxes
+
+## Descriptions
+Descriptions of how things work, how certain aspects of the project are implemented (descriptions of the methods and techniques used by developer) or results of reverse engineering existing implementations.  May include recommendations for further work and improvements.
+
+* UUV Simulator [Image Sonar](image_sonar_description): Description of foward looking sonar implementation.
+* UUV Simulator [Doppler Velocity Loggers](dvl_description): Description of UUV Simulator and WHOI DSL environment DVL plugin implementations.
+
+## Historical notes
+
+* [Working notes for UUV Simulator](Notes).
+* [UUV Simulator Reference](uuv_simulator_reference)
+* [Working notes for Sonar sensors](Sonar-Notes).
+
+
+
+
+
+
+
