@@ -13,8 +13,8 @@
 # you will see them accessed via {{ site.title }}, {{ site.github_repo }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Just the Docs
-description: A Jekyll theme for documentation
+title: Project DAVE
+description: Wiki/Tutorial for Project DAVE
 baseurl: "/dave" # the subpath of your site, e.g. /blog
 url: "https://woensug-choi.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -100,8 +100,8 @@ color_scheme: dark
 
 # Google Analytics Tracking (optional)
 # e.g, UA-1234567-89
-ga_tracking: UA-2709176-10
-ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
+#ga_tracking: UA-2709176-10
+#ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
 plugins:
   - jekyll-seo-tag
