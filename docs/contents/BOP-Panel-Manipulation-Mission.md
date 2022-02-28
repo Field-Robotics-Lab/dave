@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: BOP Panel Manipulation
 nav_exclude: true
 ---
 

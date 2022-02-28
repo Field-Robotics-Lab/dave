@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Electrical Plug Mating Plugin
 nav_exclude: true
 ---
 

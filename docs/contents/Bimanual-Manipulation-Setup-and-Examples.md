@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Bimanual Manipulation
 nav_exclude: true
 ---
 

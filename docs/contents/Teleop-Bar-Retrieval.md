@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Teleop Bar Retrieval
 nav_exclude: true
 ---
 

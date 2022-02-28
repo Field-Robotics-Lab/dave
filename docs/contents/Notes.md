@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Notes
 nav_exclude: true
 ---
 

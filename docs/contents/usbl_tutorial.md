@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Ultra Short Baseline (USBL) Gazebo Plugin Tutorial
 nav_exclude: true
 ---
 

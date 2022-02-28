@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Manipulator Force Feedback
 nav_exclude: true
 ---
 

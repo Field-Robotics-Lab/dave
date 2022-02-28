@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Multibeam Sonar
 nav_exclude: true
 ---
 

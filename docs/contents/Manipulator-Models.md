@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 404
+title: Manipulator Models
 nav_exclude: true
 ---
 
