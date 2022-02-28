@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Tutorial:  DVL Examples ( ROS Package)
+title: DVL Examples ( ROS Package)
 nav_exclude: true
 ---
 
