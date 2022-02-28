@@ -62,8 +62,8 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  "Project DAVE on GitHub":
-    - "https://woensug-choi.github.io/dave"
+  "View on GitHub":
+    - "https://github.com/woensug-choi/dave"
 
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: false
@@ -94,7 +94,7 @@ footer_content: "Copyright &copy; <a href=\"https://github.com/Field-Robotics-La
 #gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
 
 # Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
-color_scheme: light
+color_scheme: dark
 
 # Google Analytics Tracking (optional)
 # e.g, UA-1234567-89
