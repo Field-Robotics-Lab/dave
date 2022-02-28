@@ -42,6 +42,6 @@ roslaunch dave_demo_launch dave_demo.launch
 ```
 If the simulator does not close promptly with Ctrl-C, you can use the command `pkill gzclient && pkill gzserver` in another terminal window to force immediate shutdown.
 
-![uuv_reference_view](images/uuv_reference_view.png)
+![uuv_reference_view](../images/uuv_reference_view.png)
 
 More details are discussed at [uuv_simulator_reference](installation/uuv_simulator_reference).

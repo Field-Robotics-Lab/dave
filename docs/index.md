@@ -44,23 +44,23 @@ Step-by-step guides to illustrate working examples how to accomplish certain tas
 
 Dave depends upon ROS Noetic and Gazebo 11 - with community support for previous versions of ROS and Gazebo.  The project may be installed directly on your host or run using Docker.
 
-* Check to make sure you meet the [System Requirements](System-Requirements).
+* Check to make sure you meet the [System Requirements](installation/System-Requirements).
 * Follow the [Installation Tutorials](Installation) to set up your system.
 
 ## Dave Models
 
 ### Underwater Vehicle Models
 
-* [[New-Underwater-Vehicle]]: Given a visual and dynamic model of an underwater vehicle, how to instantiate the model in Gazebo.
+* [New-Underwater-Vehicle](dave_models/New-Underwater-Vehicle): Given a visual and dynamic model of an underwater vehicle, how to instantiate the model in Gazebo.
 * Vehicle Models: Visual and physical models of existing vehicle platforms.
-    * [Dave ROV Models](vehicle_examples): Custom ROV's
-    * [Dave Glider Models](Glider-Models): Underwater and wave glider model examples.
-    * [UUV Simulator Models](uuv_sim_vehicles): ROV and AUV models from UUV Simulator project.
+    * [Dave ROV Models](dave_models/vehicle_examples): Custom ROV's
+    * [Dave Glider Models](dave_models/Glider-Models): Underwater and wave glider model examples.
+    * [UUV Simulator Models](dave_models/uuv_sim_vehicles): ROV and AUV models from UUV Simulator project.
 
 ### Bathymetry Models
 
-* [Bathymetry Models](Bathymetry-Models): Underwater heightmap included in the repository.
-* [Building a simple underwater environment via heightmaps](Building-a-simple-underwater-environment-via-heightmaps): How to build your own bathymetry.
+* [Bathymetry Models](dave_models/Bathymetry-Models): Underwater heightmap included in the repository.
+* [Building a simple underwater environment via heightmaps](dave_models/Building-a-simple-underwater-environment-via-heightmaps): How to build your own bathymetry.
 
 ### Object Models
 
@@ -83,7 +83,7 @@ Dave depends upon ROS Noetic and Gazebo 11 - with community support for previous
 * [Electrical Mating Plugin](Electrical-Plug-Mating-Plugin): Youssef's GSoC demo of a custom plugin to implement the subsea mating of an electrical connector.  The plugin implements constraints on alignment and forces necessary to complete the manipulation.
 * [BOP panel manipulation mission](BOP-Panel-Manipulation-Mission): Implementing the blowout preventer panel example from the UUV Simulator.
 * [Manipulation force feedback](Manipulator-Force-Feedback): First implementation of joint-based force feedback to enhance perception.
-* [[Swapping-out-the-Oberon7-arm-with-another-manipulator]]: Tutorial demonstrating how to swap out the oberon7 arm for another custom made arm.
+* [Swapping-out-the-Oberon7-arm-with-another-manipulator](Swapping-out-the-Oberon7-arm-with-another-manipulator): Tutorial demonstrating how to swap out the oberon7 arm for another custom made arm.
 * [Retrieving a bar from the seafloor](Teleop-Bar-Retrieval): Coordinated telecoperation of vehicle and manipulator.
 * [Bimanual Manipulation Example](Bimanual-Manipulation-Setup-and-Examples): Equipping the RexROV with dual Oberon7s.
 
@@ -107,8 +107,7 @@ Descriptions of how things work, how certain aspects of the project are implemen
 ## Historical notes
 
 * [Working notes for UUV Simulator](Notes).
-* [UUV Simulator Reference](uuv_simulator_reference)
-* [Working notes for Sonar sensors](Sonar-Notes).
+* [UUV Simulator Reference](installation/uuv_simulator_reference)
 
 
 

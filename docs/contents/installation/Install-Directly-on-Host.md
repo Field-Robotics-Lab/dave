@@ -5,7 +5,7 @@ nav_exclude: true
 ---
 
 This tutorial will walk you through the setup required to make a host machine ready to build and run the Dave simulations. Note that:
-* your host will need to satisfy the minimum [System Requirements](Installation/System-Requirements), and
+* your host will need to satisfy the minimum [System Requirements](installation/System-Requirements), and
 * the steps below assume you are running **Ubuntu 20.04**.
 
 ## Install all dependencies
@@ -55,5 +55,5 @@ which should yield something like...
 ```
 Gazebo multi-robot simulator, version 11.5.1
 ```
-## Next: [Get the Source Code](Installation/Clone-Dave-Repositories)
+## Next: [Get the Source Code](installation/Clone-Dave-Repositories)
 

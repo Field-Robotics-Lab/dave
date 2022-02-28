@@ -36,4 +36,4 @@ cd dockwater
 * The `build.bash` and `run.bash` scripts may take a few minutes the first time they run.
 * Code for the Docker development images is hosted in the [dockwater repository](https://github.com/Field-Robotics-Lab/dockwater). See the [repository wiki](https://github.com/Field-Robotics-Lab/dockwater/wiki) for more information about this project and supported use cases.
 
-## Next: [Get the Source Code](Installation/Clone-Dave-Repositories)
+## Next: [Get the Source Code](installation/Clone-Dave-Repositories)
