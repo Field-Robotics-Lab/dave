@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Utilities
+title: Installation
 nav_order: 2
 has_children: true
-permalink: Contents/Installation
+permalink: contents/installation
 ---
 
 # System Setup
