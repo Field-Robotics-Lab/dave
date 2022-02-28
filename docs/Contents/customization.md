@@ -53,10 +53,10 @@ jtd.addEvent(toggleDarkMode, 'click', function(){
 ### Define a custom scheme
 
 You can add custom schemes.
-If you want to add a scheme named `foo` (can be any name) just add a file `_sass/color_schemes/foo.scss` (replace `foo` by your scheme name) 
+If you want to add a scheme named `foo` (can be any name) just add a file `_sass/color_schemes/foo.scss` (replace `foo` by your scheme name)
 where you override theme variables to change colors, fonts, spacing, etc.
 
-Available variables are listed in the [_variables.scss](https://github.com/pmarsceill/just-the-docs/tree/master/_sass/support/_variables.scss) file.
+Available variables are listed in the [_variables.scss](https://github.com/pmarsceill/just-the-Contents/tree/master/_sass/support/_variables.scss) file.
 
 For example, to change the link color from the purple default to blue, include the following inside your scheme file:
 

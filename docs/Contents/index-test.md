@@ -168,7 +168,7 @@ Term2
 
 : Second description of Term1 and Term2,
   possibly more than one line
-  
+
 ### More code
 
 ```
