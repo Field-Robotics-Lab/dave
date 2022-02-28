@@ -44,70 +44,70 @@ Step-by-step guides to illustrate working examples how to accomplish certain tas
 
 Dave depends upon ROS Noetic and Gazebo 11 - with community support for previous versions of ROS and Gazebo.  The project may be installed directly on your host or run using Docker.
 
-* Check to make sure you meet the [System Requirements](installation/System-Requirements).
-* Follow the [Installation Tutorials](Installation) to set up your system.
+* Check to make sure you meet the [System Requirements](contents/installation/System-Requirements).
+* Follow the [Installation Tutorials](contents/installation) to set up your system.
 
 ## Dave Models
 
 ### Underwater Vehicle Models
 
-* [New-Underwater-Vehicle](dave_models/New-Underwater-Vehicle): Given a visual and dynamic model of an underwater vehicle, how to instantiate the model in Gazebo.
+* [New-Underwater-Vehicle](contents/dave_models/New-Underwater-Vehicle): Given a visual and dynamic model of an underwater vehicle, how to instantiate the model in Gazebo.
 * Vehicle Models: Visual and physical models of existing vehicle platforms.
-    * [Dave ROV Models](dave_models/vehicle_examples): Custom ROV's
-    * [Dave Glider Models](dave_models/Glider-Models): Underwater and wave glider model examples.
-    * [UUV Simulator Models](dave_models/uuv_sim_vehicles): ROV and AUV models from UUV Simulator project.
+    * [Dave ROV Models](contents/dave_models/vehicle_examples): Custom ROV's
+    * [Dave Glider Models](contents/dave_models/Glider-Models): Underwater and wave glider model examples.
+    * [UUV Simulator Models](contents/dave_models/uuv_sim_vehicles): ROV and AUV models from UUV Simulator project.
 
 ### Bathymetry Models
 
-* [Bathymetry Models](dave_models/Bathymetry-Models): Underwater heightmap included in the repository.
-* [Building a simple underwater environment via heightmaps](dave_models/Building-a-simple-underwater-environment-via-heightmaps): How to build your own bathymetry.
+* [Bathymetry Models](contents/dave_models/Bathymetry-Models): Underwater heightmap included in the repository.
+* [Building a simple underwater environment via heightmaps](contents/dave_models/Building-a-simple-underwater-environment-via-heightmaps): How to build your own bathymetry.
 
 ### Object Models
 
-* [Object Models](Dave-Object-Models): A collection of useful objects for composing underwater search and manipulation scenarios.
+* [Object Models](contents/Dave-Object-Models): A collection of useful objects for composing underwater search and manipulation scenarios.
 
-* [Object Degradation Tools](Object-Degradation-Tools): Tools for altering the geometric shape of a 3D mesh model and for adding customized SDF properties such as surface material to be interpreted by Gazebo plugins.
+* [Object Degradation Tools](contents/Object-Degradation-Tools): Tools for altering the geometric shape of a 3D mesh model and for adding customized SDF properties such as surface material to be interpreted by Gazebo plugins.
 
 ## Perception and Sensing
 
-* [Multibeam Forward Looking Sonar](Multibeam-Forward-Looking-Sonar)
-* [Doppler Velocity Logger Examples](whn_dvl_examples)
-    * [DVL Water Tracking and Current Profiling](DVL-Water-Tracking)
-    * [DVL Seabed Gradient Estimation](DVL-Seabed-Gradient)
+* [Multibeam Forward Looking Sonar](contents/Multibeam-Forward-Looking-Sonar)
+* [Doppler Velocity Logger Examples](contents/whn_dvl_examples)
+    * [DVL Water Tracking and Current Profiling](contents/DVL-Water-Tracking)
+    * [DVL Seabed Gradient Estimation](contents/DVL-Seabed-Gradient)
 * Sensor Tutorials:
-    * [USBL Tutorial](usbl_tutorial)
+    * [USBL Tutorial](contents/usbl_tutorial)
 
 ## Subsea Manipulator Models and Manipulation Feature Demonstrations
 
-* [Manipulator-Models](Manipulator-Models)
-* [Electrical Mating Plugin](Electrical-Plug-Mating-Plugin): Youssef's GSoC demo of a custom plugin to implement the subsea mating of an electrical connector.  The plugin implements constraints on alignment and forces necessary to complete the manipulation.
-* [BOP panel manipulation mission](BOP-Panel-Manipulation-Mission): Implementing the blowout preventer panel example from the UUV Simulator.
-* [Manipulation force feedback](Manipulator-Force-Feedback): First implementation of joint-based force feedback to enhance perception.
-* [Swapping-out-the-Oberon7-arm-with-another-manipulator](Swapping-out-the-Oberon7-arm-with-another-manipulator): Tutorial demonstrating how to swap out the oberon7 arm for another custom made arm.
-* [Retrieving a bar from the seafloor](Teleop-Bar-Retrieval): Coordinated telecoperation of vehicle and manipulator.
-* [Bimanual Manipulation Example](Bimanual-Manipulation-Setup-and-Examples): Equipping the RexROV with dual Oberon7s.
+* [Manipulator-Models](contents/Manipulator-Models)
+* [Electrical Mating Plugin](contents/Electrical-Plug-Mating-Plugin): Youssef's GSoC demo of a custom plugin to implement the subsea mating of an electrical connector.  The plugin implements constraints on alignment and forces necessary to complete the manipulation.
+* [BOP panel manipulation mission](contents/BOP-Panel-Manipulation-Mission): Implementing the blowout preventer panel example from the UUV Simulator.
+* [Manipulation force feedback](contents/Manipulator-Force-Feedback): First implementation of joint-based force feedback to enhance perception.
+* [Swapping-out-the-Oberon7-arm-with-another-manipulator](contents/Swapping-out-the-Oberon7-arm-with-another-manipulator): Tutorial demonstrating how to swap out the oberon7 arm for another custom made arm.
+* [Retrieving a bar from the seafloor](contents/Teleop-Bar-Retrieval): Coordinated telecoperation of vehicle and manipulator.
+* [Bimanual Manipulation Example](contents/Bimanual-Manipulation-Setup-and-Examples): Equipping the RexROV with dual Oberon7s.
 
 ## Ocean Environmental Models
 
-* [Ocean Current Models](Ocean-Current):  A plugin for constant/stratified ocean current with Gauss-Markov model definitions.
-* [Bathymetry generation and auto spawning](Bathymetry-Integration): A plugin that automatically spawns and removes bathymetry grids converted preliminarily from NOAA data.
-* [Occlusion](Occlusion): An example of bottom occlusion due to silt or object occlusion due to marine growth.
+* [Ocean Current Models](contents/Ocean-Current):  A plugin for constant/stratified ocean current with Gauss-Markov model definitions.
+* [Bathymetry generation and auto spawning](contents/Bathymetry-Integration): A plugin that automatically spawns and removes bathymetry grids converted preliminarily from NOAA data.
+* [Occlusion](contents/Occlusion): An example of bottom occlusion due to silt or object occlusion due to marine growth.
 
 ## Navigation system design
-* [Terrain Aided Navigation (TAN) Senarios](Terrain-Aided-Navigation-(TAN)-Senarios)
+* [Terrain Aided Navigation (TAN) Senarios](contents/Terrain-Aided-Navigation-(TAN)-Senarios)
 
 # Notes and Sandboxes
 
 ## Descriptions
 Descriptions of how things work, how certain aspects of the project are implemented (descriptions of the methods and techniques used by developer) or results of reverse engineering existing implementations.  May include recommendations for further work and improvements.
 
-* UUV Simulator [Image Sonar](image_sonar_description): Description of foward looking sonar implementation.
-* UUV Simulator [Doppler Velocity Loggers](dvl_description): Description of UUV Simulator and WHOI DSL environment DVL plugin implementations.
+* UUV Simulator [Image Sonar](contents/image_sonar_description): Description of foward looking sonar implementation.
+* UUV Simulator [Doppler Velocity Loggers](contents/dvl_description): Description of UUV Simulator and WHOI DSL environment DVL plugin implementations.
 
 ## Historical notes
 
-* [Working notes for UUV Simulator](Notes).
-* [UUV Simulator Reference](installation/uuv_simulator_reference)
+* [Working notes for UUV Simulator](contents/Notes).
+* [UUV Simulator Reference](contents/installation/uuv_simulator_reference)
 
 
 

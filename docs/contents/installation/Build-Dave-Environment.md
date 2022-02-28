@@ -44,4 +44,4 @@ If the simulator does not close promptly with Ctrl-C, you can use the command `p
 
 ![uuv_reference_view](../images/uuv_reference_view.png)
 
-More details are discussed at [uuv_simulator_reference](installation/uuv_simulator_reference).
+More details are discussed at [uuv_simulator_reference](contents/installation/uuv_simulator_reference).
