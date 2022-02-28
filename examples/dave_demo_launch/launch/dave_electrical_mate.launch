@@ -28,9 +28,9 @@
 
     <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov"/>
-        <arg name="x" value="7.8"/>
-        <arg name="y" value="-0.2"/>
-        <arg name="z" value="-93.7"/>
+        <arg name="x" value="4.0"/>
+        <arg name="y" value="3.0"/>
+        <arg name="z" value="-97.5"/>
         <arg name="yaw" value="3.141592"/>
     </include>
 

@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='f_to_m_plug'>
+
+    <link name ='f_to_m_plug'>
+      <pose>0 0 0 0 0 0</pose>
+      <self_collide>true</self_collide>
+
+      <visual name ='f_to_m_plug_visual'>
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://f_to_m_plug/meshes/Plug.dae</uri>
+            <scale>0.4 0.4 0.4</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name ='f_to_m_plug_collision'>
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://f_to_m_plug/meshes/COLLISION-Plug.dae</uri>
+            <scale>0.4 0.4 0.4</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <pose>-0.1 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.04</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.04</iyy>
+          <iyz>0</iyz>
+          <izz>0.04</izz>
+        </inertia>
+        <mass>0.5</mass>
+      </inertial>
+    </link>
+
+  </model>
+</sdf>
