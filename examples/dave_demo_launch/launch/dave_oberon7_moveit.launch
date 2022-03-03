@@ -37,9 +37,6 @@
 	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_r.yaml" command="load"/>
 	<node name="hand_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_r" respawn="false" output="screen"/>
 
-	<!-- Load other controllers -->
-	<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller"/>
-
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
     	<arg name="uuv_name" value="rexrov" />
     	<arg name="model_name" value="rexrov" />
