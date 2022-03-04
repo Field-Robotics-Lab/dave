@@ -4,6 +4,7 @@
 	<xacro:arg name="inertial_reference_frame" default="world"/>
 	<xacro:arg name="debug" default="false"/>
 	<xacro:arg name="controller_type" default="effort"/>
+	<xacro:property name="controller" value="$(arg controller_type)"/>
 
 	<xacro:include filename="$(find rexrov_description)/urdf/rexrov_base.xacro"/>
 	<xacro:include filename="$(find uuv_descriptions)/urdf/rexrov.gazebo.xacro"/>
@@ -29,12 +30,12 @@
   	</xacro:rexrov_base>
 
 	<!-- oberon7 -->
-	<!-- <xacro:if value="${controller_type == 'effort'}">	 -->
-		<!-- <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/> -->
-	<!-- </xacro:if> -->
-	<!-- <xacro:if value="${controller_type == 'position'}"> -->
+	<xacro:if value="${controller == 'position'}">	
+		<xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+	</xacro:if>
+	<xacro:if value="${controller == 'effort'}">
 		<xacro:arg name="transmission_hw_interface" default="hardware_interface/EffortJointInterface"/>
-	<!-- </xacro:if> -->
+	</xacro:if>
 
 	<xacro:oberon7_arm transmission_hw_interface="$(arg transmission_hw_interface)" namespace="oberon7_r"/>
 	<xacro:oberon7_arm transmission_hw_interface="$(arg transmission_hw_interface)" namespace="oberon7_l"/>
