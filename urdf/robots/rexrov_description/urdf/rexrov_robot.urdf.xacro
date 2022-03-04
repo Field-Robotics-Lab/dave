@@ -21,8 +21,8 @@
 		    <debug>$(arg debug)</debug>
 		    <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
 		    <xacro:rexrov_hydro_model namespace="$(arg namespace)"/>
-		    <xacro:oberon7_hydro_model namespace="/oberon7_r"/>
-		    <xacro:oberon7_hydro_model namespace="/oberon7_l"/>
+		    <xacro:oberon7_hydro_model namespace="oberon7_r"/>
+		    <xacro:oberon7_hydro_model namespace="oberon7_l"/>
       	</plugin>
     </gazebo>
   	</xacro:rexrov_base>
