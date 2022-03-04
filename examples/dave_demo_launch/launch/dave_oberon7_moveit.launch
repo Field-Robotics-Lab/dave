@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-	<!-- <arg name="world_name" default="worlds/empty.world"/> -->
 	<arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
 	<arg name="joy_id" default="0"/>
 	<arg name="paused" default="false"/>
 	<arg name="gui" default="true"/>
+	<arg name="controller_type" default="effort"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" value="$(arg world_name)"/>
@@ -19,12 +19,14 @@
 	<!-- use ned frame north east down -->
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
 
-	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch"/>
+	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
+		<arg name="controller_type" value="$(arg controller_type)"/>
+	</include>
 
 	<include file="$(find oberon7_gazebo)/launch/controller_utils.launch"/>
 
 	<rosparam file="$(find oberon7_gazebo)/controller/oberon7_controllers.yaml" command="load"/>
-	<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_position_r hand_position_l arm_position_l arm_position_r" respawn="false" output="screen"/> 
+	<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_effort_r hand_effort_l arm_effort_l arm_effort_r" respawn="false" output="screen"/> 
 
     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
     	<arg name="uuv_name" value="rexrov" />
