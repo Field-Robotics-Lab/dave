@@ -160,15 +160,15 @@
 
     <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
 
-        <!-- Electrical flying lead -->
+    <!-- Electrical flying lead -->
     <include>
       <uri>model://m_to_f_plug</uri>
-      <pose>-190.5 117 -155.89 -1.5707963267948966 0</pose>
+      <pose>-190.44 117.25 -155.84 0 -1.570777 0</pose>
     </include>
-  
+
     <include>
       <uri>model://f_to_m_plug</uri>
-      <pose>-190.5 118 -155.95 0 -1.5707963267948966 0</pose>
+      <pose>-190.5 118 -155.84 0 -1.570777 0</pose>
     </include>
 
     <model name="platform">
@@ -202,11 +202,6 @@
     <include>
       <uri>model://bop_panel</uri>
       <pose>-195 115 -160 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://electrical_panel</uri>
-      <pose>-190.5 115.15 -158.5 0 0 0</pose>
       <static>true</static>
     </include>
 
