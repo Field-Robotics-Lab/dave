@@ -162,18 +162,23 @@
 
     <!-- Electrical flying lead -->
     <include>
-      <uri>model://plug</uri>
-      <pose>40 -18 -110 0 -1.5707963267948966 0</pose>
+      <uri>model://m_to_f_plug</uri>
+      <pose>-190.44 117.25 -155.84 0 -1.570777 0</pose>
+    </include>
+
+    <include>
+      <uri>model://f_to_m_plug</uri>
+      <pose>-190.5 118 -155.84 0 -1.570777 0</pose>
     </include>
 
     <model name="platform">
       <static>true</static>
-      <pose>40 -18 -110 0 0 0</pose>
+      <pose>-190.5 117.5 -156 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>1 1 0.2</size>
+              <size>0.5 1.83 0.1</size>
             </box>
           </geometry>
         </collision>
@@ -181,28 +186,24 @@
         <visual name="visual">
           <geometry>
             <box>
-              <size>1 1 0.2</size>
+              <size>0.5 1.83 0.1</size>
             </box>
           </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Gold</name>
+            </script>
+          </material>
         </visual>
       </link>
     </model>
 
     <include>
-      <uri>model://socket_box</uri>
-      <pose>35 -20 -119 0 0 0</pose>
+      <uri>model://bop_panel</uri>
+      <pose>-195 115 -160 0 0 0</pose>
+      <static>true</static>
     </include>
-
-    <plugin name="vehicle_docked_bay1_exterior" filename="libContainPlugin.so">
-      <entity>wamv::base_link</entity>
-      <namespace>vrx/dock_2018/bay_1_external</namespace>
-      <pose frame="robotx_dock_2018::dock_2018_placard1::placard::link">35 -10 -110 0 0 0</pose>
-      <geometry>
-        <box>
-          <size>8 1.5 2</size>
-        </box>
-      </geometry>
-    </plugin>
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
