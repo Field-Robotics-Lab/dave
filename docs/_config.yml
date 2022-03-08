@@ -97,7 +97,7 @@ footer_content: "Copyright &copy; <a href=\"https://github.com/Field-Robotics-La
 color_scheme: dark
 
 # Google Analytics Tracking (optional)
-ga_tracking: G-9KSWQB8YFM
+ga_tracking: G-M1M2S04QTZ
 ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
 plugins:
