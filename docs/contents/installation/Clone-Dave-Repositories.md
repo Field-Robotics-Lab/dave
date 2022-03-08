@@ -39,4 +39,4 @@ cd ~/uuv_ws/src
 vcs import --skip-existing --input dave/extras/repos/multibeam_sim.repos .
 ```
 
-## Step 3: [Build the Dave Simulation Environment](contents/installation/Build-Dave-Environment)
+## Step 3: [Build the Dave Simulation Environment](installation/Build-Dave-Environment)

@@ -24,7 +24,7 @@ If the above is successful, you should end up with a command prompt opened into 
 - DO NOT INCLUDE THIS if you are not using multibeam sonar.
 - It require CUDA Library and NVIDIA driver along with the NVIDIA graphics card that supports CUDA feature.
 ```
-For instructions and plugin details : [Multibeam Forward-Looking Sonar](contents/Multibeam-Forward-Looking-Sonar)
+For instructions and plugin details : [Multibeam Forward-Looking Sonar](Multibeam-Forward-Looking-Sonar)
 ```bash
 git clone -b cuda https://github.com/Field-Robotics-Lab/dockwater.git
 cd dockwater
