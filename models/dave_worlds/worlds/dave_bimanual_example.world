@@ -32,6 +32,7 @@
 			<shadows>1</shadows>
 		</scene>
 
+
 		<!-- Origin placed somewhere in the middle of the North Sea -->
 		<spherical_coordinates>
 			<latitude_deg>56.71897669633431</latitude_deg>
@@ -160,7 +161,7 @@
 
 	    <gui fullscreen='0'>
 	    	<camera name='user_camera'>
-	        	<pose frame=''>5.5 -5.0 -90.0 0.0 0.7 2.2</pose>
+	        	<pose frame=''>-2.97 -8.23 -96.72 0.0 0.108 1.228</pose>
 	        	<view_controller>orbit</view_controller>
 	        	<projection_type>perspective</projection_type>
 	      	</camera>
