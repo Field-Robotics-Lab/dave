@@ -33,10 +33,10 @@ vcs import --skip-existing --input dave/extras/repos/dave_sim.repos .
 - DO NOT INCLUDE THIS if you are not using multibeam sonar.
 - It require CUDA Library and NVIDIA driver along with the NVIDIA graphics card that supports CUDA feature.
 ```
-For instructions and plugin details : [Multibeam Forward-Looking Sonar]((Multibeam-Forward-Looking-Sonar)
+For instructions and plugin details : [Multibeam Forward-Looking Sonar](/dave/contents/Multibeam-Forward-Looking-Sonar)
 ```bash
 cd ~/uuv_ws/src
 vcs import --skip-existing --input dave/extras/repos/multibeam_sim.repos .
 ```
 
-## Step 3: [Build the Dave Simulation Environment](Build-Dave-Environment)
+## Step 3: [Build the Dave Simulation Environment](/dave/contents/installation/Build-Dave-Environment)

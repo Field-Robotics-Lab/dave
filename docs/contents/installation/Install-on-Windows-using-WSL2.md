@@ -40,7 +40,7 @@ README for WSL OpenGL Support : https://github.com/microsoft/wslg
 ## Install Dave project
 Thanks to the great design of WSL2 system architecture. Just follow ordinary instruction
 
-**Linux Host** [Configure Your Host Machine](Install-Directly-on-Host): Instructions to install ROS Noetic, Gazebo 11, UUV Simulator and DAVE directly on your Ubuntu 20.04 host machine.
+**Linux Host** [Configure Your Host Machine](/dave/contents/installation/Install-Directly-on-Host): Instructions to install ROS Noetic, Gazebo 11, UUV Simulator and DAVE directly on your Ubuntu 20.04 host machine.
 
 - You may be tempted to git clone repositories at windows hosted directories (e.g. /mnt/c/users). DO NOT. it's painfully slow compared to accessing data inside the local folder (e.g. /home/$USER).
 
