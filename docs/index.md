@@ -45,7 +45,7 @@ Step-by-step guides to illustrate working examples how to accomplish certain tas
 Dave depends upon ROS Noetic and Gazebo 11 - with community support for previous versions of ROS and Gazebo.  The project may be installed directly on your host or run using Docker.
 
 * Check to make sure you meet the [System Requirements](contents/installation/System-Requirements).
-* Follow the [Installation Tutorials](contents/Installation) to set up your system.
+* Follow the [Installation Tutorials](/dave/contents/installation/Installation) to set up your system.
 
 ## Dave Models
 
