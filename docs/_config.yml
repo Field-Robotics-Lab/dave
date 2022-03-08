@@ -16,7 +16,7 @@
 title: Project DAVE
 description: Wiki/Tutorial for Project DAVE
 baseurl: "/dave" # the subpath of your site, e.g. /blog
-url: "https://Field-Robotics-Lab.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://field-robotics-lab.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 permalink: pretty
 include: ["contents/", "contents/dave_models/", "contents/images/", "contents/installation/"]
