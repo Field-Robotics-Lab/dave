@@ -216,12 +216,12 @@
     <include>
       <uri>model://mud_anchor</uri>
       <name>mud_anchor</name>
-      <pose>102.24 -95.86 -147.73 0.038 -0.98 -2.00</pose>
+      <pose>-78.2 -181 -130 -0.22 0.13 0.0</pose>
     </include>
 
     <!-- Mud pit -->
     <model name="mud_pit_thin">
-      <pose>0 0 -130 0 0 0</pose>
+      <pose>0 0 -120 0 0 0</pose>
       <static>true</static>
       <link name="link">
         <collision name="collision">
