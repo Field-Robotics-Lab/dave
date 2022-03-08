@@ -38,7 +38,7 @@ The plugin is defined at `.world` file and would require input settings used for
 
 ### Quickstart
 
-0. This quickstart assumes you have finished the [installation of dave](https://github.com/Field-Robotics-Lab/dave/wiki/Installation). The bathymetry plugin uses latitude and longitude coordinates to recognize which tiles to spawn and remove. To do so, it uses the GDAL library to convert in between UTM(epsg:4326; X/Y coordinates) coordinate system used in the simulation and WGS86(eps:3857, Latitude/Longitude) coordinates system.
+0. This quickstart assumes you have finished the [installation of dave](installation/Installation). The bathymetry plugin uses latitude and longitude coordinates to recognize which tiles to spawn and remove. To do so, it uses the GDAL library to convert in between UTM(epsg:4326; X/Y coordinates) coordinate system used in the simulation and WGS86(eps:3857, Latitude/Longitude) coordinates system.
 
    ```bash
    # For initial lat/lon spawning
