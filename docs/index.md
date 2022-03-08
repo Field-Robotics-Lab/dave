@@ -18,7 +18,7 @@ Dave is a simulation environment to support the rapid testing and evaluation of 
     * [Release 1.0.0 Highlight Video, June 2020](https://vimeo.com/426414758).
 * For an overview of what is included in the most recent release, see the [Changelog](https://github.com/Field-Robotics-Lab/dave/blob/master/Changelog.md)
 * To review the project plans and priorities for future development efforts consider submitting an issue or pull request.
-* To try the simulation, follow the [Installation Tutorial](contents/Installation).
+* To try the simulation, follow the [Installation Tutorial](/dave/contents/installation/Installation).
 
 ## Project Objective
 
