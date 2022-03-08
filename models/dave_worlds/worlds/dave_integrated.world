@@ -272,6 +272,12 @@
 
     <!-- Models in the world -->
     <include>
+      <name>sunken_ship_1</name>
+      <pose>82 -150 -150 0 0 0</pose>
+      <uri>model://sunken_ship_distorted</uri>
+    </include>
+
+    <include>
       <name>torpedo_mk46</name>
       <pose>27 -16 -115 0 0 0</pose>
       <uri>model://torpedo_mk46</uri>
