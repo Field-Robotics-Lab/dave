@@ -64,9 +64,9 @@ Dave depends upon ROS Noetic and Gazebo 11 - with community support for previous
 
 ### Object Models
 
-* [Object Models](contents/Dave-Object-Models): A collection of useful objects for composing underwater search and manipulation scenarios.
+* [Object Models](contents/dave_models/Dave-Object-Models): A collection of useful objects for composing underwater search and manipulation scenarios.
 
-* [Object Degradation Tools](contents/Object-Degradation-Tools): Tools for altering the geometric shape of a 3D mesh model and for adding customized SDF properties such as surface material to be interpreted by Gazebo plugins.
+* [Object Degradation Tools](contents/dave_models/Object-Degradation-Tools): Tools for altering the geometric shape of a 3D mesh model and for adding customized SDF properties such as surface material to be interpreted by Gazebo plugins.
 
 ## Perception and Sensing
 
