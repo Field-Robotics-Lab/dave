@@ -234,28 +234,28 @@
             </contact>
           </surface>
         </collision>
-      <visual name='visual'>
-        <geometry>
-          <mesh><uri>model://SantoriniScaled/meshes/mud.dae</uri></mesh>
-        </geometry>
-        <!-- <transparency>0.1</transparency>
-        <material>
-          <diffuse>0.1 0.075 0.05 1.0</diffuse>
-          <emissive>0.02 0.02 0.02 1.0</emissive>
-        </material> -->
-        <material>
-          <script>
-            <uri>model://occluded_sand_heightmap/materials/mud.material</uri>
-            <name>Mud</name>
-          </script>
-          <emissive>
-            0.6 0.6 0.6 1.0
-          </emissive>
-        </material>
-      </visual>
+        <visual name='visual'>
+          <geometry>
+            <mesh><uri>model://SantoriniScaled/meshes/mud.dae</uri></mesh>
+          </geometry>
+          <!-- <transparency>0.1</transparency>
+          <material>
+            <diffuse>0.1 0.075 0.05 1.0</diffuse>
+            <emissive>0.02 0.02 0.02 1.0</emissive>
+          </material> -->
+          <material>
+            <script>
+              <uri>model://occluded_sand_heightmap/materials/mud.material</uri>
+              <name>Mud</name>
+            </script>
+            <emissive>
+              0.6 0.6 0.6 1.0
+            </emissive>
+          </material>
+        </visual>
         <sensor name="mud_contact" type="contact">
           <always_on>true</always_on>
-          <update_rate>1000</update_rate>
+          <update_rate>1</update_rate>
           <contact>
             <collision>collision</collision>
           </contact>
@@ -277,7 +277,7 @@
       <uri>model://sunken_ship_distorted</uri>
     </include>
 
-    <include>
+    <!-- <include>
       <name>torpedo_mk46</name>
       <pose>27 -16 -115 0 0 0</pose>
       <uri>model://torpedo_mk46</uri>
@@ -311,7 +311,7 @@
       <name>uxo_c</name>
       <pose>27 -17 -117 0 0 0</pose>
       <uri>model://uxo_c</uri>
-    </include>
+    </include> -->
 
   </world>
 </sdf>
