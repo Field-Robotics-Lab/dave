@@ -5,7 +5,7 @@ Teleport the vehicle to different locations in any world
 '''
 
 # System imports
-import sys, os
+import sys, signal, os
 import argparse, yaml
 
 # ROS/Gazebo imports
@@ -16,6 +16,11 @@ import tf
 from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
 from geometry_msgs.msg import Pose, Twist
+
+# Signal handler for graceful exit
+def signal_handler(sig, frame):
+        rospy.loginfo("Shutting down Teleporter!")
+        sys.exit(0)
 
 class Teleport:
 
@@ -36,13 +41,15 @@ class Teleport:
         parser = argparse.ArgumentParser()
         parser.add_argument('vehicle_type', help="Vehicle's model name", type=str)
         parser.add_argument('location_name', help="Which location it should move to?", type=str)
-        try:
-            while not rospy.is_shutdown():
+        
+        signal.signal(signal.SIGINT, signal_handler)
+        while not rospy.is_shutdown():
+            try:
                 # Wait for user input
                 print("<vehicle> <location>: ", end="")
                 user_input = input()
                 args = parser.parse_args(user_input.split())
-
+                
                 # Check for valid model name
                 if args.vehicle_type in self.locationDict:
                     # Move vehicle
@@ -50,8 +57,8 @@ class Teleport:
                 else:
                     rospy.logerr("Invalid vehicle. Choose from: ["+",".join(self.locationDict.keys())+"]")
                     pass
-        except (rospy.ROSInterruptException, KeyboardInterrupt):
-            sys.exit()
+            except rospy.ROSInterruptException:
+               sys.exit(0)
 
     def teleport(self, vehicle, location):
         # Wait for Gazebo services
