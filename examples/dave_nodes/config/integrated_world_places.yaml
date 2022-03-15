@@ -1,0 +1,14 @@
+# Config for teleport script
+places:
+  home: {
+    'robot_pose': [-21,-34,-108,0,0,2.5],
+    'camera_pose': [-21,-34,-108,0,0,2.5]
+  }
+  electrical: {
+    'robot_pose': [-187,117,-154,0,0,3.14],
+    'camera_pose': [-187,117,-154,0,0,3.14]
+  }
+  mud: {
+    'robot_pose': [-140,-190,-145,0,0,0],
+    'camera_pose':  [-140,-190,-145,0,0,0]
+  }

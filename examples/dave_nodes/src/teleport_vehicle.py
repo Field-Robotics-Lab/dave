@@ -1,12 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 Teleport the vehicle to different locations in any world
 
 '''
 
 # System imports
-import sys, signal, os
-import argparse, yaml
+import sys
+import signal
+import argparse
+import yaml
 
 # ROS/Gazebo imports
 import rospy
@@ -19,85 +21,87 @@ from geometry_msgs.msg import Pose, Twist
 
 # Signal handler for graceful exit
 def signal_handler(sig, frame):
-        rospy.loginfo("Shutting down Teleporter!")
+        rospy.loginfo("Shutting down teleport_vehicle!")
         sys.exit(0)
 
-class Teleport:
+class Poses:
+    def __init__(self, name:str, robot_pose:list, camera_pose:list):
+        self.name = name
+        self.robot_pose = robot_pose
+        self.camera_pose = camera_pose
 
-    def __init__(self):
-        # Start node
-        rospy.init_node('teleport_vehicle')
 
-        # Initialize vars
-        self.locationDict = {}
+def get_pose(pose: list):
+    ''' Convert a list of x,y,z,roll,pitch,yaw into geometry_msgs/Pose '''
+    pose_msg = Pose()
+    print(f"Pose:{len(pose)}")
+    if len(pose) < 6:
+        return None
+    pose_msg.position.x = pose[0]
+    pose_msg.position.y = pose[1]
+    pose_msg.position.z = pose[2]
+    quaternion = tf.transformations.quaternion_from_euler(pose[3],\
+                 pose[4], pose[5])
+    pose_msg.orientation.x = quaternion[0]
+    pose_msg.orientation.y = quaternion[1]
+    pose_msg.orientation.z = quaternion[2]
+    pose_msg.orientation.w = quaternion[3]
+    return pose_msg
 
-    def main(self, configFileName):
-        # Parse yaml for locations
-        path = os.getcwd() + "/examples/dave_nodes/config/" + configFileName
-        self.locationDict = yaml.load(open(path), Loader=yaml.FullLoader)
-        
-        # Parser for user commands
-        rospy.loginfo("Teleporter ready: Waiting for commands")
-        parser = argparse.ArgumentParser()
-        parser.add_argument('vehicle_type', help="Vehicle's model name", type=str)
-        parser.add_argument('location_name', help="Which location it should move to?", type=str)
-        
-        signal.signal(signal.SIGINT, signal_handler)
-        while not rospy.is_shutdown():
-            try:
-                # Wait for user input
-                print("<vehicle> <location>: ", end="")
-                user_input = input()
-                args = parser.parse_args(user_input.split())
-                
-                # Check for valid model name
-                if args.vehicle_type in self.locationDict:
-                    # Move vehicle
-                    self.teleport(args.vehicle_type, args.location_name)
-                else:
-                    rospy.logerr("Invalid vehicle. Choose from: ["+",".join(self.locationDict.keys())+"]")
-                    pass
-            except rospy.ROSInterruptException:
-               sys.exit(0)
 
-    def teleport(self, vehicle, location):
-        # Wait for Gazebo services
+def teleport(places: dict):
+    set_model_srv = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
+    while not rospy.is_shutdown():
+        print('Enter NAME PLACE:')
+        user_input = input()
+        entires = user_input.strip().split(' ')
+        if len(entires) < 2:
+          print("Invalid input. See usage")
+          continue
+        uuv_name = str(entires[0])
+        place_name = str(entires[1])
+        if place_name not in places:
+            rospy.logerr("Invalid PLACE. See configured places.")
+            continue
+        place = places[place_name]
         rospy.wait_for_service("/gazebo/set_model_state")
+        pose_msg = get_pose(place.robot_pose)
+        if pose_msg is None:
+            rospy.logerr("Unable to generate Pose msg for configured pose. Skipping...")
+            continue
+        set_model_srv(ModelState(uuv_name, pose_msg, Twist(), "world"))
+        rospy.loginfo(f"Teleported UUV [{uuv_name}] to {place.name}:{place.robot_pose}")
 
-        # Prepare initialization SetModelState service
-        self.set_model_srv = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
 
-        thisVehicle = self.locationDict[vehicle]['places']
-        # Generate ModelState msg based on valid location id
-        try:
-            pose = Pose()
-            pose.position.x = thisVehicle[location][0]
-            pose.position.y = thisVehicle[location][1]
-            pose.position.z = thisVehicle[location][2]
-            quaternion = tf.transformations.quaternion_from_euler(thisVehicle[location][3],\
-                         thisVehicle[location][4], thisVehicle[location][5])
-            pose.orientation.x = quaternion[0]
-            pose.orientation.y = quaternion[1]
-            pose.orientation.z = quaternion[2]
-            pose.orientation.w = quaternion[3]
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        prog="teleport_vehicle",
+        description="A script to teleport UUVs within underwater environments")
+    parser.add_argument("-c", "--config", type=str, required=True,
+                        help="Path to the config.yaml file")
+    args = parser.parse_args(argv[1:])
+    config_yaml = None
+    with open(args.config, "r") as f:
+        config_yaml = yaml.safe_load(f)
 
-            # maneuver
-            self.set_model_srv(ModelState(vehicle, pose, Twist(), "world"))
+    # Map place name to poses
+    places = {}
+    for place, poses in config_yaml['places'].items():
+        places[place] = Poses(place, poses['robot_pose'], poses['camera_pose'])
 
-            rospy.loginfo("Teleported " + vehicle + " to " + location + " location at pose (" \
-                + repr(pose.position.x) + "," + repr(pose.position.y) + "," + repr(pose.position.z) \
-                + ") and" + " orientation ("+ repr(thisVehicle[location][3]) + ","\
-                + repr(thisVehicle[location][4]) + "," + repr(thisVehicle[location][5]) + ")")
+    rospy.init_node('teleport_vehicle')
+    signal.signal(signal.SIGINT, signal_handler)
 
-        except KeyError:
-            rospy.logerr("Invalid location. Choose from: ["+",".join(thisVehicle.keys())+"]")
-            pass
+    print('#####################')
+    print('Usage:\n    To teleport a UUV with name NAME to place PLACE, enter NAME PLACE: ')
+    print(f'    Configured places: {list(places.keys())}')
+    print('#####################')
+
+    try:
+        teleport(places)
+    except rospy.ROSInterruptException:
+        sys.exit(0)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('config_filename', help="configuration file *.yaml", type=str)
-    args = parser.parse_args()
-    
-    teleport = Teleport()
-    teleport.main(args.config_filename)
+    main(sys.argv)
