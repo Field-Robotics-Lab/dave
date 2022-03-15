@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="f_to_m_receptacle_macro"
+               params="name xyz plug_model_name plug_link_name
+                       roll_tolerance pitch_tolerance yaw_tolerance
+                       mating_force unmating_force">
+
+    <!-- Receptacle tube link -->
+    <link name="${name}_link">
+      <inertial>
+        <mass value="0.5"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.00001" ixy="0" ixz="0"
+                 iyy="0.00001" iyz="0" izz="0.00003"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <!-- Smaller scale than plug to make the fit more forgiving -->
+          <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/Plug-Receptacle.dae"
+                scale="0.365 0.375 0.375"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://dave_object_models/models/f_to_m_receptacle/meshes/COLLISION-Plug-Receptacle.dae"
+                scale="0.365 0.375 0.375"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+      </collision>
+    </link>
+
+    <!-- Receptacle sensor plate link (not visible) -->
+    <link name="${name}_sensor_link">
+      <inertial>
+        <mass value="0.001"/>
+        <origin xyz="0 0 0" rpy="${pi} 0 0"/>
+        <inertia ixx="0.0000001" ixy="0" ixz="0"
+                 iyy="0.0000001" iyz="0" izz="0.0000003"/>
+      </inertial>
+      <collision>
+        <geometry>
+          <cylinder length="0.01" radius="0.06"/>
+        </geometry>
+        <origin xyz="0.01 0 0" rpy="0 ${-pi/2} 0"/>
+      </collision>
+    </link>
+
+    <!-- Connect the socket and sensor plate links -->
+    <joint name="${name}_sensor_joint" type="revolute">
+      <limit effort="1.0" lower="0.0" upper="0.0" velocity="0.0"/>
+      <origin xyz="${xyz}" rpy="0 0 0"/>
+      <parent link="${name}_link"/>
+      <child link="${name}_sensor_link"/>
+    </joint>
+
+    <!-- Generate the model plugin for the socket -->
+    <gazebo>
+      <plugin name="${name}_plugin" filename="libplugAndSocketPlugin.so">
+        <socketTubeLink>${name}_link</socketTubeLink>
+        <sensorPlateLink>${name}_sensor_link</sensorPlateLink>
+        <plugModel>${plug_model_name}</plugModel>
+        <plugLink>${plug_link_name}</plugLink>
+        <rollAlignmentTolerance>${roll_tolerance}</rollAlignmentTolerance>
+        <pitchAlignmentTolerance>${pitch_tolerance}</pitchAlignmentTolerance>
+        <yawAlignmentTolerance>${yaw_tolerance}</yawAlignmentTolerance>
+        <matingForce>${mating_force}</matingForce>
+        <unmatingForce>${unmating_force}</unmatingForce>
+      </plugin>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
+

@@ -1,0 +1,57 @@
+<?xml version='1.0'?>
+<sdf version ='1.6'>
+  <model name ='m_to_f_socket'>
+
+    <link name ='m_to_f_socket'>
+      <pose>0 0 0 0 0 0</pose>
+      <visual name ='m_to_f_socket_visual'>
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://m_to_f_socket/meshes/Electrical-Socket.dae</uri>
+            <scale>0.12 0.12 0.12</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name ='m_to_f_socket_collision'>
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>model://m_to_f_socket/meshes/Electrical-Socket.dae</uri>
+            <scale>0.12 0.12 0.12</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name ='m_to_f_sensor_plate'>
+      <pose>0 0 0 0 0 0</pose>
+      <collision name ='m_to_f_plate_collision'>
+        <pose>0 0 0 0 1.5707963267948966 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.06</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="sensor_plate_joint" type="fixed">
+        <parent>socket</parent>
+        <child>sensor_plate</child>
+    </joint>
+
+    <!-- Electrical socket plugin (pairs with the plug model loaded separately)-->
+    <plugin name="plug_and_socket" filename="libplugAndSocketPlugin.so">
+      <socketTubeLink>m_to_f_socket</socketTubeLink>
+      <sensorPlateLink>m_to_f_sensor_plate</sensorPlateLink>
+      <plugModel>m_to_f_plug</plugModel>
+      <plugLink>m_to_f_plug</plugLink>
+      <rollAlignmentTolerance>0.3</rollAlignmentTolerance>
+      <pitchAlignmentTolerance>0.3</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>0.3</yawAlignmentTolerance>
+    </plugin>
+
+  </model>
+</sdf>

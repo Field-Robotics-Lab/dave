@@ -1,0 +1,110 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+
+# For beginners, we downscale velocity and acceleration limits.
+# You can always specify higher scaling factors (<= 1.0) in your motion requests.  # Increase the values below to 1.0 to always move at maximum speed.
+default_velocity_scaling_factor: 1.0
+default_acceleration_scaling_factor: 1.0
+
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  oberon7_l/azimuth:
+    has_velocity_limits: true
+    max_velocity: 0.17
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/elbow:
+    has_velocity_limits: true
+    max_velocity: 0.13
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/finger_left_joint:
+    has_velocity_limits: true
+    max_velocity: 0.15
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/finger_right_joint:
+    has_velocity_limits: true
+    max_velocity: 0.15
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/finger_tip_left_joint:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/finger_tip_right_joint:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/pitch:
+    has_velocity_limits: true
+    max_velocity: 0.26
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/roll:
+    has_velocity_limits: true
+    max_velocity: 0.08500000000000001
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/shoulder:
+    has_velocity_limits: true
+    max_velocity: 0.17
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_l/wrist:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/azimuth:
+    has_velocity_limits: true
+    max_velocity: 0.17
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/elbow:
+    has_velocity_limits: true
+    max_velocity: 0.13
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/finger_left_joint:
+    has_velocity_limits: true
+    max_velocity: 0.15
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/finger_right_joint:
+    has_velocity_limits: true
+    max_velocity: 0.15
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/finger_tip_left_joint:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/finger_tip_right_joint:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/pitch:
+    has_velocity_limits: true
+    max_velocity: 0.26
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/roll:
+    has_velocity_limits: true
+    max_velocity: 0.08500000000000001
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/shoulder:
+    has_velocity_limits: true
+    max_velocity: 0.17
+    has_acceleration_limits: false
+    max_acceleration: 0
+  oberon7_r/wrist:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0

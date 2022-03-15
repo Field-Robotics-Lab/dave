@@ -57,5 +57,9 @@
         <arg name="uuv_name" value="$(arg namespace)"/>
     </include>
 
+    <!-- Spawn socket platform for electrical lead station -->
+    <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
+    <node name="spawn_socket" pkg="gazebo_ros" type="spawn_model"
+            args="-urdf -param socket_platform -model socket_platform -x -190.5 -y 115.15 -z -158.5 -Y -1.57079632679" respawn="false" output="screen" />
 
 </launch>

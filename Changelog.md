@@ -106,12 +106,73 @@ This changelog covers the entire dave project which includes a few repositories,
 
 ### Added
 
-- Object model degradation tool.  
-    - 3D mesh modification via Blender script [PR#160](https://github.com/Field-Robotics-Lab/dave/pull/160)
-    - Parameterization proof of concept for SDF friction values via embedded Ruby script [PR#163](https://github.com/Field-Robotics-Lab/dave/pull/163)
-    - Demonstration of addition of custom SDF tags for extending model properties and corresponding influence on sensing [PR#164](https://github.com/Field-Robotics-Lab/dave/pull/164)
+- Object model degradation tool
+  - 3D mesh modification via Blender script [PR#160](https://github.com/Field-Robotics-Lab/dave/pull/160)
+  - Parameterization proof of concept for SDF friction values via embedded Ruby script [PR#163](https://github.com/Field-Robotics-Lab/dave/pull/163)
+  - Demonstration of addition of custom SDF tags for extending model properties and corresponding influence on sensing [PR#164](https://github.com/Field-Robotics-Lab/dave/pull/164)
+
+## [4.3.0] - 2022-02-25
+
+### Updated
+
+- Ocean current plugin
+  - Search for database file in all Gazebo paths (`GAZEBO_MODEL_PATH`, `GAZEBO_RESOURCE_PATH`, etc) [dave PR #190](https://github.com/Field-Robotics-Lab/dave/pull/190)
+
+- Multibeam Sonar plugin
+  - Docker environment using OSRF Rocker and dockwater [Installation using docker](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#option-a-use-docker)
+  - New colorized live sonar image viewer [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
+
+- Object model degradation tool
+  - Bug fixes; tutorial updates documenting how to add new distortion methods [dave PR #185](https://github.com/Field-Robotics-Lab/dave/pull/185)
+  - Set the amount of vertex randomization offset `VERT_RAND_MAX` based on object size; degraded model examples [dave PR #212](https://github.com/Field-Robotics-Lab/dave/pull/212)
+
+### Added
+
+- Multibeam Sonar Plugin
+  - GPURay-based multibeam sonar with fidelity flag for number of elevation rays [Multibeam Sonar PR #37](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/37)
+  - Custom SDF tags of model description for multibeam sonar reflecitivty [Reflectivity by custom sdf tags](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#reflectivity-by-custom-sdf-tags)
+  - Multibeam Sonar URDF for standalone and robot description [Multibeam Sonar PR #38](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/38)
+   - Documentation and tutorial for the local search scenario demonstration with GPURay-based multibeam sonar [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios)
+   - Documentation and tutorial for the degraded object detection scenarios with distorted mesh models [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Multibeam-Forward-Looking-Sonar#degradaded-object-detection-scenarios) and [Multibeam Sonar PR #33](https://github.com/Field-Robotics-Lab/nps_uw_multibeam_sonar/pull/33)
+   
+- Bathymetry Converter
+  - Docker image distribution including neccesary libraries and excutables [Docker Hub image](https://hub.docker.com/r/woensugchoi/bathymetry_converter)
+  - Redesign of the automatic tile generator with python language [mkbathy.py](https://github.com/Field-Robotics-Lab/Bathymetry_Converter/blob/a6fa5ba1549e15a17eb7869f6103e907b9f4394a/mkbathy.py)
+  - Automatic color texture generation with bathymetry depth
+
+- Demonstration of Importing Bathymetric Maps 
+  - [Bathymetry Models Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Models)
+
+- Mud Plugin
+  - Demonstration and associated models for incorporation of the Gazebo mud plugin into the dave environment [dave PR #184](https://github.com/Field-Robotics-Lab/dave/pull/184)
+  - Documentation and tutorial - updates Occlusion documentation to include the mud demo [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Occlusion)
+
+- Bimanual Manipulation
+  - Creation of MoveIt-based infrastructure for motion planning with single and multi-arm systems. [uuv_manipulators PR #8](https://github.com/Field-Robotics-Lab/uuv_manipulators/pull/8)
+  - Addition and configuration of multiple arms onboard arbitrary robot. [dave PR #206](https://github.com/Field-Robotics-Lab/dave/pull/206)
+  - Demonstration of bimanual manipulation scenarios using joy teleop, RViz interaction, and MoveIt ROS nodes. [dave PR #228](https://github.com/Field-Robotics-Lab/dave/pull/228)
+  - Documentation and tutorial [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bimanual-Manipulation-Setup-and-Examples) 
+
+- Mating Plugin
+  - Expose mating forces for mating plugin as ROS publication [dave PR #189](https://github.com/Field-Robotics-Lab/dave/pull/189)
+  - Electrical flying lead demonstration scenario - incremental improvement [dave PR #161](https://github.com/Field-Robotics-Lab/dave/pull/161)
+  - Updated [Electrical Plug Mating Plugin Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Electrical-Plug-Mating-Plugin)
+
+- Simple Bathymetry with Heightmaps
+  - Example and tutorial for creating new seafloor heightmaps from arbitrary-format bathymetry sources [dave PR #207](https://github.com/Field-Robotics-Lab/dave/pull/207)
+  - [Building Bathymetry Heightmaps Wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Building-a-simple-underwater-environment-via-heightmaps)
+
+- Object model degradation tool [wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Object-Degradation-Tools) documentation
+
+- Object Models
+  - New 3D object models. dave PRs [#194](https://github.com/Field-Robotics-Lab/dave/pull/194), [#205](https://github.com/Field-Robotics-Lab/dave/pull/205), [#209](https://github.com/Field-Robotics-Lab/dave/pull/209), and [#225](https://github.com/Field-Robotics-Lab/dave/pull/225)
 
 ### Coming Soon
 
 - Manipulator reaction force interface
-- Electrical flying lead demonstration scenario - incremental improvement [PR#161](https://github.com/Field-Robotics-Lab/dave/pull/161)
+
+- Bathymetry integration plugin usability upgrades [dave PR #180](https://github.com/Field-Robotics-Lab/dave/pull/180)
+  - Simpler latitude/longitude coordinate system
+  - A new script to set the initial position with geodetic coordinates
+  - GPS Viewer/Logger and a new flag to set how many tiles to keep in the scene
+  - New tutorial document and demo files [Bathymetry integration wiki](https://github.com/Field-Robotics-Lab/dave/wiki/Bathymetry-Integration)
