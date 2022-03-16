@@ -163,7 +163,7 @@
     <!-- Electrical flying lead -->
     <include>
       <uri>model://m_to_f_plug</uri>
-      <pose>-191.06 117.25 -155.84 0 -1.570777 0</pose>
+      <pose>-189.74 114.41 -157.5 0 -1.570777 0</pose>
     </include>
 
     <include>
