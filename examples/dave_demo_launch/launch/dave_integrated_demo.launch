@@ -3,7 +3,7 @@
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
     <arg name="world_name" default="$(find dave_worlds)/worlds/dave_integrated.world"/>
-    <arg name="namespace" default="rexrov"/>
+    <arg name="namespace" default="rexrov0"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
@@ -33,7 +33,7 @@
 
     <!-- rexrov robot with oberon7 arm -->
     <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
-        <arg name="namespace" value="rexrov"/>
+        <arg name="namespace" value="rexrov0"/>
         <arg name="x" value="-21.0"/>
         <arg name="y" value="-34.0"/>
         <arg name="z" value="-108.0"/>
@@ -49,14 +49,25 @@
 
     <!-- joystick control for rexrov and oberon7, no velocity control-->
     <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
+      	<arg name="uuv_name" value="rexrov0" />
         <arg name="model_name" value="rexrov"/>
         <arg name="joy_id" value="$(arg joy_id)"/>
     </include>
 
     <!-- joint control for oberon7 -->
     <include file="$(find oberon7_control)/launch/joint_control.launch">
-        <arg name="uuv_name" value="$(arg namespace)"/>
+        <arg name="uuv_name" value="rexrov0"/>
     </include>
+
+    <!-- Include a second rexrov with dual arms -->
+  	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
+      <arg name="namespace" value="rexrov1"/>
+      <arg name="x" value="-187.117"/>
+      <arg name="y" value="117"/>
+      <arg name="z" value="-154"/>
+      <arg name="yaw" value="3.14"/>
+    </include>
+
 
     <!-- Spawn socket platform for electrical lead station -->
     <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
