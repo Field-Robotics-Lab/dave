@@ -64,7 +64,7 @@
       <arg name="namespace" value="rexrov"/>
       <arg name="x" value="-187.67"/>
       <arg name="y" value="115.20"/>
-      <arg name="z" value="-155.78"/>
+      <arg name="z" value="-155.3"/>
       <arg name="yaw" value="3.14"/>
     </include>
 
