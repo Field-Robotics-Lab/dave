@@ -79,17 +79,17 @@
 	<node name="arm_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_l" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
 
 	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_r.yaml" command="load"/>
-	<node name="arm_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_r" respawn="false" output="screen"/>
+	<node name="arm_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_r" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
 
 	<!-- Start another controller -->
 	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_l.yaml" command="load"/>
-	<node name="hand_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_l" respawn="false" output="screen"/>
+	<node name="hand_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_l" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
 
 	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_r.yaml" command="load"/>
-	<node name="hand_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_r" respawn="false" output="screen"/>
+	<node name="hand_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_r" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
 
 	<!-- Load other controllers -->
-	<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller"/>
+	<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller" launch-prefix="$(arg launch-prefix)"/>
 
   <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
   	<arg name="uuv_name" value="rexrov" />

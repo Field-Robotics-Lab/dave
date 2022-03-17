@@ -97,7 +97,7 @@ class MoveGroupPythonInterface(object):
         self.arm_l_start = self.move_group_arm_l.get_current_pose().pose
         self.arm_r_start = self.move_group_arm_r.get_current_pose().pose
 
-        self.rate = rospy.Rate(1)
+        self.rate = rospy.Rate(1.0)
 
     def move_gripper(self, gripper='right', command='open'):
         print()
@@ -112,8 +112,8 @@ class MoveGroupPythonInterface(object):
         joint_goal[0] = 0.5
         joint_goal[2] = 0.5
         if command == 'close':
-            joint_goal[0] = 0.0
-            joint_goal[2] = 0.0
+            joint_goal[0] = 0.11344640137963143
+            joint_goal[2] = 0.11344640137963143
 
         move_group.go(joint_goal, wait=True)
         move_group.stop()
@@ -143,21 +143,14 @@ class MoveGroupPythonInterface(object):
 
 
     def cartesian_move_z(self, move_group, z, scale=1):
-
-        move_group = self.move_group
         waypoints = []
         wpose = move_group.get_current_pose().pose
-        wpose.position.z -= scale * 0.1
-        wpose.position.y += scale * 0.2
-        waypoints.append(copy.deepcopy(wpose))
-        wpose.position.x += scale * 0.1
-        waypoints.append(copy.deepcopy(wpose))
-        wpose.position.y -= scale * 0.1
+        wpose.position.z += z
         waypoints.append(copy.deepcopy(wpose))
         (plan, fraction) = move_group.compute_cartesian_path(
             waypoints, 0.01, 0.0)
-
-        return plan, fraction
+        move_group.execute(plan, wait=True)
+        # return plan, fraction
 
 def main():
     try:
@@ -166,17 +159,31 @@ def main():
         bimanual_demo.move_gripper('left', 'close')
         bimanual_demo.move_arm(
           'left',
-          [0.307825322102496, 0.36508188828997135, 0.17294171513504075, -0.22269999224694015, -0.32034474054001905, 0.5113433813642088])
+          [0.3021649574089649, 0.3450843028538877, 0.2316461488895012, -0.1962645695906149, -0.3577391278283173, 0.4782096174274093])
+        bimanual_demo.move_gripper('left', 'open')
+        bimanual_demo.move_arm(
+          'left',
+          [0.31530026907915226,-0.03332714431637267,0.6262400013177802,-0.19507179964110966,-0.37505485279981504,0.4887380549805158])
+        bimanual_demo.move_gripper('left', 'close')
+        bimanual_demo.cartesian_move_z(bimanual_demo.move_group_arm_l, 0.05)
+
+        bimanual_demo.move_arm(
+          'left',
+          [0.00013608091240816647,0.2668105697647139,-0.24472597921466507,0,-0.02203698399576485,5.7884153903040726e-05])
+
+        bimanual_demo.move_arm(
+          'left',
+        [-0.3537503056171667,0.6701262392176279,0.43274001874525303,0,-1.1026856928275708,-0.3538596218446505])
         bimanual_demo.move_gripper('left', 'open')
 
+        # [-0.3326691880232035,0.4976256965922615,0.8259692556901596,0,-1.323414788829102,-0.3327818802679301]
         # bimanual_demo.move_arm(
         #   'left',
-        #   [0.3491, 0.2618, 0.2269, -0.2094, -0.2967, 0.5585])
+        #   [0.3021649574089649, 0.3450843028538877, 0.2316461488895012, -0.1962645695906149, -0.3577391278283173, 0.4782096174274093])
         # bimanual_demo.move_arm(
         #   'left',
         #   [0.3491, 0.1222, 0.2967, -0.2793, -0.2269, 0.6458])
 
-        # bimanual_demo.move_gripper('left', 'close')
     except rospy.ROSInterruptException:
         return
     except KeyboardInterrupt:

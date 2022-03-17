@@ -25,16 +25,16 @@
           </mesh>
         </geometry>
         <surface>
-          <contact>
+          <!-- <contact>
             <ode>
               <kp>1e+08</kp>
               <min_depth>0.005</min_depth>
             </ode>
-          </contact>
+          </contact> -->
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
             </ode>
           </friction>
         </surface>
@@ -57,7 +57,7 @@
           <iyz>0</iyz>
           <izz>0.04</izz>
         </inertia>
-        <mass>0.5</mass>
+        <mass>0.2</mass>
       </inertial>
     </link>
 
