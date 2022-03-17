@@ -27,8 +27,9 @@
         <surface>
           <!-- <contact>
             <ode>
-              <kp>1e+08</kp>
-              <min_depth>0.005</min_depth>
+            <kp>1e8</kp>
+            <kd>1e8</kd>
+            <min_depth>0.005</min_depth>
             </ode>
           </contact> -->
           <friction>

@@ -86,9 +86,10 @@
       <sensorPlateLink>m_to_f_sensor_plate</sensorPlateLink>
       <plugModel>m_to_f_plug</plugModel>
       <plugLink>m_to_f_plug</plugLink>
-      <rollAlignmentTolerance>0.3</rollAlignmentTolerance>
-      <pitchAlignmentTolerance>0.3</pitchAlignmentTolerance>
-      <yawAlignmentTolerance>0.3</yawAlignmentTolerance>
+      <matingForce>0.0</matingForce>
+      <rollAlignmentTolerance>1.0</rollAlignmentTolerance>
+      <pitchAlignmentTolerance>1.0</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>1.0</yawAlignmentTolerance>
     </plugin>
 
   </model>
