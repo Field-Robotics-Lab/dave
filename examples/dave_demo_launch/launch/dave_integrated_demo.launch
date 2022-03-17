@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="gui" default="true"/>
-    <arg name="paused" default="false"/>
+    <arg name="paused" default="true"/>
     <arg name="world_name" default="$(find dave_worlds)/worlds/dave_integrated.world"/>
     <arg name="namespace" default="rexrov0"/>
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
     <arg name="joy_id" default="0"/>
+    <arg name="debug" default="false"/>
+
+    <arg unless="$(arg debug)" name="launch-prefix" value=" "/>
+    <arg if="$(arg debug)" name="launch-prefix" value="gdb -ex run --args"/>
 
     <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -16,7 +20,7 @@
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="$(arg gui)"/>
         <arg name="headless" value="false"/>
-        <arg name="debug" value="false"/>
+        <arg name="debug" value="$(arg debug)"/>
         <arg name="verbose" value="false"/>
     </include>
 
@@ -62,9 +66,9 @@
     <!-- Include a second rexrov with dual arms -->
   	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
       <arg name="namespace" value="rexrov"/>
-      <arg name="x" value="-187.67"/>
+      <arg name="x" value="-187.77"/>
       <arg name="y" value="115.20"/>
-      <arg name="z" value="-155.3"/>
+      <arg name="z" value="-155.35"/>
       <arg name="yaw" value="3.14"/>
     </include>
 
@@ -72,7 +76,7 @@
 
 	<!-- Start this controller -->
 	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_l.yaml" command="load"/>
-	<node name="arm_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_l" respawn="false" output="screen"/>
+	<node name="arm_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_l" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
 
 	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_r.yaml" command="load"/>
 	<node name="arm_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_r" respawn="false" output="screen"/>
@@ -97,6 +101,6 @@
     <!-- Spawn socket platform for electrical lead station -->
     <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
     <node name="spawn_socket" pkg="gazebo_ros" type="spawn_model"
-            args="-urdf -param socket_platform -model socket_platform -x -190.5 -y 115.15 -z -158.5 -Y -1.57079632679" respawn="false" output="screen" />
+            args="-urdf -param socket_platform -model socket_platform -x -190.5 -y 115.15 -z -158.459771 -Y -1.57079632679 -unpause" respawn="false" output="screen" />
 
 </launch>

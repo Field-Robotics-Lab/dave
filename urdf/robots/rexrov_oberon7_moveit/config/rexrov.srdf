@@ -192,6 +192,7 @@
     <disable_collisions link1="oberon7_l/finger_right" link2="rexrov/thruster_5" reason="Never"/>
     <disable_collisions link1="oberon7_l/finger_right" link2="rexrov/thruster_6" reason="Never"/>
     <disable_collisions link1="oberon7_l/finger_right" link2="rexrov/thruster_7" reason="Never"/>
+    <disable_collisions link1="oberon7_l/finger_right" link2="oberon7_l/wrist_link" reason="Never"/>
     <disable_collisions link1="oberon7_l/finger_tip_left" link2="oberon7_l/finger_tip_right" reason="Never"/>
     <disable_collisions link1="oberon7_l/finger_tip_left" link2="oberon7_l/forearm" reason="Never"/>
     <disable_collisions link1="oberon7_l/finger_tip_left" link2="oberon7_l/wrist_link" reason="Never"/>

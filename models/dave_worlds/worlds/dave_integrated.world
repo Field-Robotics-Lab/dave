@@ -163,7 +163,7 @@
     <!-- Electrical flying lead -->
     <include>
       <uri>model://m_to_f_plug</uri>
-      <pose>-189.74 114.41 -157.5 0 -1.570777 0</pose>
+      <pose>-189.80 114.41 -157.611077 0 -1.570777 0</pose>
     </include>
 
     <include>
@@ -173,7 +173,7 @@
 
     <model name="platform">
       <static>true</static>
-      <pose>-191.06 117.5 -156 0 0 0</pose>
+      <pose>-191.06 117.5 -155.8 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
@@ -215,7 +215,7 @@
 
 
     <!-- Models in the world -->
-    <include>
+    <!-- <include>
       <name>torpedo_mk46</name>
       <pose>27 -16 -115 0 0 0</pose>
       <uri>model://torpedo_mk46</uri>
@@ -249,7 +249,7 @@
       <name>uxo_c</name>
       <pose>27 -17 -117 0 0 0</pose>
       <uri>model://uxo_c</uri>
-    </include>
+    </include> -->
 
   </world>
 </sdf>

@@ -58,303 +58,125 @@ class MoveGroupPythonInterface(object):
         moveit_commander.roscpp_initialize(sys.argv)
         rospy.init_node("move_group_python_interface", anonymous=True)
 
-
         # Instantiate a `RobotCommander` object. Provides robot's
         # kinematic model and current joint states
-        robot = moveit_commander.RobotCommander()
+        self.robot = moveit_commander.RobotCommander()
 
         # Instantiate a `PlanningSceneInterface` object. Provides a remote interface
         # for getting, setting, and updating robot's state
-        scene = moveit_commander.PlanningSceneInterface()
+        self.scene = moveit_commander.PlanningSceneInterface()
 
         ## Instantiate a `MoveGroupCommander`_ object.  This object is an interface
         ## to a planning group (group of joints).
-        move_group = moveit_commander.MoveGroupCommander("arm_r")
-        move_group_r = moveit_commander.MoveGroupCommander("hand_r")
-        move_group_l = moveit_commander.MoveGroupCommander("hand_l")
-        move_group_arm_r = moveit_commander.MoveGroupCommander("arm_r")
-        move_group_arm_l = moveit_commander.MoveGroupCommander("arm_l")
+        self.move_group_hand_r = moveit_commander.MoveGroupCommander("hand_r")
+        self.move_group_hand_l = moveit_commander.MoveGroupCommander("hand_l")
+        self.move_group_arm_r = moveit_commander.MoveGroupCommander("arm_r")
+        self.move_group_arm_l = moveit_commander.MoveGroupCommander("arm_l")
 
+        ## Set planner
+        self.move_group_arm_r.set_planner_id("RRTConnect")
+        self.move_group_arm_l.set_planner_id("RRTConnect")
 
         ## Create a `DisplayTrajectory`_ ROS publisher which is used to display
         ## trajectories in Rviz:
-        display_trajectory_publisher = rospy.Publisher(
+        self.display_trajectory_publisher = rospy.Publisher(
             "/move_group/display_planned_path",
             moveit_msgs.msg.DisplayTrajectory,
             queue_size=20,
         )
 
-        # Subscribe to an object location via model_state
-        # TODO use to generate new arm pose
-        self.object_1_sub = rospy.Subscriber('gazebo/model_states', ModelStates, self.get_state_CB)
-
-        # Get reference frame name for this robot:
-        planning_frame = move_group.get_planning_frame()
-        print("============ Planning frame: %s" % planning_frame)
-
-        # Print the name of the end-effector link for a group:
-        eef_link = move_group.get_end_effector_link()
-        print("============ End effector link: %s" % eef_link)
-
-        # List all groups in the robot:
-        group_names = robot.get_group_names()
-        print("============ Available Planning Groups:", robot.get_group_names())
-
         # Print the entire state of the robot:
         print("============ Printing robot state")
-        print(robot.get_current_state())
+        print(self.robot.get_current_state())
         print("")
 
         # Misc variables
         self.box_name = ""
-        self.robot = robot
-        self.scene = scene
-        self.move_group = move_group
-        self.display_trajectory_publisher = display_trajectory_publisher
-        self.planning_frame = planning_frame
-        self.eef_link = eef_link
-        self.group_names = group_names
-        self.move_group_r = move_group_r
-        self.move_group_l = move_group_l
-        self.move_group_arm_r = move_group_arm_r
-        self.move_group_arm_l = move_group_arm_l
-        self.move_group_arm_l.set_planner_id("RRTConnect")
 
         # Logging starting pose. There are better ways to do this.
-        self.arm_l_start = move_group_arm_l.get_current_pose().pose
-        self.arm_r_start = move_group_arm_r.get_current_pose().pose
+        self.arm_l_start = self.move_group_arm_l.get_current_pose().pose
+        self.arm_r_start = self.move_group_arm_r.get_current_pose().pose
 
         self.rate = rospy.Rate(1)
 
-    def get_state_CB(self, _data):
-        self.get_state_msg = _data
+    def move_gripper(self, gripper='right', command='open'):
+        print()
+        print(f"=========={gripper} gripper will {command}...==========")
 
-    def go_to_joint_state(self):
-        move_group = self.move_group
+        move_group = self.move_group_hand_r
+        if gripper == "left":
+            move_group = self.move_group_hand_l
 
         joint_goal = move_group.get_current_joint_values()
-        joint_goal[0] = 0
-        joint_goal[1] = -tau / 8
-        joint_goal[2] = 0
-        joint_goal[3] = -tau / 4
-        joint_goal[4] = 0
-        joint_goal[5] = tau / 6  # 1/6 of a turn
-        joint_goal[6] = 0
+        print(f"gripper current joints:{joint_goal}")
+        joint_goal[0] = 0.5
+        joint_goal[2] = 0.5
+        if command == 'close':
+            joint_goal[0] = 0.0
+            joint_goal[2] = 0.0
 
-        # The go command can be called with joint values, poses, or without any
-        # parameters if you have already set the pose or joint target for the group
         move_group.go(joint_goal, wait=True)
-
-        # Calling ``stop()`` ensures that there is no residual movement
         move_group.stop()
+        print(self.robot.get_current_state())
 
-        # For testing:
-        current_joints = move_group.get_current_joint_values()
-        return all_close(joint_goal, current_joints, 0.01)
-
-    def open_gripper_r(self):
+    def move_arm(self, arm='right', joint_angles=[]):
         print()
-        print("==========Opening right gripper...==========")
+        print(f"==========Moving {arm} to goal:{joint_angles}...==========")
 
-        joint_goal = self.move_group_r.get_current_joint_values()
-        joint_goal[0] = 1.0
+        if len(joint_angles) < 6:
+            print("Error: Fewer than 6 joint angles provided. Aborting...")
+            return
 
-        self.move_group_r.go(joint_goal, wait=True)
-        self.move_group_r.stop()
-
-    def close_gripper_r(self):
-        print()
-        print("==========Closing right gripper...==========")
-
-        joint_goal = self.move_group_r.get_current_joint_values()
-        joint_goal[0] = 0.0
-
-        self.move_group_r.go(joint_goal, wait=True)
-        self.move_group_r.stop()
-
-    def open_gripper_l(self):
-        print()
-        print("==========Opening left gripper...==========")
-
-        joint_goal = self.move_group_l.get_current_joint_values()
-        joint_goal[0] = 1.0
-
-        self.move_group_l.go(joint_goal, wait=True)
-        self.move_group_l.stop()
-
-    def close_gripper_l(self):
-        print()
-        print("==========Closing left gripper...==========")
-
-        joint_goal = self.move_group_l.get_current_joint_values()
-        joint_goal[0] = 0.0
-
-        self.move_group_l.go(joint_goal, wait=True)
-        self.move_group_l.stop()
-
-    def go_to_pose_goal_l(self, home_var):
-        print()
-        print("==========Sending left ee to goal...==========")
-        current_pose = self.move_group.get_current_pose().pose
-
-        pose_goal = geometry_msgs.msg.Pose()
-        joint_goal = self.move_group_arm_l.get_current_joint_values()
-        joint_goal[0] = 0
-        joint_goal[1] = 0.6283185307179586
-        joint_goal[2] = -0.5235987755982988
-        joint_goal[3] = 0
-        joint_goal[4] = 0.10471975511965978
-        joint_goal[5] = 0
-
-        if home_var == False:
-            pose_goal.orientation.w = 0.928
-            pose_goal.orientation.x = 0.0198
-            pose_goal.orientation.y = 0.37158
-            pose_goal.orientation.z = 0.005
-            pose_goal.position.x = 2.214
-            pose_goal.position.y = 0.2565
-            pose_goal.position.z = -1.4943
-        else:
-            pose_goal = self.arm_l_start
-
-        # self.move_group_arm_l.set_pose_target(joint_goal)
-
+        move_group = self.move_group_arm_r
+        if arm == 'left':
+            move_group = self.move_group_arm_l
         # Call the planner to compute the plan and execute it.
-        plan = self.move_group_arm_l.go(joint_goal, wait=True)
+        plan = move_group.go(joint_angles, wait=True)
         # Call `stop()` to ensure there is no residual movement
-        self.move_group_arm_l.stop()
+        move_group.stop()
         # Clear your targets after planning with poses.
-        self.move_group_arm_l.clear_pose_targets()
+        move_group.clear_pose_targets()
 
-        current_pose = self.move_group_arm_l.get_current_pose().pose
-        return all_close(pose_goal, current_pose, 0.01)
+        # current_pose = move_group.get_current_pose().pose
+        # return all_close(pose_goal, current_pose, 0.01)
+        print(self.robot.get_current_state())
 
-    def go_to_pose_goal_r(self, home_var):
-        print()
-        print("==========Sending right ee to goal...==========")
-        current_pose = self.move_group_arm_r.get_current_pose().pose
 
-        pose_goal = geometry_msgs.msg.Pose()
-
-        if home_var == False:
-            pose_goal.orientation.w = 0.928
-            pose_goal.orientation.x = 0.0198
-            pose_goal.orientation.y = 0.37158
-            pose_goal.orientation.z = 0.005
-            pose_goal.position.x = 2.214
-            pose_goal.position.y = -0.2565
-            pose_goal.position.z = -1.4943
-        else:
-            pose_goal = self.arm_r_start
-
-        self.move_group_arm_r.set_pose_target(pose_goal)
-
-        # Call the planner to compute the plan and execute it.
-        plan = self.move_group_arm_r.go(wait=True)
-        # Call `stop()` to ensure there is no residual movement
-        self.move_group_arm_r.stop()
-        # Clear targets after planning with poses.
-        self.move_group_arm_r.clear_pose_targets()
-
-        current_pose = self.move_group_arm_r.get_current_pose().pose
-        return all_close(pose_goal, current_pose, 0.01)
-
-    def plan_cartesian_path(self, scale=1):
+    def cartesian_move_z(self, move_group, z, scale=1):
 
         move_group = self.move_group
-
         waypoints = []
-
         wpose = move_group.get_current_pose().pose
         wpose.position.z -= scale * 0.1
         wpose.position.y += scale * 0.2
         waypoints.append(copy.deepcopy(wpose))
-
         wpose.position.x += scale * 0.1
         waypoints.append(copy.deepcopy(wpose))
-
         wpose.position.y -= scale * 0.1
         waypoints.append(copy.deepcopy(wpose))
-
         (plan, fraction) = move_group.compute_cartesian_path(
-            waypoints, 0.01, 0.0
-        )
-
+            waypoints, 0.01, 0.0)
 
         return plan, fraction
-
-
-    def display_trajectory(self, plan):
-        robot = self.robot
-        display_trajectory_publisher = self.display_trajectory_publisher
-
-        display_trajectory = moveit_msgs.msg.DisplayTrajectory()
-        display_trajectory.trajectory_start = robot.get_current_state()
-        display_trajectory.trajectory.append(plan)
-        display_trajectory_publisher.publish(display_trajectory)
-
-    def execute_plan(self, plan):
-        move_group = self.move_group
-
-        move_group.execute(plan, wait=True)
-
-
-    def pose_to_mat(self, pose):
-        base_trans = tf.transformations.translation_matrix((pose.position.x,
-                                                            pose.position.y,
-                                                            pose.position.z))
-        base_rot = tf.transformations.quaternion_matrix((pose.orientation.x,
-                                                         pose.orientation.y,
-                                                         pose.orientation.z,
-                                                         pose.orientation.w))
-
-        trans_mat = np.matmul(base_trans, base_rot)
-        return trans_mat
-
-    def get_target_pose(self, object_pose, robot_pose, arm_pose):
-        object_mat = self.pose_to_mat(object_pose)
-        robot_mat = self.pose_to_mat(robot_pose)
-        arm_mat = self.pose_to_mat(arm_pose)
-
-        # Get the arm wrt world
-        a_w_T = np.matmul(robot_mat, arm_mat)
-        # Get object wrt to arm
-        o_a_T = np.matmul(np.linalg.inv(a_w_T), object_mat)
-        # Get object wrt robot
-        o_r_T = np.matmul(arm_mat, o_a_T)
-
-        #  Returns as x, y, z, w
-        object_quat = tf.transformations.quaternion_from_matrix(o_r_T)
-
-        new_target_pose = geometry_msgs.msg.Pose()
-        new_target_pose.position.x = o_r_T[0, 3]
-        new_target_pose.position.y = o_r_T[1, 3]
-        new_target_pose.position.z = o_r_T[2, 3]
-        new_target_pose.orientation.x = 0.0
-        new_target_pose.orientation.y = 0.0
-        new_target_pose.orientation.z = 0.0
-        new_target_pose.orientation.w = 1.0
-
-        return new_target_pose
-
-    def run_node(self, action_num):
-        try:
-            # Open and close each gripper
-            if action_num == 0:
-                self.go_to_pose_goal_l(False)
-                # self.open_gripper_l()
-            else:
-                return
-        except Exception as e:
-            print(f"Unable to assume pose: {e}")
 
 def main():
     try:
         print("Setting up moveit commander")
         bimanual_demo = MoveGroupPythonInterface()
-        for action_num in range(2):
-            bimanual_demo.run_node(action_num)
+        bimanual_demo.move_gripper('left', 'close')
+        bimanual_demo.move_arm(
+          'left',
+          [0.307825322102496, 0.36508188828997135, 0.17294171513504075, -0.22269999224694015, -0.32034474054001905, 0.5113433813642088])
+        bimanual_demo.move_gripper('left', 'open')
 
+        # bimanual_demo.move_arm(
+        #   'left',
+        #   [0.3491, 0.2618, 0.2269, -0.2094, -0.2967, 0.5585])
+        # bimanual_demo.move_arm(
+        #   'left',
+        #   [0.3491, 0.1222, 0.2967, -0.2793, -0.2269, 0.6458])
+
+        # bimanual_demo.move_gripper('left', 'close')
     except rospy.ROSInterruptException:
         return
     except KeyboardInterrupt:
