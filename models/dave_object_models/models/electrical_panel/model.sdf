@@ -87,9 +87,9 @@
       <plugModel>m_to_f_plug</plugModel>
       <plugLink>m_to_f_plug</plugLink>
       <matingForce>0.0</matingForce>
-      <rollAlignmentTolerance>1.0</rollAlignmentTolerance>
-      <pitchAlignmentTolerance>1.0</pitchAlignmentTolerance>
-      <yawAlignmentTolerance>1.0</yawAlignmentTolerance>
+      <rollAlignmentTolerance>1.5</rollAlignmentTolerance>
+      <pitchAlignmentTolerance>1.5</pitchAlignmentTolerance>
+      <yawAlignmentTolerance>1.5</yawAlignmentTolerance>
     </plugin>
 
   </model>

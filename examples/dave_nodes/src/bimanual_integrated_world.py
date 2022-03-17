@@ -29,27 +29,6 @@ from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 
 
-def all_close(goal, actual, tolerance):
-    if type(goal) is list:
-        for index in range(len(goal)):
-            if abs(actual[index] - goal[index]) > tolerance:
-                return False
-
-    elif type(goal) is geometry_msgs.msg.PoseStamped:
-        return all_close(goal.pose, actual.pose, tolerance)
-
-    elif type(goal) is geometry_msgs.msg.Pose:
-        x0, y0, z0, qx0, qy0, qz0, qw0 = pose_to_list(actual)
-        x1, y1, z1, qx1, qy1, qz1, qw1 = pose_to_list(goal)
-        # Euclidean distance
-        d = dist((x1, y1, z1), (x0, y0, z0))
-        # phi = angle between orientations
-        cos_phi_half = fabs(qx0 * qx1 + qy0 * qy1 + qz0 * qz1 + qw0 * qw1)
-        return d <= tolerance and cos_phi_half >= cos(tolerance / 2.0)
-
-    return True
-
-
 class MoveGroupPythonInterface(object):
     def __init__(self):
         super(MoveGroupPythonInterface, self).__init__()
@@ -110,10 +89,14 @@ class MoveGroupPythonInterface(object):
         joint_goal = move_group.get_current_joint_values()
         print(f"gripper current joints:{joint_goal}")
         joint_goal[0] = 0.3
+        joint_goal[1] = 0.0
         joint_goal[2] = 0.3
+        joint_goal[3] = 0.0
         if command == 'close':
-            joint_goal[0] = 0.11344640137963143
-            joint_goal[2] = 0.11344640137963143
+            close = 0.1135
+            # 0.11344640137963143
+            joint_goal[0] = close
+            joint_goal[2] = close
 
         move_group.go(joint_goal, wait=True)
         move_group.stop()
@@ -137,8 +120,6 @@ class MoveGroupPythonInterface(object):
         # Clear your targets after planning with poses.
         move_group.clear_pose_targets()
 
-        # current_pose = move_group.get_current_pose().pose
-        # return all_close(pose_goal, current_pose, 0.01)
         print(self.robot.get_current_state())
 
 
@@ -169,14 +150,14 @@ def main():
         bimanual_demo.move_arm(
           'left',
           [0.31530026907915226,-0.03332714431637267,0.6262400013177802,-0.19507179964110966,-0.37505485279981504,0.4887380549805158])
-
-
         bimanual_demo.move_gripper('left', 'close')
         bimanual_demo.cartesian_move_z(bimanual_demo.move_group_arm_l, 0.05)
-
+        # bimanual_demo.move_arm(
+        #   'left',
+        #   [0.00013608091240816647,0.2668105697647139,-0.24472597921466507,0,-0.02203698399576485,5.7884153903040726e-05])
         bimanual_demo.move_arm(
           'left',
-          [0.00013608091240816647,0.2668105697647139,-0.24472597921466507,0,-0.02203698399576485,5.7884153903040726e-05])
+          [0.4543188254812844,0.6149986820273478,-0.5056180936551032,0.7730159910692859,0.14448715905575418,-0.3249140871721671])
 
         bimanual_demo.move_arm(
           'left',
@@ -185,6 +166,21 @@ def main():
         bimanual_demo.move_arm(
           'left',
           [-0.39313985588177913,0.6305118167315307,0.2497230080748888,0.00014004181736175308,-0.8802961517578444,-0.3932120366691911])
+
+        bimanual_demo.move_arm(
+          'left',
+          [-0.3198937485808102,0.571420863888688,0.7084275963011012,0.00012501588552258562,-1.2799548162561714,-0.31985940973018373])
+
+        bimanual_demo.move_arm(
+          'left',
+          [-0.336599901834786,0.6819368892811936,0.37832864776980224,0.04930390487098295-0.9453288695810315,0.25817191209846074])
+        # bimanual_demo.move_arm(
+        #   'left',
+        #   [-0.3121345093209745,0.4729797293490144,0.7857599902672864,0,-1.2588617987331479,-0.31209862263822336])
+        # bimanual_demo.move_arm(
+        #   'left',
+        #   [-0.3083312096735852,0.4180598597311387,0.8621137321725023,0,-1.2801962836730012,-0.3082573732112953])
+        # bimanual_demo.move_gripper('left', 'open')
 
     except rospy.ROSInterruptException:
         return
