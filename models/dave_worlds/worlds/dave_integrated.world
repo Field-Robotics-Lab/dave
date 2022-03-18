@@ -207,15 +207,17 @@
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>14.0 -26.0 -110.0 0.0 0.25 0.53</pose>
+        <pose frame=''>-35 -106.0 -84.0 0.0 0.226 1.206</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
 
     <include>
-      <uri>model://mud_anchor</uri>
       <name>mud_anchor</name>
+      <!-- <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Mud Anchor</uri> -->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://mud_anchor</uri>
       <pose>-78.2 -181 -130 -0.22 0.13 0.0</pose>
     </include>
 
@@ -270,48 +272,177 @@
     </model>
 
 
-    <!-- Models in the world -->
+    <!-- Other models in the world -->
+    <!-- Monitoring equipment -->
     <include>
-      <name>sunken_ship_1</name>
-      <pose>82 -150 -150 0 0 0</pose>
-      <uri>model://sunken_ship_distorted</uri>
-    </include>
-
-    <!-- <include>
-      <name>torpedo_mk46</name>
-      <pose>27 -16 -115 0 0 0</pose>
-      <uri>model://torpedo_mk46</uri>
-    </include>
-
-    <include>
-      <name>sonobuoy</name>
-      <pose>23 -14 -115 0 0 0</pose>
-      <uri>model://sonobuoy</uri>
+      <name>mbari_mars</name>
+      <pose>13 6 -115 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/MBARI MARS</uri>
     </include>
 
     <include>
       <name>flight_data_recorder</name>
-      <pose>26 -17 -115 0 0 0</pose>
+      <pose>7 5 -110 0 0 0</pose>
+      <!-- <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Flight Data Recorder</uri> -->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://flight_data_recorder</uri>
     </include>
 
     <include>
+      <name>niskin</name>
+      <pose>7 5 -110 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://niskin</uri>
+    </include>
+
+    <!-- Ocean creatures -->
+    <include>
+      <name>Lionfish1</name>
+      <pose>13 -12 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+    </include>
+
+    <include>
+      <name>Lionfish2</name>
+      <pose>13 -12 -94 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+    </include>
+
+    <include>
+      <name>Coral</name>
+      <pose>13 -12 -118.3 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral01</uri>
+    </include>
+
+    <include>
+      <name>Kelp1</name>
+      <pose>13 -12 -118.3 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 01</uri>
+    </include>
+
+    <include>
+      <name>Kelp2</name>
+      <pose>12 -12 -118.3 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 02</uri>
+    </include>
+
+    <!-- Sunken ships and objects-->
+    <include>
+      <name>sunken_ship</name>
+      <pose>-75 -200 -147 0.25 0 0.65</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Ship</uri>
+    </include>
+
+    <include>
+      <name>sunken_ship_distorted</name>
+      <pose>-81 -219 -147 0.25 0 0.65</pose>
+      <uri>model://sunken_ship_distorted</uri>
+    </include>
+
+    <include>
+      <name>sunken_vase</name>
+      <pose>-73 -209 -147 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri>
+    </include>
+
+    <include>
+      <name>sunken_vase_distorted</name>
+      <pose>-72 -214 -147 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://sunken_vase_distorted</uri>
+    </include>
+
+    <include>
+      <name>sunken_vase2</name>
+      <pose>-72 -208 -147 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
+    </include>
+
+    <!-- Ocean rocks -->
+    <include>
+      <name>Rock3</name>
+      <pose>26 182 -139 -1.55 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Ocean Rock 03</uri>
+    </include>
+
+    <!-- Hardhats -->
+    <include>
+      <name>hardhat_standard</name>
+      <pose>-185 115 -120 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Standard</uri>
+    </include>
+
+     <include>
+      <name>hardhat_ribbed</name>
+      <pose>-185 116 -120 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Ribbed</uri>
+    </include>
+
+    <include>
+      <name>hardhat_superribbed</name>
+      <pose>-184 115 -120 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Superribbed</uri>
+    </include>
+
+    <include>
+      <name>hardhat_octagonal</name>
+      <pose>-184 116 -120 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Octagonal</uri>
+    </include>
+
+    <!-- Military equipments -->
+    <include>
+      <name>torpedo_mk46</name>
+      <pose>-158 100 -158 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK46</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://torpedo_mk46</uri>
+      <static>true</static>
+    </include>
+
+    <include>
+      <name>torpedo_mk48</name>
+      <pose>-158 105 -158 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK48</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://torpedo_mk48</uri>
+      <static>true</static>
+    </include>
+
+    <include>
+      <name>sonobuoy</name>
+      <pose>-158 104 -158 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Sonobuoy</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
+      <uri>model://sonobuoy</uri>
+      <static>true</static>
+    </include>
+
+    <include>
       <name>uxo_a</name>
-      <pose>24 -15 -115 0 0 0</pose>
+      <pose>-140 103 -150 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance A</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://uxo_a</uri>
     </include>
 
     <include>
       <name>uxo_b</name>
-      <pose>26 -18 -115 0 0 0</pose>
+      <pose>-140 102 -150 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance B</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://uxo_b</uri>
     </include>
 
     <include>
       <name>uxo_c</name>
-      <pose>27 -17 -117 0 0 0</pose>
+      <pose>-140 101 -150 0 0 0</pose>
+      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance C</uri-->
+      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://uxo_c</uri>
-    </include> -->
-
+    </include>
+    
   </world>
 </sdf>
