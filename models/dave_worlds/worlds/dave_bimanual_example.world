@@ -120,15 +120,15 @@
 	    		<collision name="grabbapole_collision">
 	    			<geometry>
 	    				<cylinder>
-	    					<radius>0.05</radius>
+	    					<radius>0.03</radius>
 	    					<length>3.0</length>
 	    				</cylinder>
 	    			</geometry>
 	    			<surface>
 	    				<friction>
 	    					<ode>
-	    						<mu>1.0</mu>
-	    						<mu2>1.0</mu2>
+	    						<mu>100.0</mu>
+	    						<mu2>100.0</mu2>
 	    					</ode>
 	    				</friction>
 	    			</surface>
@@ -136,7 +136,7 @@
 	    		<visual name="grabbapole_visual">
 	    			<geometry>
 	    				<cylinder>
-	    					<radius>0.05</radius>
+	    					<radius>0.03</radius>
 	    					<length>3.0</length>
 	    				</cylinder>
 	    			</geometry>
@@ -153,11 +153,11 @@
 	    	</link>
 	    </model>
 
-<!-- 	    <include>
-      		<uri>model://cylinder_target</uri>
-      		<pose>-0.5 2.25 -97.84 0 0 0</pose>
-      		<static>true</static>
-    	</include> -->
+	    <include>
+      		<uri>model://sunken_vase</uri>
+      		<pose>0.3 1.0 -100 0 0 0</pose>
+      		<static>false</static>
+    	</include>
 
 	    <gui fullscreen='0'>
 	    	<camera name='user_camera'>
