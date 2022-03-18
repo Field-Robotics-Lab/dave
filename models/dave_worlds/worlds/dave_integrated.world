@@ -213,8 +213,70 @@
       </camera>
     </gui>
 
+    <include>
+      <uri>model://mud_anchor</uri>
+      <name>mud_anchor</name>
+      <pose>-78.2 -181 -130 -0.22 0.13 0.0</pose>
+    </include>
+
+    <!-- Mud pit -->
+    <model name="mud_pit_thin">
+      <pose>0 0 -120 0 0 0</pose>
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh><uri>model://SantoriniScaled/meshes/mud.dae</uri></mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_without_contact>true</collide_without_contact>
+            </contact>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh><uri>model://SantoriniScaled/meshes/mud.dae</uri></mesh>
+          </geometry>
+          <!-- <transparency>0.1</transparency>
+          <material>
+            <diffuse>0.1 0.075 0.05 1.0</diffuse>
+            <emissive>0.02 0.02 0.02 1.0</emissive>
+          </material> -->
+          <material>
+            <script>
+              <uri>model://occluded_sand_heightmap/materials/mud.material</uri>
+              <name>Mud</name>
+            </script>
+            <emissive>
+              0.6 0.6 0.6 1.0
+            </emissive>
+          </material>
+        </visual>
+        <sensor name="mud_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <contact>
+            <collision>collision</collision>
+          </contact>
+        </sensor>
+      </link>
+      <plugin name="gazebo_mud" filename="libMudPlugin.so">
+        <contact_sensor_name>link/mud_contact</contact_sensor_name>
+        <stiffness>0.0</stiffness>
+        <damping>60.0</damping>
+        <link_name>mud_anchor::drag_anchor</link_name>
+      </plugin>
+    </model>
+
 
     <!-- Models in the world -->
+    <include>
+      <name>sunken_ship_1</name>
+      <pose>82 -150 -150 0 0 0</pose>
+      <uri>model://sunken_ship_distorted</uri>
+    </include>
+
     <!-- <include>
       <name>torpedo_mk46</name>
       <pose>27 -16 -115 0 0 0</pose>
