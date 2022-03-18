@@ -51,4 +51,5 @@ catkin_install_python(PROGRAMS
   src/dvl_state_and_gradient_uuvsim.py
   src/bimanual_simple_demo.py
   src/teleport_vehicle.py
+  src/bimanual_integrated_world.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
