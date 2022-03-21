@@ -159,6 +159,12 @@
       		<static>false</static>
     	</include>
 
+    	<include>
+    		<uri>model://sunken_vase_distorted</uri>
+    		<pose>0.4 -0.5 -100 0 0 1.5708</pose>
+    		<static>false</static>
+    	</include>
+
 	    <gui fullscreen='0'>
 	    	<camera name='user_camera'>
 	        	<pose frame=''>-2.97 -8.23 -96.72 0.0 0.108 1.228</pose>
