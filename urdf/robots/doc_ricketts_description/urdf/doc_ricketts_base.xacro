@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!-- 
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<robot name="caldus" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="caldus"/>
+
+  <!-- "Dummy" base link to eliminate root link inertia warning --> 
+  <link name="$(arg namespace)/base_link"/>
+
+  <link name="$(arg namespace)/caldus_link">
+    <!-- Mass and inertia from the Oceaneering eNovus technical specifications:
+         https://www.oceaneering.com/datasheets/ROV-eNovus.pdf -->
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="3400.0"/>
+      <inertia
+        ixx="1643.3" ixy="0.0" ixz="0.0"
+        iyy="2983.5" iyz="0.0"
+        izz="2790.8"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.9" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://caldus_description/meshes/caldus.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.9" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://caldus_description/meshes/caldus_collision.dae" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Attach caldus_link to the dummy base link -->
+  <joint name="$(arg namespace)/caldus_base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  <!-- X-fwd, Y-lft, Z-up (ick!) -->
+    <parent link="$(arg namespace)/base_link"/>
+    <child link="$(arg namespace)/caldus_link"/>
+  </joint>
+</robot>
+
+
+<!-- <robot name="doc_ricketts" xmlns:xacro="https://www.ros.org/wiki/xacro">
+    <xacro:arg name="debug" default="false"/>
+    <xacro:arg name="namespace" default="doc_ricketts"/> -->
+
+    <!-- "Dummy" base link to eliminate root link inertia warning -->
+    <!-- <link name="$(arg namespace)/base_link"/> -->
+    
+    <!-- <link name="$(arg namespace)/doc_ricketts_link"> -->
+        <!-- Values loosely based on https://www.mbari.org/at-sea/vehicles/remotely-operated-vehicles/rov-docricketts-specifications-2/ -->
+        <!-- Inertia values based on uniform mass distribution -->
+        <!-- <inertial> -->
+    <!--   <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="3400.0"/>
+      <inertia
+        ixx="1643.3" ixy="0.0" ixz="0.0"
+        iyy="2983.5" iyz="0.0"
+        izz="2790.8"/>
+    </inertial> -->
+<!--         <inertial>
+        	<origin xyz="0 0 0" rpy="0 0 0"/>
+        	<mass value="4762.7"/>
+        	<inertia ixx="7116.41" ixy="0.0" ixz="0.0" iyy="6637.07" iyz="0.0" izz="3134.17"/>
+        </inertial> -->
+        <!-- <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://doc_ricketts_description/meshes/ROV.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://doc_ricketts_description/meshes/ROV.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+    </link> -->
+
+  <!--   <joint name="$(arg namespace)/doc_ricketts_base_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="$(arg namespace)/base_link"/>
+        <child link="$(arg namespace)/doc_ricketts_link"/>
+    </joint>
+</robot> -->
+
+  

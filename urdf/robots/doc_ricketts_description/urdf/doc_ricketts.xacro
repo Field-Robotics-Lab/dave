@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+
+<robot name="doc_ricketts" xmlns:xacro="https://www.ros.org/wiki/xacro">
+    <xacro:arg name="debug" default="false"/>
+    <xacro:arg name="namespace" default="doc_ricketts"/>
+
+    <!-- "Dummy" base link to eliminate root link inertia warning -->
+    <link name="$(arg namespace)/base_link"/>
+    
+    <link name="$(arg namespace)/doc_ricketts_link">
+        <!-- Values loosely based on https://www.mbari.org/at-sea/vehicles/remotely-operated-vehicles/rov-docricketts-specifications-2/ -->
+        <!-- Inertia values based on uniform mass distribution -->
+        <inertial>
+        	<origin xyz="0 0 0" rpy="0 0 0"/>
+        	<mass value="4762.7"/>
+        	<inertia
+        		ixx="7116.41" ixy="0.0" ixz="0.0"
+        		iyy="6637.07" iyz="0.0"
+        		izz="3134.17"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://doc_ricketts_description/meshes/ROV.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://doc_ricketts_description/meshes/ROV.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="$(arg namespace)/doc_ricketts_base_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="$(arg namespace)/base_link"/>
+        <child link="$(arg namespace)/doc_ricketts_link"/>
+    </joint>
+</robot>
+
+  

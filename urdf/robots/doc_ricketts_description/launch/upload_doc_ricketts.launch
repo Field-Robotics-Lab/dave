@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="namespace" default="doc_ricketts"/>
+	<arg name="debug" default="false"/>
+	<param name="/$(arg namespace)/doc_ricketts" command="$(find xacro)/xacro '$(find doc_ricketts_description)/urdf/doc_ricketts.xacro' debug:=$(arg debug) namespace:=$(arg namespace)"/>
+</launch>
