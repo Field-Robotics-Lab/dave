@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:property name="prop_mesh_file" value="file://$(find eca_a9_description)/mesh/eca_a9_propeller.dae"/>
+	<xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro"/>
+	<xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/thruster_snippets.xacro"/>
+
+	<xacro:macro name="thruster_macro" params="namespace thruster_id *origin">
+		<xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="${thruster_id}" mesh_filename="${prop_mesh_file}" dyn_time_constant="0.05" rotor_constant="0.00031">
+			<xacro:insert_block name="origin"/>
+		</xacro:thruster_module_first_order_basic_fcn_macro>
+	</xacro:macro>
+
+  	<!-- Port-Aft RL-->
+	<xacro:thruster_macro thruster_id="0">
+    	<origin xyz="0.53491 1.51341 1.18597" rpy="1.5708 0.0 0.610865"/>
+  	</xacro:thruster_macro>
+  	<!-- Starboard-Aft RR-->
+	<xacro:thruster_macro thruster_id="1">
+    	<origin xyz="-0.536834 1.51248 1.18592" rpy="1.5708 0.0 -0.610865"/>
+  	</xacro:thruster_macro>
+  	<!-- Port-Forward FL-->
+  	<xacro:thruster_macro thruster_id="2">
+    	<origin xyz="0.539848 -1.28724 1.18875" rpy="1.5708 0.0 -0.610865"/>
+  	</xacro:thruster_macro>
+  	<!-- Starboard-Forward FR-->
+  	<xacro:thruster_macro thruster_id="3">
+    	<origin xyz="-0.536692 -1.28841 1.1888" rpy="1.5708 0.0 -2.53073"/>
+  	</xacro:thruster_macro>
+  	<!-- Port-Forward-Vertical TL-->
+  	<xacro:thruster_macro thruster_id="4">
+    	<origin xyz="0.706649 -0.761326 1.8604" rpy="0.0 -0.174533 0.0"/>
+  	</xacro:thruster_macro>
+  	<!-- Starboard-Forward-Vertical TR-->
+  	<xacro:thruster_macro thruster_id="5">
+    	<origin xyz="-0.70968 -0.761276 1.85086" rpy="0.0 0.174533 0.0"/>
+  	</xacro:thruster_macro>
+  	<!-- Aft-Vertical (central)-->
+  	<xacro:thruster_macro thruster_id="6">
+    	<origin xyz="2.54822e-05 1.63582 1.78479" rpy="0.0 0.0 0.0"/>
+  	</xacro:thruster_macro>
+</robot>
