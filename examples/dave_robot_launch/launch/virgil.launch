@@ -3,7 +3,7 @@
 	<arg name="gui" default="true"/>
 	<arg name="paused" default="false"/>
 	<arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
-	<arg name="namespace" default="doc_ricketts"/>
+	<arg name="namespace" default="virgil"/>
 	<arg name="velocity_control" default="false"/>
 	<arg name="joy_id" default="0"/>
 	<arg name="debug" default="false"/>
@@ -62,7 +62,7 @@
 	    </rosparam>
   	</node> -->
 
-  	<include file="$(find doc_ricketts_description)/launch/upload_doc_ricketts.launch"/>
+  	<include file="$(find virgil_description)/launch/upload_virgil.launch"/>
 
   	<include file="$(find dave_nodes)/launch/joy_thrusterop.launch">
     	<arg name="joy_id" value="$(arg joy_id)"/>
@@ -71,16 +71,16 @@
 
     <!-- Acceleration control -->
 <!--     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
-        <arg name="uuv_name" value="doc_ricketts" />
-        <arg name="model_name" value="doc_ricketts" />
+        <arg name="uuv_name" value="virgil" />
+        <arg name="model_name" value="virgil" />
         <arg name="joy_id" value="$(arg joy_id)"/>
     </include> -->
 
-  	<node name="spawn_doc_ricketts" pkg="gazebo_ros" type="spawn_model"
+  	<node name="spawn_virgil" pkg="gazebo_ros" type="spawn_model"
   		respawn="false" output="screen"
-  		args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model $(arg namespace) -param /$(arg namespace)/doc_ricketts"/>
+  		args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model $(arg namespace) -param /$(arg namespace)/virgil"/>
 
   	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
-  		<remap from="robot_description" to="/$(arg namespace)/doc_ricketts"/>
+  		<remap from="robot_description" to="/$(arg namespace)/virgil"/>
   	</node>
 </launch>
