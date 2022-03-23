@@ -1,13 +1,13 @@
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
-	<xacro:macro name="doc_ricketts_gazebo" params="namespace debug">
+	<xacro:macro name="doc_ricketts_gazebo" params="namespace">
 		<gazebo>
 			<plugin name="uuv_plgin" filename="libuuv_underwater_object_ros_plugin.so">
 				<!-- Hydro parameters for vehicle -->
 				<fluid_density>1028.0</fluid_density>
 				<flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
-				<debug>${debug}</debug>
+				<debug>false</debug>
 
-				<link name="$(arg namespace)/base_link">
+				<link name="${namespace}/base_link">
        				<neutrally_buoyant>1</neutrally_buoyant>
        				<!-- See eNovus technical specifications -->
        				<volume>1.8382</volume> <!-- This is a guess (similar size to Smilodon but heavier) -->

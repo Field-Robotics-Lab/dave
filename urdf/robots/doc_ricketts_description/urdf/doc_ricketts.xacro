@@ -38,6 +38,109 @@
         <parent link="$(arg namespace)/base_link"/>
         <child link="$(arg namespace)/doc_ricketts_link"/>
     </joint>
+
+    <gazebo>
+        <plugin name="uuv_plgin" filename="libuuv_underwater_object_ros_plugin.so">
+            <!-- Hydro parameters for vehicle -->
+            <fluid_density>1028.0</fluid_density>
+            <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+            <debug>false</debug>
+
+            <link name="$(arg namespace)/base_link">
+                <neutrally_buoyant>1</neutrally_buoyant>
+                <!-- See eNovus technical specifications -->
+                <volume>1.8382</volume> <!-- This is a guess (similar size to Smilodon but heavier) -->
+                <box>
+                    <width>1.83</width>
+                    <length>3.66</length>
+                    <height>2.13</height>
+                </box>
+                <!-- Center of buoyancy is a guess, using same value as RexRov -->
+                <center_of_buoyancy>0.0 0.0 0.3</center_of_buoyancy>
+                <hydrodynamic_model>
+                    <type>fossen</type>
+                    <!-- Everything else in the model is pulled straight from Berg2012
+                    (which means it's not even close for this vehicle) -->
+                    <!-- Added mass: see p.28 in Berg2012 -->
+                    <added_mass>
+                        779.79 -6.8773 -103.32  8.5426 -165.54 -7.8033
+                        -6.8773    1222   51.29  409.44 -5.8488  62.726
+                        -103.32   51.29  3659.9  6.1112 -386.42  10.774
+                        8.5426  409.44  6.1112   534.9 -10.027  21.019
+                        -165.54 -5.8488 -386.42 -10.027  842.69 -1.1162
+                        -7.8033  62.726  10.775  21.019 -1.1162  224.32
+                    </added_mass>
+                    <!-- Linear damping: see p.31 in Berg2012 -->
+                    <linear_damping>
+                        -74.82 -69.48 -728.4 -268.8 -309.77 -105
+                    </linear_damping>
+                    <!-- Non-linear damping: see p.30 in Berg2012 -->
+                    <quadratic_damping>
+                        -748.22 -992.53 -1821.01 -672 -774.44 -523.27
+                    </quadratic_damping>
+                </hydrodynamic_model>
+            </link>
+        </plugin>
+    </gazebo>
+
+    <!-- Default joint state publisher -->
+    <gazebo>
+        <plugin name="uuv_joint_state_publisher" filename="libuuv_joint_state_publisher.so">
+            <robotNamespace>$(arg namespace)</robotNamespace>
+            <updateRate>50</updateRate>
+        </plugin>
+    </gazebo>
+
+<!--     <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>$(arg namespace)</robotNamespace>
+            <robotParam>$(arg namespace)/doc_ricketts</robotParam>
+        </plugin>
+    </gazebo> -->
+
+    <!-- <xacro:include filename="$(find doc_ricketts_description)/urdf/doc_ricketts.gazebo.xacro"/> -->
+    <!-- <xacro:include filename="$(find doc_ricketts_description)/urdf/doc_ricketts.actuators.xacro"/> -->
+
+    <!-- <xacro:doc_ricketts_gazebo namespace="$(arg namespace)"/> -->
+
+    <xacro:property name="prop_mesh_file" value="file://$(find eca_a9_description)/mesh/eca_a9_propeller.dae"/>
+    <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro"/>
+    <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/thruster_snippets.xacro"/>
+
+    <xacro:macro name="thruster_macro" params="thruster_id *origin">
+        <xacro:thruster_module_first_order_basic_fcn_macro namespace="$(arg namespace)" thruster_id="${thruster_id}" mesh_filename="${prop_mesh_file}" dyn_time_constant="0.05" rotor_constant="0.00031">
+            <xacro:insert_block name="origin"/>
+        </xacro:thruster_module_first_order_basic_fcn_macro>
+    </xacro:macro>
+
+    <!-- Port-Aft RL-->
+    <xacro:thruster_macro thruster_id="0">
+        <origin xyz="0.53491 1.51341 1.18597" rpy="1.5708 0.0 0.610865"/>
+    </xacro:thruster_macro>
+    <!-- Starboard-Aft RR-->
+    <xacro:thruster_macro thruster_id="1">
+        <origin xyz="-0.536834 1.51248 1.18592" rpy="1.5708 0.0 -0.610865"/>
+    </xacro:thruster_macro>
+    <!-- Port-Forward FL-->
+    <xacro:thruster_macro thruster_id="2">
+        <origin xyz="0.539848 -1.28724 1.18875" rpy="1.5708 0.0 -0.610865"/>
+    </xacro:thruster_macro>
+    <!-- Starboard-Forward FR-->
+    <xacro:thruster_macro thruster_id="3">
+        <origin xyz="-0.536692 -1.28841 1.1888" rpy="1.5708 0.0 -2.53073"/>
+    </xacro:thruster_macro>
+    <!-- Port-Forward-Vertical TL-->
+    <xacro:thruster_macro thruster_id="4">
+        <origin xyz="0.706649 -0.761326 1.8604" rpy="0.0 -0.174533 0.0"/>
+    </xacro:thruster_macro>
+    <!-- Starboard-Forward-Vertical TR-->
+    <xacro:thruster_macro thruster_id="5">
+        <origin xyz="-0.70968 -0.761276 1.85086" rpy="0.0 0.174533 0.0"/>
+    </xacro:thruster_macro>
+    <!-- Aft-Vertical (central)-->
+    <xacro:thruster_macro thruster_id="6">
+        <origin xyz="2.54822e-05 1.63582 1.78479" rpy="0.0 0.0 0.0"/>
+    </xacro:thruster_macro>
 </robot>
 
   

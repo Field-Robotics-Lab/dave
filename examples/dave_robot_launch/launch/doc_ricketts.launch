@@ -10,7 +10,7 @@
 	<arg name="verbose" default="false"/>
 	<arg name="x" default="25"/>
 	<arg name="y" default="0"/>
-	<arg name="z" default="-85"/>
+	<arg name="z" default="-10"/>
 	<arg name="roll" default="0"/>
 	<arg name="pitch" default="0"/>
 	<arg name="yaw" default="0"/>
@@ -64,10 +64,17 @@
 
   	<include file="$(find doc_ricketts_description)/launch/upload_doc_ricketts.launch"/>
 
-<!--   	<include file="$(find dave_nodes)/launch/joy_thrusterop.launch">
+  	<include file="$(find dave_nodes)/launch/joy_thrusterop.launch">
     	<arg name="joy_id" value="$(arg joy_id)"/>
     	<arg name="namespace" value="$(arg namespace)"/>
-  	</include> -->
+  	</include>
+
+    <!-- Acceleration control -->
+<!--     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="doc_ricketts" />
+        <arg name="model_name" value="doc_ricketts" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include> -->
 
   	<node name="spawn_doc_ricketts" pkg="gazebo_ros" type="spawn_model"
   		respawn="false" output="screen"
