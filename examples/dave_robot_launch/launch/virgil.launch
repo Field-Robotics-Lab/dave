@@ -8,9 +8,9 @@
 	<arg name="joy_id" default="0"/>
 	<arg name="debug" default="false"/>
 	<arg name="verbose" default="false"/>
-	<arg name="x" default="25"/>
-	<arg name="y" default="0"/>
-	<arg name="z" default="-10"/>
+	<arg name="x" default="4"/>
+	<arg name="y" default="4"/>
+	<arg name="z" default="-93"/>
 	<arg name="roll" default="0"/>
 	<arg name="pitch" default="0"/>
 	<arg name="yaw" default="0"/>
