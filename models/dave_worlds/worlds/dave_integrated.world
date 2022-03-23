@@ -215,9 +215,7 @@
 
     <include>
       <name>mud_anchor</name>
-      <!-- <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Mud Anchor</uri> -->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://mud_anchor</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Mud Anchor</uri>
       <pose>-78.2 -181 -130 -0.22 0.13 0.0</pose>
     </include>
 
@@ -283,9 +281,7 @@
     <include>
       <name>flight_data_recorder</name>
       <pose>7 5 -110 0 0 0</pose>
-      <!-- <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Flight Data Recorder</uri> -->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://flight_data_recorder</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Flight Data Recorder</uri>
     </include>
 
     <include>
@@ -305,7 +301,7 @@
 
     <include>
       <name>Lionfish2</name>
-      <pose>13 -12 -94 0 0 0</pose>
+      <pose>13 -10 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
     </include>
 
@@ -392,56 +388,44 @@
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Octagonal</uri>
     </include>
 
-    <!-- Military equipments -->
+    <!-- Military equipment -->
     <include>
       <name>torpedo_mk46</name>
       <pose>-158 100 -158 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK46</uri-->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://torpedo_mk46</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK46</uri>
       <static>true</static>
     </include>
 
     <include>
       <name>torpedo_mk48</name>
       <pose>-158 105 -158 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK48</uri-->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://torpedo_mk48</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK48</uri>
       <static>true</static>
     </include>
 
     <include>
       <name>sonobuoy</name>
       <pose>-158 104 -158 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Sonobuoy</uri-->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://sonobuoy</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Sonobuoy</uri>
       <static>true</static>
     </include>
 
     <include>
       <name>uxo_a</name>
       <pose>-140 103 -150 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance A</uri-->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://uxo_a</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance A</uri>
     </include>
 
     <include>
       <name>uxo_b</name>
       <pose>-140 102 -150 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance B</uri-->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://uxo_b</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance B</uri>
     </include>
 
     <include>
       <name>uxo_c</name>
       <pose>-140 101 -150 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance C</uri-->
-      <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
-      <uri>model://uxo_c</uri>
+      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance C</uri>
     </include>
     
   </world>
