@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="namespace" default="virgil"/>
+	<arg name="debug" default="false"/>
+	<param name="/$(arg namespace)/virgil" command="$(find xacro)/xacro '$(find virgil_description)/urdf/virgil.xacro' debug:=$(arg debug) namespace:=$(arg namespace)"/>
+</launch>
