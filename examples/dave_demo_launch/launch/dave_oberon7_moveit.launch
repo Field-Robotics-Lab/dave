@@ -4,8 +4,7 @@
 	<arg name="joy_id" default="0"/>
 	<arg name="paused" default="false"/>
 	<arg name="gui" default="true"/>
-	<arg name="effort_controller" default="true"/>
-	<arg name="position_controller" default="false"/>
+	<arg name="controller_type" default="effort"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" value="$(arg world_name)"/>
@@ -22,8 +21,7 @@
 
     <!-- Upload URDF with correct transmission type -->
 	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
-		<arg name="controller_type" value="effort" if="$(arg effort_controller)"/>
-		<arg name="controller_type" value="position" if="$(arg position_controller)"/>
+		<arg name="controller_type" value="$(arg controller_type)"/>
 		<arg name="x" value="2.5"/>
 		<arg name="y" value="0.5"/>
 		<arg name="z" value="-97.5"/>
@@ -36,11 +34,11 @@
 	<rosparam file="$(find oberon7_gazebo)/controller/oberon7_controllers.yaml" command="load"/>
 
 	<!-- Load chosen controller types -->
-	<group if="$(arg effort_controller)">
+	<group if="$(eval controller_type == 'effort')">
 		<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_effort_r hand_effort_l arm_effort_l arm_effort_r" respawn="false" output="screen"/> 
 	</group>
 
-	<group if="$(arg position_controller)">
+	<group if="$(eval controller_type == 'position')">
 		<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_position_r hand_position_l arm_position_l arm_position_r" respawn="false" output="screen"/> 
 	</group>
 
