@@ -23,6 +23,7 @@
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>500</real_time_update_rate>
       <ode>
+        <ode_quiet>true</ode_quiet>
         <solver>
           <type>world</type>
         </solver>
