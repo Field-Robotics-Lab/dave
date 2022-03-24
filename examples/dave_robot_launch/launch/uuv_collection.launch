@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
+    <arg name="joy_id" default="0"/>
+ 
+    <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="false"/>
+    </include>
+
+    <!-- use ned frame north east down -->
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+
+    <!-- Smilodon -->
+    <include file="$(find smilodon_description)/launch/upload_smilodon.launch"/>
+    <node name="spawn_smilodon" pkg="gazebo_ros" type="spawn_model"
+          respawn="false" output="screen"
+          args="-urdf -x 10 -y 0 -z -93  
+		-R 0 -P 0 -Y 0 
+		-model smilodon -param /smilodon/smilodon"/>
+
+    <!-- Virgil -->
+    <include file="$(find virgil_description)/launch/upload_virgil.launch"/>
+    <node name="spawn_virgil" pkg="gazebo_ros" type="spawn_model"
+          respawn="false" output="screen"
+          args="-urdf -x 10 -y 3.37 -z -93.8  
+		-R 0 -P 0 -Y 1.571
+		-model virgil -param /virgil/virgil"/>
+
+    <!-- REXROV robot with predator arm -->
+    <include file="$(find rexrov_description)/launch/upload_rexrov_predator.launch">
+        <arg name="namespace" value="rexrov"/>
+        <arg name="x" value="10"/>
+        <arg name="y" value="6"/>
+        <arg name="z" value="-93"/>
+        <arg name="yaw" value="0"/>
+    </include>
+
+    <!-- Acceleration control -->
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+        <arg name="uuv_name" value="rexrov" />
+        <arg name="model_name" value="rexrov" />
+        <arg name="joy_id" value="$(arg joy_id)"/>
+    </include>
+
+    <!-- joint control for manipulator -->
+    <include file="$(find predator_control)/launch/joint_control.launch">
+        <arg name="uuv_name" value="rexrov"/>
+    </include>
+
+    <!-- Caldus -->
+    <include file="$(find caldus_description)/launch/upload_caldus.launch"/>
+    <node name="spawn_caldus" pkg="gazebo_ros" type="spawn_model"
+        respawn="false" output="screen"
+        args="-urdf -x 10 -y 8 -z -93 -R 0 -P 0 -Y 0 -model caldus -param caldus/caldus"/>
+
+    <!-- Caracara -->
+    <include file="$(find caracara_description)/launch/upload_caracara.launch"/>
+    <node name="spawn_caracara" pkg="gazebo_ros" type="spawn_model"
+          respawn="false" output="screen"
+          args="-urdf -x 10 -y 10 -z -93  
+		-R 0 -P 0 -Y 0 
+		-model caracara -param /caracara/caracara"/>
+
+</launch>
