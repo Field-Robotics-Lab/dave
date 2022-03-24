@@ -2,14 +2,15 @@
 <launch>
 	<arg name="namespace" default="rexrov"/>
 	<arg name="debug" default="false"/>
-  <arg name="x" default="4"/>
-  <arg name="y" default="2"/>
-  <arg name="z" default="-91"/>
-  <arg name="roll" default="0.0"/>
-  <arg name="pitch" default="0.0"/>
-  <arg name="yaw" default="0.0"/>
+	<arg name="controller_type" default="effort"/>
+	<arg name="x" default="4"/>
+	<arg name="y" default="2"/>
+	<arg name="z" default="-91"/>
+	<arg name="roll" default="0.0"/>
+	<arg name="pitch" default="0.0"/>
+	<arg name="yaw" default="3.141592"/>
 
-	<param name="robot_description" command="$(find xacro)/xacro '$(find rexrov_description)/urdf/rexrov_robot.urdf.xacro' inertial_reference_frame:=world"/>
+	<param name="robot_description" command="$(find xacro)/xacro '$(find rexrov_description)/urdf/rexrov_robot.urdf.xacro' inertial_reference_frame:=world controller_type:=$(arg controller_type)"/>
 
 	<node name="urdf_spawner" pkg="uuv_descriptions" type="spawn_model" respawn="false" output="screen" args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model $(arg namespace) -param robot_description"/>
 </launch>

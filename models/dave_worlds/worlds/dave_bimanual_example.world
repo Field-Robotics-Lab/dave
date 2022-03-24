@@ -1,0 +1,176 @@
+<?xml version="1.0" ?>
+<!-- Copyright (c) 2016 The UUV Simulator Authors.
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<sdf version="1.4">
+	<world name="oceans_waves">
+		<physics name="default_physics" default="true" type="ode">
+			<max_step_size>0.002</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>500</real_time_update_rate>
+		</physics>
+		<scene>
+			<ambient>0.01 0.01 0.01 1.0</ambient>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+			<shadows>1</shadows>
+		</scene>
+
+
+		<!-- Origin placed somewhere in the middle of the North Sea -->
+		<spherical_coordinates>
+			<latitude_deg>56.71897669633431</latitude_deg>
+			<longitude_deg>3.515625</longitude_deg>
+		</spherical_coordinates>
+
+		<!-- Global Light Source -->
+		<light type="directional" name="sun1">
+			<pose>50 0 150 0 0 0</pose>
+			<diffuse>1 1 1 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<direction>0.3 0.3 -1</direction>
+			<cast_shadows>false</cast_shadows>
+		</light>
+
+		<light type="directional" name="sun_diffuse_4">
+			<pose>20 0 -90 0 0 0</pose>
+			<diffuse>0.9 0.9 0.9 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<direction>-1 0 0</direction>
+			<cast_shadows>false</cast_shadows>
+		</light> 
+
+		<!-- Virtual NED frame -->
+		<include>
+			<uri>model://ned_frame</uri>
+			<pose>0 0 0 0 0 0</pose>
+		</include>
+
+		<!-- Bounding box with sea surface -->
+		<include>
+			<uri>model://ocean</uri>
+			<pose>0 0 0 0 0 0</pose>
+		</include>
+
+		<plugin name="underwater_current_plugin" filename="libuuv_underwater_current_ros_plugin.so">
+			<namespace>hydrodynamics</namespace>
+			<constant_current>
+				<topic>current_velocity</topic>
+				<velocity>
+					<mean>0</mean>
+					<min>0</min>
+					<max>5</max>
+					<mu>0.0</mu>
+					<noiseAmp>0.0</noiseAmp>
+				</velocity>
+
+				<horizontal_angle>
+					<mean>0</mean>
+	          		<min>-3.141592653589793238</min>
+	          		<max>3.141592653589793238</max>
+	          		<mu>0.0</mu>
+	          		<noiseAmp>0.0</noiseAmp>
+	       		</horizontal_angle>
+	       		<vertical_angle>
+	          		<mean>0</mean>
+	          		<min>-3.141592653589793238</min>
+	          		<max>3.141592653589793238</max>
+	          		<mu>0.0</mu>
+	          		<noiseAmp>0.0</noiseAmp>
+	        	</vertical_angle>
+	      	</constant_current>
+	    </plugin>
+
+	    <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
+
+	    <model name="grabbapole">
+	    	<static>true</static>
+	    	<pose>0.0 0.0 -98.5 0 0 0</pose>
+	    	<link name="gabbapole_link">
+	    		<inertial>
+	    			<inertia>
+	    				<ixx>1</ixx>
+	    				<ixy>0</ixy>
+	    				<ixz>0</ixz>
+	    				<iyy>1</iyy>
+	    				<iyx>0</iyx>
+	    				<iyz>0</iyz>
+	    				<izz>1</izz>
+	    				<izx>0</izx>
+	    				<izy>0</izy>
+	    			</inertia>
+	    			<mass>1.0</mass>
+	    		</inertial>
+	    		<collision name="grabbapole_collision">
+	    			<geometry>
+	    				<cylinder>
+	    					<radius>0.03</radius>
+	    					<length>3.0</length>
+	    				</cylinder>
+	    			</geometry>
+	    			<surface>
+	    				<friction>
+	    					<ode>
+	    						<mu>100.0</mu>
+	    						<mu2>100.0</mu2>
+	    					</ode>
+	    				</friction>
+	    			</surface>
+	    		</collision>
+	    		<visual name="grabbapole_visual">
+	    			<geometry>
+	    				<cylinder>
+	    					<radius>0.03</radius>
+	    					<length>3.0</length>
+	    				</cylinder>
+	    			</geometry>
+	    			<material>
+	    				<script>
+	    					<name>Gazebo/Grey</name>
+	    					<uri>file://media/materials/scripts/gazebo.material</uri>
+	    				</script>
+	    			</material>
+	    		</visual>
+	    		<self_collide>0</self_collide>
+	    		<enable_wind>0</enable_wind>
+	    		<kinematic>0</kinematic>
+	    	</link>
+	    </model>
+
+	    <include>
+      		<uri>model://sunken_vase</uri>
+      		<pose>0.3 1.0 -100 0 0 0</pose>
+      		<static>false</static>
+    	</include>
+
+    	<include>
+    		<uri>model://sunken_vase_distorted</uri>
+    		<pose>0.4 -0.5 -100 0 0 1.5708</pose>
+    		<static>false</static>
+    	</include>
+
+	    <gui fullscreen='0'>
+	    	<camera name='user_camera'>
+	        	<pose frame=''>-2.97 -8.23 -96.72 0.0 0.108 1.228</pose>
+	        	<view_controller>orbit</view_controller>
+	        	<projection_type>perspective</projection_type>
+	      	</camera>
+	    </gui>
+	</world>
+</sdf>

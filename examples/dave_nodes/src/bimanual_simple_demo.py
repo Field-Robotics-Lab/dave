@@ -11,6 +11,7 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 import tf
 import numpy as np
+import time
 
 from gazebo_msgs.msg import ModelStates, ModelState
 
@@ -123,7 +124,7 @@ class MoveGroupPythonInterface(object):
         self.arm_l_start = move_group_arm_l.get_current_pose().pose
         self.arm_r_start = move_group_arm_r.get_current_pose().pose
 
-        self.rate = rospy.Rate(1)
+        self.rate = rospy.Rate(5)
 
     def get_state_CB(self, _data):
         self.get_state_msg = _data
@@ -151,47 +152,27 @@ class MoveGroupPythonInterface(object):
         current_joints = move_group.get_current_joint_values()
         return all_close(joint_goal, current_joints, 0.01)
 
-    def open_gripper_r(self):
+    def gripper_r_pose(self, joint_val=1.0):
         print()
-        print("==========Opening right gripper...==========")
+        print("==========Right gripper move...==========")
 
         joint_goal = self.move_group_r.get_current_joint_values()
-        joint_goal[0] = 1.0
+        joint_goal[0] = joint_val
 
         self.move_group_r.go(joint_goal, wait=True)
         self.move_group_r.stop()
 
-    def close_gripper_r(self):
+    def gripper_l_pose(self, joint_val=1.0):
         print()
-        print("==========Closing right gripper...==========")
-
-        joint_goal = self.move_group_r.get_current_joint_values()
-        joint_goal[0] = 0.0
-
-        self.move_group_r.go(joint_goal, wait=True)
-        self.move_group_r.stop()
-
-    def open_gripper_l(self):
-        print()
-        print("==========Opening left gripper...==========")
+        print("==========Left gripper move...==========")
 
         joint_goal = self.move_group_l.get_current_joint_values()
-        joint_goal[0] = 1.0
+        joint_goal[0] = joint_val
 
         self.move_group_l.go(joint_goal, wait=True)
         self.move_group_l.stop()
 
-    def close_gripper_l(self):
-        print()
-        print("==========Closing left gripper...==========")
-
-        joint_goal = self.move_group_l.get_current_joint_values()
-        joint_goal[0] = 0.0
-
-        self.move_group_l.go(joint_goal, wait=True)
-        self.move_group_l.stop()
-
-    def go_to_pose_goal_l(self, home_var):
+    def go_to_pose_goal_l(self, home_var, target_pose, target_quat):
         print()
         print("==========Sending left ee to goal...==========")
         current_pose = self.move_group.get_current_pose().pose
@@ -199,13 +180,13 @@ class MoveGroupPythonInterface(object):
         pose_goal = geometry_msgs.msg.Pose()
 
         if home_var == False:
-            pose_goal.orientation.w = 0.928
-            pose_goal.orientation.x = 0.0198
-            pose_goal.orientation.y = 0.37158
-            pose_goal.orientation.z = 0.005
-            pose_goal.position.x = 2.214
-            pose_goal.position.y = 0.2565
-            pose_goal.position.z = -1.4943
+            pose_goal.orientation.w = target_quat.w
+            pose_goal.orientation.x = target_quat.x
+            pose_goal.orientation.y = target_quat.y
+            pose_goal.orientation.z = target_quat.z
+            pose_goal.position.x = target_pose.x
+            pose_goal.position.y = target_pose.y
+            pose_goal.position.z = target_pose.z
         else:
             pose_goal = self.arm_l_start
 
@@ -221,7 +202,7 @@ class MoveGroupPythonInterface(object):
         current_pose = self.move_group_arm_l.get_current_pose().pose
         return all_close(pose_goal, current_pose, 0.01)
 
-    def go_to_pose_goal_r(self, home_var):
+    def go_to_pose_goal_r(self, home_var, target_pose, target_quat):
         print()
         print("==========Sending right ee to goal...==========")
         current_pose = self.move_group_arm_r.get_current_pose().pose
@@ -229,13 +210,14 @@ class MoveGroupPythonInterface(object):
         pose_goal = geometry_msgs.msg.Pose()
 
         if home_var == False:
-            pose_goal.orientation.w = 0.928
-            pose_goal.orientation.x = 0.0198
-            pose_goal.orientation.y = 0.37158
-            pose_goal.orientation.z = 0.005
-            pose_goal.position.x = 2.214
-            pose_goal.position.y = -0.2565
-            pose_goal.position.z = -1.4943
+            pose_goal.orientation.w = target_quat.w
+            pose_goal.orientation.x = target_quat.x
+            pose_goal.orientation.y = target_quat.y
+            pose_goal.orientation.z = target_quat.z
+
+            pose_goal.position.x = target_pose.x
+            pose_goal.position.y = target_pose.y
+            pose_goal.position.z = target_pose.z
         else:
             pose_goal = self.arm_r_start
 
@@ -271,7 +253,6 @@ class MoveGroupPythonInterface(object):
         (plan, fraction) = move_group.compute_cartesian_path(
             waypoints, 0.01, 0.0  
         )  
-
         
         return plan, fraction
 
@@ -303,6 +284,30 @@ class MoveGroupPythonInterface(object):
         trans_mat = np.matmul(base_trans, base_rot)
         return trans_mat
 
+    def horizontal_grip(self, current_orientation, x_val, y_val, z_val):
+        # Rotate gripper around an axis
+
+        Rx = tf.transformations.rotation_matrix(x_val, (1, 0, 0))
+        Ry = tf.transformations.rotation_matrix(y_val, (0, 1, 0))
+        Rz = tf.transformations.rotation_matrix(z_val, (0, 0, 1))
+        R = tf.transformations.concatenate_matrices(Rx, Ry, Rz)
+        euler = tf.transformations.euler_from_matrix(R, 'rxyz')
+
+        q_euler = tf.transformations.quaternion_from_euler(euler[0], euler[1], euler[2], 'rxyz')
+
+        q_current = np.array([current_orientation.x,
+                                 current_orientation.y,
+                                 current_orientation.z,
+                                 current_orientation.w])
+
+        qy = tf.transformations.quaternion_about_axis(-1.57, (0, 1, 0))
+        qx = tf.transformations.quaternion_about_axis(1.57, (1, 0, 0))
+        qz = tf.transformations.quaternion_about_axis(-1.57, (0, 0, 1))
+
+        q = tf.transformations.quaternion_multiply(q_current, q_euler)
+
+        return q
+
     def get_target_pose(self, object_pose, robot_pose, arm_pose):
         object_mat = self.pose_to_mat(object_pose)
         robot_mat = self.pose_to_mat(robot_pose)
@@ -329,48 +334,142 @@ class MoveGroupPythonInterface(object):
 
         return new_target_pose
 
-    def run_node(self, action_num):
-        # Create a counter to give sim time to give object coords
-        while not rospy.is_shutdown():
-            # Get the location of a target relative to the robot in 
-            # arm command coordinates
-            # TODO: Orientation aligned with world
-            target_pose = self.get_target_pose(self.get_state_msg.pose[3],
-                                               self.get_state_msg.pose[-1],
-                                               self.move_group_arm_l.get_current_pose().pose)
+    def align_with_world(self, robot_pose, arm_pose):
+        robot_mat = self.pose_to_mat(robot_pose)
+        robot_mat = tf.transformations.quaternion_matrix([robot_pose.orientation.x,
+                                                          robot_pose.orientation.y,
+                                                          robot_pose.orientation.z,
+                                                          robot_pose.orientation.w])
+        arm_mat = tf.transformations.quaternion_matrix([arm_pose.orientation.x,
+                                                        arm_pose.orientation.y,
+                                                        arm_pose.orientation.z,
+                                                        arm_pose.orientation.w])
 
+        # Get the arm wrt world
+        a_w_T = np.matmul(robot_mat, arm_mat)
+
+        result_quat = tf.transformations.quaternion_from_matrix(a_w_T)
+
+
+        return result_quat
+
+    def world_tests(self, world_pose, robot_pose, arm_pose):
+        robot_mat = tf.transformations.quaternion_matrix([robot_pose.orientation.x,
+                                                          robot_pose.orientation.y,
+                                                          robot_pose.orientation.z,
+                                                          robot_pose.orientation.w])
+        arm_mat = tf.transformations.quaternion_matrix([arm_pose.orientation.x,
+                                                        arm_pose.orientation.y,
+                                                        arm_pose.orientation.z,
+                                                        arm_pose.orientation.w])
+        world_mat = tf.transformations.quaternion_matrix([world_pose.orientation.x,
+                                                          world_pose.orientation.y,
+                                                          world_pose.orientation.z,
+                                                          world_pose.orientation.w])
+
+        # Get the arm wrt world
+        a_w_T = np.matmul(robot_mat, arm_mat)
+
+        result_quat = tf.transformations.quaternion_from_matrix(a_w_T)
+
+        return result_quat
+
+    def run_node(self, action_num):
+        # Grasp a pole and a pot
+        while not rospy.is_shutdown():
             try:
-                # Open and close each gripper
                 if action_num == 0:
-                    self.open_gripper_r()
+                    # Moving left arm into position to grab pole
+                    target_quat = self.move_group_arm_l.get_current_pose().pose.orientation
+                    target_pose = self.move_group_arm_l.get_current_pose().pose.position
+                    target_quat.x = 0.0294
+                    target_quat.y = -0.06108
+                    target_quat.z = -0.000856
+                    target_quat.w = 0.997697
+                    
+                    target_pose.x = 2.32
+                    target_pose.y = 0.4374
+                    target_pose.z = -1.07
+                    self.go_to_pose_goal_l(False, target_pose, target_quat)
+                
                 elif action_num == 1:
-                    self.close_gripper_r()
-                elif action_num == 2:    
-                    self.open_gripper_l()
+                    # Open the left gripper
+                    self.gripper_l_pose()
+                
+                elif action_num == 2:
+                    # Move left gripper towards pole
+                    target_pose = self.move_group_arm_l.get_current_pose().pose.position
+                    target_quat = self.move_group_arm_l.get_current_pose().pose.orientation
+                    target_pose.x = 2.55
+                    target_pose.y = 0.43
+                    target_pose.z = -0.85
+                    self.go_to_pose_goal_l(False, target_pose, target_quat)
+                
                 elif action_num == 3:
-                    self.close_gripper_l()
-                elif action_num == 4:    
-                    # Go to first pose goal, set home pose as False
-                    self.go_to_pose_goal_r(False)
-                elif action_num == 5:    
-                    self.go_to_pose_goal_l(False)
-                elif action_num == 6:    
-                    # Set home pose as true to return to start
-                    self.go_to_pose_goal_r(True)
+                    # Close left gripper
+                    self.gripper_l_pose(0.26)       
+                
+                elif action_num == 4:
+                    # Move right arm into position above pot
+                    # Pot handle offsets
+                    target_pose = self.move_group_arm_r.get_current_pose().pose.position
+                    target_quat = self.move_group_arm_r.get_current_pose().pose.orientation
+                    pot_xoffset = -0.35
+                    pot_yoffset = 0.05
+                    pot_zoffset = 1.0
+                    # Get pot pose relative to robot as we might have moved
+                    # after grabbing first item
+                    tmp_pose = self.get_target_pose(self.get_state_msg.pose[3],
+                                               self.get_state_msg.pose[-1],
+                                               self.move_group_arm_r.get_current_pose().pose)
+                    target_pose.x = tmp_pose.position.x + pot_xoffset
+                    target_pose.y = tmp_pose.position.y + pot_yoffset
+                    target_pose.z = tmp_pose.position.z + pot_zoffset
+                    # Vertical grab orientation
+                    target_quat.x = 0.79825 
+                    target_quat.y = 0.02476
+                    target_quat.z = -0.601405
+                    target_quat.w =  0.02236
+
+                    self.go_to_pose_goal_r(False, target_pose, target_quat)
+
+                elif action_num == 5:
+                    # Open gripper over pot
+                    self.gripper_r_pose()
+                
+                elif action_num == 6:
+                    # Move arm down over pot handle
+                    target_quat = self.move_group_arm_r.get_current_pose().pose.orientation
+                    target_pose = self.move_group_arm_r.get_current_pose().pose.position
+                    target_pose.z = target_pose.z - 0.3
+                    self.go_to_pose_goal_r(False, target_pose, target_quat)
+                
                 elif action_num == 7:    
-                    self.go_to_pose_goal_l(True)
+                    # Close gripper over pot handle
+                    self.gripper_r_pose(0.25)
+                
+                elif action_num == 8:
+                    # Lift up pot
+                    target_quat = self.move_group_arm_r.get_current_pose().pose.orientation
+                    target_pose = self.move_group_arm_r.get_current_pose().pose.position
+                    target_pose.y = -0.5
+                    target_pose.z = target_pose.z + 0.25
+                    self.go_to_pose_goal_r(False, target_pose, target_quat)
             except:
-                print("Unable to assume pose")
-            break
+                print("Error ocurred")
 
             self.rate.sleep()
+            break
 
 
 def main():
     try:
         print("Setting up moveit commander")
         bimanual_demo = MoveGroupPythonInterface()
-        for action_num in range(8):
+        # First four are left arm
+        for action_num in range(9):
+            print("\naction_num ")
+            print(action_num)
             bimanual_demo.run_node(action_num)
 
     except rospy.ROSInterruptException:
