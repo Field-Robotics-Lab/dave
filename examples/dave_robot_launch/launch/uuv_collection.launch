@@ -2,7 +2,7 @@
 <launch>
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/>
+    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves_darker.world"/>
     <arg name="joy_id" default="0"/>
  
     <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
