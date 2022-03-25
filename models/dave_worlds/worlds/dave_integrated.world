@@ -274,19 +274,20 @@
     <!-- Monitoring equipment -->
     <include>
       <name>mbari_mars</name>
-      <pose>13 6 -115 0 0 0</pose>
+      <pose>13 6 -118 0 -0.15 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/MBARI MARS</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>flight_data_recorder</name>
-      <pose>7 5 -110 0 0 0</pose>
+      <pose>7 5 -117 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Flight Data Recorder</uri>
     </include>
 
     <include>
       <name>niskin</name>
-      <pose>7 5 -110 0 0 0</pose>
+      <pose>7 5 -117 0 0 0</pose>
       <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://niskin</uri>
@@ -295,32 +296,30 @@
     <!-- Ocean creatures -->
     <include>
       <name>Lionfish1</name>
-      <pose>13 -12 -94 0 0 0</pose>
+      <pose>13 -11 -118 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+      <static>true</static>
     </include>
 
     <include>
-      <name>Lionfish2</name>
-      <pose>13 -10 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
-    </include>
-
-    <include>
-      <name>Coral</name>
+      <name>Coral1</name>
       <pose>13 -12 -118.3 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral01</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>Kelp1</name>
       <pose>13 -12 -118.3 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 01</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>Kelp2</name>
       <pose>12 -12 -118.3 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 02</uri>
+      <static>true</static>
     </include>
 
     <!-- Sunken ships and objects-->
@@ -328,12 +327,14 @@
       <name>sunken_ship</name>
       <pose>-75 -200 -147 0.25 0 0.65</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Ship</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>sunken_ship_distorted</name>
-      <pose>-81 -219 -147 0.25 0 0.65</pose>
+      <pose>17 -200 -150 0 0 0</pose>
       <uri>model://sunken_ship_distorted</uri>
+      <static>true</static>
     </include>
 
     <include>
@@ -356,36 +357,69 @@
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
     </include>
 
+    <include>
+      <name>Lionfish2</name>
+      <pose>-72 -209 -147 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+      <static>true</static>
+    </include>
+
+    <include>
+      <name>Coral2</name>
+      <pose>-70 -208 -147.9 0.15 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral02</uri>
+      <static>true</static>
+    </include>
+
+    <include>
+      <name>Kelp3</name>
+      <pose>-70 -208 -148 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 03</uri>
+      <static>true</static>
+    </include>
+
+    <include>
+      <name>Kelp4</name>
+      <pose>-70 -209 -148 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 04</uri>
+      <static>true</static>
+    </include>
+
     <!-- Ocean rocks -->
     <include>
       <name>Rock3</name>
       <pose>26 182 -139 -1.55 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Ocean Rock 03</uri>
+      <static>true</static>
     </include>
 
     <!-- Hardhats -->
     <include>
       <name>hardhat_standard</name>
-      <pose>-185 115 -120 0 0 0</pose>
+      <pose>-185 115 -158.224 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Standard</uri>
+      <static>true</static>
     </include>
 
      <include>
       <name>hardhat_ribbed</name>
-      <pose>-185 116 -120 0 0 0</pose>
+      <pose>-185 116 -158.238 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Ribbed</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>hardhat_superribbed</name>
-      <pose>-184 115 -120 0 0 0</pose>
+      <pose>-184 115 -158.199 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Superribbed</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>hardhat_octagonal</name>
-      <pose>-184 116 -120 0 0 0</pose>
+      <pose>-185.4 96 -158.106 1.13 -0105 0.245</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Octagonal</uri>
+      <static>true</static>
     </include>
 
     <!-- Military equipment -->
@@ -393,39 +427,39 @@
       <name>torpedo_mk46</name>
       <pose>-158 100 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK46</uri>
-      <static>true</static>
     </include>
 
     <include>
       <name>torpedo_mk48</name>
       <pose>-158 105 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK48</uri>
-      <static>true</static>
     </include>
 
     <include>
       <name>sonobuoy</name>
       <pose>-158 104 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Sonobuoy</uri>
-      <static>true</static>
     </include>
 
     <include>
       <name>uxo_a</name>
-      <pose>-140 103 -150 0 0 0</pose>
+      <pose>-140 103 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance A</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>uxo_b</name>
-      <pose>-140 102 -150 0 0 0</pose>
+      <pose>-140 102 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance B</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>uxo_c</name>
-      <pose>-140 101 -150 0 0 0</pose>
+      <pose>-140 101 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance C</uri>
+      <static>true</static>
     </include>
     
   </world>
