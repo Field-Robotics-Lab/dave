@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="config" default="$(find dave_nodes)/config/integrated_world_places.yaml"/>
+    <node name="teleport_vehicle" pkg="dave_nodes" type="teleport_vehicle.py" args="-c $(arg config)" output="screen"/>
+</launch>

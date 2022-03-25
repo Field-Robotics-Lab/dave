@@ -79,8 +79,9 @@ def main(argv=sys.argv):
         description="A script to teleport UUVs within underwater environments")
     parser.add_argument("-c", "--config", type=str, required=True,
                         help="Path to the config.yaml file")
-    args = parser.parse_args(argv[1:])
+    args, _ = parser.parse_known_args(argv[1:])
     config_yaml = None
+    print(f"Config path: {args.config}")
     with open(args.config, "r") as f:
         config_yaml = yaml.safe_load(f)
 
