@@ -71,6 +71,8 @@
       <arg name="x" value="-187.77"/>
       <arg name="y" value="115.20"/>
       <arg name="z" value="-155.35"/>
+      <arg name="roll" value="-0.01"/>
+      <arg name="pitch" value="0.177"/>
       <arg name="yaw" value="3.14"/>
     </include>
 

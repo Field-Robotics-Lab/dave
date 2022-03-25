@@ -25,17 +25,17 @@
           </mesh>
         </geometry>
         <surface>
-          <!-- <contact>
+          <contact>
             <ode>
-            <kp>1e8</kp>
-            <kd>1e8</kd>
-            <min_depth>0.005</min_depth>
+            <kp>1e6</kp>
+            <kd>1.0</kd>
+            <min_depth>0.001</min_depth>
             </ode>
-          </contact> -->
+          </contact>
           <friction>
             <ode>
-              <mu>0.2</mu>
-              <mu2>0.2</mu2>
+        		<mu1>100.0</mu1>
+        		<mu2>50.0</mu2>
             </ode>
           </friction>
         </surface>
