@@ -106,7 +106,7 @@
     <xacro:include filename="$(find uuv_descriptions)/urdf/common.urdf.xacro"/>
     <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/thruster_snippets.xacro"/>
 
-    <xacro:macro name="thruster_macro" params="thruster_id mesh_file *origin">
+    <xacro:macro name="thruster_macro" params="thruster_id *origin">
         <xacro:thruster_module_first_order_basic_fcn_macro namespace="$(arg namespace)" thruster_id="${thruster_id}" mesh_filename="${prop_mesh_file}" dyn_time_constant="0.05" rotor_constant="0.00031">
             <xacro:insert_block name="origin"/>
         </xacro:thruster_module_first_order_basic_fcn_macro>
