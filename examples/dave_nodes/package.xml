@@ -8,8 +8,6 @@
   <author email="dtdavi1@nps.edu">dtd</author> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-  <exec_depend>moveit_commander</exec_depend>
-
   <export>
     <!-- Other tools can request additional information be placed here -->
   </export>
