@@ -39,10 +39,12 @@
     <!-- rexrov robot with oberon7 arm -->
     <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov0"/>
-        <arg name="x" value="-21.0"/>
-        <arg name="y" value="-34.0"/>
-        <arg name="z" value="-108.0"/>
-        <arg name="yaw" value="2.5"/>
+        <arg name="x" value="7.087382"/>
+        <arg name="y" value="-8.720616"/>
+        <arg name="z" value="-116.360490"/>
+        <arg name="roll" value="0.011443"/>
+        <arg name="pitch" value="0.060502"/>
+        <arg name="yaw" value="0.304482"/>
     </include>
 
     <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
