@@ -151,6 +151,13 @@
     <xacro:thruster_macro thruster_id="6">
         <origin xyz="-1.63582 2.54822e-05 ${1.78479-0.9}" rpy="0.0 -1.5708 0.0"/>
     </xacro:thruster_macro>
+
+    <!-- includes -->
+    <xacro:property name="namespace" value="$(arg namespace)"/>
+    <xacro:property name="inertial_reference_frame" value="world"/>
+    <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/sensor_snippets.xacro"/>
+    <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/> 
+    <xacro:include filename="$(find virgil_description)/urdf/virgil_sensors.xacro"/>
 </robot>
 
   
