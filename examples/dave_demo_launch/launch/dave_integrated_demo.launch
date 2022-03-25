@@ -9,6 +9,7 @@
     <arg name="velocity_control" default="true"/>
     <arg name="joy_id" default="0"/>
     <arg name="debug" default="false"/>
+	  <arg name="controller_type" default="effort"/>
 
     <arg unless="$(arg debug)" name="launch-prefix" value=" "/>
     <arg if="$(arg debug)" name="launch-prefix" value="gdb -ex run --args"/>
@@ -66,37 +67,32 @@
     <!-- Include a second rexrov with dual arms -->
   	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
       <arg name="namespace" value="rexrov"/>
+		  <arg name="controller_type" value="$(arg controller_type)"/>
       <arg name="x" value="-187.77"/>
       <arg name="y" value="115.20"/>
       <arg name="z" value="-155.35"/>
       <arg name="yaw" value="3.14"/>
     </include>
 
-	<include file="$(find oberon7_gazebo)/launch/controller_utils.launch"/>
+  	<!-- Load general controllers -->
+  	<include file="$(find oberon7_gazebo)/launch/controller_utils.launch"/>
 
-	<!-- Start this controller -->
-	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_l.yaml" command="load"/>
-	<node name="arm_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_l" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
+  	<rosparam file="$(find oberon7_gazebo)/controller/oberon7_controllers.yaml" command="load"/>
 
-	<rosparam file="$(find oberon7_gazebo)/controller/arm_controller_oberon7_r.yaml" command="load"/>
-	<node name="arm_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller_r" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
+  	<!-- Load chosen controller types -->
+  	<group if="$(eval controller_type == 'effort')">
+  		<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_effort_r hand_effort_l arm_effort_l arm_effort_r" respawn="false" output="screen"/>
+  	</group>
 
-	<!-- Start another controller -->
-	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_l.yaml" command="load"/>
-	<node name="hand_controller_l_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_l" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
+  	<group if="$(eval controller_type == 'position')">
+  		<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_position_r hand_position_l arm_position_l arm_position_r" respawn="false" output="screen"/>
+  	</group>
 
-	<rosparam file="$(find oberon7_gazebo)/controller/hand_controller_oberon7_r.yaml" command="load"/>
-	<node name="hand_controller_r_spawner" pkg="controller_manager" type="controller_manager" args="spawn hand_controller_r" respawn="false" output="screen" launch-prefix="$(arg launch-prefix)"/>
-
-	<!-- Load other controllers -->
-	<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller" launch-prefix="$(arg launch-prefix)"/>
-
-  <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
-  	<arg name="uuv_name" value="rexrov" />
-  	<arg name="model_name" value="rexrov" />
-  	<arg name="joy_id" value="1"/>
-  </include>
-
+    <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+    	<arg name="uuv_name" value="rexrov" />
+    	<arg name="model_name" value="rexrov" />
+    	<arg name="joy_id" value="1"/>
+    </include>
 
     <!-- Spawn socket platform for electrical lead station -->
     <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
