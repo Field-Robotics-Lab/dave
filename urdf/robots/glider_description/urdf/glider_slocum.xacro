@@ -44,13 +44,13 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 -1.5708" />
         <geometry>
-          <mesh filename="${visual_mesh_file}" scale="1 1 1" />
+          <mesh filename="${visual_mesh_file}" scale="0.5 0.5 0.5" />
         </geometry>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 -1.5708" />
         <geometry>
-          <mesh filename="${collision_mesh_file}" scale="1 1 1" />
+          <mesh filename="${collision_mesh_file}" scale="0.5 0.5 0.5" />
         </geometry>
       </collision>
       <inertial>
