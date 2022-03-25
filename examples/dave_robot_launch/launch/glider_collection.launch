@@ -5,7 +5,8 @@
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/> -->
-    <arg name="world_name" default="$(find dave_worlds)/worlds/dave_ocean_waves.world"/> 
+    <arg name="world_name"
+	 default="$(find dave_worlds)/worlds/dave_ocean_waves_darker.world"/> 
     <arg name="gui" default="true"/>
     <arg name="paused" default="false"/>
  
