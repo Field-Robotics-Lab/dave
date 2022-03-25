@@ -216,7 +216,7 @@
     <include>
       <name>mud_anchor</name>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Mud Anchor</uri>
-      <pose>-78.2 -181 -130 -0.22 0.13 0.0</pose>
+      <pose>-68.759591 -208.309946 -147.679795 -0.072901 -1.166020 1.635320</pose>
     </include>
 
     <!-- Mud pit -->
@@ -274,23 +274,25 @@
     <!-- Monitoring equipment -->
     <include>
       <name>mbari_mars</name>
-      <pose>13 6 -118 0 -0.15 0</pose>
+      <pose>14.455148 -7.161097 -118.670557 -0.036799 0.065912 0.178707</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/MBARI MARS</uri>
       <static>true</static>
     </include>
 
     <include>
       <name>flight_data_recorder</name>
-      <pose>7 5 -117 0 0 0</pose>
+      <pose>9.044796 -6.663643 -118.380028 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Flight Data Recorder</uri>
+      <static>false</static>
     </include>
 
     <include>
       <name>niskin</name>
-      <pose>7 5 -117 0 0 0</pose>
+      <pose>9.046633 -7.605316 -118.217148 -0.918770 -1.547187 0</pose>
       <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://niskin</uri>
+      <static>true</static>
     </include>
 
     <!-- Ocean creatures -->
@@ -339,22 +341,24 @@
 
     <include>
       <name>sunken_vase</name>
-      <pose>-73 -209 -147 0 0 0</pose>
+      <pose>-70.221956 -206.729503 -147.769372 0.102539 -0.035175 -0.004790</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri>
     </include>
 
     <include>
       <name>sunken_vase_distorted</name>
-      <pose>-72 -214 -147 0 0 0</pose>
+      <pose>-72 -208.695 -148.1 -0.757396 0.467511 -0.402810</pose>
       <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://sunken_vase_distorted</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>sunken_vase2</name>
-      <pose>-72 -208 -147 0 0 0</pose>
+      <pose>-72 -208 -148 -0.932434 -0.195466 0.528508</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
+      <static>true</static>
     </include>
 
     <include>
@@ -427,18 +431,21 @@
       <name>torpedo_mk46</name>
       <pose>-158 100 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK46</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>torpedo_mk48</name>
       <pose>-158 105 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK48</uri>
+      <static>true</static>
     </include>
 
     <include>
       <name>sonobuoy</name>
       <pose>-158 104 -158 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Sonobuoy</uri>
+      <static>true</static>
     </include>
 
     <include>
@@ -461,6 +468,6 @@
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance C</uri>
       <static>true</static>
     </include>
-    
+
   </world>
 </sdf>
