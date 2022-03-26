@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+	<model name="SantoriniScaled">
+		<static>true</static>
+		<pose>0 0 0 0 0 0</pose>
+		<self_collide>
+			false
+		</self_collide>
+		<link name="terrain_link">
+			<visual name="terrain_visual">
+				<pose>0 0 0.05 0 0 0</pose>
+				<geometry>
+					<mesh>
+						<uri>model://Santorini/mesh/Santorini.R_25.317_25.489_36.337_36.479.epsg3857.obj</uri>
+						<scale>0.05 0.05 0.1</scale>
+					</mesh>
+				</geometry>
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/sand.material</uri>
+            <name>UUVSimulator/SandAndStones</name>
+          </script>
+          <emissive>
+            0.6 0.6 0.6 1.0
+          </emissive>
+        </material>
+			</visual>
+			<collision name="collision">
+				<pose>0 0 0 0 0 0</pose>
+				<geometry>
+					<mesh>
+						<uri>model://Santorini/mesh/Santorini.R_25.317_25.489_36.337_36.479.epsg3857.obj</uri>
+						<scale>0.05 0.05 0.1</scale>
+					</mesh>
+				</geometry>
+				<surface>
+					<contact>
+						<collide_bitmask>0xffff</collide_bitmask>
+					</contact>
+				</surface>
+			</collision>
+		</link>
+	</model>
+</sdf>
