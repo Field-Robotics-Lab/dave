@@ -24,6 +24,21 @@
             <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
+        <surface>
+          <contact>
+            <ode>
+            <kp>1e6</kp>
+            <kd>1.0</kd>
+            <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+            <mu1>100.0</mu1>
+            <mu2>50.0</mu2>
+            </ode>
+          </friction>
+        </surface>
       </collision>
 
       <!-- <collision name ='stand'>
@@ -43,7 +58,7 @@
           <iyz>0</iyz>
           <izz>0.04</izz>
         </inertia>
-        <mass>0.5</mass>
+        <mass>0.2</mass>
       </inertial>
     </link>
 
