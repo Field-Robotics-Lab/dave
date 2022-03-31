@@ -198,6 +198,14 @@
       <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Octagonal</uri>
     </include>
 
+    <!-- Still pending
+    <include>
+      <name>airplane_wreck</name>
+      <pose>20 -12 -94 0 0 0</pose>
+      <uri>model://airplane_wreck</uri>
+    </include>
+    -->
+
     <include>
       <name>mbari_mars</name>
       <pose>13 6 -94 0 0 0</pose>
@@ -205,39 +213,68 @@
     </include>
 
     <include>
-      <pose>13 -7 -94 0 0 0</pose>
+      <pose>13 -7 -94.5 0 0 0</pose>
       <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://sunken_vase</uri>
     </include>
 
-    <!-- Pending model fix upstream -->
-    <!--include>
-      <pose>13 -8 -94 0 0 0</pose>
+    <include>
+      <pose>13 -8 -94.5 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
-    </include-->
+    </include>
 
     <include>
-      <pose>13 -9 -94 0 0 0</pose>
+      <static>true</static>
+      <pose>13 -9 -94.5 0 0 0</pose>
       <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://niskin</uri>
     </include>
 
     <include>
-      <pose>13 -12 -94 0 0 0</pose>
+      <static>true</static>
+      <pose>12 -10 -94.8 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 01</uri>
+    </include>
+
+    <include>
+      <static>true</static>
+      <pose>14 -10 -94.8 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 02</uri>
+    </include>
+
+    <include>
+      <pose>13 -11 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
     </include>
 
-    <!-- Still pending
     <include>
-      <name>airplane_wreck</name>
-      <pose>20 -11 -94 0 0 0</pose>
-      <uri>model://airplane_wreck</uri>
+      <static>true</static>
+      <pose>12 -11.5 -94.8 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral01</uri>
     </include>
-    -->
 
     <include>
+      <static>true</static>
+      <pose>12.2 -10.3 -95 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral02</uri>
+    </include>
+
+    <include>
+      <static>true</static>
+      <pose>12 -12 -94.8 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 03</uri>
+    </include>
+
+    <include>
+      <static>true</static>
+      <pose>14 -12 -94.8 0 0 0</pose>
+      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 04</uri>
+    </include>
+
+    <include>
+      <static>true</static>
       <pose>35 -10 -94 0 0 0</pose>
       <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Ship</uri>
     </include>

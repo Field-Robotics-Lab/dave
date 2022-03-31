@@ -120,9 +120,9 @@ To add a new distortion method to the script, follow these steps:
    Trial and error to make sure it works for different models.
    See troubleshoot section below.
 
-### Troubleshoot
+## Troubleshoot
 
-#### Incorrect context
+### Incorrect context
 
 Blender might complain about incorrect context.
 One cause is that the object you are trying to modify is not the "active"
@@ -186,4 +186,4 @@ Composite | 100 | All forms of fouling present, Soft and Hard, particularly soft
 
 - Blender sometimes does not export the texture back to a COLLADA file
   correctly.
-  Inputting OBJ and exporting COLLADA works fine.
+  Importing OBJ and exporting COLLADA works fine.
