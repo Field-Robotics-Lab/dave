@@ -64,17 +64,10 @@
 
   	<include file="$(find virgil_description)/launch/upload_virgil.launch"/>
 
-  	<include file="$(find dave_nodes)/launch/joy_thrusterop.launch">
+  	<include file="$(find dave_nodes)/launch/virgil_thrusterop.launch">
     	<arg name="joy_id" value="$(arg joy_id)"/>
     	<arg name="namespace" value="$(arg namespace)"/>
   	</include>
-
-    <!-- Acceleration control -->
-<!--     <include file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
-        <arg name="uuv_name" value="virgil" />
-        <arg name="model_name" value="virgil" />
-        <arg name="joy_id" value="$(arg joy_id)"/>
-    </include> -->
 
   	<node name="spawn_virgil" pkg="gazebo_ros" type="spawn_model"
   		respawn="false" output="screen"
