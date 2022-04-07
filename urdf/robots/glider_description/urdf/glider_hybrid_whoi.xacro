@@ -39,7 +39,7 @@
   <xacro:property name="collision_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_collision.dae" />
   <xacro:property name="left_prop_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_left_propeller.dae" />
   <xacro:property name="right_prop_mesh_file" value="file://$(find dave_robot_models)/models/glider_hybrid_whoi/mesh/glider_hybrid_whoi_right_propeller.dae" />
-
+<!--
   <xacro:macro name="glider_hybrid_whoi" params="namespace debug inertial_reference_frame">
     <link name="${namespace}/base_link">
       <visual>
@@ -62,9 +62,9 @@
     </link>
     <link name="${namespace}/left_propeller_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0 " />
+        <origin xyz="-0.77 0.05 0" rpy="0 0 0 " />
         <geometry>
-          <mesh filename="${left_prop_mesh_file}" scale="2.3 2.3 2.3" />
+          <mesh filename="${left_prop_mesh_file}" scale="5.3 5.3 5.3" />
         </geometry>
       </visual>
     </link>
@@ -98,7 +98,111 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <parent link="${namespace}/base_link"/>
       <child link="${namespace}/battery_link2"/>
+    </joint> -->
+
+ <xacro:macro name="glider_hybrid_whoi" params="namespace debug inertial_reference_frame">
+    <!-- Base_link of the model -->
+    <link name="${namespace}/base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 -${0.5*pi}" />
+        <geometry>
+          <mesh filename="${visual_mesh_file}" scale="2.3 2.3 2.3" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 -${0.5*pi}" />
+        <geometry>
+          <mesh filename="${collision_mesh_file}" scale="2.3 2.3 2.3" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${mass}"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="0.3048" ixy="0" ixz="0" iyy="13.976" iyz="0" izz="13.976" />
+      </inertial>
+    </link>
+
+    <!-- Dummy propeller plugin properties (rotorConstant = 0) -->
+    <!-- This is for topics used to visualize the propeller roatation  -->
+    <xacro:property name="dummy_plugin_properties_for_visual_rotation">
+      <dynamics>
+        <type>FirstOrder</type>
+        <timeConstant>0.0</timeConstant>
+      </dynamics>
+      <conversion>
+        <type>Basic</type>
+        <rotorConstant>0.0</rotorConstant>
+      </conversion>
+    </xacro:property>
+    <xacro:property name="dummy_link_properties_for_visual_rotation">
+      <xacro:box_inertial x="0" y="0" z="0" mass="0.00001">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </xacro:box_inertial>
+      <collision>
+        <geometry>
+          <cylinder length="0.000001" radius="0.000001"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </xacro:property>
+
+    <!-- First propeller -->
+    <xacro:property name="thruster_id" value="1"/>
+    <joint name="${namespace}/thruster_${thruster_id}_joint" type="continuous">
+      <origin xyz="-1.35 -0.1 0" rpy="0 0 -${0.07*pi}"/>
+      <axis xyz="1 0 0"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/thruster_${thruster_id}"/>
     </joint>
+    <link name="${namespace}/thruster_${thruster_id}">
+      <xacro:insert_block name="dummy_link_properties_for_visual_rotation"/>
+      <visual>
+        <origin xyz="1.27 0.438 0" rpy="0 0 -${0.42*pi}"/>
+        <geometry>
+          <mesh filename="${right_prop_mesh_file}" scale="2.3 2.3 2.3"/>
+        </geometry>
+      </visual>
+    </link>
+    <gazebo>
+      <plugin name="${namespace}_${thruster_id}_thruster_model" filename="libuuv_thruster_ros_plugin.so">
+        <linkName>${namespace}/thruster_${thruster_id}</linkName>
+        <jointName>${namespace}/thruster_${thruster_id}_joint</jointName>
+        <thrusterID>${thruster_id}</thrusterID>
+        <xacro:insert_block name="dummy_plugin_properties_for_visual_rotation"/>
+      </plugin>
+    </gazebo>
+    <gazebo reference="${namespace}/thruster_${thruster_id}">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+
+    <!-- Second propeller -->
+    <xacro:property name="thruster_id" value="0"/>
+    <joint name="${namespace}/thruster_${thruster_id}_joint" type="continuous">
+      <origin xyz="-1.35 0.1 0" rpy="0 0 ${0.07*pi+pi}"/>
+      <axis xyz="1 0 0"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/thruster_${thruster_id}"/>
+    </joint>
+    <link name="${namespace}/thruster_${thruster_id}">
+      <xacro:insert_block name="dummy_link_properties_for_visual_rotation"/>
+      <visual>
+        <origin xyz="-1.27 0.438 0" rpy="0 0 ${0.42*pi}"/>
+        <geometry>
+          <mesh filename="${left_prop_mesh_file}" scale="2.3 2.3 2.3"/>
+        </geometry>
+      </visual>
+    </link>
+    <gazebo>
+      <plugin name="${namespace}_${thruster_id}_thruster_model" filename="libuuv_thruster_ros_plugin.so">
+        <linkName>${namespace}/thruster_${thruster_id}</linkName>
+        <jointName>${namespace}/thruster_${thruster_id}_joint</jointName>
+        <thrusterID>${thruster_id}</thrusterID>
+        <xacro:insert_block name="dummy_plugin_properties_for_visual_rotation"/>
+      </plugin>
+    </gazebo>
+    <gazebo reference="${namespace}/thruster_${thruster_id}">
+      <selfCollide>false</selfCollide>
+    </gazebo>
 
     <!-- Set up hydrodynamic plugin -->
     <!-- TODO: vehicle properties and add buoyancy engine and sliding mass plugins -->
@@ -171,17 +275,19 @@
       </plugin> -->
     </gazebo>
 
-    <!-- TODO: Correct propeller origins and parameters -->
-    <xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="0" mesh_filename="${left_prop_mesh_file}" dyn_time_constant="0.1" rotor_constant="0.000049">
-      <origin xyz="0 0 0" rpy="0 0 -1.5708" />
-    </xacro:thruster_module_first_order_basic_fcn_macro>
-
-    <xacro:thruster_module_first_order_basic_fcn_macro namespace="${namespace}" thruster_id="1" mesh_filename="${right_prop_mesh_file}" dyn_time_constant="0.1" rotor_constant="0.000049">
-      <origin xyz="0 0 0" rpy="0 0 -1.5708" />
-    </xacro:thruster_module_first_order_basic_fcn_macro>
-
     <!-- TODO: Parametrize the battery unit -->
-    <xacro:basic_linear_battery_macro namespace="${namespace}" parent_link="${namespace}/base_link" prefix="" open_circuit_voltage_constant_coef="3.7" open_circuit_voltage_linear_coef="-3.1424" initial_charge="1.1665" capacity="0.5" resistance="0.002" smooth_current_tau="1.9499" voltage="4.2" update_rate="2.0" />
+    <xacro:basic_linear_battery_macro
+      namespace="${namespace}"
+      parent_link="${namespace}/base_link"
+      prefix=""
+      open_circuit_voltage_constant_coef="3.7"
+      open_circuit_voltage_linear_coef="-3.1424"
+      initial_charge="1.1665"
+      capacity="0.5"
+      resistance="0.002"
+      smooth_current_tau="1.9499"
+      voltage="4.2"
+      update_rate="2.0"/>
 
     <xacro:include filename="$(find glider_description)/urdf/glider_hybrid_whoi_sensors.xacro" />
   </xacro:macro>
