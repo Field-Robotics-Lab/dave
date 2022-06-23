@@ -6,4 +6,4 @@ repositories:
   hydrographic_msgs:
     type: git
     url: git@github.com:apl-ocean-engineering/hydrographic_msgs.git
-    version: main
+    version: v0.0.1
