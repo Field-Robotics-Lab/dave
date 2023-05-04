@@ -3,7 +3,7 @@ repositories:
     type: git
     url: git@github.com:field-robotics-lab/nps_uw_multibeam_sonar
     version: main
-  hydrographic_msgs:
+  marine_msgs:
     type: git
-    url: git@github.com:apl-ocean-engineering/hydrographic_msgs.git
+    url: git@github.com:apl-ocean-engineering/marine_msgs.git
     version: main
