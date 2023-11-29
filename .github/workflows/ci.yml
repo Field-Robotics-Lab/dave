@@ -13,7 +13,8 @@ jobs:
           - {ROS_DISTRO: noetic, ROS_REPO: main}
 
     env:
-      UPSTREAM_WORKSPACE: extras/repos/dave_sim.repos
+      UPSTREAM_WORKSPACE: extras/repos/dave_sim.repos -ds_sim
+      TARGET_WORKSPACE: . github:Field-Robotics-Lab/ds_sim#nps_dev
       BASEDIR: ${{ github.workspace }}/.work
       AFTER_SETUP_UPSTREAM_WORKSPACE: vcs pull $BASEDIR/upstream_ws/src
       DOCKER_IMAGE: woensugchoi/dave:latest

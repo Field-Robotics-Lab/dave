@@ -1,8 +1,4 @@
 repositories:
-  dave:
-    type: git
-    url: git@github.com:Field-Robotics-Lab/dave.git
-    version: master
   dockwater:
     type: git
     url: git@github.com:Field-Robotics-Lab/dockwater.git
