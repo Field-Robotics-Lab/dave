@@ -16,7 +16,7 @@
                 <pose>0 0 0 0 0 0</pose>
                 <geometry>
                     <mesh>
-                        <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/meshes/Pot01.dae</uri-->
+                        <!--uri>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/meshes/Pot01.dae</uri-->
                         <uri>model://sunken_vase_distorted/meshes/Pot01_distort.dae</uri>
                         <scale>1.0 1.0 1.0</scale>
                     </mesh>
@@ -25,7 +25,7 @@
             <visual name="Pot01_distorted_visual">
                 <geometry>
                     <mesh>
-                        <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/meshes/Pot01.dae</uri-->
+                        <!--uri>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/meshes/Pot01.dae</uri-->
                         <uri>model://sunken_vase_distorted/meshes/Pot01_distort.dae</uri>
                         <submesh>
                             <name>Pot01</name>
@@ -38,15 +38,15 @@
                     <specular>1.0 1.0 1.0</specular>
                     <pbr>
                         <metal>
-                            <albedo_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/materials/textures/Pot01_Albedo.png</albedo_map>
-                            <normal_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/materials/textures/Pot01_Normal.png</normal_map>
-                            <roughness_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/materials/textures/Pot01_Roughness.png</roughness_map>
+                            <albedo_map>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/materials/textures/Pot01_Albedo.png</albedo_map>
+                            <normal_map>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/materials/textures/Pot01_Normal.png</normal_map>
+                            <roughness_map>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/materials/textures/Pot01_Roughness.png</roughness_map>
                         </metal>
                     </pbr>
                     <!-- fallback to script if no PBR support-->
                     <script>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/materials/scripts/</uri>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken vase/3/files/materials/textures/</uri>
+                        <uri>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/materials/scripts/</uri>
+                        <uri>https://fuel.gazebosim.org/1.0/cole/models/sunken vase/3/files/materials/textures/</uri>
                         <name>UrbanTile/Pot01_Diffuse</name>
                     </script>
                 </material>

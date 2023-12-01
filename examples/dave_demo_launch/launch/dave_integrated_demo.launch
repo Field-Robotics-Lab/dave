@@ -7,12 +7,10 @@
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
-    <arg name="joy_id" default="0"/>
+    <!-- <arg name="joy_id" default="0"/> -->
     <arg name="debug" default="false"/>
-	  <arg name="controller_type" default="effort"/>
+	<!-- <arg name="controller_type" default="effort"/> -->
 
-    <arg unless="$(arg debug)" name="launch-prefix" value=" "/>
-    <arg if="$(arg debug)" name="launch-prefix" value="gdb -ex run --args"/>
 
     <!-- use Gazebo's empty_world.launch with dave_ocean_waves.world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -30,14 +28,14 @@
     <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
 
     <!-- timeout -->
-    <group if="$(arg set_timeout)">
+    <!-- <group if="$(arg set_timeout)">
         <include file="$(find uuv_assistants)/launch/set_simulation_timer.launch">
             <arg name="timeout" value="$(arg timeout)"/>
         </include>
-    </group>
+    </group> -->
 
     <!-- rexrov robot with oberon7 arm -->
-    <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
+    <!-- <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7.launch">
         <arg name="namespace" value="rexrov0"/>
         <arg name="x" value="7.087382"/>
         <arg name="y" value="-8.720616"/>
@@ -45,29 +43,29 @@
         <arg name="roll" value="0.011443"/>
         <arg name="pitch" value="0.060502"/>
         <arg name="yaw" value="0.304482"/>
-    </include>
+    </include> -->
 
     <!-- Velocity teleop (UUV stays in position when joystick is not used) -->
-    <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
+    <!-- <include if="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_velocity.launch">
         <arg name="uuv_name" value="$(arg namespace)" />
         <arg name="model_name" value="rexrov" />
         <arg name="joy_id" value="$(arg joy_id)"/>
-    </include>
+    </include> -->
 
     <!-- joystick control for rexrov and oberon7, no velocity control-->
-    <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
+    <!-- <include unless="$(arg velocity_control)" file="$(find uuv_control_cascaded_pid)/launch/joy_accel.launch">
       	<arg name="uuv_name" value="rexrov0" />
         <arg name="model_name" value="rexrov"/>
         <arg name="joy_id" value="$(arg joy_id)"/>
-    </include>
+    </include> -->
 
     <!-- joint control for oberon7 -->
-    <include file="$(find oberon7_control)/launch/joint_control.launch">
+    <!-- <include file="$(find oberon7_control)/launch/joint_control.launch">
         <arg name="uuv_name" value="rexrov0"/>
-    </include>
+    </include> -->
 
     <!-- Include a second rexrov with dual arms -->
-  	<include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
+  	<!-- <include file="$(find rexrov_description)/launch/upload_rexrov_oberon7_moveit.launch">
       <arg name="namespace" value="rexrov"/>
 		  <arg name="controller_type" value="$(arg controller_type)"/>
       <arg name="x" value="-187.77"/>
@@ -76,15 +74,15 @@
       <arg name="roll" value="-0.01"/>
       <arg name="pitch" value="0.177"/>
       <arg name="yaw" value="3.14"/>
-    </include>
+    </include> -->
 
   	<!-- Load general controllers -->
-  	<include file="$(find oberon7_gazebo)/launch/controller_utils.launch"/>
+  	<!-- <include file="$(find oberon7_gazebo)/launch/controller_utils.launch"/>
 
-  	<rosparam file="$(find oberon7_gazebo)/controller/oberon7_controllers.yaml" command="load"/>
+  	<rosparam file="$(find oberon7_gazebo)/controller/oberon7_controllers.yaml" command="load"/> -->
 
   	<!-- Load chosen controller types -->
-  	<group if="$(eval controller_type == 'effort')">
+  	<!-- <group if="$(eval controller_type == 'effort')">
   		<node name="controllers_spawner" pkg="controller_manager" type="spawner" args="hand_effort_r hand_effort_l arm_effort_l arm_effort_r" respawn="false" output="screen"/>
   	</group>
 
@@ -96,11 +94,11 @@
     	<arg name="uuv_name" value="rexrov" />
     	<arg name="model_name" value="rexrov" />
     	<arg name="joy_id" value="1"/>
-    </include>
+    </include> -->
 
     <!-- Spawn socket platform for electrical lead station -->
-    <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
+    <!-- <include file="$(find plug_and_socket_description)/launch/upload_socket_platform.launch"/>
     <node name="spawn_socket" pkg="gazebo_ros" type="spawn_model"
-            args="-urdf -param socket_platform -model socket_platform -x -190.5 -y 115.15 -z -158.459771 -Y -1.57079632679 -unpause" respawn="false" output="screen" />
+            args="-urdf -param socket_platform -model socket_platform -x -190.5 -y 115.15 -z -158.459771 -Y -1.57079632679 -unpause" respawn="false" output="screen" /> -->
 
 </launch>

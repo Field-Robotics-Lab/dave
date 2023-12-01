@@ -135,67 +135,67 @@
     <include>
       <name>torpedo_mk46</name>
       <pose>13 -1 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK46</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Torpedo MK46</uri>
     </include>
 
     <include>
       <name>torpedo_mk48</name>
       <pose>13 -1.5 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Torpedo MK48</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Torpedo MK48</uri>
     </include>
 
     <include>
       <name>sonobuoy</name>
       <pose>13 -2 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Sonobuoy</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Sonobuoy</uri>
     </include>
 
     <include>
       <name>flight_data_recorder</name>
       <pose>13 -3 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Flight Data Recorder</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Flight Data Recorder</uri>
     </include>
 
     <include>
       <name>uxo_a</name>
       <pose>13 -4 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance A</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Unexploded Ordnance A</uri>
     </include>
 
     <include>
       <name>uxo_b</name>
       <pose>13 -5 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance B</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Unexploded Ordnance B</uri>
     </include>
 
     <include>
       <name>uxo_c</name>
       <pose>13 -6 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Unexploded Ordnance C</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Unexploded Ordnance C</uri>
     </include>
 
     <include>
       <name>hardhat_standard</name>
       <pose>13 0 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Standard</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Hardhat Standard</uri>
     </include>
 
      <include>
       <name>hardhat_ribbed</name>
       <pose>13 1 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Ribbed</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Hardhat Ribbed</uri>
     </include>
 
     <include>
       <name>hardhat_superribbed</name>
       <pose>13 2 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Superribbed</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Hardhat Superribbed</uri>
     </include>
 
     <include>
       <name>hardhat_octagonal</name>
       <pose>13 3 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/Hardhat Octagonal</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/Hardhat Octagonal</uri>
     </include>
 
     <!-- Still pending
@@ -209,25 +209,25 @@
     <include>
       <name>mbari_mars</name>
       <pose>13 6 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/quarkytale/models/MBARI MARS</uri>
+      <uri>https://fuel.gazebosim.org/1.0/quarkytale/models/MBARI MARS</uri>
     </include>
 
     <include>
       <pose>13 -7 -94.5 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase</uri-->
+      <!--uri>https://fuel.gazebosim.org/1.0/Cole/models/Sunken Vase</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://sunken_vase</uri>
     </include>
 
     <include>
       <pose>13 -8 -94.5 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Vase 02</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Sunken Vase 02</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>13 -9 -94.5 0 0 0</pose>
-      <!--uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Niskin</uri-->
+      <!--uri>https://fuel.gazebosim.org/1.0/Cole/models/Niskin</uri-->
       <!-- Use the SDF in repo for inertial values not yet on Ignition Fuel -->
       <uri>model://niskin</uri>
     </include>
@@ -235,48 +235,48 @@
     <include>
       <static>true</static>
       <pose>12 -10 -94.8 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 01</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Kelp 01</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>14 -10 -94.8 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 02</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Kelp 02</uri>
     </include>
 
     <include>
       <pose>13 -11 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Lionfish</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Lionfish</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>12 -11.5 -94.8 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral01</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Coral01</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>12.2 -10.3 -95 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Coral02</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Coral02</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>12 -12 -94.8 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 03</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Kelp 03</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>14 -12 -94.8 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Kelp 04</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Kelp 04</uri>
     </include>
 
     <include>
       <static>true</static>
       <pose>35 -10 -94 0 0 0</pose>
-      <uri>https://fuel.ignitionrobotics.org/1.0/Cole/models/Sunken Ship</uri>
+      <uri>https://fuel.gazebosim.org/1.0/Cole/models/Sunken Ship</uri>
     </include>
 
   </world>
