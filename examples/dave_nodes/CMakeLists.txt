@@ -46,6 +46,7 @@ install(DIRECTORY config
 catkin_install_python(PROGRAMS
   src/simple_box_motion.py
   src/joy_thrusterop.py
+  src/virgil_thrusterop.py
   src/dvl_gradient_plot.py
   src/dvl_state_and_gradient_dsl.py
   src/dvl_state_and_gradient_uuvsim.py
