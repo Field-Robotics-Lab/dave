@@ -7,7 +7,7 @@
     <arg name="set_timeout" default="false"/>
     <arg name="timeout" default="0.0"/>
     <arg name="velocity_control" default="true"/>
-    <!-- <arg name="joy_id" default="0"/> -->
+    <arg name="joy_id" default="0"/>
     <arg name="debug" default="false"/>
 	<!-- <arg name="controller_type" default="effort"/> -->
 
