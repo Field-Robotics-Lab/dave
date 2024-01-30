@@ -7,7 +7,7 @@
                 <pose>0 0 0 0 0 0</pose>
                 <geometry>
                     <mesh>
-                        <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/meshes/sunkenship.dae</uri-->
+                        <!--uri>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/meshes/sunkenship.dae</uri-->
                         <uri>model://sunken_ship_distorted/meshes/sunkenship_distort.dae</uri>
                         <scale>1.0 1.0 1.0</scale>
                     </mesh>
@@ -16,7 +16,7 @@
             <visual name="SunkenShip_distorted_visual">
                 <geometry>
                     <mesh>
-                        <!--uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/meshes/sunkenship.dae</uri-->
+                        <!--uri>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/meshes/sunkenship.dae</uri-->
                         <uri>model://sunken_ship_distorted/meshes/sunkenship_distort.dae</uri>
                         <submesh>
                             <name>SunkenShip</name>
@@ -29,16 +29,16 @@
                     <specular>1.0 1.0 1.0</specular>
                     <pbr>
                         <metal>
-                            <albedo_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Albedo.png</albedo_map>
-                            <normal_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Normal.png</normal_map>
-                            <metalness_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Metalness.png</metalness_map>
-                            <roughness_map>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Roughness.png</roughness_map>
+                            <albedo_map>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Albedo.png</albedo_map>
+                            <normal_map>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Normal.png</normal_map>
+                            <metalness_map>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Metalness.png</metalness_map>
+                            <roughness_map>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/materials/textures/SunkenShip_Roughness.png</roughness_map>
                         </metal>
                     </pbr>
                     <!-- fallback to script if no PBR support-->
                     <script>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/materials/scripts/</uri>
-                        <uri>https://fuel.ignitionrobotics.org/1.0/cole/models/sunken ship/2/files/materials/textures/</uri>
+                        <uri>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/materials/scripts/</uri>
+                        <uri>https://fuel.gazebosim.org/1.0/cole/models/sunken ship/2/files/materials/textures/</uri>
                         <name>UrbanTile/SunkenShip</name>
                     </script>
                 </material>
